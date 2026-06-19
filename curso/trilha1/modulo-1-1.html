@@ -85,9 +85,11 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
-    .topic-explanation { display: none; }
-    .topic-explanation.active { display: block; }
     [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
 
     html:not(.dark) body { background-color: #f8fafc; }
     html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
@@ -107,7 +109,6 @@
     html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
     html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
     html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
-    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
     html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
     html:not(.dark) .text-primary { color: #a16207; }
     html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
@@ -116,27 +117,20 @@
     html:not(.dark) .text-yellow-400 { color: #a16207; }
     html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
     html:not(.dark) .text-red-400 { color: #b91c1c; }
-    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
-    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
     html:not(.dark) .text-blue-400 { color: #2563eb; }
     html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
     html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
     html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
-
     .dark .border-dark-600 { border-color: #374151; }
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
-
-    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
-    @media (prefers-reduced-motion: no-preference) {
-      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
-      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
-      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
-    }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
   <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg">Pular para o conteúdo</a>
+
   <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-14">
@@ -147,10 +141,10 @@
         </div>
         <div class="flex items-center space-x-1 sm:space-x-2">
           <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
-          <a href="../../curso/trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
-          <a href="../../curso/trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
-          <a href="../../curso/trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
-          <a href="../../curso/trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluções</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluções</span></a>
           <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1"><span aria-hidden="true">◷</span><span>Minha jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span></button>
           <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
@@ -160,6 +154,7 @@
       </div>
     </div>
   </nav>
+
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegação">
     <div class="flex items-center space-x-2 text-sm text-neutral-400">
       <a href="../../index.html" class="hover:text-emerald-400">Início</a><span>/</span>
@@ -172,11 +167,11 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.1</span>
       <h1 class="text-3xl sm:text-4xl font-bold mb-4">🏎️ Motor × Chassi</h1>
-      <p class="text-lg text-neutral-400 max-w-3xl">A tese central: foque no harness, não no modelo.</p>
+      <p class="text-lg text-neutral-400 max-w-3xl">Se você nunca programou com IA, comece por aqui. Vamos do zero: o que é "modelo", o que é "agente", e por que o segredo não está na IA em si — está no <strong class="text-emerald-400">harness</strong>, tudo que você monta em volta dela. Cada palavra nova é explicada na hora.</p>
       <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~30</div><div class="text-xs text-neutral-400">Minutos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Base</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Zero</div><div class="text-xs text-neutral-400">Pré-requisito</div></div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Teoria</div><div class="text-xs text-neutral-400">Tipo</div></div>
       </div>
       <div class="mt-6 max-w-2xl">
@@ -190,7 +185,7 @@
   </header>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-10">
+    <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
       <nav data-inema-toc aria-label="Índice da página" class="hidden lg:block sticky top-24 self-start">
         <p class="text-sm text-neutral-400 mb-3">Seção <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
         <ul class="space-y-1 text-sm">
@@ -202,259 +197,321 @@
           <li><a href="#topico-6" class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10">6. Onde está sua alavanca</a></li>
         </ul>
       </nav>
+
       <main id="conteudo" class="inema-prose min-w-0">
 
+        <!-- GLOSSÁRIO VIVO -->
+        <div class="bg-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-12">
+          <h2 class="text-lg font-bold text-emerald-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glossário vivo (leia antes — volte sempre que precisar)</h2>
+          <p class="text-sm text-neutral-400 mb-4">Como esta é a trilha de <strong>Fundamentos</strong>, aqui todo termo é explicado em linguagem simples. Nas próximas trilhas a gente só usa — então fixe estes:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Modelo (ou LLM)</strong> — a "inteligência" em si: um <em>modelo de linguagem grande</em> (Large Language Model) como o Claude, o GPT ou o Gemini. É quem lê seu pedido e escreve a resposta. Pense nele como o <strong>motor</strong>.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Prompt</strong> — o texto que você manda pro modelo (a instrução, o pedido). "Prompt bom" = pedido claro.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Agente</strong> — o modelo <em>com ferramentas</em>, agindo em passos por conta própria (ler arquivos, rodar comandos, editar código) até terminar uma tarefa — não só responder uma pergunta.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Skill</strong> — um "procedimento" reutilizável que você dá ao agente (um conjunto de instruções salvo) pra ele fazer algo do seu jeito, sempre igual.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Codebase</strong> — o conjunto de arquivos do seu projeto (o código). É o "terreno" onde o agente trabalha.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Harness</strong> — <em>tudo o que envolve o modelo</em>: seus prompts, suas skills, o ambiente (ferramentas, permissões) e o codebase. É o <strong>carro inteiro</strong> em volta do motor. O tema do curso.</div>
+          </div>
+        </div>
+
+        <!-- TÓPICO 1 -->
         <section id="topico-1" data-inema-topic="modulo-1-1#topico-1" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span>
-              <h2 class="text-2xl font-bold">⚙️ O que é o harness</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">⚙️ O que é o harness</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m1-1-t1-p1" class="text-neutral-300 mb-6 leading-relaxed">O <strong class='text-emerald-400'>harness</strong> é tudo que envolve o modelo: os prompts que você dá, as skills com que ele trabalha, o ambiente em que ele roda e o codebase que ele edita. O modelo é o <strong class='text-emerald-400'>motor</strong>; o harness é o carro inteiro.</p>
-  <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🧩</span> O harness é o sistema; o modelo é só uma peça</h3>
-    <p class="text-neutral-300 mb-2">Pocock: “o modelo é útil, mas o harness tem uma quantidade igual de trabalho — e você tem muito mais controle sobre o harness do que sobre o modelo.”</p>
-    <ul class="space-y-2 text-neutral-300">
-      <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Prompts</strong> — como você descreve a tarefa e a intenção.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Skills</strong> — procedimentos e habilidades reutilizáveis.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Ambiente</strong> — sandbox, ferramentas, CI, permissões.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span><strong>Codebase</strong> — arquitetura, testes, documentação, guard rails.</span></li>
-    </ul>
-  </div>
-  <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> A diferença de controle</h3>
-    <ul class="space-y-2 text-neutral-300">
-      <li><strong>~0%</strong> — controle sobre como o modelo foi treinado.</li>
-      <li><strong>~100%</strong> — controle sobre o harness ao redor dele.</li>
-    </ul>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> você contratou um motorista de corrida genial. Ele dirige melhor que qualquer um. Mas ele ganha a corrida sozinho? Não — depende do <em>carro</em>, do <em>mapa</em>, das <em>ferramentas no box</em>. Com IA é igual: a IA é o motorista; o resto do carro é o que você monta.</p>
+          </div>
+
+          <p data-inema-block="m1-1-t1-p1" class="text-neutral-300 mb-4 leading-relaxed">Quando se fala em "usar IA pra programar", quase todo mundo pensa só no <span class="termo" title="A inteligência em si — um modelo de linguagem como Claude/GPT/Gemini.">modelo</span> — a IA propriamente dita, um <span class="termo" title="Large Language Model — modelo de linguagem grande.">modelo de linguagem (LLM)</span> como o Claude ou o GPT. Mas o modelo é só uma peça. Tudo o que você coloca <em>em volta</em> dele tem um nome: <strong class="text-emerald-400">harness</strong> (lê-se "ârnes"; em inglês é o arreio/chassi que segura tudo).</p>
+
+          <p data-inema-block="m1-1-t1-p2" class="text-neutral-300 mb-6 leading-relaxed">O harness são quatro coisas que <strong>você</strong> controla: (1) os <span class="termo" title="O texto/instrução que você manda pro modelo.">prompts</span> que você escreve; (2) as <span class="termo" title="Procedimentos reutilizáveis que você dá ao agente.">skills</span> que você dá pro agente; (3) o <strong>ambiente</strong> (as ferramentas e permissões que ele tem); e (4) o <span class="termo" title="Os arquivos do seu projeto — o código.">codebase</span> onde ele mexe. Nas palavras do próprio Matt Pocock: <em>"o modelo é útil, mas o harness tem uma quantidade igual de trabalho — e você tem muito mais controle sobre o harness do que sobre o modelo."</em></p>
+
+          <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 250" class="w-full h-auto" role="img" aria-label="O harness é uma caixa grande que contém o modelo (uma caixa pequena com glow) e canaliza prompts, skills, ambiente e codebase">
+              <defs>
+                <linearGradient id="v11a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
+                <filter id="v11a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v11a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern>
+              </defs>
+              <rect x="0" y="0" width="1000" height="250" fill="url(#v11a-grid)"/>
+              <rect x="40" y="30" width="920" height="190" rx="20" fill="#0e2018" stroke="#34d399" stroke-width="2"/>
+              <text x="64" y="60" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="17">HARNESS — você controla isto</text>
+              <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+                <g><rect x="64" y="86" width="150" height="40" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="139" y="111" text-anchor="middle" fill="#bfe6ff">prompts</text></g>
+                <g><rect x="64" y="140" width="150" height="40" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="139" y="165" text-anchor="middle" fill="#bfe6ff">skills</text></g>
+                <g><rect x="234" y="86" width="150" height="40" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="309" y="111" text-anchor="middle" fill="#bfe6ff">ambiente</text></g>
+                <g><rect x="234" y="140" width="150" height="40" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="309" y="165" text-anchor="middle" fill="#bfe6ff">codebase</text></g>
+              </g>
+              <g filter="url(#v11a-glow)"><rect x="640" y="96" width="270" height="74" rx="16" fill="url(#v11a-grad)" stroke="#10b981" stroke-width="2.5"/></g>
+              <text x="775" y="128" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-weight="700" font-size="18">MODELO (a IA)</text>
+              <text x="775" y="150" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-size="12">o "motor"</text>
+              <path d="M384,140 L640,133" fill="none" stroke="#34d399" stroke-width="2" opacity="0.6"/>
+            </svg>
+            <p class="text-xs text-neutral-500 mt-2 text-center">O modelo (a IA) é a caixa que brilha. O harness é tudo ao redor — e é onde está o seu poder.</p>
+          </div>
+
+          <img src="assets/img/m11-harness.png" alt="Ilustração conceitual: um chassi de carro brilhante envolvendo um motor pequeno" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+            <h3 class="font-semibold text-red-400 mb-2">⚠️ Erro comum de iniciante</h3>
+            <p class="text-neutral-300 text-sm">Achar que "melhorar a IA" = "trocar pra um modelo mais novo". Quase sempre, o que trava o resultado é o harness (um prompt vago, falta de uma skill, um codebase bagunçado) — não o modelo.</p>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+            <p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> harness = o carro inteiro em volta do motor; o motor (a IA) é só uma peça.</p>
+          </div>
+
+          <details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+            <summary class="cursor-pointer font-medium text-emerald-400">Indo mais fundo (opcional): de onde vem a palavra "harness"?</summary>
+            <p class="text-sm text-neutral-300 mt-3">Em inglês, <em>harness</em> é o arreio que prende e direciona a força de um cavalo — ou o chassi/estrutura que segura um sistema. Na comunidade de IA, virou o nome de tudo que "arreia" o modelo: o ambiente, as ferramentas e as instruções que transformam um modelo solto numa ferramenta útil e controlável.</p>
+          </details>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- TÓPICO 2 -->
         <section id="topico-2" data-inema-topic="modulo-1-1#topico-2" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span>
-              <h2 class="text-2xl font-bold">🏎️ A analogia da Fórmula 1</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🏎️ A analogia da Fórmula 1</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m1-1-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">Pocock usa a Fórmula 1: todos são obcecados pelo <strong class='text-emerald-400'>motor</strong>. Mas o motor é fração do conjunto — tem o chassi inteiro, a aerodinâmica, como o carro corta o ar.</p>
-  <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
-    <p class="text-neutral-300">Quando bater a ansiedade de “preciso do modelo novo”, pergunte: <em>já otimizei o chassi?</em> Quase sempre há mais ganho em melhorar prompts, skills e codebase do que em trocar o motor.</p>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-      <h4 class="font-bold text-emerald-400 mb-4">✓ Mentalidade chassi</h4>
-      <ul class="space-y-3 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Melhorar o ambiente em que o modelo roda.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Investir em skills e prompts reutilizáveis.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Deixar o codebase fácil de mudar.</span></li>
-      </ul>
-    </div>
-    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-      <h4 class="font-bold text-red-400 mb-4">✗ Obsessão pelo motor</h4>
-      <ul class="space-y-3 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Achar que só o modelo novo resolve.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Trocar de ferramenta a cada lançamento.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Ignorar o ambiente que limita o agente.</span></li>
-      </ul>
-    </div>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
-        </section>
 
-        <section id="topico-3" data-inema-topic="modulo-1-1#topico-3" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span>
-              <h2 class="text-2xl font-bold">🎛️ Por que você controla o harness</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> dois carros de Fórmula 1 com o <em>mesmo</em> motor. Um ganha, o outro fica em último. A diferença? Chassi, aerodinâmica, pneus, estratégia de box. O motor importa — mas é uma fração do que faz vencer.</p>
           </div>
-          <p data-inema-block="m1-1-t3-p1" class="text-neutral-300 mb-6 leading-relaxed">O modelo é uma caixa que você não treinou e não ajusta. O harness, ao contrário, está <strong class='text-emerald-400'>inteiramente nas suas mãos</strong> — e isso muda onde vale a pena investir seu tempo.</p>
-  <div class="space-y-6 mb-6">
-    <div class="flex items-start space-x-4">
-      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">1</span></div>
-      <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600"><h4 class="font-semibold text-white mb-2">Prompts e skills</h4><p class="text-neutral-300 text-sm">Você escreve, versiona e melhora. Cada iteração fica com você — não depende de um novo treino.</p></div>
-    </div>
-    <div class="flex items-start space-x-4">
-      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">2</span></div>
-      <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600"><h4 class="font-semibold text-white mb-2">Ambiente</h4><p class="text-neutral-300 text-sm">Sandbox, ferramentas, CI, permissões. Você decide o que o agente toca e como recebe feedback.</p></div>
-    </div>
-    <div class="flex items-start space-x-4">
-      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center"><span class="text-emerald-400 font-bold">3</span></div>
-      <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600"><h4 class="font-semibold text-white mb-2">Codebase</h4><p class="text-neutral-300 text-sm">Arquitetura, testes, documentação. O terreno onde o agente trabalha — e o terreno é seu.</p></div>
-    </div>
-  </div>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-emerald-400 font-bold text-sm mb-1">Alavanca 1</div><p class="text-xs text-neutral-400">Prompts e skills.</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-emerald-400 font-bold text-sm mb-1">Alavanca 2</div><p class="text-xs text-neutral-400">Ambiente e ferramentas.</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-emerald-400 font-bold text-sm mb-1">Alavanca 3</div><p class="text-xs text-neutral-400">Codebase e guard rails.</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-emerald-400 font-bold text-sm mb-1">Resultado</div><p class="text-xs text-neutral-400">Melhoria independente do modelo.</p></div>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
-        </section>
 
-        <section id="topico-4" data-inema-topic="modulo-1-1#topico-4" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span>
-              <h2 class="text-2xl font-bold">⚠️ O erro de focar no modelo</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          <p data-inema-block="m1-1-t2-p1" class="text-neutral-300 mb-4 leading-relaxed">Essa é a imagem central do método Pocock. Todo mundo é <strong>obcecado pelo motor</strong> (o modelo): "saiu um modelo novo, é melhor?". Mas pilotos e engenheiros de F1 sabem que o carro é um <em>sistema</em>. O motor sozinho não corta o ar, não segura a curva, não troca pneu na hora certa.</p>
+
+          <p data-inema-block="m1-1-t2-p2" class="text-neutral-300 mb-6 leading-relaxed">Traduzindo pro nosso mundo: trocar de modelo é trocar o motor. Pode dar um ganho — mas se o <strong class="text-emerald-400">chassi</strong> (seu harness) é ruim, você não ganha a corrida. E tem um detalhe que muda tudo: você praticamente <strong>não controla</strong> o motor (quem treina o modelo é a OpenAI, a Anthropic…), mas controla o chassi <strong>quase 100%</strong>. Por isso o esforço inteligente vai pro chassi.</p>
+
+          <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 240" class="w-full h-auto" role="img" aria-label="Um carro de Fórmula 1: o motor é uma peça pequena e brilhante; o chassi inteiro representa o harness, muito maior">
+              <defs>
+                <linearGradient id="v11b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
+                <filter id="v11b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v11b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern>
+              </defs>
+              <rect x="0" y="0" width="1000" height="240" fill="url(#v11b-grid)"/>
+              <rect x="120" y="60" width="760" height="120" rx="22" fill="#0e2018" stroke="#34d399" stroke-width="2"/>
+              <text x="150" y="95" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="19">CHASSI = harness (você controla ~100%)</text>
+              <text x="150" y="118" fill="#9fe7c8" font-family="Inter,sans-serif" font-size="13">aerodinâmica · pneus · estratégia · box</text>
+              <circle cx="250" cy="180" r="28" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <circle cx="750" cy="180" r="28" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <g filter="url(#v11b-glow)"><rect x="650" y="100" width="150" height="58" rx="12" fill="url(#v11b-grad)" stroke="#10b981" stroke-width="2.5"/></g>
+              <text x="725" y="126" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-weight="700" font-size="16">MOTOR</text>
+              <text x="725" y="145" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-size="11.5">= modelo (~0% controle)</text>
+              <text x="500" y="222" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5">Mesmo motor, chassis diferentes = corridas diferentes.</text>
+            </svg>
           </div>
-          <p data-inema-block="m1-1-t4-p1" class="text-neutral-300 mb-6 leading-relaxed">“As pessoas estão focadas na coisa errada — olhando pro grande brinquedo novo e brilhante.” O sintoma extremo é o <strong class='text-emerald-400'>vibe coder</strong> que troca de ferramenta toda semana e nunca aprende fundamento nenhum.</p>
-  <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">🚨</span> O custo de pensar pelo modelo primeiro</h3>
-    <p class="text-neutral-300">Se você otimiza tudo em torno de um modelo, fica preso a ele. Quando ele muda — ou aparece um mais barato — seu setup inteiro precisa ser refeito. E você nunca desenvolve as habilidades que de fato escalam.</p>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6">
-      <h4 class="font-bold text-emerald-400 mb-4">✓ Pensar pelo harness</h4>
-      <ul class="space-y-3 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Aprender fundamentos que duram.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Melhorar o setup todo dia, de leve.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-emerald-400">✓</span><span>Usar o melhor modelo, sem depender só dele.</span></li>
-      </ul>
-    </div>
-    <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-      <h4 class="font-bold text-red-400 mb-4">✗ Pensar pelo modelo</h4>
-      <ul class="space-y-3 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Trocar de ferramenta a cada hype.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Patch atrás de patch pra cada modelo.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Esperar a AGI resolver no seu lugar.</span></li>
-      </ul>
-    </div>
-  </div>
-          <div data-inema-check="modulo-1-1#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
-            <p class="font-medium mb-4">Qual atitude é “pensar pelo harness”?</p>
+
+          <div data-inema-check="modulo-1-1#q1" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
+            <p class="font-medium mb-4">Recuperação rápida: na analogia, o que é o "chassi"?</p>
             <div class="inema-check-options space-y-2">
-              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Trocar para o modelo recém-lançado no mesmo dia.</button>
-              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Melhorar prompts, skills e codebase para o agente render mais.</button>
-              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Esperar a AGI antes de fazer qualquer coisa.</button>
+              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">O modelo de IA (Claude, GPT…).</button>
+              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">O harness: prompts, skills, ambiente e codebase em volta da IA.</button>
+              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">A empresa que treina o modelo.</button>
             </div>
             <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
           </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> o motor (modelo) é uma peça; o carro inteiro (harness) é o que vence a corrida.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- TÓPICO 3 -->
+        <section id="topico-3" data-inema-topic="modulo-1-1#topico-3" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🎛️ Por que você controla o harness</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> você não pode trocar o cérebro do seu funcionário — mas pode dar a ele um manual melhor, ferramentas melhores e uma mesa organizada. O resultado dispara, e o "cérebro" é o mesmo.</p></div>
+
+          <p data-inema-block="m1-1-t3-p1" class="text-neutral-300 mb-4 leading-relaxed">O modelo é uma caixa-preta que você não treinou. Já o harness está <strong>inteiramente nas suas mãos</strong> — e tem três alavancas que você puxa hoje, sem esperar lançamento nenhum:</p>
+
+          <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 200" class="w-full h-auto" role="img" aria-label="Três alavancas que você controla: prompts e skills, ambiente, codebase">
+              <defs><pattern id="v11c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern><filter id="v11c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+              <rect x="0" y="0" width="1000" height="200" fill="url(#v11c-grid)"/>
+              <g font-family="Inter,sans-serif">
+                <g filter="url(#v11c-glow)"><rect x="60" y="50" width="260" height="100" rx="14" fill="#0e2018" stroke="#34d399" stroke-width="2.5"/></g>
+                <text x="190" y="95" text-anchor="middle" fill="#34d399" font-weight="600" font-size="16">1 · prompts + skills</text>
+                <text x="190" y="120" text-anchor="middle" fill="#9fe7c8" font-size="12">como você pede e ensina</text>
+                <rect x="370" y="50" width="260" height="100" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+                <text x="500" y="95" text-anchor="middle" fill="#bfe6ff" font-weight="600" font-size="16">2 · ambiente</text>
+                <text x="500" y="120" text-anchor="middle" fill="#9ad6ff" font-size="12">ferramentas e permissões</text>
+                <rect x="680" y="50" width="260" height="100" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+                <text x="810" y="95" text-anchor="middle" fill="#bfe6ff" font-weight="600" font-size="16">3 · codebase</text>
+                <text x="810" y="120" text-anchor="middle" fill="#9ad6ff" font-size="12">o terreno onde ele mexe</text>
+              </g>
+            </svg>
+          </div>
+
+          <img src="assets/img/m11-levers.png" alt="Ilustração: um painel de controle futurista com alavancas brilhantes" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+            <h3 class="font-semibold text-blue-400 mb-3">🔬 Exemplo resolvido: mesma IA, dois resultados</h3>
+            <p class="text-neutral-300 text-sm mb-3">Tarefa: "criar um endpoint de login". Mesmo modelo, dois harnesses:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Harness ruim</p><p class="text-xs text-neutral-300">Prompt: <em>"faz o login"</em>. Sem skill de padrões, sem testes, codebase bagunçado. → A IA inventa um padrão qualquer, quebra o resto, você gasta horas revisando.</p></div>
+              <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-semibold text-sm mb-1">Harness bom</p><p class="text-xs text-neutral-300">Prompt claro + skill "padrões de auth do projeto" + testes existentes + codebase organizado. → A IA segue o padrão, roda os testes, entrega certo de primeira.</p></div>
+            </div>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> você não muda o cérebro da IA, mas muda o manual, as ferramentas e a mesa — e isso já decide o resultado.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- TÓPICO 4 -->
+        <section id="topico-4" data-inema-topic="modulo-1-1#topico-4" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">⚠️ O erro de focar no modelo</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> alguém que troca de carro toda semana atrás do "motor perfeito", mas nunca aprende a dirigir. Nunca vai ganhar corrida.</p></div>
+
+          <p data-inema-block="m1-1-t4-p1" class="text-neutral-300 mb-4 leading-relaxed">Pocock chama isso de "olhar pra coisa errada — o brinquedo novo e brilhante". O exemplo extremo é o <span class="termo" title="Pessoa que monta apps com IA sem entender a base de programação.">vibe coder</span> que pula de ferramenta em ferramenta (saiu modelo novo? troca; saiu app novo? troca) e <strong>nunca aprende fundamento nenhum</strong>. Fica sempre na superfície.</p>
+
+          <p data-inema-block="m1-1-t4-p2" class="text-neutral-300 mb-6 leading-relaxed">O problema prático: se você amarra tudo a um modelo específico, quando ele muda (ou aparece um mais barato) seu setup inteiro quebra. E pior — você não desenvolveu as habilidades que <em>de verdade</em> escalam. Foco no modelo é alugar; foco no harness é construir patrimônio.</p>
+
+          <img src="assets/img/m11-vibecoder.png" alt="Ilustração: desenvolvedor cercado por muitas ferramentas trocando caoticamente" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Pensar pelo harness</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Aprender fundamentos que duram.</li><li>• Melhorar o setup um pouco todo dia.</li><li>• Usar o melhor modelo, sem depender só dele.</li></ul></div>
+            <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Pensar pelo modelo</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Trocar de ferramenta a cada hype.</li><li>• Esperar a "AGI" resolver no seu lugar.</li><li>• Nunca aprender o que está por baixo.</li></ul></div>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> correr atrás do modelo é alugar; investir no harness é construir patrimônio.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- TÓPICO 5 -->
         <section id="topico-5" data-inema-topic="modulo-1-1#topico-5" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span>
-              <h2 class="text-2xl font-bold">⚖️ Modelo e harness são 50/50</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">⚖️ Modelo e harness são 50/50</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m1-1-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">A maioria trata o modelo como 90% e a otimização do harness como 10%. Pocock vira a conta: pense em <strong class='text-emerald-400'>50/50</strong>. O modelo importa — mas o harness tem peso igual, e é o lado que você controla.</p>
-  <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-    <svg viewBox="0 0 1000 200" class="w-full h-auto" role="img" aria-label="Balança equilibrada: modelo e harness, cada um com 50%">
-      <defs>
-        <linearGradient id="m11b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient>
-        <filter id="m11b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <pattern id="m11b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern>
-        <marker id="m11b-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"/></marker>
-        <marker id="m11b-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
-      </defs>
-      <rect x="0" y="0" width="1000" height="200" fill="url(#m11b-grid)"/>
-      <line x1="500" y1="40" x2="500" y2="150" stroke="#9ca3af" stroke-width="3"/>
-      <line x1="250" y1="70" x2="750" y2="70" stroke="#9ca3af" stroke-width="3"/>
-      <g ><rect x="160" y="78" width="180" height="60" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2.5"/></g>
-      <text x="250" y="103" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="16">MODELO</text>
-      <text x="250" y="124" text-anchor="middle" fill="#cbd5e1" font-family="Inter,sans-serif" font-size="12">50%</text>
-      <g filter="url(#m11b-glow)"><rect x="660" y="78" width="180" height="60" rx="12" fill="#0e2018" stroke="url(#m11b-grad)" stroke-width="2.5"/></g>
-      <text x="750" y="103" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="16">HARNESS</text>
-      <text x="750" y="124" text-anchor="middle" fill="#cbd5e1" font-family="Inter,sans-serif" font-size="12">50% — você controla</text>
-      <circle cx="500" cy="40" r="8" fill="#34d399"/>
-    </svg>
-  </div>
-  <div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 rounded-xl border border-emerald-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-emerald-400 mb-4 flex items-center"><span class="mr-2">🧠</span> Por que 50/50 muda tudo</h3>
-    <p class="text-neutral-300 mb-2">Se o harness é metade do resultado, metade do seu ganho potencial está em algo que você mexe hoje, sem esperar lançamento nenhum.</p>
-    <ul class="space-y-2 text-neutral-300">
-      <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Metade da performance sob seu controle direto.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-emerald-400 mt-1">•</span><span>Melhor harness deixa um modelo mais barato render igual.</span></li>
-    </ul>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma balança. De um lado o motor, do outro o chassi. A maioria acha que pesa 90% motor / 10% resto. Pocock equilibra: 50/50.</p></div>
+
+          <p data-inema-block="m1-1-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">A maioria trata o modelo como 90% do resultado e a otimização do harness como 10%. Pocock vira a conta: pense em <strong class="text-emerald-400">50/50</strong>. O modelo importa de verdade — mas o harness tem peso igual, e é o lado que você controla. Consequência prática enorme: <em>metade</em> do seu resultado está em algo que você pode melhorar hoje. E tem um bônus: com um harness melhor, um modelo mais barato entrega o mesmo (você verá isso no módulo 1.5, "Economia de tokens").</p>
+
+          <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 200" class="w-full h-auto" role="img" aria-label="Balança equilibrada: modelo de um lado, harness do outro, ambos 50%">
+              <defs><linearGradient id="v11e-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#10b981"/></linearGradient><filter id="v11e-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><pattern id="v11e-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern></defs>
+              <rect x="0" y="0" width="1000" height="200" fill="url(#v11e-grid)"/>
+              <line x1="500" y1="35" x2="500" y2="150" stroke="#9ca3af" stroke-width="3"/><line x1="250" y1="70" x2="750" y2="70" stroke="#9ca3af" stroke-width="3"/>
+              <rect x="160" y="78" width="180" height="60" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="250" y="104" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="16">MODELO</text><text x="250" y="124" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13">50%</text>
+              <g filter="url(#v11e-glow)"><rect x="660" y="78" width="180" height="60" rx="12" fill="#0e2018" stroke="url(#v11e-grad)" stroke-width="2.5"/></g><text x="750" y="104" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="16">HARNESS</text><text x="750" y="124" text-anchor="middle" fill="#9fe7c8" font-family="Inter,sans-serif" font-size="13">50% — você controla</text>
+              <circle cx="500" cy="35" r="8" fill="#34d399"/>
+            </svg>
+          </div>
+
+          <img src="assets/img/m11-balance.png" alt="Ilustração: balança equilibrada com motor de um lado e chassi do outro" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> metade do resultado está na sua mão — não terceirize essa metade.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- TÓPICO 6 -->
         <section id="topico-6" data-inema-topic="modulo-1-1#topico-6" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span>
-              <h2 class="text-2xl font-bold">🎯 Onde está sua alavanca</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎯 Onde está sua alavanca</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m1-1-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Fechando o módulo: a alavanca não está no motor, está no chassi. Toda vez que for “melhorar a IA”, traduza para <strong class='text-emerald-400'>melhorar o harness</strong> — é aí que o retorno por hora é maior.</p>
-  <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Diagnóstico rápido</h3>
-    <p class="text-neutral-300">Antes de culpar o modelo por um resultado ruim, cheque o harness: o prompt estava claro? Faltou uma skill? O ambiente tinha as ferramentas certas? O codebase é fácil de navegar?</p>
-  </div>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-emerald-400 font-bold text-sm mb-1">Prompt</div><p class="text-xs text-neutral-400">A intenção estava clara?</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-emerald-400 font-bold text-sm mb-1">Skills</div><p class="text-xs text-neutral-400">Faltou um procedimento?</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-emerald-400 font-bold text-sm mb-1">Ambiente</div><p class="text-xs text-neutral-400">As ferramentas estavam lá?</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-emerald-400 font-bold text-sm mb-1">Codebase</div><p class="text-xs text-neutral-400">É fácil de navegar e mudar?</p></div>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <p data-inema-block="m1-1-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Fechando: toda vez que você for "melhorar a IA", traduza isso em <strong class="text-emerald-400">melhorar o harness</strong>. Antes de culpar o modelo por um resultado ruim, rode o diagnóstico abaixo — é o resumo prático de tudo que vimos. Copie e cole quando travar:</p>
+
+          <div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+              <span class="text-xs text-emerald-400 font-mono">diagnóstico-do-harness.txt</span>
+              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors">copiar</button>
+            </div>
+            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Resultado ruim da IA? Antes de trocar de modelo, cheque o HARNESS:
+[ ] PROMPT — o pedido estava claro e específico? Dei contexto suficiente?
+[ ] SKILLS — faltou um procedimento/padrão salvo pra ela seguir?
+[ ] AMBIENTE — ela tinha as ferramentas e permissões certas?
+[ ] CODEBASE — o código é fácil de navegar e mudar, ou é um labirinto?
+Se 3+ falharam, o problema é o chassi — não o motor.</pre>
+          </div>
+
+          <div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 170" class="w-full h-auto" role="img" aria-label="Funil de diagnóstico: prompt, skills, ambiente, codebase convergem para um resultado">
+              <defs><pattern id="v11f-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#10b981" opacity="0.12"/></pattern><marker id="v11f-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"/></marker></defs>
+              <rect x="0" y="0" width="1000" height="170" fill="url(#v11f-grid)"/>
+              <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+                <rect x="40" y="20" width="150" height="30" rx="8" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="115" y="40" text-anchor="middle" fill="#bfe6ff">prompt</text>
+                <rect x="40" y="58" width="150" height="30" rx="8" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="115" y="78" text-anchor="middle" fill="#bfe6ff">skills</text>
+                <rect x="40" y="96" width="150" height="30" rx="8" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="115" y="116" text-anchor="middle" fill="#bfe6ff">ambiente</text>
+                <rect x="40" y="134" width="150" height="30" rx="8" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="115" y="154" text-anchor="middle" fill="#bfe6ff">codebase</text>
+              </g>
+              <g fill="none" stroke="#34d399" stroke-width="1.8" opacity="0.55"><path d="M190,35 C400,35 500,85 640,85" marker-end="url(#v11f-ah)"/><path d="M190,73 C400,73 520,85 640,85" marker-end="url(#v11f-ah)"/><path d="M190,111 C400,111 520,85 640,85" marker-end="url(#v11f-ah)"/><path d="M190,149 C400,149 500,85 640,85" marker-end="url(#v11f-ah)"/></g>
+              <rect x="640" y="55" width="300" height="60" rx="14" fill="#0e2018" stroke="#34d399" stroke-width="2.5"/><text x="790" y="82" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="16">bom resultado</text><text x="790" y="102" text-anchor="middle" fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12">= harness afinado</text>
+            </svg>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">Em 1 frase:</strong> "melhorar a IA" quase sempre significa "afinar o harness" — comece por aí.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- RESUMO -->
         <section class="mb-12">
           <div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
             <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumo do Módulo</h2>
             <div class="space-y-4 mb-8">
-              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">O que é o harness</strong><span class="text-neutral-400"> — prompts, skills, ambiente, codebase — o sistema, não a peça.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">A analogia da Fórmula 1</strong><span class="text-neutral-400"> — o motor é uma peça; o carro inteiro é o que vence.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Por que você controla o harness</strong><span class="text-neutral-400"> — três alavancas suas: prompts/skills, ambiente, codebase.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">O erro de focar no modelo</strong><span class="text-neutral-400"> — o brinquedo brilhante distrai; fundamentos escalam.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Modelo e harness são 50/50</strong><span class="text-neutral-400"> — é 50/50, não 90/10 — metade está na sua mão.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Onde está sua alavanca</strong><span class="text-neutral-400"> — diagnostique pelo chassi antes de culpar o motor.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Modelo = a IA (o motor)</strong><span class="text-neutral-400"> — um modelo de linguagem (LLM) como Claude/GPT.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Harness = o carro inteiro</strong><span class="text-neutral-400"> — prompts, skills, ambiente, codebase. Você controla ~100%.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">É 50/50, não 90/10</strong><span class="text-neutral-400"> — metade do resultado está na sua mão.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Diagnostique pelo chassi</strong><span class="text-neutral-400"> — prompt, skills, ambiente, codebase antes de culpar o modelo.</span></div></div>
             </div>
-            <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-              <h3 class="font-semibold text-emerald-400 mb-2">Próximo:</h3>
-              <p class="text-neutral-300">1.2 — O Bitter Lesson</p>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
-              <a href="modulo-1-2.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">1.2 →</a>
-            </div>
+            <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">1.2 — O Bitter Lesson: por que não adianta só "esperar o modelo melhorar".</p></div>
+            <div class="flex flex-col sm:flex-row gap-4"><a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a><a href="modulo-1-2.html" class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors">Próximo Módulo →</a></div>
           </div>
         </section>
 
       </main>
     </div>
   </div>
-  <footer class="border-t border-dark-600 py-8 mt-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
-    </div>
-  </footer>
+
+  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p></div></footer>
+
   <script>
-    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
-    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
     function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
   </script>
   <script src="../../assets/learn.js"></script>
-  <script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&INEMA.init)INEMA.init();if(window.INEMA&&INEMA.registerCheck){INEMA.registerCheck('modulo-1-1#q1',{answer:1,explain:{0: "Esse é o reflexo “pensar pelo modelo” — pura troca de motor.", 1: "Isso mesmo: mexer no chassi (harness) é onde está sua alavanca.", 2: "Esperar a AGI é abdicar da metade que você controla."}});}});</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-1-1#q1', { answer: 1, explain: { 0: 'Esse é o motor (o modelo) — não o chassi.', 1: 'Isso! O chassi é o harness: tudo que você monta em volta da IA.', 2: 'Essa é quem treina o motor; você não controla isso.' } });
+      }
+    });
+  </script>
 </body>
 </html>

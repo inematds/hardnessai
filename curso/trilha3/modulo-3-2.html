@@ -4,13 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="inema-course" content="harness">
-  <title>3.2 Custo de contexto da skill | HARNESS</title>
-
+  <title>3.2 Custo de contexto da skill (modo ensino) | HARNESS</title>
   <script>
   (function () {
     try {
       var html = document.documentElement;
-      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'purple' };
       function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
       var p = clone(DEF);
       try {
@@ -23,77 +22,75 @@
       if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
       if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
       html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
-      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'purple');
       var s = html.style, scale=(+p.fontScale||100);
       s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
       s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
   })();
   </script>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
-      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
-    } } } }
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/learn.css">
-
   <script type="application/json" data-inema-manifest>
-  {
-    "course": "harness",
-    "tracks": [
-      { "n": "1", "title": "Fundamentos do Harness", "modules": [
-        { "id": "1-1", "title": "Motor \u00d7 Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
-        { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
-        { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
-        { "id": "1-4", "title": "DX \u00d7 AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
-        { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
-        { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
-      ]},
-      { "n": "2", "title": "Habilidades Humanas", "modules": [
-        { "id": "2-1", "title": "T\u00e1tico \u00d7 Estrat\u00e9gico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
-        { "id": "2-2", "title": "Suas skills s\u00e3o o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
-        { "id": "2-3", "title": "Conhecimento \u00d7 Habilidade \u00d7 Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
-        { "id": "2-4", "title": "Fundamentos de delega\u00e7\u00e3o", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
-        { "id": "2-5", "title": "Comunica\u00e7\u00e3o & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
-        { "id": "2-6", "title": "Voc\u00ea no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
-      ]},
-      { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
-        { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
-        { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
-        { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
-        { "id": "3-4", "title": "Ensino que ret\u00e9m", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
-        { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
-        { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
-      ]},
-      { "n": "4", "title": "T\u00e9cnicas Avan\u00e7adas", "modules": [
-        { "id": "4-1", "title": "Human-in-the-loop \u00d7 AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
-        { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
-        { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
-        { "id": "4-4", "title": "Loops \u00d7 Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
-        { "id": "4-5", "title": "Sistemas auto-melhor\u00e1veis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
-        { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
-      ]},
-      { "n": "5", "title": "Solu\u00e7\u00f5es Prontas pra Copiar", "modules": [
-        { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
-        { "id": "5-2", "title": "grill-me + 10 decis\u00f5es", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
-        { "id": "5-3", "title": "Pipeline grill-me \u2192 PRD \u2192 issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
-        { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
-        { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
-        { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
-      ]}
-    ]
-  }
-  </script>
-
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
   <style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
-    .topic-explanation { display: none; }
-    .topic-explanation.active { display: block; }
     [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #c084fc; cursor: help; font-weight: 600; color: #d8b4fe; }
+    html:not(.dark) .termo { color: #6d28d9; border-color: #7c3aed; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
     html:not(.dark) body { background-color: #f8fafc; }
     html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
     html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
@@ -108,10 +105,10 @@
     html:not(.dark) .text-purple-400 { color: #7c3aed; }
     html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
     html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
     html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
     html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
     html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
-    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
     html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
     html:not(.dark) .text-primary { color: #a16207; }
     html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
@@ -129,12 +126,6 @@
     .dark .border-dark-600 { border-color: #374151; }
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
-    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
-    @media (prefers-reduced-motion: no-preference) {
-      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
-      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
-      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
-    }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
@@ -168,20 +159,20 @@
     <div class="flex items-center space-x-2 text-sm text-neutral-400">
       <a href="../../index.html" class="hover:text-purple-400">Início</a><span>/</span>
       <a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span>
-      <span class="text-purple-400">Módulo 3.2</span>
+      <span class="text-purple-400">Módulo 3.2 · modo ensino</span>
     </div>
   </nav>
 
   <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.2</span>
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.2 · "MODO ENSINO"</span>
       <h1 class="text-3xl sm:text-4xl font-bold mb-4">🫥 Custo de contexto da skill</h1>
-      <p class="text-lg text-neutral-400 max-w-3xl">Cada ability "vaza" sua descrição no contexto para o modelo saber quando usá-la. Cem skills, cem descrições. Aprenda quando <strong class="text-purple-400">esconder</strong> a skill e manter o conhecimento no humano.</p>
+      <p class="text-lg text-neutral-400 max-w-3xl">Toda skill que você instala cobra um "pedágio": a <strong class="text-purple-400">descrição</strong> dela ocupa um lugar na memória da IA, mesmo quando você não a usa. Com 100 skills, são 100 cobranças. Aqui você aprende <em>quando esconder</em> uma skill (<code class="text-purple-400">disable model invocation</code>) e como manter o contexto limpo. Cada termo é explicado na hora.</p>
       <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~30</div><div class="text-xs text-neutral-400">Minutos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Core</div><div class="text-xs text-neutral-400">Nível</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Prático</div><div class="text-xs text-neutral-400">Tipo</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">3.1</div><div class="text-xs text-neutral-400">Pré-requisito</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Prática</div><div class="text-xs text-neutral-400">Tipo</div></div>
       </div>
       <div class="mt-6 max-w-2xl">
         <div data-inema-meter="modulo:3-2" class="inema-meter flex items-center gap-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do módulo 3.2">
@@ -194,7 +185,7 @@
   </header>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-10">
+    <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
       <nav data-inema-toc aria-label="Índice da página" class="hidden lg:block sticky top-24 self-start">
         <p class="text-sm text-neutral-400 mb-3">Seção <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
         <ul class="space-y-1 text-sm">
@@ -209,193 +200,338 @@
 
       <main id="conteudo" class="inema-prose min-w-0">
 
+        <!-- GLOSSÁRIO VIVO -->
+        <div class="bg-dark-800 border border-purple-500/30 rounded-xl p-6 mb-12">
+          <h2 class="text-lg font-bold text-purple-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glossário vivo (leia antes — volte sempre que precisar)</h2>
+          <p class="text-sm text-neutral-400 mb-4">Este módulo é sobre o <strong>custo</strong> de cada skill. Os termos abaixo são os novos desta página — fixe-os (o vocabulário base de modelo/agente/skill já veio na Trilha 1):</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Janela de contexto</strong> — a "memória de trabalho" do modelo: o espaço (medido em tokens) onde cabe tudo que ele está lendo agora — seu pedido, os arquivos, as descrições das skills. É <em>finita</em>.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Token</strong> — um pedacinho de texto (mais ou menos uma sílaba ou palavra curta). O modelo conta tudo em tokens; quanto mais você enche a janela, mais caro e mais lento fica.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">description</strong> — a primeira linha da skill (no frontmatter) que diz "para que ela serve". É por ela que o modelo decide se vai usar a skill — e é exatamente ela que <em>vaza</em> pro contexto.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Vazar (no contexto)</strong> — ocupar espaço na janela mesmo sem você pedir. A <em>description</em> de toda skill instalada fica "pendurada" lá, esperando ser usada.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">disable&#8209;model&#8209;invocation</strong> — uma chave (<code>true/false</code>) no frontmatter da skill. Ligada, o <em>modelo</em> não pode mais chamar a skill sozinho — só você. Como bônus, a <em>description</em> deixa de vazar.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Procedure × Ability</strong> — (visto no 3.1) procedure = você invoca; ability = o modelo invoca sozinho. Esconder a description faz sentido nas <em>procedures</em>.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Bloat de contexto</strong> — "inchaço": encher a janela de tanta coisa que sobra pouco espaço pro raciocínio. Skills demais visíveis é uma das causas.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">engineering zoom out</strong> — uma skill-exemplo de Matt Pocock que ele <em>esconde</em> do modelo (só ele invoca), justamente pra ela não custar contexto à toa.</div>
+          </div>
+        </div>
+
+        <!-- TÓPICO 1 -->
         <section id="topico-1" data-inema-topic="modulo-3-2#topico-1" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span>
-              <h2 class="text-2xl font-bold">💧 A descrição vaza</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">💧 A descrição vaza</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m3-2-t1-p1" class="text-neutral-300 mb-6 leading-relaxed">Para o modelo saber quando acionar uma ability, a <strong class="text-purple-400">descrição</strong> dela precisa estar no contexto. Ou seja: toda ability ativa está "falando" no contexto, mesmo sem ser usada.</p>
-          <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
-            <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">💧</span> O imposto da descrição</h3>
-            <p class="text-neutral-300 mb-4">Cada ability cobra um imposto fixo de contexto só por existir ligada.</p>
-            <ul class="space-y-2 text-neutral-300">
-              <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Descrição = sempre presente no contexto.</span></li>
-              <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Mesmo skills nunca usadas custam.</span></li>
-              <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>Contexto é finito e disputado.</span></li>
-            </ul>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> imagine um molho de chaves no seu bolso. Cada chave tem uma etiquetinha ("porta da frente", "carro", "armário"). Você raramente usa a do armário — mas a etiqueta dela ocupa espaço no molho <em>o tempo todo</em>. As descrições das skills são exatamente essas etiquetas: estão sempre lá, pesando, mesmo quando você não abre aquela porta.</p>
           </div>
+
+          <p data-inema-block="m3-2-t1-p1" class="text-neutral-300 mb-4 leading-relaxed">No módulo 3.1 você viu o que é uma <span class="termo" title="Procedimento reutilizável que você dá ao agente.">skill</span> e que ela tem um <span class="termo" title="O cabeçalho da skill, com nome e description, antes do corpo de instruções.">frontmatter</span> com uma <span class="termo" title="A linha que diz pra que a skill serve; é por ela que o modelo decide usá-la.">description</span>. Agora vem a parte que quase ninguém percebe: nas palavras de Matt Pocock, <em>"toda skill vaza sua <code>description</code> na janela de contexto"</em>. Ou seja: assim que você instala uma skill, a frase que descreve ela passa a ocupar espaço na <span class="termo" title="A memória de trabalho do modelo, medida em tokens; é finita.">janela de contexto</span> do modelo — todo turno, esteja você usando aquela skill ou não.</p>
+
+          <p data-inema-block="m3-2-t1-p2" class="text-neutral-300 mb-6 leading-relaxed">Por que vaza? Porque é assim que o modelo <strong>descobre</strong> que a skill existe. Pra ele decidir "ah, pra essa tarefa eu poderia usar a skill X", ele precisa ter lido a description de X antes. Então o sistema injeta todas as descriptions logo no começo. O <strong>porquê importa</strong>: a janela de contexto é finita e medida em <span class="termo" title="Pedacinho de texto; o modelo conta tudo em tokens.">tokens</span>; cada description vazada é menos espaço pro que de fato interessa (seu código, seu pedido). O <strong>erro comum</strong> é instalar skill "porque é legal ter" — cada uma cobra um pedágio silencioso, mesmo parada.</p>
+
+          <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 250" class="w-full h-auto" role="img" aria-label="A janela de contexto é uma caixa; cada skill instalada injeta sua description, ocupando espaço mesmo sem ser usada">
+              <defs>
+                <linearGradient id="v32a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+                <filter id="v32a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v32a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+                <marker id="v32a-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
+              </defs>
+              <rect x="0" y="0" width="1000" height="250" fill="url(#v32a-grid)"/>
+              <g filter="url(#v32a-glow)"><rect x="40" y="30" width="600" height="190" rx="20" fill="#1a1230" stroke="#c084fc" stroke-width="2.5"/></g>
+              <text x="64" y="60" fill="#c084fc" font-family="Inter,sans-serif" font-weight="700" font-size="17">JANELA DE CONTEXTO (finita)</text>
+              <g font-family="Inter,sans-serif" font-size="12.5">
+                <rect x="64" y="78" width="552" height="26" rx="6" fill="#2a1a45" stroke="#c084fc" stroke-width="1.5" opacity="0.9"/><text x="76" y="96" fill="#d8b4fe">description: skill A &#8230; (vazada)</text>
+                <rect x="64" y="110" width="552" height="26" rx="6" fill="#2a1a45" stroke="#c084fc" stroke-width="1.5" opacity="0.9"/><text x="76" y="128" fill="#d8b4fe">description: skill B &#8230; (vazada)</text>
+                <rect x="64" y="142" width="552" height="26" rx="6" fill="#2a1a45" stroke="#c084fc" stroke-width="1.5" opacity="0.9"/><text x="76" y="160" fill="#d8b4fe">description: skill C &#8230; (vazada)</text>
+                <rect x="64" y="178" width="552" height="30" rx="6" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.8"/><text x="76" y="198" fill="#bfe6ff">&#8595; sobra pouco espaço pro seu código + pedido</text>
+              </g>
+              <g font-family="Inter,sans-serif"><rect x="700" y="86" width="250" height="50" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="825" y="108" text-anchor="middle" fill="#bfe6ff" font-weight="600" font-size="14">skill instalada</text><text x="825" y="126" text-anchor="middle" fill="#9ad6ff" font-size="11.5">(mesmo sem usar)</text>
+              <path d="M700,111 L640,108" fill="none" stroke="#c084fc" stroke-width="2" opacity="0.7" marker-end="url(#v32a-ah)"/></g>
+            </svg>
+            <p class="text-xs text-neutral-500 mt-2 text-center">Cada skill injeta sua description na janela. Quanto mais skills, menos espaço sobra pro trabalho de verdade.</p>
+          </div>
+
+          <img src="assets/img/m3-2-1.png" alt="Ilustração conceitual: descrições de skills brilhantes vazando como gotas para dentro de uma janela de contexto" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+            <h3 class="font-semibold text-red-400 mb-2">⚠️ Erro comum de iniciante</h3>
+            <p class="text-neutral-300 text-sm">Pensar "skill instalada que eu não uso não custa nada". Custa: a <em>description</em> dela vaza no contexto a cada turno. Skill não usada ≠ skill grátis.</p>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6">
+            <p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> toda skill instalada vaza sua description na janela de contexto — ela cobra pedágio mesmo parada.</p>
+          </div>
+
+          <details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+            <summary class="cursor-pointer font-medium text-purple-400">Indo mais fundo (opcional): por que o sistema precisa vazar a description?</summary>
+            <p class="text-sm text-neutral-300 mt-3">O modelo não tem um "menu de skills" mágico que ele consulta de graça. Ele só sabe o que está escrito na janela de contexto naquele momento. Pra ele poder decidir "essa tarefa combina com a skill X", a frase que descreve X tem que estar visível pra ele <em>antes</em> de decidir. É um trade-off: visibilidade (o modelo pode escolher sozinho) custa contexto; esconder economiza contexto mas tira essa escolha automática — que é exatamente o que o <code>disable model invocation</code> faz (tópico 3).</p>
+          </details>
+
           <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
           </div>
         </section>
 
+        <!-- TÓPICO 2 -->
         <section id="topico-2" data-inema-topic="modulo-3-2#topico-2" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span>
-              <h2 class="text-2xl font-bold">💯 100 skills, 100 descrições</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">📚 100 skills, 100 descrições</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m3-2-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">Pocock faz a conta: <strong class="text-purple-400">100 skills = 100 descrições</strong> vazando. A lista de "abilities" dos sonhos viraria um peso enorme no contexto.</p>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma mesa de trabalho. Uma régua em cima? Tudo bem. Mas 100 réguas, 100 canetas, 100 manuais empilhados — você nem enxerga mais onde está o papel que precisa escrever. A bagunça não te ajuda; ela te atrapalha. Skills demais visíveis fazem isso com a mente do modelo.</p>
+          </div>
+
+          <p data-inema-block="m3-2-t2-p1" class="text-neutral-300 mb-4 leading-relaxed">Uma skill vaza pouquíssimo — talvez uma ou duas frases. "Então qual é o problema?", você pergunta. O problema é a <strong>multiplicação</strong>. Como diz Pocock direto: <em>"100 skills = 100 descrições no contexto"</em>. Some isso ao seu CLAUDE.md, aos arquivos abertos, ao histórico da conversa — e de repente boa parte da janela já foi gasta <em>antes mesmo</em> de o modelo começar a pensar na sua tarefa.</p>
+
+          <p data-inema-block="m3-2-t2-p2" class="text-neutral-300 mb-6 leading-relaxed">Isso liga direto ao conceito de <span class="termo" title="Inchaço de contexto: encher a janela ao ponto de sobrar pouco espaço pro raciocínio.">bloat de contexto</span>. Quando a janela enche, dois efeitos ruins aparecem: fica mais <strong>caro</strong> (você paga por tokens) e fica mais <strong>burro</strong> — com muita coisa concorrendo pela atenção, o modelo "se perde" e raciocina pior sobre o que de fato importa. O <strong>erro comum</strong> aqui é a mentalidade colecionador: "instalei 80 skills do repositório, agora sou produtivo". Na prática, você só encheu a mesa de réguas. Menos skills <em>visíveis</em> costuma render mais.</p>
+
           <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-            <svg viewBox="0 0 1000 240" class="w-full h-auto" role="img" aria-label="Quanto mais abilities ligadas, mais descrições ocupam o contexto">
+            <svg viewBox="0 0 1000 230" class="w-full h-auto" role="img" aria-label="Comparação: uma janela com 3 skills tem muito espaço livre; uma janela com 100 skills está quase cheia só de descrições">
               <defs>
-                <linearGradient id="m32-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
-                <filter id="m32-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                <pattern id="m32-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
-                <marker id="m32-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
-                <marker id="m32-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
+                <linearGradient id="v32b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+                <pattern id="v32b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
               </defs>
-              <rect x="0" y="0" width="1000" height="240" fill="url(#m32-grid)"/>
-              <polyline points="80,200 353,150 627,100 900,50" fill="none" stroke="#c084fc" stroke-width="1.8" stroke-dasharray="9 9" opacity="0.5"/>
-              <g><rect x="10" y="174" width="140" height="52" rx="11" fill="#1a1230" stroke="#c084fc" stroke-width="2"/></g>
-              <text x="80" y="198" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="14">10</text>
-              <text x="80" y="216" text-anchor="middle" fill="#e4ccff" font-family="Inter,sans-serif" font-size="11">leve</text>
-              <g><rect x="283" y="124" width="140" height="52" rx="11" fill="#1a1230" stroke="#c084fc" stroke-width="2"/></g>
-              <text x="353" y="148" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="14">40</text>
-              <text x="353" y="166" text-anchor="middle" fill="#e4ccff" font-family="Inter,sans-serif" font-size="11">pesado</text>
-              <g><rect x="557" y="74" width="140" height="52" rx="11" fill="#1a1230" stroke="#c084fc" stroke-width="2"/></g>
-              <text x="627" y="98" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="14">70</text>
-              <text x="627" y="116" text-anchor="middle" fill="#e4ccff" font-family="Inter,sans-serif" font-size="11">inchado</text>
-              <g filter="url(#m32-glow)"><rect x="830" y="24" width="140" height="52" rx="11" fill="url(#m32-grad)" stroke="#a855f7" stroke-width="2"/></g>
-              <text x="900" y="48" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-weight="600" font-size="14">100</text>
-              <text x="900" y="66" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-size="11">sufocado</text>
+              <rect x="0" y="0" width="1000" height="230" fill="url(#v32b-grid)"/>
+              <text x="60" y="34" fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600">3 skills</text>
+              <rect x="60" y="44" width="380" height="150" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="60" y="44" width="380" height="34" rx="14" fill="#2a1a45"/><text x="250" y="66" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-size="12.5">descrições (pouco espaço)</text>
+              <text x="250" y="140" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600">muito espaço livre</text>
+              <text x="250" y="162" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12">pro seu código + raciocínio</text>
+              <text x="560" y="34" fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600">100 skills</text>
+              <rect x="560" y="44" width="380" height="150" rx="14" fill="#0e1b26" stroke="#c084fc" stroke-width="2.5"/>
+              <rect x="560" y="44" width="380" height="120" rx="14" fill="#2a1a45"/><text x="750" y="100" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-size="13" font-weight="600">100 descrições vazadas</text><text x="750" y="122" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-size="11.5">(bloat de contexto)</text>
+              <text x="750" y="182" text-anchor="middle" fill="#f87171" font-family="Inter,sans-serif" font-size="12">sobra pouco &#8594; caro + mais burro</text>
             </svg>
           </div>
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
-          </div>
-        </section>
 
-        <section id="topico-3" data-inema-topic="modulo-3-2#topico-3" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span>
-              <h2 class="text-2xl font-bold">🙈 disable model invocation</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-          <p data-inema-block="m3-2-t3-p1" class="text-neutral-300 mb-6 leading-relaxed">A saída: <strong class="text-purple-400"><code>disable model invocation: true</code></strong>. A skill passa a ser só-usuário e a descrição <em>não</em> vaza. Pocock usa isso na "engineering zoom out".</p>
-          <div class="bg-dark-900 rounded-xl border border-dark-600 p-5 mb-6">
-            <div class="text-xs text-neutral-500 mb-2">Skill que não vaza no contexto</div>
-            <pre class="font-mono text-sm text-neutral-300 overflow-x-auto whitespace-pre">---
-name: engineering-zoom-out
-disable_model_invocation: true
----</pre>
-          </div>
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
-          </div>
-        </section>
-
-        <section id="topico-4" data-inema-topic="modulo-3-2#topico-4" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span>
-              <h2 class="text-2xl font-bold">🧑 Conhecimento no humano</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-          <p data-inema-block="m3-2-t4-p1" class="text-neutral-300 mb-6 leading-relaxed">A preferência de Pocock: <strong class="text-purple-400">esconder a maioria das descrições do modelo</strong> e manter o conhecimento dentro do humano. Você é o motorista; não delega o pensamento.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
-              <h4 class="font-bold text-purple-400 mb-4">✓ Conhecimento no humano</h4>
-              <ul class="space-y-3 text-neutral-300">
-                <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Você decide quando usar</span></li>
-                <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Descrições escondidas</span></li>
-                <li class="flex items-start space-x-2"><span class="text-purple-400">✓</span><span>Contexto livre pro trabalho</span></li>
-              </ul>
-            </div>
-            <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6">
-              <h4 class="font-bold text-red-400 mb-4">✗ Conhecimento no modelo</h4>
-              <ul class="space-y-3 text-neutral-300">
-                <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Modelo decide tudo</span></li>
-                <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Descrições vazando</span></li>
-                <li class="flex items-start space-x-2"><span class="text-red-400">✗</span><span>Contexto disputado</span></li>
-              </ul>
-            </div>
-          </div>
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
-          </div>
-        </section>
-
-        <section id="topico-5" data-inema-topic="modulo-3-2#topico-5" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span>
-              <h2 class="text-2xl font-bold">🪶 Skills enxutas</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-          <p data-inema-block="m3-2-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">Quando a skill precisa existir como ability, mantenha-a <strong class="text-purple-400">enxuta</strong>: descrição curta e precisa. O grill-me tem ~4-5 frases e é "absurdamente eficaz".</p>
-          <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-            <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
-            <p class="text-neutral-300">Descrição curta dispara melhor e custa menos contexto. Se a skill é só-sua, desligue a invocação e zere o custo.</p>
-          </div>
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
-          </div>
-        </section>
-
-        <section id="topico-6" data-inema-topic="modulo-3-2#topico-6" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span>
-              <h2 class="text-2xl font-bold">🔍 Auditar o que vaza</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-          <p data-inema-block="m3-2-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Hábito saudável: <strong class="text-purple-400">auditar periodicamente</strong> quais skills estão ligadas e vazando. Desligue o que você mesmo dispara; mantenha só o que o modelo realmente precisa achar sozinho.</p>
-          <div data-inema-check="modulo-3-2#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
-            <p class="font-medium mb-4">Auto-recuperação (opcional): como impedir que a descrição de uma skill vaze no contexto?</p>
+          <div data-inema-check="modulo-3-2#q1" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
+            <p class="font-medium mb-4">Recuperação rápida: por que 100 skills instaladas é um problema, mesmo que você use só 2 por dia?</p>
             <div class="inema-check-options space-y-2">
-              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Escrevendo descrições mais longas.</button>
-              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Marcando disable model invocation (skill só-usuário).</button>
-              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Não há como; toda skill sempre vaza.</button>
+              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Não é problema: skill não usada não ocupa nada.</button>
+              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">As 100 descriptions vazam no contexto, enchendo a janela (bloat) — mais caro e o modelo raciocina pior.</button>
+              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">O problema é só de espaço em disco no seu computador.</button>
             </div>
             <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
           </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> 100 skills = 100 descrições vazadas; o custo não é por skill, é pela soma.</p></div>
+
           <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
           </div>
         </section>
 
+        <!-- TÓPICO 3 -->
+        <section id="topico-3" data-inema-topic="modulo-3-2#topico-3" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🙈 disable model invocation</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma ferramenta na sua oficina que <em>só você</em> sabe usar. Você tira a etiqueta dela e guarda na gaveta. O aprendiz (o modelo) nem sabe que ela existe — então não tenta pegá-la, e a etiqueta dela não ocupa mais espaço na bancada. Quando você precisa, abre a gaveta e usa. É exatamente o <code>disable model invocation</code>.</p></div>
+
+          <p data-inema-block="m3-2-t3-p1" class="text-neutral-300 mb-4 leading-relaxed">Aqui está o botão que resolve o problema dos tópicos 1 e 2. No frontmatter da skill existe a chave <code class="text-purple-400">disable-model-invocation: true</code>. Quando você liga ela, acontecem duas coisas, nas palavras de Pocock: <em>"só o usuário invoca [a skill], e a description NÃO vaza"</em>. Em português claro: (1) o <strong>modelo não pode mais chamar</strong> aquela skill sozinho — vira uma <span class="termo" title="Skill que só o humano dispara, nunca o modelo automaticamente.">procedure</span> pura, disparada só por você; e (2) como o modelo não precisa mais "saber" da skill pra decidir usá-la, a <strong>description deixa de vazar</strong> no contexto. Você recupera aquele espaço.</p>
+
+          <p data-inema-block="m3-2-t3-p2" class="text-neutral-300 mb-6 leading-relaxed">O exemplo que Pocock dá é a skill <strong class="text-purple-400">"engineering zoom out"</strong>: é uma procedure dele, que ele invoca quando quer; não faz sentido o modelo decidir usá-la sozinho, então ele a esconde com <code>disable-model-invocation: true</code>. O <strong>porquê</strong> é direto: você troca a "conveniência" de o modelo escolher a skill automaticamente por <strong>contexto mais limpo</strong> — e, no caso de procedures, você já ia disparar a skill na mão de qualquer jeito. O <strong>erro comum</strong> é ligar isso numa <em>ability</em> (uma skill cujo valor está em o modelo puxar sozinho, tipo "coding standards"): aí você quebra justamente o que fazia ela útil.</p>
+
+          <div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+              <span class="text-xs text-purple-400 font-mono">.claude/skills/engineering-zoom-out/SKILL.md</span>
+              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors">copiar</button>
+            </div>
+            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">---
+name: engineering-zoom-out
+description: Sai do detalhe e reavalia a arquitetura geral antes de continuar.
+# Esconde a skill do modelo: SO o humano invoca (/engineering-zoom-out).
+# Efeito colateral bom: a description acima NAO vaza na janela de contexto.
+disable-model-invocation: true
+---
+
+# Engineering zoom out
+
+Quando eu te chamar, pare de mexer no codigo linha a linha e:
+1. Resuma em 3 bullets o que o sistema faz hoje.
+2. Aponte a decisao de arquitetura mais arriscada em aberto.
+3. Liste 2 caminhos possiveis (trade-offs) e recomende um.
+So depois que eu aprovar, volte a escrever codigo.</pre>
+          </div>
+
+          <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 220" class="w-full h-auto" role="img" aria-label="Antes: description visível ao modelo e vazando. Depois de disable model invocation true: description guardada, fora do contexto, só o humano invoca">
+              <defs>
+                <linearGradient id="v32c-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+                <filter id="v32c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v32c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+                <marker id="v32c-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
+              </defs>
+              <rect x="0" y="0" width="1000" height="220" fill="url(#v32c-grid)"/>
+              <text x="60" y="32" fill="#f87171" font-family="Inter,sans-serif" font-size="13" font-weight="600">ANTES (false)</text>
+              <rect x="60" y="44" width="370" height="140" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="80" y="70" width="220" height="34" rx="8" fill="#2a1a45" stroke="#c084fc" stroke-width="1.5"/><text x="190" y="92" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-size="12">description (vaza)</text>
+              <text x="245" y="135" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5">modelo enxerga &#8594; pode chamar</text>
+              <text x="245" y="158" text-anchor="middle" fill="#f87171" font-family="Inter,sans-serif" font-size="12">e custa contexto</text>
+              <text x="560" y="32" fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600">DEPOIS (true)</text>
+              <g filter="url(#v32c-glow)"><rect x="560" y="44" width="370" height="140" rx="14" fill="#1a1230" stroke="url(#v32c-grad)" stroke-width="2.5"/></g>
+              <rect x="580" y="70" width="220" height="34" rx="8" fill="#1a1230" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="5 4"/><text x="690" y="92" text-anchor="middle" fill="#8b6db0" font-family="Inter,sans-serif" font-size="12">description (guardada)</text>
+              <text x="745" y="135" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-size="12.5" font-weight="600">só o humano invoca</text>
+              <text x="745" y="158" text-anchor="middle" fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12">não vaza &#8594; contexto limpo</text>
+              <path d="M430,114 L560,114" fill="none" stroke="#c084fc" stroke-width="2.2" marker-end="url(#v32c-ah)"/>
+              <text x="495" y="106" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-size="11">disable</text>
+            </svg>
+          </div>
+
+          <div data-inema-check="modulo-3-2#q2" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
+            <p class="font-medium mb-4">Recuperação rápida: o que <code>disable-model-invocation: true</code> faz?</p>
+            <div class="inema-check-options space-y-2">
+              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Apaga a skill do disco.</button>
+              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Faz só o humano poder invocar a skill — e a description deixa de vazar no contexto.</button>
+              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Deixa o modelo invocar a skill com mais frequência.</button>
+            </div>
+            <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> <code>disable-model-invocation: true</code> esconde a skill do modelo (só você chama) e a description para de vazar.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- TÓPICO 4 -->
+        <section id="topico-4" data-inema-topic="modulo-3-2#topico-4" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🧠 Conhecimento no humano</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> um chef que conhece o cardápio de cor. Ele não cola um post-it de cada receita na geladeira do restaurante (pra todos verem) — ele <em>sabe</em> quando puxar cada prato. O conhecimento mora na cabeça dele, não espalhado na cozinha. É isso que Pocock faz com as skills: o conhecimento de "quando usar" fica nele, não vazado pro modelo.</p></div>
+
+          <p data-inema-block="m3-2-t4-p1" class="text-neutral-300 mb-4 leading-relaxed">Esconder descriptions não é só uma economia técnica — é uma <strong>filosofia de controle</strong>. Pocock diz explicitamente: ele <em>"esconde a maioria das descrições da IA e mantém o conhecimento no humano"</em>. A frase dele que resume tudo: <em>"I know my skills, I don't want to delegate my thinking"</em> — eu conheço minhas skills, não quero delegar meu pensamento. Quem decide qual procedure rodar é ele, não o modelo.</p>
+
+          <p data-inema-block="m3-2-t4-p2" class="text-neutral-300 mb-6 leading-relaxed">Por isso Pocock <strong>prefere procedures a abilities</strong> (você viu os dois tipos no 3.1): quer estar no volante. Aqui há uma diferença interessante de escola — o projeto <em>Superpowers</em> ("Obra") prefere o oposto: deixar o <strong>modelo no controle</strong>, escolhendo skills sozinho. Nenhum está "errado"; são apostas diferentes. O <strong>erro comum</strong> de quem está começando é copiar cegamente o setup de outra pessoa sem perceber que ele embute uma filosofia. Pergunte-se: <em>eu quero que a IA escolha por mim, ou eu quero escolher?</em> A resposta muda quais skills você esconde.</p>
+
+          <img src="assets/img/m3-2-2.png" alt="Ilustração: uma pessoa segurando as chaves do conhecimento enquanto a IA trabalha guiada, conceito de manter o pensamento no humano" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6"><h4 class="font-bold text-purple-400 mb-4">🎛️ Humano no controle (Pocock)</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Prefere <strong>procedures</strong> — você invoca.</li><li>• Esconde a maioria das descriptions.</li><li>• "Não quero delegar meu pensamento."</li><li>• Contexto fica limpo de bônus.</li></ul></div>
+            <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6"><h4 class="font-bold text-blue-400 mb-4">🤖 Modelo no controle (Superpowers)</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Prefere <strong>abilities</strong> — o modelo escolhe.</li><li>• Descriptions visíveis (precisa enxergar).</li><li>• Delega mais decisão à IA.</li><li>• Paga mais contexto em troca.</li></ul></div>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> esconder skills mantém o pensamento no humano — "I don't want to delegate my thinking".</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- TÓPICO 5 -->
+        <section id="topico-5" data-inema-topic="modulo-3-2#topico-5" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">✂️ Skills enxutas</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma mochila pra uma trilha. Cada grama conta. Você não leva "tudo que pode ser útil"; leva só o essencial, e ele tem que ser leve. Uma skill enxuta é assim: faz uma coisa, com a description mais curta possível pra ser encontrada, e nada de peso morto.</p></div>
+
+          <p data-inema-block="m3-2-t5-p1" class="text-neutral-300 mb-4 leading-relaxed">Se a description vaza e cada palavra custa, a conclusão prática é: <strong>escreva skills enxutas</strong>. Isso tem duas faces. Primeira, a <strong>description curta</strong>: ela precisa ser só o suficiente pro modelo (ou você) saber quando a skill serve — frases gigantes só engordam o vazamento. A própria <span class="termo" title="Skill que vira o modelo num entrevistador adversarial pra alinhar antes de codar (Trilha 3.5).">grill-me</span> que você verá adiante é elogiada por ser "unreasonably effective" em apenas <em>4-5 frases</em>: poder não é tamanho.</p>
+
+          <p data-inema-block="m3-2-t5-p2" class="text-neutral-300 mb-6 leading-relaxed">Segunda face: <strong>evite o bloat de instruções</strong> dentro do corpo da skill. Aqui vale o aviso central de Pocock sobre contexto — <em>"todo mundo incha sua janela de contexto com coisa demais"</em>. Uma skill enxuta faz <strong>uma coisa bem</strong>; se está virando um monstro de dez responsabilidades, quebre em skills menores, encadeáveis (como <code>grill-me → two-PRD → to-issues</code>, que você vê no 3.6). O <strong>erro comum</strong> é tratar a skill como um "depósito de tudo que eu sei sobre o assunto". Skill não é wiki; é um procedimento afiado.</p>
+
+          <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 200" class="w-full h-auto" role="img" aria-label="Duas skills lado a lado: uma inchada e gorda, outra enxuta e leve, mostrando que a enxuta custa menos contexto">
+              <defs>
+                <linearGradient id="v32d-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+                <filter id="v32d-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v32d-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+              </defs>
+              <rect x="0" y="0" width="1000" height="200" fill="url(#v32d-grid)"/>
+              <rect x="70" y="35" width="360" height="130" rx="14" fill="#0e1b26" stroke="#f87171" stroke-width="2"/>
+              <text x="250" y="62" text-anchor="middle" fill="#f87171" font-family="Inter,sans-serif" font-size="14" font-weight="700">skill inchada</text>
+              <g font-family="Inter,sans-serif" font-size="11" fill="#9ad6ff"><text x="90" y="86">description longa &#8230;</text><text x="90" y="104">+ 10 responsabilidades &#8230;</text><text x="90" y="122">+ exemplos infinitos &#8230;</text><text x="90" y="140">+ "tudo que eu sei" &#8230;</text></g>
+              <text x="250" y="158" text-anchor="middle" fill="#f87171" font-family="Inter,sans-serif" font-size="11">custo alto de contexto</text>
+              <g filter="url(#v32d-glow)"><rect x="570" y="65" width="360" height="70" rx="14" fill="#1a1230" stroke="url(#v32d-grad)" stroke-width="2.5"/></g>
+              <text x="750" y="92" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-size="14" font-weight="700">skill enxuta</text>
+              <text x="750" y="114" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-size="11.5">faz 1 coisa &#183; description curta</text>
+              <text x="750" y="158" text-anchor="middle" fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11">custo baixo de contexto</text>
+            </svg>
+          </div>
+
+          <img src="assets/img/m3-2-3.png" alt="Ilustração: uma skill leve e afiada contrastada com uma pilha pesada de instruções desnecessárias" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> skill boa faz uma coisa com a description mais curta possível — poder não é tamanho.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- TÓPICO 6 -->
+        <section id="topico-6" data-inema-topic="modulo-3-2#topico-6" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🔍 Auditar o que vaza</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> faxina de gaveta. Você pega cada objeto e pergunta: "uso isso? o modelo precisa enxergar isso? ou guardo na gaveta de baixo?". Auditar suas skills é a mesma faxina — periódica, decisão por decisão.</p></div>
+
+          <p data-inema-block="m3-2-t6-p1" class="text-neutral-300 mb-4 leading-relaxed">Fechando o módulo: transforme tudo isso num hábito. De tempos em tempos, faça uma <strong>auditoria de contexto</strong> das suas skills. A regra de bolso é a do <span class="termo" title="A skill 'engineering zoom out' de Pocock, escondida do modelo justamente pra não custar contexto.">engineering zoom out</span>: se é uma <em>procedure</em> (você sempre invoca na mão), esconda com <code>disable-model-invocation: true</code> e recupere o contexto; se é uma <em>ability</em> de valor real (o modelo precisa achar sozinho), deixe visível — mas então capriche numa description curta. O <strong>erro comum</strong> é nunca revisar: você instala, esquece, e seis meses depois tem 60 descriptions vazando sem você lembrar de metade.</p>
+
+          <p data-inema-block="m3-2-t6-p2" class="text-neutral-300 mb-6 leading-relaxed">Use o checklist abaixo como sua faxina de skills. Ele aplica, em ordem, tudo que vimos: identificar o que vaza, decidir por skill, e medir o resultado. Copie pra dentro do seu projeto.</p>
+
+          <div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+              <span class="text-xs text-purple-400 font-mono">auditoria-de-contexto.txt</span>
+              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors">copiar</button>
+            </div>
+            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">FAXINA DE SKILLS - toda skill instalada vaza sua description.
+Para CADA skill, decida:
+[ ] EU USO? Se nao uso ha semanas -> desinstale (para de vazar de vez).
+[ ] PROCEDURE (eu sempre invoco na mao)? -> disable-model-invocation: true
+    (esconde do modelo + a description deixa de vazar)
+[ ] ABILITY (o modelo precisa achar sozinho, ex.: coding standards)?
+    -> deixe visivel, MAS encurte a description ao minimo necessario.
+[ ] DESCRIPTION enxuta? Corte tudo que nao ajuda a decidir "quando usar".
+[ ] CORPO enxuto? 1 skill = 1 coisa. Monstro de 10 responsabilidades? quebre.
+Meta: menos descriptions vazadas = mais janela pro raciocinio (e mais barato).</pre>
+          </div>
+
+          <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+            <h3 class="font-semibold text-blue-400 mb-3">🔬 Exemplo resolvido: a faxina do dev sobrecarregado</h3>
+            <p class="text-neutral-300 text-sm mb-3">Ana instalou 40 skills de um repositório popular. As respostas começaram lentas e caras. Ela roda a auditoria:</p>
+            <ol class="text-sm text-neutral-300 space-y-2 list-decimal pl-5 mb-3">
+              <li><strong>Identifica o vazamento:</strong> 40 skills = 40 descriptions na janela todo turno. Boa parte do contexto já vai antes de ela digitar.</li>
+              <li><strong>Desinstala o morto:</strong> 22 skills ela nunca usou → fora. 22 descriptions param de vazar.</li>
+              <li><strong>Esconde as procedures:</strong> 12 são procedures que ela sempre chama na mão (tipo "engineering zoom out") → <code>disable-model-invocation: true</code>. Somem do contexto, continuam funcionando via <code>/comando</code>.</li>
+              <li><strong>Mantém as abilities boas:</strong> sobram 6 abilities reais (ex.: "coding standards" que o modelo puxa ao escrever React) → ficam visíveis, mas ela encurta as descriptions.</li>
+            </ol>
+            <p class="text-neutral-300 text-sm"><strong class="text-blue-400">Resultado:</strong> de 40 descriptions vazando para 6. Janela mais leve → respostas mais rápidas, mais baratas e o modelo raciocina melhor sobre a tarefa real. Mesmo modelo, melhor harness.</p>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> audite suas skills como quem faz faxina — desinstale o morto, esconda as procedures, encurte o resto.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- RESUMO -->
         <section class="mb-12">
           <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
             <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumo do Módulo</h2>
             <div class="space-y-4 mb-8">
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">A descrição vaza</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">100 skills, 100 descrições</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">disable model invocation</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Conhecimento no humano</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Skills enxutas</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Auditar o que vaza</strong></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">A description vaza</strong><span class="text-neutral-400"> — toda skill instalada injeta sua description na janela de contexto, mesmo sem ser usada.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">100 skills = 100 descrições</strong><span class="text-neutral-400"> — o custo é a soma; janela cheia = caro e o modelo raciocina pior (bloat).</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">disable-model-invocation: true</strong><span class="text-neutral-400"> — só o humano invoca e a description deixa de vazar (ex.: "engineering zoom out").</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Conhecimento no humano</strong><span class="text-neutral-400"> — Pocock prefere procedures: "I don't want to delegate my thinking".</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Skills enxutas + auditoria</strong><span class="text-neutral-400"> — 1 skill = 1 coisa, description curta; faça faxina periódica do que vaza.</span></div></div>
             </div>
-            <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-              <h3 class="font-semibold text-purple-400 mb-2">Próximo:</h3>
-              <p class="text-neutral-300">3.3 — A Teach skill por dentro.</p>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
-              <a href="modulo-3-3.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Próximo Módulo →</a>
-            </div>
+            <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-purple-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">3.3 — A Teach skill por dentro: uma skill com memória (stateful), que lembra o que você já aprendeu.</p></div>
+            <div class="flex flex-col sm:flex-row gap-4"><a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a><a href="modulo-3-3.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Próximo Módulo →</a></div>
           </div>
         </section>
 
@@ -403,25 +539,23 @@ disable_model_invocation: true
     </div>
   </div>
 
-  <footer class="border-t border-dark-600 py-8 mt-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
-    </div>
-  </footer>
+  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p></div></footer>
 
   <script>
-    function toggleTopic(button) { var ti=button.closest('.topic-item'); if(!ti) return; var e=ti.querySelector('.topic-explanation'); var mc=button.closest('.bg-dark-800'); if(mc) mc.querySelectorAll('.topic-explanation.active').forEach(function(x){if(x!==e)x.classList.remove('active');}); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active').toString());} }
-    (function(){ var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}} s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
     function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
   </script>
   <script src="../../assets/learn.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
       if (window.INEMA && INEMA.registerCheck) {
-        INEMA.registerCheck('modulo-3-2#q1', { answer: 1, explain: { 0: 'Mais abilities ligadas = mais contexto consumido.', 1: 'Isso: disable model invocation esconde a descrição.', 2: 'A descrição não some sozinha — você precisa desligá-la.' } });
+        INEMA.registerCheck('modulo-3-2#q1', { answer: 1, explain: { 0: 'Custa sim: cada description vaza no contexto a cada turno.', 1: 'Isso! 100 descriptions vazadas enchem a janela — mais caro e o modelo raciocina pior.', 2: 'O custo não é disco; é a janela de contexto do modelo.' } });
+        INEMA.registerCheck('modulo-3-2#q2', { answer: 1, explain: { 0: 'Não apaga nada do disco; a skill continua lá.', 1: 'Exato: só o humano invoca e a description para de vazar no contexto.', 2: 'É o contrário — ela tira do modelo a capacidade de invocar sozinho.' } });
       }
     });
   </script>

@@ -9,7 +9,7 @@
   (function () {
     try {
       var html = document.documentElement;
-      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'purple' };
       function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
       var p = clone(DEF);
       try {
@@ -22,7 +22,7 @@
       if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
       if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
       html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
-      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'purple');
       var s = html.style, scale=(+p.fontScale||100);
       s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
       s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
@@ -85,9 +85,11 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
-    .topic-explanation { display: none; }
-    .topic-explanation.active { display: block; }
     [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #c084fc; cursor: help; font-weight: 600; color: #d8b4fe; }
+    html:not(.dark) .termo { color: #6d28d9; border-color: #7c3aed; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
 
     html:not(.dark) body { background-color: #f8fafc; }
     html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
@@ -107,7 +109,6 @@
     html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
     html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
     html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
-    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
     html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
     html:not(.dark) .text-primary { color: #a16207; }
     html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
@@ -116,27 +117,20 @@
     html:not(.dark) .text-yellow-400 { color: #a16207; }
     html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
     html:not(.dark) .text-red-400 { color: #b91c1c; }
-    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
-    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
     html:not(.dark) .text-blue-400 { color: #2563eb; }
     html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
     html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
     html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
-
     .dark .border-dark-600 { border-color: #374151; }
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
-
-    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
-    @media (prefers-reduced-motion: no-preference) {
-      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
-      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
-      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
-    }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
   <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-purple-400 focus:rounded-lg">Pular para o conteúdo</a>
+
   <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-14">
@@ -146,11 +140,11 @@
           <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
         </div>
         <div class="flex items-center space-x-1 sm:space-x-2">
-          <a href="../../curso/trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
-          <a href="../../curso/trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
           <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
-          <a href="../../curso/trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
-          <a href="../../curso/trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluções</span></a>
+          <a href="../trilha4/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
+          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluções</span></a>
           <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1"><span aria-hidden="true">◷</span><span>Minha jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span></button>
           <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema">
             <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
@@ -160,24 +154,25 @@
       </div>
     </div>
   </nav>
+
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegação">
     <div class="flex items-center space-x-2 text-sm text-neutral-400">
       <a href="../../index.html" class="hover:text-purple-400">Início</a><span>/</span>
       <a href="index.html" class="hover:text-purple-400">Trilha 3</a><span>/</span>
-      <span class="text-purple-400">Módulo 3.1</span>
+      <span class="text-purple-400">Módulo 3.1 · modo ensino</span>
     </div>
   </nav>
 
   <header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.1</span>
+      <span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.1 · MODO ENSINO</span>
       <h1 class="text-3xl sm:text-4xl font-bold mb-4">🧬 Anatomia de uma skill</h1>
-      <p class="text-lg text-neutral-400 max-w-3xl">Procedure × ability: as duas portas de uma skill — e qual delas deixa você no volante.</p>
+      <p class="text-lg text-neutral-400 max-w-3xl">Você já sabe o que é uma <span class="text-purple-400 font-semibold">skill</span> (um procedimento que você dá pro agente). Agora a gente abre a skill por dentro: do que ela é feita, e a distinção que muda tudo — <strong class="text-purple-400">procedures × abilities</strong>, as "duas portas" pelas quais uma skill é acionada. Cada palavra nova é explicada na hora.</p>
       <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~30</div><div class="text-xs text-neutral-400">Minutos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Base</div><div class="text-xs text-neutral-400">Nível</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Teoria</div><div class="text-xs text-neutral-400">Tipo</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">T1+T2</div><div class="text-xs text-neutral-400">Pré-requisito</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Prática</div><div class="text-xs text-neutral-400">Tipo</div></div>
       </div>
       <div class="mt-6 max-w-2xl">
         <div data-inema-meter="modulo:3-1" class="inema-meter flex items-center gap-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do módulo 3.1">
@@ -190,7 +185,7 @@
   </header>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-10">
+    <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
       <nav data-inema-toc aria-label="Índice da página" class="hidden lg:block sticky top-24 self-start">
         <p class="text-sm text-neutral-400 mb-3">Seção <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
         <ul class="space-y-1 text-sm">
@@ -202,273 +197,396 @@
           <li><a href="#topico-6" class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10">6. Qual usar quando</a></li>
         </ul>
       </nav>
+
       <main id="conteudo" class="inema-prose min-w-0">
 
+        <!-- GLOSSÁRIO VIVO -->
+        <div class="bg-dark-800 border border-purple-500/30 rounded-xl p-6 mb-12">
+          <h2 class="text-lg font-bold text-purple-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glossário vivo (leia antes — volte sempre que precisar)</h2>
+          <p class="text-sm text-neutral-400 mb-4">A Trilha 1 já fixou o vocabulário base (modelo, prompt, agente, harness). Aqui valem os termos <strong>novos</strong> desta trilha de skills — fixe estes:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Skill</strong> — um pacote de instruções salvo (em geral um arquivo <code>SKILL.md</code>) que ensina o agente a fazer algo do seu jeito, sempre igual. É o "procedimento reutilizável" da Trilha 1, agora aberto por dentro.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Frontmatter</strong> — o cabeçalho da skill, no topo do arquivo, entre <code>---</code> e <code>---</code>. Traz <code>name</code> e <code>description</code>. É o "rótulo da lata".</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Procedure</strong> — tipo de skill que <strong>você</strong> invoca de propósito (ex.: digitando o nome dela). Faz o modelo se comportar de um jeito que você decidiu.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Ability</strong> — tipo de skill que <strong>o modelo</strong> invoca sozinho, quando "acha" que precisa (ex.: puxa os padrões de código ao escrever React).</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Invocar</strong> — "acionar/chamar" a skill. A pergunta-chave do módulo é: <em>quem</em> aperta o gatilho — você ou o modelo?</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">disable model invocation</strong> — um ajuste que <strong>impede</strong> o modelo de chamar a skill sozinho (e esconde a descrição dele). Vira uma porta só-sua. Detalhe no módulo 3.2.</div>
+          </div>
+        </div>
+
+        <!-- TÓPICO 1 -->
         <section id="topico-1" data-inema-topic="modulo-3-1#topico-1" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span>
-              <h2 class="text-2xl font-bold">🧬 O que é uma skill</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🧩 O que é uma skill</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m3-1-t1-p1" class="text-neutral-300 mb-6 leading-relaxed">Uma <strong class='text-purple-400'>skill</strong> é uma unidade reutilizável de comportamento — um pedaço de instrução que você empacota uma vez e o agente passa a executar do mesmo jeito, toda vez. Em vez de re-explicar um procedimento a cada conversa, você o congela num arquivo e o invoca por nome.</p>
-  <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-purple-400 mb-4 flex items-center"><span class="mr-2">📦</span> A skill é um comportamento empacotado</h3>
-    <p class="text-neutral-300 mb-2">No vocabulário do Matt, a skill é onde mora o seu conhecimento humano de processo. Ela não é mais inteligência dentro do modelo — é estrutura no harness, que você controla.</p>
-    <ul class="space-y-2 text-neutral-300">
-      <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Reutilizável</strong> — escreve uma vez, usa em todo projeto e todo agente.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Nomeável</strong> — tem um nome que você (ou o modelo) chama.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Portável</strong> — roda no Claude Code, no Codex, em qualquer harness.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span><strong>Versionável</strong> — você melhora, distribui pro time, recebe de volta.</span></li>
-    </ul>
-  </div>
-  <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">🧠</span> DRY humano</h3>
-    <p class="text-neutral-300">“Fiz esse plano 100 vezes → viro skill, distribuo pro time, todo mundo planeja igual e contribui de volta, levantando o piso.” A skill é o seu <em>don't repeat yourself</em> aplicado ao raciocínio — não só ao código.</p>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> imagine que você tem um funcionário novo muito esperto, mas que nunca trabalhou na <em>sua</em> empresa. Toda vez que ele faz uma tarefa, você precisa explicar de novo o jeito da casa. Uma <strong>skill</strong> é o "cartão de procedimento" plastificado que você cola na parede: ele lê uma vez e já faz do seu jeito — sempre igual.</p>
+          </div>
+
+          <p data-inema-block="m3-1-t1-p1" class="text-neutral-300 mb-4 leading-relaxed">Uma <span class="termo" title="Pacote de instruções salvo (geralmente um arquivo SKILL.md) que ensina o agente a fazer algo de um jeito definido.">skill</span> é, na prática, um <strong>arquivo de texto com instruções</strong> que você dá ao <span class="termo" title="O modelo com ferramentas, agindo em passos por conta própria.">agente</span> pra ele realizar uma tarefa sempre do mesmo jeito. O formato mais comum é um arquivo chamado <code>SKILL.md</code> (texto simples, em Markdown). Ele tem duas partes: um cabeçalho curto (o <span class="termo" title="O cabeçalho da skill, entre --- e ---, com name e description.">frontmatter</span>) e o corpo, que são as instruções de verdade. Vamos abrir cada parte no tópico 2.</p>
+
+          <p data-inema-block="m3-1-t1-p2" class="text-neutral-300 mb-6 leading-relaxed">Por que isso importa tanto nesta trilha? Porque a skill é onde você <strong>codifica a sua maneira de trabalhar</strong> e devolve isso pro harness — sem precisar repetir tudo a cada conversa. Matt Pocock trata as skills como o coração do harness moderno: elas funcionam em vários agentes (Claude Code, Codex e outros) e se instalam com <code>npx skills latest add</code>. O <strong>erro comum</strong> de iniciante é confundir skill com "prompt longo que eu colo toda vez". Não: a skill fica <em>salva</em>, é versionável, dá pra distribuir pro time e — o ponto central deste módulo — ela pode ser acionada por você <em>ou</em> pela própria IA. Quem aperta o gatilho muda tudo.</p>
+
+          <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 250" class="w-full h-auto" role="img" aria-label="Uma skill é um arquivo SKILL.md guardado numa prateleira do harness, com cabeçalho e corpo, pronto pra ser acionado pelo humano ou pelo modelo">
+              <defs>
+                <linearGradient id="v31a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+                <filter id="v31a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v31a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+              </defs>
+              <rect x="0" y="0" width="1000" height="250" fill="url(#v31a-grid)"/>
+              <rect x="40" y="30" width="560" height="190" rx="20" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
+              <text x="64" y="60" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="17">SKILL.md — instruções salvas</text>
+              <g filter="url(#v31a-glow)"><rect x="64" y="80" width="510" height="46" rx="10" fill="url(#v31a-grad)" stroke="#a855f7" stroke-width="2.5"/></g>
+              <text x="84" y="108" fill="#1c0a33" font-family="Inter,sans-serif" font-weight="700" font-size="15">cabeçalho (frontmatter): name + description</text>
+              <rect x="64" y="138" width="510" height="62" rx="10" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <text x="84" y="165" fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14">corpo: o passo a passo / as regras</text>
+              <text x="84" y="186" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12">"faça assim, nessa ordem, com esses cuidados…"</text>
+              <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+                <rect x="650" y="70" width="300" height="48" rx="10" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="800" y="99" text-anchor="middle" fill="#bfe6ff">você aciona (procedure)</text>
+                <rect x="650" y="132" width="300" height="48" rx="10" fill="#1a1230" stroke="#c084fc" stroke-width="2"/><text x="800" y="161" text-anchor="middle" fill="#d8b4fe">o modelo aciona (ability)</text>
+              </g>
+              <path d="M574,103 L650,94" fill="none" stroke="#c084fc" stroke-width="2" opacity="0.6"/>
+              <path d="M574,160 L650,156" fill="none" stroke="#c084fc" stroke-width="2" opacity="0.6"/>
+            </svg>
+            <p class="text-xs text-neutral-500 mt-2 text-center">A mesma skill, dois gatilhos possíveis: você ou o modelo. Essa escolha é o tema do módulo.</p>
+          </div>
+
+          <img src="assets/img/m3-1-1.png" alt="Ilustração conceitual: um arquivo de skill brilhante guardado numa prateleira futurista do harness" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+            <h3 class="font-semibold text-red-400 mb-2">⚠️ Erro comum de iniciante</h3>
+            <p class="text-neutral-300 text-sm">Tratar skill como "prompt que colo toda vez". Skill é arquivo salvo, reutilizável e distribuível — e o quem-aciona dela (você ou a IA) é uma decisão sua, não um detalhe.</p>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6">
+            <p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> uma skill é um arquivo de instruções salvo (cabeçalho + corpo) que pode ser acionado por você ou pelo próprio modelo.</p>
+          </div>
+
+          <details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+            <summary class="cursor-pointer font-medium text-purple-400">Indo mais fundo (opcional): por que o formato é só Markdown?</summary>
+            <p class="text-sm text-neutral-300 mt-3">Markdown é texto puro — o mesmo "idioma" em que o modelo já pensa. Por isso uma skill não precisa de compilador nem de código: é instrução em linguagem natural, com um cabeçalho mínimo pra o agente saber <em>quando</em> ela serve. Isso é o que deixa a mesma skill rodar em Claude Code, Codex e companhia: todos leem o mesmo arquivo de texto.</p>
+          </details>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- TÓPICO 2 -->
         <section id="topico-2" data-inema-topic="modulo-3-1#topico-2" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span>
-              <h2 class="text-2xl font-bold">📝 Frontmatter e corpo</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🏷️ Frontmatter e corpo</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m3-1-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">Anatomicamente, toda skill tem duas partes: o <strong class='text-purple-400'>frontmatter</strong> (a descrição, no topo) e o <strong class='text-purple-400'>corpo</strong> (as instruções de verdade). A descrição é a vitrine — é o que o modelo lê pra decidir se aquela skill serve. O corpo só entra em jogo quando a skill é de fato acionada.</p>
-  <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Por que a descrição é tão delicada</h3>
-    <p class="text-neutral-300">A <em>description</em> sempre vaza para a janela de contexto — ela fica lá mesmo quando a skill não roda. Por isso ela precisa ser curta e precisa: boa o bastante pra o modelo saber quando puxar, enxuta o bastante pra não custar contexto à toa. (Vamos fundo nesse custo no módulo 3.2.)</p>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
-      <h4 class="font-bold text-purple-400 mb-4">📄 Frontmatter (a vitrine)</h4>
-      <ul class="space-y-3 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Nome e descrição da skill.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Quando o modelo deve considerá-la.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Flags, como <code class="text-purple-400">disable model invocation</code>.</span></li>
-      </ul>
-    </div>
-    <div class="bg-dark-800 rounded-xl border border-dark-600 p-6">
-      <h4 class="font-bold text-white mb-4">📜 Corpo (as instruções)</h4>
-      <ul class="space-y-3 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-neutral-500">•</span><span>O passo a passo que o modelo segue.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-neutral-500">•</span><span>Padrões, exemplos, restrições.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-neutral-500">•</span><span>Só carregado quando a skill roda.</span></li>
-      </ul>
-    </div>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> pense numa lata de comida. O <em>rótulo</em> diz o nome e pra que serve ("molho de tomate · pra massas"). O <em>conteúdo</em> é o molho de verdade. Numa skill, o frontmatter é o rótulo; o corpo é o molho.</p>
+          </div>
+
+          <p data-inema-block="m3-1-t2-p1" class="text-neutral-300 mb-4 leading-relaxed">Toda skill tem duas partes bem separadas. A primeira é o <span class="termo" title="Cabeçalho no topo do arquivo, entre marcas de três traços, com name e description.">frontmatter</span>: um bloquinho no topo, entre <code>---</code> e <code>---</code>, com dois campos essenciais — <code>name</code> (o nome curto) e <code>description</code> (uma frase dizendo o que a skill faz e <em>quando</em> usá-la). A segunda parte é o <strong>corpo</strong>: tudo depois do cabeçalho, em texto livre. É lá que mora o passo a passo, as regras, os exemplos.</p>
+
+          <p data-inema-block="m3-1-t2-p2" class="text-neutral-300 mb-6 leading-relaxed">A diferença prática entre as duas é crucial e volta no resto do módulo: o <strong>corpo só é lido quando a skill é acionada</strong>; já a <code>description</code> do frontmatter pode ficar "à vista" do modelo o tempo todo, pra ele decidir sozinho se chama a skill. Nas palavras de Pocock, "toda skill vaza a sua <code>description</code> na janela de contexto". Ou seja: o rótulo custa contexto mesmo quando a skill não é usada; o corpo, não. Guarde isso — é a semente do módulo 3.2 ("custo de contexto da skill"). O <strong>erro comum</strong> aqui é escrever uma <code>description</code> gigante "pra garantir": ela vira peso morto no contexto. Boa <code>description</code> é curta e diz exatamente o gatilho.</p>
+
+          <div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+              <span class="text-xs text-purple-400 font-mono">SKILL.md</span>
+              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors">copiar</button>
+            </div>
+            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">---
+name: commit-conventional
+description: Cria a mensagem de commit no padrao Conventional Commits
+  a partir das mudancas em stage. Use quando o usuario pedir "commita",
+  "faz o commit" ou "gera a mensagem de commit".
+---
+
+# Commit Conventional
+
+Quando acionada, faca nesta ordem:
+
+1. Rode `git diff --staged` e leia o que mudou.
+2. Escolha o tipo: feat | fix | docs | refactor | test | chore.
+3. Escreva o titulo: `tipo(escopo): resumo no imperativo` (ate 72 chars).
+4. No corpo, explique o PORQUE da mudanca em 1-3 linhas (nao o "o que").
+5. Se houver breaking change, adicione `BREAKING CHANGE:` no rodape.
+6. Mostre a mensagem final e PERGUNTE antes de rodar `git commit`.
+
+Regras:
+- Nunca invente arquivos que nao estao no diff.
+- Portugues, voz imperativa, sem emoji no titulo.</pre>
+          </div>
+          <p class="text-xs text-neutral-500 mb-6 text-center">Exemplo real de <code>SKILL.md</code>: entre os <code>---</code> está o frontmatter (rótulo); abaixo, o corpo (o procedimento).</p>
+
+          <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 230" class="w-full h-auto" role="img" aria-label="Anatomia do arquivo SKILL.md: o frontmatter no topo, com name e description, fica visível ao modelo; o corpo, abaixo, só é lido quando a skill é acionada">
+              <defs>
+                <filter id="v31b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v31b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+              </defs>
+              <rect x="0" y="0" width="1000" height="230" fill="url(#v31b-grid)"/>
+              <g filter="url(#v31b-glow)"><rect x="60" y="30" width="500" height="74" rx="12" fill="#1a1230" stroke="#c084fc" stroke-width="2.5"/></g>
+              <text x="84" y="58" fill="#c084fc" font-family="Inter,sans-serif" font-weight="700" font-size="16">FRONTMATTER (o rótulo)</text>
+              <text x="84" y="82" fill="#d8b4fe" font-family="Inter,sans-serif" font-size="13">name · description — fica À VISTA do modelo</text>
+              <rect x="60" y="120" width="500" height="86" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <text x="84" y="148" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="700" font-size="16">CORPO (o conteúdo)</text>
+              <text x="84" y="172" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13">passo a passo + regras — só lido AO ACIONAR</text>
+              <text x="84" y="192" fill="#7fb6e6" font-family="Inter,sans-serif" font-size="12">não pesa no contexto enquanto a skill dorme</text>
+              <g font-family="Inter,sans-serif" font-size="12.5">
+                <rect x="630" y="40" width="320" height="54" rx="10" fill="#0e1b26" stroke="#c084fc" stroke-width="1.6"/><text x="790" y="64" text-anchor="middle" fill="#d8b4fe" font-weight="600">custo: o rótulo VAZA sempre</text><text x="790" y="84" text-anchor="middle" fill="#9ad6ff">(mesmo sem usar a skill)</text>
+                <rect x="630" y="130" width="320" height="54" rx="10" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.6"/><text x="790" y="154" text-anchor="middle" fill="#bfe6ff" font-weight="600">custo: o corpo NÃO vaza</text><text x="790" y="174" text-anchor="middle" fill="#9ad6ff">(carrega só na hora)</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> frontmatter = rótulo curto que fica à vista (e custa contexto); corpo = o procedimento, lido só quando a skill é acionada.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- TÓPICO 3 -->
         <section id="topico-3" data-inema-topic="modulo-3-1#topico-3" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span>
-              <h2 class="text-2xl font-bold">🎛️ Procedures (você invoca)</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🕹️ Procedures (você invoca)</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m3-1-t3-p1" class="text-neutral-300 mb-6 leading-relaxed">O primeiro tipo de skill é a <strong class='text-purple-400'>procedure</strong>: <em>você</em> a dispara. É um botão que você aperta para fazer o modelo se comportar de um jeito específico — “rode a grill-me”, “gere o PRD”, “quebre em issues”. Quem decide o <em>quando</em> é o humano.</p>
-  <div class="space-y-6 mb-6">
-    <div class="flex items-start space-x-4">
-      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">1</span></div>
-      <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600"><h4 class="font-semibold text-white mb-2">Você dá o gatilho</h4><p class="text-neutral-300 text-sm">A procedure não dispara sozinha. Você a chama pelo nome no momento em que quer aquele comportamento.</p></div>
-    </div>
-    <div class="flex items-start space-x-4">
-      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">2</span></div>
-      <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600"><h4 class="font-semibold text-white mb-2">O modelo assume o modo</h4><p class="text-neutral-300 text-sm">Ao ser invocada, ela faz o modelo se comportar de um jeito — entrevistador adversarial, redator de PRD, triador de tarefas.</p></div>
-    </div>
-    <div class="flex items-start space-x-4">
-      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center"><span class="text-purple-400 font-bold">3</span></div>
-      <div class="flex-1 bg-dark-800 rounded-xl p-6 border border-dark-600"><h4 class="font-semibold text-white mb-2">Você fica no volante</h4><p class="text-neutral-300 text-sm">O pensamento sobre <em>quando</em> agir não é delegado. Procedures encadeiam: grill-me → two-PRD → to-issues, sob seu comando.</p></div>
-    </div>
-  </div>
-  <div class="bg-gradient-to-br from-purple-900/30 to-dark-800 rounded-xl border border-purple-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">🔗</span> Procedures encadeiam</h3>
-    <p class="text-neutral-300">É assim que o Matt monta o pipeline de pensamento dele: cada procedure é um elo que ele dispara na ordem que faz sentido — não um agente solto decidindo por conta própria.</p>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma <strong>procedure</strong> é como o botão de "modo turbo" do seu carro: ela só liga quando <em>você</em> aperta. O carro nunca decide ligar o turbo sozinho — quem manda é o motorista.</p></div>
+
+          <p data-inema-block="m3-1-t3-p1" class="text-neutral-300 mb-4 leading-relaxed">O primeiro dos dois tipos de skill é a <span class="termo" title="Skill que você invoca de propósito; faz o modelo se comportar de um jeito que você decidiu.">procedure</span>. A regra de ouro: <strong>quem aciona é você</strong>. Você invoca a skill de propósito — digitando o nome dela, escolhendo no menu, rodando um comando — e ela faz o modelo "se comportar de um jeito" que você definiu. Nas palavras de Pocock, procedures são skills que "fazem o modelo se comportar de um jeito" e que <em>você</em> dispara. Exemplos do dia a dia dele: a skill <code>grill-me</code> (que vira o modelo num entrevistador), a <code>two-PRD</code> e a <code>to-issues</code> — ele encadeia as três <em>na ordem que ele quer</em>.</p>
+
+          <p data-inema-block="m3-1-t3-p2" class="text-neutral-300 mb-6 leading-relaxed">Por que isso importa? Porque com procedures <strong>você fica no volante</strong>. Você decide qual procedimento entra, quando entra e em que sequência. Não há surpresa: o modelo não puxa nada por conta própria. Pocock é explícito sobre preferir esse modo: <em>"I know my skills, I don't want to delegate my thinking"</em> — eu conheço minhas skills, não quero delegar meu pensamento. O <strong>erro comum</strong> é achar que isso é "trabalho a mais". Na verdade é controle: você troca um pouco de automação por previsibilidade total, e ainda evita que descrições fiquem vazando no contexto (tema do 3.2).</p>
+
+          <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 210" class="w-full h-auto" role="img" aria-label="Numa procedure, o humano aperta o gatilho e a skill faz o modelo se comportar do jeito definido; o modelo não decide nada por conta própria">
+              <defs>
+                <linearGradient id="v31c-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+                <filter id="v31c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v31c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+                <marker id="v31c-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
+              </defs>
+              <rect x="0" y="0" width="1000" height="210" fill="url(#v31c-grid)"/>
+              <g filter="url(#v31c-glow)"><rect x="50" y="70" width="200" height="70" rx="14" fill="url(#v31c-grad)" stroke="#a855f7" stroke-width="2.5"/></g>
+              <text x="150" y="100" text-anchor="middle" fill="#1c0a33" font-family="Inter,sans-serif" font-weight="700" font-size="17">VOCÊ</text>
+              <text x="150" y="122" text-anchor="middle" fill="#1c0a33" font-family="Inter,sans-serif" font-size="12">aperta o gatilho</text>
+              <rect x="400" y="70" width="200" height="70" rx="14" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
+              <text x="500" y="100" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-weight="600" font-size="16">PROCEDURE</text>
+              <text x="500" y="122" text-anchor="middle" fill="#c9a6f5" font-family="Inter,sans-serif" font-size="12">a skill (você invoca)</text>
+              <rect x="750" y="70" width="200" height="70" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <text x="850" y="100" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="16">MODELO</text>
+              <text x="850" y="122" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12">se comporta do seu jeito</text>
+              <path d="M250,105 L400,105" fill="none" stroke="#c084fc" stroke-width="2.4" marker-end="url(#v31c-ah)"/>
+              <path d="M600,105 L750,105" fill="none" stroke="#c084fc" stroke-width="2.4" marker-end="url(#v31c-ah)"/>
+              <text x="500" y="175" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5">O gatilho é humano. Sem surpresa: o modelo não chama nada sozinho.</text>
+            </svg>
+          </div>
+
+          <img src="assets/img/m3-1-2.png" alt="Ilustração: uma mão humana acionando uma alavanca brilhante que dispara um procedimento" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> procedure = a skill que <em>você</em> aciona de propósito pra fazer o modelo se comportar do jeito que você decidiu.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- TÓPICO 4 -->
         <section id="topico-4" data-inema-topic="modulo-3-1#topico-4" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span>
-              <h2 class="text-2xl font-bold">🤖 Abilities (o modelo invoca)</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🤖 Abilities (o modelo invoca)</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m3-1-t4-p1" class="text-neutral-300 mb-6 leading-relaxed">O segundo tipo é a <strong class='text-purple-400'>ability</strong>: o <em>modelo</em> a puxa sozinho, quando percebe que ela se aplica. O exemplo do Matt é um “coding standards”: na hora de escrever React, o modelo lê a description, decide que é relevante e aplica — “shouldn't use useEffect, should use something different”.</p>
-  <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-purple-400 mb-3 flex items-center"><span class="mr-2">⚛️</span> Exemplo: coding standards ao escrever React</h3>
-    <p class="text-neutral-300 mb-2">O modelo vai escrever um componente React. Sem você pedir nada, ele reconhece a situação pela description da skill e puxa o padrão:</p>
-    <ul class="space-y-2 text-neutral-300">
-      <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>“shouldn't use useEffect” → usa outra abordagem.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>O gatilho é o <em>contexto da tarefa</em>, não o seu comando.</span></li>
-      <li class="flex items-start space-x-2"><span class="text-purple-400 mt-1">•</span><span>É o modelo decidindo o quando — você só deixou a skill disponível.</span></li>
-    </ul>
-  </div>
-  <div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-red-400 mb-3 flex items-center"><span class="mr-2">⚠️</span> O preço de deixar o modelo decidir</h3>
-    <p class="text-neutral-300">Abilities são convenientes, mas você terceiriza o julgamento de <em>quando</em> agir. E como a description precisa estar sempre visível pro modelo poder puxá-la, toda ability paga pedágio no contexto — 100 skills, 100 descrições.</p>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma <strong>ability</strong> é como o freio ABS do carro: você não aperta nada — o carro <em>sente</em> a situação (derrapagem) e aciona sozinho. A ability é a skill que a IA puxa por conta própria quando "percebe" que precisa.</p></div>
+
+          <p data-inema-block="m3-1-t4-p1" class="text-neutral-300 mb-4 leading-relaxed">O segundo tipo é a <span class="termo" title="Skill que o modelo invoca sozinho quando julga que precisa, lendo a description.">ability</span>. Aqui a regra de ouro vira do avesso: <strong>quem aciona é o modelo</strong>. Ele lê a <code>description</code> das skills disponíveis e, quando "acha" que uma se encaixa na tarefa, a puxa sozinho — sem você pedir. O exemplo que Pocock dá é uma skill de <em>coding standards</em> (padrões de código): o modelo a invoca automaticamente quando vai escrever React, porque a descrição diz algo como "use ao escrever componentes React". A skill então lembra o modelo de regras como "não deve usar <code>useEffect</code>, deve usar outra coisa".</p>
+
+          <p data-inema-block="m3-1-t4-p2" class="text-neutral-300 mb-6 leading-relaxed">A vantagem é a automação: a regra certa entra na hora certa, sem você lembrar de invocar. A desvantagem — e é por isso que Pocock pesa a mão — é que <strong>o modelo decide</strong>, e cada ability precisa manter sua <code>description</code> à vista pra ser "encontrável". Como vimos, isso <em>vaza</em> contexto: 100 skills viram 100 descrições penduradas na janela. Outra escola, a <em>Superpowers</em> (do projeto Obra), abraça justamente esse modo — modelo no controle. Pocock prefere o oposto. O <strong>erro comum</strong> é encher o setup de abilities "porque é automático" e descobrir tarde que o contexto ficou poluído e o comportamento, imprevisível.</p>
+
+          <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 210" class="w-full h-auto" role="img" aria-label="Numa ability, o próprio modelo lê as descrições, decide que precisa de uma skill e a aciona sozinho, sem o humano apertar nada">
+              <defs>
+                <filter id="v31d-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v31d-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+                <marker id="v31d-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
+              </defs>
+              <rect x="0" y="0" width="1000" height="210" fill="url(#v31d-grid)"/>
+              <g filter="url(#v31d-glow)"><rect x="50" y="70" width="220" height="70" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2.5"/></g>
+              <text x="160" y="100" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="700" font-size="17">MODELO</text>
+              <text x="160" y="122" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12">lê as descrições e DECIDE</text>
+              <rect x="420" y="70" width="200" height="70" rx="14" fill="#1a1230" stroke="#c084fc" stroke-width="2"/>
+              <text x="520" y="100" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-weight="600" font-size="16">ABILITY</text>
+              <text x="520" y="122" text-anchor="middle" fill="#c9a6f5" font-family="Inter,sans-serif" font-size="12">a skill (o modelo invoca)</text>
+              <rect x="770" y="70" width="180" height="70" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <text x="860" y="100" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="15">tarefa feita</text>
+              <text x="860" y="122" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12">regra aplicada na hora</text>
+              <path d="M270,105 L420,105" fill="none" stroke="#38bdf8" stroke-width="2.4" marker-end="url(#v31d-ah)"/>
+              <path d="M620,105 L770,105" fill="none" stroke="#38bdf8" stroke-width="2.4" marker-end="url(#v31d-ah)"/>
+              <text x="500" y="178" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5">Sem humano no gatilho. Automático — mas a description fica vazando no contexto.</text>
+            </svg>
+          </div>
+
+          <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+            <h3 class="font-semibold text-blue-400 mb-3">🔬 Exemplo resolvido: mesma regra, dois caminhos</h3>
+            <p class="text-neutral-300 text-sm mb-3">Cenário: você quer que, ao escrever React, o agente nunca use <code>useEffect</code> sem necessidade. Mesma regra, embalada de dois jeitos:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-dark-800 border border-purple-500/30 rounded-lg p-4"><p class="text-purple-400 font-semibold text-sm mb-1">Como ABILITY</p><p class="text-xs text-neutral-300"><code>description: "Padrões de React. Use ao escrever componentes."</code> → o modelo lê isso, percebe que vai escrever React e <strong>puxa a skill sozinho</strong>. Automático, mas a descrição vaza no contexto sempre.</p></div>
+              <div class="bg-dark-800 border border-blue-500/30 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">Como PROCEDURE</p><p class="text-xs text-neutral-300">Mesma skill com <code>disable model invocation: true</code>. → o modelo <strong>não</strong> a vê; você digita <code>/react-standards</code> quando quer. Previsível e não polui o contexto — o jeito que Pocock prefere.</p></div>
+            </div>
+            <p class="text-neutral-400 text-xs mt-3">Conclusão: o <em>conteúdo</em> da skill pode ser idêntico. O que muda é <strong>quem aperta o gatilho</strong> — e esse é o ajuste de design que você controla.</p>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> ability = a skill que <em>o modelo</em> aciona sozinho ao ler a description — cômodo, mas ele decide e o rótulo fica vazando.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- TÓPICO 5 -->
         <section id="topico-5" data-inema-topic="modulo-3-1#topico-5" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span>
-              <h2 class="text-2xl font-bold">🚪 As duas portas</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🚪 As duas portas</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m3-1-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">Toda skill entra por uma de duas portas. Na <strong class='text-purple-400'>procedure</strong>, quem abre é você. Na <strong class='text-purple-400'>ability</strong>, quem abre é o modelo. Mesma anatomia, decisor diferente — e é isso que define quem está dirigindo.</p>
-  <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-    <svg viewBox="0 0 1000 230" class="w-full h-auto" role="img" aria-label="Duas portas para uma skill: à esquerda a procedure aberta pelo humano, à direita a ability aberta pelo modelo, ambas levando à mesma skill no centro">
-      <defs>
-        <linearGradient id="m31-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
-        <filter id="m31-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <pattern id="m31-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
-        <marker id="m31-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"/></marker>
-        <marker id="m31-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
-      </defs>
-      <rect x="0" y="0" width="1000" height="230" fill="url(#m31-grid)"/>
-      <text x="500" y="28" text-anchor="middle" fill="#cbd5e1" font-family="Inter,sans-serif" font-weight="600" font-size="15">Duas portas, uma skill</text>
-      <g><rect x="60" y="58" width="170" height="56" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2.5"/></g>
-      <text x="145" y="82" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="15">VOCÊ</text>
-      <text x="145" y="102" text-anchor="middle" fill="#cbd5e1" font-family="Inter,sans-serif" font-size="11">o humano decide</text>
-      <g><rect x="770" y="58" width="170" height="56" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2.5"/></g>
-      <text x="855" y="82" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="15">MODELO</text>
-      <text x="855" y="102" text-anchor="middle" fill="#cbd5e1" font-family="Inter,sans-serif" font-size="11">a IA decide</text>
-      <line x1="145" y1="114" x2="240" y2="138" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#m31-ahc)"/>
-      <line x1="855" y1="114" x2="760" y2="138" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#m31-ahc)"/>
-      <g filter="url(#m31-glow)"><rect x="150" y="140" width="200" height="56" rx="12" fill="#1a1230" stroke="url(#m31-grad)" stroke-width="2.5"/></g>
-      <text x="250" y="164" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="15">PROCEDURE</text>
-      <text x="250" y="184" text-anchor="middle" fill="#cbd5e1" font-family="Inter,sans-serif" font-size="11">porta 1 — você invoca</text>
-      <g filter="url(#m31-glow)"><rect x="650" y="140" width="200" height="56" rx="12" fill="#1a1230" stroke="url(#m31-grad)" stroke-width="2.5"/></g>
-      <text x="750" y="164" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="15">ABILITY</text>
-      <text x="750" y="184" text-anchor="middle" fill="#cbd5e1" font-family="Inter,sans-serif" font-size="11">porta 2 — o modelo invoca</text>
-      <g filter="url(#m31-glow)"><rect x="430" y="140" width="140" height="56" rx="12" fill="#1a1230" stroke="url(#m31-grad)" stroke-width="2.5"/></g>
-      <text x="500" y="173" text-anchor="middle" fill="#c084fc" font-family="Inter,sans-serif" font-weight="600" font-size="15">A SKILL</text>
-      <line x1="350" y1="168" x2="426" y2="168" stroke="#c084fc" stroke-width="2.5" marker-end="url(#m31-ah)"/>
-      <line x1="650" y1="168" x2="574" y2="168" stroke="#c084fc" stroke-width="2.5" marker-end="url(#m31-ah)"/>
-    </svg>
-  </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <div class="bg-purple-900/20 rounded-xl border border-purple-500/30 p-6">
-      <h4 class="font-bold text-purple-400 mb-4">🎛️ Procedure — humano no volante</h4>
-      <ul class="space-y-3 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>Você decide o quando.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>O pensamento fica com você.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-purple-400">•</span><span>É a preferida do Matt.</span></li>
-      </ul>
-    </div>
-    <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6">
-      <h4 class="font-bold text-blue-400 mb-4">🤖 Ability — modelo no volante</h4>
-      <ul class="space-y-3 text-neutral-300">
-        <li class="flex items-start space-x-2"><span class="text-blue-400">•</span><span>O modelo decide o quando.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-blue-400">•</span><span>Conveniência ao custo de julgamento.</span></li>
-        <li class="flex items-start space-x-2"><span class="text-blue-400">•</span><span>A abordagem que o Superpowers prefere.</span></li>
-      </ul>
-    </div>
-  </div>
-  <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">🧭</span> A preferência do Matt</h3>
-    <p class="text-neutral-300">“I know my skills, I don't want to delegate my thinking.” Matt prefere procedures: esconde a maioria das descrições do modelo e mantém o conhecimento no humano. O Superpowers (Obra) prefere o oposto — modelo no controle. A diferença é de filosofia, não de capacidade.</p>
-  </div>
-          <div data-inema-check="modulo-3-1#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
-            <p class="font-medium mb-4">Qual descrição corresponde a uma <em>procedure</em>?</p>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> a mesma sala (a skill) tem <em>duas portas</em>. A porta da esquerda só abre com a sua chave (procedure). A porta da direita o modelo pode abrir sozinho (ability). Você decide quais portas deixar destrancadas.</p></div>
+
+          <p data-inema-block="m3-1-t5-p1" class="text-neutral-300 mb-4 leading-relaxed">Agora junte tudo. Procedure e ability <strong>não são duas coisas diferentes</strong> — são <em>duas portas de entrada</em> pra mesma skill. O conteúdo (o corpo) pode ser idêntico; o que muda é <strong>quem tem a chave</strong>. Por isso Pocock fala em "dois tipos de skill" mas, no fundo, é uma decisão de design por skill: deixo o modelo invocar (ability) ou tranco essa porta e só eu invoco (procedure)? O ajuste técnico que tranca a porta do modelo é o <span class="termo" title="Ajuste que impede o modelo de invocar a skill e esconde a description dele.">disable model invocation</span> — você o vê em detalhe no módulo 3.2.</p>
+
+          <p data-inema-block="m3-1-t5-p2" class="text-neutral-300 mb-6 leading-relaxed">A consequência prática é grande. Toda porta de modelo aberta tem um custo: a <code>description</code> daquela skill fica pendurada no contexto pra o modelo poder encontrá-la. Trancar a porta (procedure pura) zera esse custo e te devolve previsibilidade. Pocock, por preferir estar "no volante", deixa a maioria das portas-do-modelo trancadas e mantém o conhecimento com o humano — ele cita a skill <code>engineering zoom out</code> como uma das que ele esconde do modelo. Não é regra universal: é o estilo dele. O <strong>erro comum</strong> é nem perceber que existe essa escolha — a pessoa instala 50 skills, todas como ability, e o contexto vira uma feira.</p>
+
+          <div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 240" class="w-full h-auto" role="img" aria-label="A mesma skill com duas portas: a porta esquerda, do humano (procedure), e a porta direita, do modelo (ability), que pode ser trancada com disable model invocation">
+              <defs>
+                <linearGradient id="v31e-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c084fc"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+                <filter id="v31e-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v31e-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#a855f7" opacity="0.12"/></pattern>
+              </defs>
+              <rect x="0" y="0" width="1000" height="240" fill="url(#v31e-grid)"/>
+              <g filter="url(#v31e-glow)"><rect x="370" y="80" width="260" height="100" rx="16" fill="#1a1230" stroke="url(#v31e-grad)" stroke-width="2.5"/></g>
+              <text x="500" y="124" text-anchor="middle" fill="#d8b4fe" font-family="Inter,sans-serif" font-weight="700" font-size="18">A SKILL</text>
+              <text x="500" y="148" text-anchor="middle" fill="#c9a6f5" font-family="Inter,sans-serif" font-size="12.5">mesmo corpo · duas portas</text>
+              <g font-family="Inter,sans-serif">
+                <rect x="60" y="70" width="220" height="58" rx="10" fill="#1a1230" stroke="#c084fc" stroke-width="2"/><text x="170" y="95" text-anchor="middle" fill="#d8b4fe" font-weight="600" font-size="15">🚪 porta do HUMANO</text><text x="170" y="115" text-anchor="middle" fill="#c9a6f5" font-size="12">procedure · você invoca</text>
+                <rect x="60" y="138" width="220" height="58" rx="10" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="170" y="163" text-anchor="middle" fill="#bfe6ff" font-weight="600" font-size="15">🚪 porta do MODELO</text><text x="170" y="183" text-anchor="middle" fill="#9ad6ff" font-size="12">ability · pode trancar</text>
+                <rect x="720" y="104" width="230" height="52" rx="10" fill="#0e1b26" stroke="#38bdf8" stroke-width="1.6"/><text x="835" y="128" text-anchor="middle" fill="#bfe6ff" font-size="12.5">trancar = disable model</text><text x="835" y="146" text-anchor="middle" fill="#9ad6ff" font-size="12.5">invocation (não vaza)</text>
+              </g>
+              <path d="M280,99 L370,115" fill="none" stroke="#c084fc" stroke-width="2" opacity="0.7"/>
+              <path d="M280,167 L370,145" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.7"/>
+              <path d="M630,130 L720,130" fill="none" stroke="#9ca3af" stroke-width="1.6" opacity="0.6"/>
+            </svg>
+          </div>
+
+          <div data-inema-check="modulo-3-1#q1" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
+            <p class="font-medium mb-4">Recuperação rápida: numa <strong>ability</strong>, quem aciona a skill?</p>
             <div class="inema-check-options space-y-2">
-              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">O modelo puxa o coding standard sozinho ao escrever React.</button>
-              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Você dispara a grill-me pra entrar no modo entrevista adversarial.</button>
-              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">A description fica no contexto e o agente decide aplicar quando achar relevante.</button>
+              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Você, digitando o nome dela de propósito.</button>
+              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">O próprio modelo, que lê a description e decide puxá-la sozinho.</button>
+              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Ninguém — ability é só o corpo do arquivo, nunca roda.</button>
             </div>
             <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
           </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> procedure e ability são duas portas da mesma skill — a diferença é quem tem a chave (você ou o modelo).</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- TÓPICO 6 -->
         <section id="topico-6" data-inema-topic="modulo-3-1#topico-6" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span>
-              <h2 class="text-2xl font-bold">🎯 Qual usar quando</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎯 Qual usar quando</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m3-1-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Fechando o módulo: o critério é <strong class='text-purple-400'>quem deve decidir o quando</strong>. Se o julgamento é seu e você quer ficar no volante, faça uma procedure. Se a regra se aplica sempre que um certo contexto aparece e você confia no modelo pra reconhecê-lo, uma ability poupa cliques.</p>
-  <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> A pergunta de bolso</h3>
-    <p class="text-neutral-300">Antes de criar a skill, pergunte: <em>eu quero apertar o botão, ou quero que isso aconteça automático?</em> Se a resposta envolve pensamento — escopo, plano, decisão de produto — prefira procedure e mantenha o controle.</p>
-  </div>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 font-bold text-sm mb-1">Pensamento?</div><p class="text-xs text-neutral-400">Se exige julgamento → procedure.</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 font-bold text-sm mb-1">Regra fixa?</div><p class="text-xs text-neutral-400">Vale sempre num contexto → ability.</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 font-bold text-sm mb-1">Custo de contexto?</div><p class="text-xs text-neutral-400">Muitas abilities incham → esconda.</p></div>
-    <div class="bg-dark-800 rounded-lg p-4 border border-dark-600"><div class="text-purple-400 font-bold text-sm mb-1">Default do Matt</div><p class="text-xs text-neutral-400">Na dúvida, procedure.</p></div>
-  </div>
-  <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
-    <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📌</span> Lembrete</h3>
-    <p class="text-neutral-300">Você pode esconder a description de uma skill com <code class="text-blue-400">disable model invocation: true</code> — ela vira uma procedure pura, sem vazar pro contexto e sem o modelo poder puxá-la. É o caminho do Matt pra manter o humano no comando.</p>
-  </div>
-  <div class="flex justify-start mt-6">
-    <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-  </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> piloto automático × volante. No piloto automático (ability) o carro decide; no volante (procedure) você decide. Estradas conhecidas e críticas pedem volante; tarefas repetitivas e seguras toleram piloto automático.</p></div>
+
+          <p data-inema-block="m3-1-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Fechando: a escolha não é "qual é melhor", é "quem deve decidir <em>nesta</em> skill". Use <strong>ability</strong> quando a regra é genérica, sempre desejável e barata de errar (ex.: padrões de estilo que sempre valem) — vale a comodidade de o modelo puxar sozinho. Use <strong>procedure</strong> quando você quer estar no volante: tarefas de raciocínio, encadeamento de etapas, ou qualquer coisa onde a previsibilidade importa mais que a automação. Pocock encadeia <code>grill-me → two-PRD → to-issues</code> como procedures justamente por isso. E lembre do custo: cada ability mantém sua <code>description</code> vazando no contexto, então trancar portas (procedure) também é higiene. Use o guia abaixo quando for criar ou auditar uma skill:</p>
+
+          <div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+              <span class="text-xs text-purple-400 font-mono">procedure-ou-ability.txt</span>
+              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors">copiar</button>
+            </div>
+            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Pra cada skill, pergunte: QUEM deve apertar o gatilho?
+
+ESCOLHA ABILITY (modelo invoca) se:
+[ ] a regra vale quase sempre que o tema aparece (ex.: padroes de React)
+[ ] errar o momento e barato
+[ ] voce QUER automacao, nao controle fino
+
+ESCOLHA PROCEDURE (voce invoca) se:
+[ ] e raciocinio / planejamento / etapas encadeadas
+[ ] previsibilidade > automacao ("quero estar no volante")
+[ ] a description ocupando contexto te incomoda -> disable model invocation: true
+
+Regra de bolso (estilo Pocock): na duvida, PROCEDURE.
+"I know my skills, I don't want to delegate my thinking."</pre>
+          </div>
+
+          <img src="assets/img/m3-1-3.png" alt="Ilustração: uma encruzilhada com duas placas, volante e piloto automático, escolha de design" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div data-inema-check="modulo-3-1#q2" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
+            <p class="font-medium mb-4">Recuperação rápida: por que Pocock, na dúvida, prefere <strong>procedure</strong>?</p>
+            <div class="inema-check-options space-y-2">
+              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Porque procedure é a única que funciona em Claude Code.</button>
+              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Porque quer estar no volante (não delegar o pensamento) e evitar a description vazando no contexto.</button>
+              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Porque procedures rodam mais rápido que abilities.</button>
+            </div>
+            <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">Em 1 frase:</strong> ability pra regras genéricas e baratas de errar; procedure (na dúvida, esta) pra raciocínio e controle.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
         </section>
 
+        <!-- RESUMO -->
         <section class="mb-12">
           <div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
             <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumo do Módulo</h2>
             <div class="space-y-4 mb-8">
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">O que é uma skill</strong><span class="text-neutral-400"> — unidade reutilizável de comportamento; DRY humano no harness.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Frontmatter e corpo</strong><span class="text-neutral-400"> — a description é a vitrine que vaza; o corpo são as instruções.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Procedures</strong><span class="text-neutral-400"> — você invoca; fazem o modelo se comportar de um jeito; humano no volante.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Abilities</strong><span class="text-neutral-400"> — o modelo puxa sozinho (ex.: coding standard ao escrever React).</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">As duas portas</strong><span class="text-neutral-400"> — mesma skill, decisor diferente; Matt prefere procedures.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Qual usar quando</strong><span class="text-neutral-400"> — exige julgamento? procedure. Regra de contexto? ability.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Skill = arquivo de instruções salvo</strong><span class="text-neutral-400"> — um SKILL.md com frontmatter (rótulo) + corpo (procedimento).</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Frontmatter vaza, corpo não</strong><span class="text-neutral-400"> — a description fica à vista (custa contexto); o corpo só carrega ao acionar.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Procedure = você invoca · Ability = o modelo invoca</strong><span class="text-neutral-400"> — duas portas pra mesma skill; muda quem tem a chave.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Na dúvida, procedure</strong><span class="text-neutral-400"> — Pocock prefere estar no volante e não poluir o contexto.</span></div></div>
             </div>
-            <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-              <h3 class="font-semibold text-purple-400 mb-2">Próximo:</h3>
-              <p class="text-neutral-300">3.2 — Custo de contexto da skill</p>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
-              <a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">3.2 →</a>
-            </div>
+            <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-purple-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">3.2 — Custo de contexto da skill: por que cada description "vaza", o que são 100 skills no contexto, e como usar <code>disable model invocation</code>.</p></div>
+            <div class="flex flex-col sm:flex-row gap-4"><a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a><a href="modulo-3-2.html" class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors">Próximo Módulo →</a></div>
           </div>
         </section>
 
       </main>
     </div>
   </div>
-  <footer class="border-t border-dark-600 py-8 mt-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
-    </div>
-  </footer>
+
+  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p></div></footer>
+
   <script>
-    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
-    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
     function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
   </script>
   <script src="../../assets/learn.js"></script>
-  <script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&INEMA.init)INEMA.init();if(window.INEMA&&INEMA.registerCheck){INEMA.registerCheck('modulo-3-1#q1',{answer:1,explain:{0: "Esse é o caso de ability — o modelo puxa o padrão sozinho.", 1: "Isso mesmo: a procedure é você que dispara, ficando no volante.", 2: "Description visível + modelo decidindo é ability, não procedure."}});}});</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-3-1#q1', { answer: 1, explain: { 0: 'Esse é o caso da PROCEDURE (você invoca). Na ability quem decide é o modelo.', 1: 'Isso! Ability = o modelo lê a description e aciona sozinho.', 2: 'A skill roda, sim — só que acionada pelo modelo.' } });
+        INEMA.registerCheck('modulo-3-1#q2', { answer: 1, explain: { 0: 'Não — as duas funcionam em Claude Code e outros agentes.', 1: 'Exato: "no volante" (não delegar o pensamento) + sem description vazando no contexto.', 2: 'Velocidade não é o motivo; é controle e higiene de contexto.' } });
+      }
+    });
+  </script>
 </body>
 </html>

@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="inema-course" content="harness">
   <title>5.5 Action de review + cron de security | HARNESS</title>
-
   <script>
   (function () {
     try {
       var html = document.documentElement;
-      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'teal' };
       function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
       var p = clone(DEF);
       try {
@@ -23,77 +22,75 @@
       if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
       if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
       html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
-      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'teal');
       var s = html.style, scale=(+p.fontScale||100);
       s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
       s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
   })();
   </script>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
-      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
-    } } } }
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/learn.css">
-
   <script type="application/json" data-inema-manifest>
-  {
-    "course": "harness",
-    "tracks": [
-      { "n": "1", "title": "Fundamentos do Harness", "modules": [
-        { "id": "1-1", "title": "Motor \u00d7 Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
-        { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
-        { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
-        { "id": "1-4", "title": "DX \u00d7 AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
-        { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
-        { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
-      ]},
-      { "n": "2", "title": "Habilidades Humanas", "modules": [
-        { "id": "2-1", "title": "T\u00e1tico \u00d7 Estrat\u00e9gico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
-        { "id": "2-2", "title": "Suas skills s\u00e3o o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
-        { "id": "2-3", "title": "Conhecimento \u00d7 Habilidade \u00d7 Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
-        { "id": "2-4", "title": "Fundamentos de delega\u00e7\u00e3o", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
-        { "id": "2-5", "title": "Comunica\u00e7\u00e3o & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
-        { "id": "2-6", "title": "Voc\u00ea no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
-      ]},
-      { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
-        { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
-        { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
-        { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
-        { "id": "3-4", "title": "Ensino que ret\u00e9m", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
-        { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
-        { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
-      ]},
-      { "n": "4", "title": "T\u00e9cnicas Avan\u00e7adas", "modules": [
-        { "id": "4-1", "title": "Human-in-the-loop \u00d7 AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
-        { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
-        { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
-        { "id": "4-4", "title": "Loops \u00d7 Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
-        { "id": "4-5", "title": "Sistemas auto-melhor\u00e1veis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
-        { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
-      ]},
-      { "n": "5", "title": "Solu\u00e7\u00f5es Prontas pra Copiar", "modules": [
-        { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
-        { "id": "5-2", "title": "grill-me + 10 decis\u00f5es", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
-        { "id": "5-3", "title": "Pipeline grill-me \u2192 PRD \u2192 issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
-        { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
-        { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
-        { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
-      ]}
-    ]
-  }
-  </script>
-
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
   <style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
-    .topic-explanation { display: none; }
-    .topic-explanation.active { display: block; }
     [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #2dd4bf; cursor: help; font-weight: 600; color: #5eead4; }
+    html:not(.dark) .termo { color: #0f766e; border-color: #0d9488; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
     html:not(.dark) body { background-color: #f8fafc; }
     html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
     html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
@@ -108,10 +105,10 @@
     html:not(.dark) .text-teal-400 { color: #0d9488; }
     html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13,148,136,0.12); }
     html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13,148,136,0.08); }
     html:not(.dark) .border-teal-500\/30 { border-color: rgba(13,148,136,0.25); }
     html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13,148,136,0.18); }
     html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
-    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13,148,136,0.08); }
     html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
     html:not(.dark) .text-primary { color: #a16207; }
     html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
@@ -129,12 +126,6 @@
     .dark .border-dark-600 { border-color: #374151; }
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
-    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
-    @media (prefers-reduced-motion: no-preference) {
-      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
-      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
-      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
-    }
   </style>
 </head>
 <body class="bg-dark-900 text-neutral-100 min-h-screen">
@@ -168,19 +159,19 @@
     <div class="flex items-center space-x-2 text-sm text-neutral-400">
       <a href="../../index.html" class="hover:text-teal-400">Início</a><span>/</span>
       <a href="index.html" class="hover:text-teal-400">Trilha 5</a><span>/</span>
-      <span class="text-teal-400">Módulo 5.5</span>
+      <span class="text-teal-400">Módulo 5.5 · modo ensino</span>
     </div>
   </nav>
 
   <header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MÓDULO 5.5</span>
+      <span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MÓDULO 5.5 · "MODO ENSINO"</span>
       <h1 class="text-3xl sm:text-4xl font-bold mb-4">🤖 Action de review + cron de security</h1>
-      <p class="text-lg text-neutral-400 max-w-3xl">Duas automações prontas que se cuidam: uma <strong class="text-teal-400">GitHub Action de review</strong> (checkout → type check → agente → comenta) e um <strong class="text-teal-400">cron de security</strong> diário, rotativo por parte do repo.</p>
+      <p class="text-lg text-neutral-400 max-w-3xl">Duas automações que se cuidam sozinhas — prontas pra copiar. Uma <strong class="text-teal-400">GitHub Action de review</strong> que roda em cada PR (checkout → type check → agente → comenta) e um <strong class="text-teal-400">cron de security</strong> diário que varre uma fatia diferente do repo todo dia. Sem travar sua máquina, sem precisar do modelo mais caro. Cada termo é explicado na hora.</p>
       <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~30</div><div class="text-xs text-neutral-400">Minutos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Prático</div><div class="text-xs text-neutral-400">Nível</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Copiar</div><div class="text-xs text-neutral-400">Pré-requisito</div></div>
         <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Receita</div><div class="text-xs text-neutral-400">Tipo</div></div>
       </div>
       <div class="mt-6 max-w-2xl">
@@ -194,7 +185,7 @@
   </header>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="lg:grid lg:grid-cols-[220px_1fr] lg:gap-10">
+    <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
       <nav data-inema-toc aria-label="Índice da página" class="hidden lg:block sticky top-24 self-start">
         <p class="text-sm text-neutral-400 mb-3">Seção <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
         <ul class="space-y-1 text-sm">
@@ -209,198 +200,414 @@
 
       <main id="conteudo" class="inema-prose min-w-0">
 
+        <!-- GLOSSÁRIO VIVO -->
+        <div class="bg-dark-800 border border-teal-500/30 rounded-xl p-6 mb-12">
+          <h2 class="text-lg font-bold text-teal-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glossário vivo (leia antes — volte sempre que precisar)</h2>
+          <p class="text-sm text-neutral-400 mb-4">Este módulo é cheio de termos de automação. Definimos os <strong>novos</strong> em linguagem simples aqui — os fundamentos (modelo, agente, harness, skill) já vieram na Trilha 1:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">GitHub Action</strong> — uma automação que o GitHub roda <em>na nuvem</em> quando algo acontece (abriu um PR, deu meia-noite). Você descreve os passos num arquivo YAML em <code>.github/workflows/</code>.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">PR (pull request)</strong> — o pedido de "quero juntar estas mudanças ao código principal". É onde o time (ou o agente) revisa antes de aceitar.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">checkout</strong> — baixar os arquivos da branch pra dentro da máquina onde a Action roda, pra ela poder ler/rodar o código.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">type check</strong> — uma checagem automática (ex.: <code>tsc</code> no TypeScript) que pega erros de tipo antes de rodar. É o "passou no controle de qualidade" barato.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">cron</strong> — um agendador: "rode isto todo dia às 9h". A "linha de crontab" é a sintaxe desse horário (<code>0 9 * * *</code>).</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">security review</strong> — uma revisão focada em falhas de segurança (senha vazada, injeção, permissão errada) — não em estilo.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">structured output</strong> — fazer o agente responder em formato fixo (JSON com campos), em vez de texto solto, pra outro programa conseguir ler e decidir.</div>
+            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">auto-merge</strong> — juntar o PR ao código principal automaticamente, sem humano clicar. Poderoso e perigoso — use com gates.</div>
+          </div>
+        </div>
+
+        <!-- TÓPICO 1 -->
         <section id="topico-1" data-inema-topic="modulo-5-5#topico-1" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">1</span>
-              <h2 class="text-2xl font-bold">🦴 Esqueleto da Action</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🦴 Esqueleto da Action</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m5-5-t1-p1" class="text-neutral-300 mb-6 leading-relaxed">A <strong class="text-teal-400">action de review</strong> roda em cada PR: faz checkout da branch, executa checagens e o agente comenta. É o coração do AFK na nuvem do Pocock.</p>
-          <div class="bg-dark-900 rounded-xl border border-dark-600 p-5 mb-6">
-            <div class="text-xs text-neutral-500 mb-2">review.yml (esqueleto)</div>
-            <pre class="font-mono text-sm text-neutral-300 overflow-x-auto whitespace-pre">on: pull_request
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma fábrica com uma esteira. Toda vez que uma peça nova chega (um PR), a esteira liga sozinha: pega a peça, passa no controle de qualidade, chama o inspetor (o agente) e cola um adesivo com o parecer. Você não fica ligando a esteira na mão — ela reage ao gatilho. Uma GitHub Action é essa esteira, só que pra código.</p>
+          </div>
+
+          <p data-inema-block="m5-5-t1-p1" class="text-neutral-300 mb-4 leading-relaxed">Pocock descreve uma <strong class="text-teal-400">"agent review action"</strong>: uma <span class="termo" title="Automação que o GitHub roda na nuvem em resposta a um evento.">GitHub Action</span> que "roda num PR, faz checkout, type check, roda o review agent (um prompt local), e responde 'looks good'." O segredo de toda Action é o esqueleto: ela tem um <strong>gatilho</strong> (o <code>on:</code> — o que liga a esteira), um ou mais <strong>jobs</strong> (o que executa), e dentro de cada job uma sequência de <strong>steps</strong> (os passos). Esse esqueleto é sempre o mesmo — muda só o que vai dentro.</p>
+
+          <p data-inema-block="m5-5-t1-p2" class="text-neutral-300 mb-6 leading-relaxed">Por que isso destrava tanto? Porque "run agents on GitHub Actions é <em>unreasonably effective</em>" — você paraleliza quanto quiser <strong>sem se preocupar com recursos da máquina local</strong>. A esteira roda na nuvem do GitHub: seu notebook pode estar desligado. O <span class="termo" title="O texto/instrução salvo no repo que o agente segue na hora do review.">prompt local</span> (um arquivo de instruções de review que mora no próprio repo) é o cérebro do inspetor — versionado junto com o código, igual a uma skill. <strong>Erro comum:</strong> achar que precisa de um servidor próprio rodando 24h. Não: a Action só acorda no gatilho, faz o trabalho, e desliga — você paga só pelos minutos usados.</p>
+
+          <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 250" class="w-full h-auto" role="img" aria-label="Anatomia de uma GitHub Action: o gatilho 'on' liga o job, que contém uma sequência de steps até o agente comentar">
+              <defs>
+                <linearGradient id="v55a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+                <filter id="v55a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v55a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
+                <marker id="v55a-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"/></marker>
+              </defs>
+              <rect x="0" y="0" width="1000" height="250" fill="url(#v55a-grid)"/>
+              <g filter="url(#v55a-glow)"><rect x="40" y="95" width="170" height="60" rx="14" fill="url(#v55a-grad)" stroke="#14b8a6" stroke-width="2.5"/></g>
+              <text x="125" y="122" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-weight="700" font-size="15">on: pull_request</text>
+              <text x="125" y="142" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-size="11.5">o gatilho</text>
+              <path d="M210,125 L270,125" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#v55a-ah)"/>
+              <rect x="272" y="40" width="688" height="170" rx="18" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/>
+              <text x="296" y="68" fill="#2dd4bf" font-family="Inter,sans-serif" font-weight="600" font-size="15">job: review (roda na nuvem do GitHub)</text>
+              <g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+                <rect x="296" y="92" width="140" height="44" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="366" y="119" text-anchor="middle" fill="#bfe6ff">checkout</text>
+                <rect x="452" y="92" width="140" height="44" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="522" y="119" text-anchor="middle" fill="#bfe6ff">type check</text>
+                <rect x="608" y="92" width="140" height="44" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="678" y="119" text-anchor="middle" fill="#bfe6ff">review agent</text>
+                <rect x="764" y="92" width="170" height="44" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="849" y="119" text-anchor="middle" fill="#bfe6ff">comenta no PR</text>
+              </g>
+              <g fill="none" stroke="#34d399" stroke-width="1.8" opacity="0.6"><path d="M436,114 L452,114" marker-end="url(#v55a-ah)"/><path d="M592,114 L608,114" marker-end="url(#v55a-ah)"/><path d="M748,114 L764,114" marker-end="url(#v55a-ah)"/></g>
+              <text x="616" y="185" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5">steps = a sequência que o agente percorre. Sua máquina local pode estar desligada.</text>
+            </svg>
+            <p class="text-xs text-neutral-500 mt-2 text-center">Gatilho → job → steps. Esse esqueleto é universal; o conteúdo dos steps é o que você troca.</p>
+          </div>
+
+          <img src="assets/img/m5-5-1.png" alt="Ilustração: uma esteira de fábrica futurista recebendo um pull request e passando por estações de inspeção automáticas" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <p data-inema-block="m5-5-t1-p3" class="text-neutral-300 mb-6 leading-relaxed">Abaixo está o <strong class="text-teal-400">YAML real da review action</strong> — a primeira das duas peças copiáveis deste módulo. Salve como <code>.github/workflows/review.yml</code>. Note o esqueleto: <code>on:</code> (gatilho), <code>jobs:</code>, e os <code>steps:</code> na ordem certa. Copie e ajuste só o comando do seu type check:</p>
+
+          <div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+              <span class="text-xs text-teal-400 font-mono">.github/workflows/review.yml — agent review action</span>
+              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors">copiar</button>
+            </div>
+            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">name: agent-review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
   review:
-    - checkout
-    - type check / lint
-    - agente de review (seu prompt)
-    - comenta o resultado no PR</pre>
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+
+      - name: Type check
+        run: npx tsc --noEmit        # guard rail barato e determinístico
+
+      - name: Review agent
+        run: npx claude -p "$(cat .github/review-prompt.md)" --output review.md
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Comment on PR
+        run: gh pr comment "$PR" --body-file review.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}</pre>
           </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6">
+            <p class="text-sm text-neutral-300"><strong class="text-teal-400">Em 1 frase:</strong> uma Action é uma esteira na nuvem — gatilho liga, steps executam, e o resto da sua máquina nem precisa estar ligada.</p>
+          </div>
+
+          <details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+            <summary class="cursor-pointer font-medium text-teal-400">Indo mais fundo (opcional): por que o prompt de review mora no repo?</summary>
+            <p class="text-sm text-neutral-300 mt-3">Se o "prompt local" do review vive dentro do repositório (ex.: <code>.github/review-prompt.md</code>), ele é versionado junto com o código: melhora num PR, fica gravado no histórico, e qualquer pessoa do time vê a mesma instrução. É o mesmo princípio do DRY humano (módulo 3-6): "fiz este review 100 vezes → vira um procedimento, distribuo pro time, todo mundo revisa igual". A Action é só a esteira; o prompt é a skill que ela executa.</p>
+          </details>
+
           <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
           </div>
         </section>
 
+        <!-- TÓPICO 2 -->
         <section id="topico-2" data-inema-topic="modulo-5-5#topico-2" class="mb-16">
           <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">2</span>
-              <h2 class="text-2xl font-bold">✅ checkout → type check → review</h2>
-            </div>
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🔧 checkout → type check → review</h2></div>
             <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
           </div>
-          <p data-inema-block="m5-5-t2-p1" class="text-neutral-300 mb-6 leading-relaxed">A sequência: <strong class="text-teal-400">checkout</strong> da branch → <strong class="text-teal-400">type check</strong> e lint → <strong class="text-teal-400">agente de review</strong> roda seu prompt e checa várias coisas.</p>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> antes do médico especialista (caro) examinar o paciente, a enfermagem já mediu pressão e temperatura (barato e rápido). Se a temperatura já está absurda, nem precisa do especialista. O <em>type check</em> é a triagem barata; o <em>review agent</em> é o especialista — e você só chama o especialista quando o básico passou.</p>
+          </div>
+
+          <p data-inema-block="m5-5-t2-p1" class="text-neutral-300 mb-4 leading-relaxed">Esses três <span class="termo" title="Cada passo executado dentro de um job da Action.">steps</span> são a espinha da review action, na ordem que Pocock cita: "faz <span class="termo" title="Baixar os arquivos da branch para a máquina da Action.">checkout</span>, <span class="termo" title="Checagem automática de tipos, ex. tsc no TypeScript.">type check</span>, roda o review agent". A ordem importa por economia: primeiro você baixa o código, depois roda a checagem <strong>determinística e barata</strong> (o type check pega erros óbvios em segundos), e só então gasta tokens com o agente. Se o type check falhar, muitas vezes nem vale acordar o agente — você já sabe que o PR está quebrado.</p>
+
+          <p data-inema-block="m5-5-t2-p2" class="text-neutral-300 mb-6 leading-relaxed">Isso é puro "economia de tokens" (módulo 1-5): o agente é o passo mais caro, então cerque-o de <span class="termo" title="Verificações automáticas baratas que evitam acordar o modelo à toa.">guard rails</span> baratos. Outro motivo da ordem: o agente revisa melhor com o código já compilando. <strong>Erro comum:</strong> jogar tudo no agente de uma vez ("revise e arrume os tipos e rode os testes"). Não — separe os passos. O determinístico (type check, lint, testes) faz o que é determinístico; o agente faz o que exige julgamento. Cada um no seu quadrado, e o caro por último.</p>
+
           <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-            <svg viewBox="0 0 1000 240" class="w-full h-auto" role="img" aria-label="Pipeline da action: checkout, type check e agente de review produzem um comentário no PR">
+            <svg viewBox="0 0 1000 220" class="w-full h-auto" role="img" aria-label="Funil de custo crescente: checkout barato, type check barato, review agent caro — o caro fica por último">
               <defs>
-                <linearGradient id="m55-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
-                <filter id="m55-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                <pattern id="m55-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
-                <marker id="m55-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"/></marker>
-                <marker id="m55-ahc" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"/></marker>
+                <linearGradient id="v55b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+                <filter id="v55b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v55b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
+                <marker id="v55b-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"/></marker>
               </defs>
-              <rect x="0" y="0" width="1000" height="240" fill="url(#m55-grid)"/>
-              <g fill="none" stroke="#2dd4bf" stroke-width="1.8" opacity="0.55">
-                <path d="M196,120 C300,120 320,40 452,40" marker-end="url(#m55-ah)"/>
-                <path d="M196,120 C300,120 320,80 452,80" marker-end="url(#m55-ah)"/>
-                <path d="M196,120 L452,120" marker-end="url(#m55-ah)"/>
-                <path d="M196,120 C300,120 320,160 452,160" marker-end="url(#m55-ah)"/>
-                <path d="M196,120 C300,120 320,200 452,200" marker-end="url(#m55-ah)"/>
-              </g>
-              <g fill="none" stroke="#38bdf8" stroke-width="1.8" opacity="0.5">
-                <path d="M588,40 C700,40 720,120 800,120" marker-end="url(#m55-ahc)"/>
-                <path d="M588,80 C700,80 720,120 800,120" marker-end="url(#m55-ahc)"/>
-                <path d="M588,120 L800,120" marker-end="url(#m55-ahc)"/>
-                <path d="M588,160 C700,160 720,120 800,120" marker-end="url(#m55-ahc)"/>
-                <path d="M588,200 C700,200 720,120 800,120" marker-end="url(#m55-ahc)"/>
-              </g>
-              <g filter="url(#m55-glow)"><rect x="40" y="88" width="156" height="64" rx="14" fill="#0c1f1c" stroke="url(#m55-grad)" stroke-width="2.5"/></g>
-              <text x="118" y="116" text-anchor="middle" fill="#2dd4bf" font-family="Inter,sans-serif" font-weight="600" font-size="17">PR</text>
-              <text x="118" y="136" text-anchor="middle" fill="#9bece0" font-family="Inter,sans-serif" font-size="11.5">origem</text>
-              <g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
-                <g class="wf-a"><rect x="452" y="24" width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="520" y="45" text-anchor="middle" fill="#bfe6ff">etapa</text></g>
-                <g class="wf-a"><rect x="452" y="64" width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="520" y="85" text-anchor="middle" fill="#bfe6ff">etapa</text></g>
-                <g class="wf-a"><rect x="452" y="104" width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="520" y="125" text-anchor="middle" fill="#bfe6ff">etapa</text></g>
-                <g class="wf-a"><rect x="452" y="144" width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="520" y="165" text-anchor="middle" fill="#bfe6ff">etapa</text></g>
-                <g class="wf-a"><rect x="452" y="184" width="136" height="32" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="520" y="205" text-anchor="middle" fill="#bfe6ff">etapa …</text></g>
-              </g>
-              <g filter="url(#m55-glow)"><rect x="800" y="88" width="160" height="64" rx="14" fill="#0c1f1c" stroke="url(#m55-grad)" stroke-width="2.5"/></g>
-              <text x="880" y="124" text-anchor="middle" fill="#2dd4bf" font-family="Inter,sans-serif" font-weight="600" font-size="15">comentário</text>
+              <rect x="0" y="0" width="1000" height="220" fill="url(#v55b-grid)"/>
+              <rect x="40" y="80" width="200" height="70" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="140" y="110" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="15">1 · checkout</text><text x="140" y="132" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12">custo ~0</text>
+              <path d="M240,115 L300,115" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#v55b-ah)"/>
+              <rect x="302" y="80" width="220" height="70" rx="14" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="412" y="110" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="15">2 · type check</text><text x="412" y="132" text-anchor="middle" fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12">barato · determinístico</text>
+              <path d="M522,115 L582,115" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#v55b-ah)"/>
+              <g filter="url(#v55b-glow)"><rect x="584" y="72" width="370" height="86" rx="16" fill="#0c1f1c" stroke="url(#v55b-grad)" stroke-width="2.5"/></g>
+              <text x="769" y="106" text-anchor="middle" fill="#2dd4bf" font-family="Inter,sans-serif" font-weight="700" font-size="16">3 · review agent</text><text x="769" y="130" text-anchor="middle" fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12.5">CARO (tokens) — por último, só se passou</text>
+              <text x="500" y="195" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5">Guard rails baratos primeiro; o modelo só entra no fim. (módulo 1-5: economia de tokens)</text>
             </svg>
           </div>
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
-          </div>
-        </section>
 
-        <section id="topico-3" data-inema-topic="modulo-5-5#topico-3" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">3</span>
-              <h2 class="text-2xl font-bold">💬 Comentar no PR</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-          <p data-inema-block="m5-5-t3-p1" class="text-neutral-300 mb-6 leading-relaxed">No fim, o agente <strong class="text-teal-400">comenta no PR</strong> — "type check passou, tá limpo, tá tudo certo pra mim". Você revisa o comentário, não o processo.</p>
-          <div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6 mb-6">
-            <h3 class="text-lg font-semibold text-blue-400 mb-3 flex items-center"><span class="mr-2">📊</span> Saída da action</h3>
-            <ul class="space-y-2 text-neutral-300">
-              <li>Resultado das checagens.</li>
-              <li>Comentário do agente.</li>
-              <li>Sinal verde (ou vermelho) pra você.</li>
-            </ul>
-          </div>
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
-          </div>
-        </section>
+          <img src="assets/img/m5-5-2.png" alt="Ilustração: três estações de inspeção em sequência, a última destacada com brilho indicando custo maior" class="w-full h-auto rounded-xl mb-6" loading="lazy">
 
-        <section id="topico-4" data-inema-topic="modulo-5-5#topico-4" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">4</span>
-              <h2 class="text-2xl font-bold">⏰ Cron diário rotativo</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-          <p data-inema-block="m5-5-t4-p1" class="text-neutral-300 mb-6 leading-relaxed">Em paralelo, um <strong class="text-teal-400">cron diário</strong> roda uma security review, checando uma <strong class="text-teal-400">parte diferente do repo</strong> a cada dia. Modelo barato, cobertura contínua.</p>
-          <div class="bg-dark-900 rounded-xl border border-dark-600 p-5 mb-6">
-            <div class="text-xs text-neutral-500 mb-2">security-cron.yml</div>
-            <pre class="font-mono text-sm text-neutral-300 overflow-x-auto whitespace-pre">on: schedule: cron &quot;0 3 * * *&quot;
-jobs: security:
-  - escolhe um módulo (rotativo)
-  - agente revisa em busca de falhas
-  - abre issue se achar algo</pre>
-          </div>
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
-          </div>
-        </section>
-
-        <section id="topico-5" data-inema-topic="modulo-5-5#topico-5" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">5</span>
-              <h2 class="text-2xl font-bold">🧾 Estruturar dados do explore</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-          <p data-inema-block="m5-5-t5-p1" class="text-neutral-300 mb-6 leading-relaxed">O agente de exploração pode <strong class="text-teal-400">retornar dados estruturados</strong>: "dá pra corrigir já?" ou "precisa de humano?". Isso alimenta a decisão automática do fluxo.</p>
-          <div class="bg-primary/10 rounded-xl border border-primary/30 p-6 mb-6">
-            <h3 class="text-lg font-semibold text-primary mb-3 flex items-center"><span class="mr-2">💡</span> Dica prática</h3>
-            <p class="text-neutral-300">Faça o explore devolver um JSON ("trivial? precisa humano?"). O fluxo decide sozinho o que segue automático e o que sobe pra você.</p>
-          </div>
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
-          </div>
-        </section>
-
-        <section id="topico-6" data-inema-topic="modulo-5-5#topico-6" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">6</span>
-              <h2 class="text-2xl font-bold">🚥 Auto-merge com cautela</h2>
-            </div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-          <p data-inema-block="m5-5-t6-p1" class="text-neutral-300 mb-6 leading-relaxed">Dá para auto-mergear o <strong class="text-teal-400">trivial</strong> (ex.: refactor sem mudança de comportamento) — mas amostre o que o agente aprova. Quem revisa o aprovador é você.</p>
-          <div data-inema-check="modulo-5-5#q1" class="inema-check mt-8 bg-dark-800 border border-dark-600 rounded-xl p-6">
-            <p class="font-medium mb-4">Auto-recuperação (opcional): o que a action de review faz?</p>
+          <div data-inema-check="modulo-5-5#q1" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
+            <p class="font-medium mb-4">Recuperação rápida: por que o <em>type check</em> vem antes do <em>review agent</em>?</p>
             <div class="inema-check-options space-y-2">
-              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Faz auto-merge cego de tudo.</button>
-              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Roda um cron caríssimo sem critério.</button>
-              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Faz checkout, roda checagens e o agente comenta o resultado no PR.</button>
+              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Porque o type check é o passo mais caro e precisa de prioridade.</button>
+              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">É uma checagem barata e determinística que pega erros óbvios antes de gastar tokens com o agente.</button>
+              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Porque o agente não consegue ler código TypeScript.</button>
             </div>
             <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
           </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">Em 1 frase:</strong> baratos e determinísticos primeiro (checkout, type check), o agente caro só por último — e só se o básico passou.</p></div>
+
           <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors">
-              <span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span>
-            </button>
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
           </div>
         </section>
 
+        <!-- TÓPICO 3 -->
+        <section id="topico-3" data-inema-topic="modulo-5-5#topico-3" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">💬 Comentar no PR</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> o inspetor da fábrica não guarda o parecer na cabeça — ele cola um bilhete visível na peça: "ok" ou "atenção no ponto X". Quem chegar depois lê o bilhete. O comentário no PR é esse bilhete: o resultado do agente fica <em>onde o time olha</em>, não perdido num log.</p></div>
+
+          <p data-inema-block="m5-5-t3-p1" class="text-neutral-300 mb-4 leading-relaxed">O passo final da review action é <strong class="text-teal-400">comentar no próprio PR</strong> — Pocock diz que o agente "responde 'looks good'" ali mesmo. Por que comentar no PR e não num e-mail ou num chat? Porque o PR é onde a decisão acontece: o comentário fica colado ao diff, ao lado da discussão, e o GitHub já avisa quem está acompanhando. É a saída natural do AFK na nuvem — o agente trabalha sozinho e <strong>deixa o parecer visível</strong>, como faz o bot <code>github-actions</code> que posta um "Triage" com TL;DR e dificuldade (você viu isso no módulo 4-4, Loops × Filas).</p>
+
+          <p data-inema-block="m5-5-t3-p2" class="text-neutral-300 mb-6 leading-relaxed">Aqui mora o segundo valor do review (módulo 4-6): o comentário não serve só de <strong>gate</strong> ("isto é perigoso, segura") — ele te dá <span class="termo" title="A capacidade de ver o que o sistema está fazendo por dentro.">observabilidade</span>. Você lê o que o agente achou e enxerga seu próprio encanamento. <strong>Erro comum:</strong> deixar o agente aprovar/reprovar em silêncio. Se o parecer não aparece no PR, você perde a chance de melhorar o harness com o tempo — e cai naquela armadilha do "quem revisa a IA que diz que está tudo bem?". O comentário visível é o que mantém você no comando.</p>
+
+          <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 230" class="w-full h-auto" role="img" aria-label="O agente termina o review e posta um comentário no PR, visível para o time, com um parecer estruturado">
+              <defs>
+                <linearGradient id="v55c-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+                <filter id="v55c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v55c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
+                <marker id="v55c-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"/></marker>
+              </defs>
+              <rect x="0" y="0" width="1000" height="230" fill="url(#v55c-grid)"/>
+              <g filter="url(#v55c-glow)"><rect x="50" y="85" width="200" height="64" rx="14" fill="url(#v55c-grad)" stroke="#14b8a6" stroke-width="2.5"/></g>
+              <text x="150" y="113" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-weight="700" font-size="15">review agent</text>
+              <text x="150" y="134" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-size="11.5">terminou de revisar</text>
+              <path d="M250,117 L320,117" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#v55c-ah)"/>
+              <rect x="322" y="40" width="630" height="155" rx="16" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/>
+              <circle cx="350" cy="70" r="11" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
+              <text x="372" y="75" fill="#2dd4bf" font-family="Inter,sans-serif" font-weight="600" font-size="14">🤖 github-actions · comentou no PR #128</text>
+              <g font-family="Inter,sans-serif" font-size="12.5">
+                <text x="350" y="108" fill="#bfe6ff" font-weight="600">✅ Looks good — type check passou</text>
+                <text x="350" y="132" fill="#9fe7c8">⚠️ 1 ponto: validar input no endpoint /login</text>
+                <text x="350" y="156" fill="#9ca3af">visível pro time · colado ao diff · te dá observabilidade</text>
+              </g>
+            </svg>
+          </div>
+
+          <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+            <h3 class="font-semibold text-blue-400 mb-3">🔬 Exemplo resolvido: um PR passa pela esteira inteira</h3>
+            <p class="text-neutral-300 text-sm mb-3">Dev abre o PR #128 ("adiciona endpoint de login"). A review action dispara:</p>
+            <ol class="text-sm text-neutral-300 space-y-2 list-decimal list-inside">
+              <li><strong class="text-blue-400">checkout</strong> — a Action baixa a branch do PR na nuvem (sua máquina nem ligada).</li>
+              <li><strong class="text-blue-400">type check</strong> — <code>tsc</code> roda em 12s. Passa. (Se falhasse, o agente nem seria chamado.)</li>
+              <li><strong class="text-blue-400">review agent</strong> — o agente lê o diff com o prompt local de review. Acha um input não validado.</li>
+              <li><strong class="text-blue-400">comenta no PR</strong> — posta: "✅ type check ok; ⚠️ validar input em /login". O dev vê na hora.</li>
+            </ol>
+            <p class="text-neutral-300 text-sm mt-3">Resultado: revisão em ~2 min, sem você abrir o laptop, e o parecer fica registrado no lugar certo.</p>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">Em 1 frase:</strong> o parecer do agente vai pro PR — onde o time olha — pra servir de gate e te dar observabilidade do seu sistema.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- TÓPICO 4 -->
+        <section id="topico-4" data-inema-topic="modulo-5-5#topico-4" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🗓️ Cron diário rotativo</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> "se alguém vive roubando sua bicicleta, talvez compre um cadeado." Em vez de só corrigir um problema de segurança quando ele explode, você bota um guarda que faz uma ronda todo dia — e cada dia ele inspeciona uma rua diferente do bairro. Em um mês, o bairro inteiro foi revisado, sem ninguém se cansar.</p></div>
+
+          <p data-inema-block="m5-5-t4-p1" class="text-neutral-300 mb-4 leading-relaxed">A segunda automação é a joia do módulo. Pocock conta que o modelo Fable achou bugs profundos e falhas de segurança que outros não viram — mas frisa: <em>não é mágica do modelo</em>. "Você descobriria esses bugs com modelos mais baratos se olhasse nos lugares certos e desse o prompt/harness certo." A receita: <strong class="text-teal-400">um cron diário de security review</strong> que "cada dia checa uma parte nova do repo, com um modelo relativamente simples". O <span class="termo" title="Agendador: roda algo num horário fixo, ex. todo dia às 9h.">cron</span> é o agendador; o "rotativo" é o truque — você não revisa o repo inteiro todo dia (caro e lento), você revisa <strong>uma fatia por dia</strong>, girando pelo repositório.</p>
+
+          <p data-inema-block="m5-5-t4-p2" class="text-neutral-300 mb-6 leading-relaxed">Por que rotativo funciona tão bem? Porque dilui o custo no tempo e cobre tudo eventualmente. Repo com 30 pastas? Uma pasta por dia → cobertura total em 30 dias, com um modelo barato. E o ganho real não é só achar o bug: é a lição. "O que você aprendeu? Que há problemas de segurança no seu código — você deveria ter algo que roda e checa por mais no futuro." Isso é o coração dos <span class="termo" title="Sistemas que detectam suas próprias falhas e geram melhorias.">sistemas auto-melhoráveis</span> (módulo 4-5): você não revisa só o código, revisa o <strong>sistema que produz o código</strong>. <strong>Erro comum:</strong> rodar o security review no repo inteiro de uma vez — fica caro, demora, e você acaba desligando. A rotação é o que torna o hábito sustentável.</p>
+
+          <p data-inema-block="m5-5-t4-p3" class="text-neutral-300 mb-6 leading-relaxed">A linha de <span class="termo" title="A sintaxe que diz ao cron quando rodar: minuto, hora, dia, mês, dia-da-semana.">crontab</span> é o coração técnico disso — e a segunda peça copiável do módulo. São cinco campos — minuto, hora, dia-do-mês, mês, dia-da-semana — e o <code>*</code> significa "todo". A linha abaixo é a real que você cola no <code>schedule:</code> de uma GitHub Action pra rodar todo dia às 9h UTC. Copie:</p>
+
+          <div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+              <span class="text-xs text-teal-400 font-mono">.github/workflows/security.yml — crontab do security review diário</span>
+              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors">copiar</button>
+            </div>
+            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># campos do cron:  minuto  hora  dia-do-mês  mês  dia-da-semana
+# "0 9 * * *"  =  todo dia às 09:00 UTC
+on:
+  schedule:
+    - cron: "0 9 * * *"   # security review diário, fatia rotativa do repo</pre>
+          </div>
+
+          <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 220" class="w-full h-auto" role="img" aria-label="Um cron diário gira por fatias do repositório: cada dia checa uma pasta diferente, cobrindo tudo ao longo do mês">
+              <defs>
+                <linearGradient id="v55d-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+                <filter id="v55d-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v55d-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
+              </defs>
+              <rect x="0" y="0" width="1000" height="220" fill="url(#v55d-grid)"/>
+              <g filter="url(#v55d-glow)"><circle cx="500" cy="110" r="58" fill="#0c1f1c" stroke="url(#v55d-grad)" stroke-width="3"/></g>
+              <text x="500" y="105" text-anchor="middle" fill="#2dd4bf" font-family="Inter,sans-serif" font-weight="700" font-size="15">cron</text>
+              <text x="500" y="124" text-anchor="middle" fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11">0 9 * * *</text>
+              <g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+                <g><rect x="120" y="30" width="150" height="40" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="195" y="55" text-anchor="middle" fill="#bfe6ff">dia 1 · /auth</text></g>
+                <g><rect x="120" y="150" width="150" height="40" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="195" y="175" text-anchor="middle" fill="#bfe6ff">dia 2 · /api</text></g>
+                <g><rect x="730" y="30" width="150" height="40" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="805" y="55" text-anchor="middle" fill="#bfe6ff">dia 3 · /db</text></g>
+                <g><rect x="730" y="150" width="150" height="40" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="805" y="175" text-anchor="middle" fill="#bfe6ff">dia N · …</text></g>
+              </g>
+              <g fill="none" stroke="#34d399" stroke-width="1.8" opacity="0.55"><path d="M270,50 C360,60 410,90 444,100"/><path d="M270,170 C360,160 410,130 444,120"/><path d="M730,50 C640,60 590,90 556,100"/><path d="M730,170 C640,160 590,130 556,120"/></g>
+              <text x="500" y="208" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5">Uma fatia por dia, modelo barato → repo inteiro coberto ao longo do mês.</text>
+            </svg>
+          </div>
+
+          <img src="assets/img/m5-5-3.png" alt="Ilustração: um guarda de segurança robótico fazendo ronda diária por setores diferentes de um repositório de código" class="w-full h-auto rounded-xl mb-6" loading="lazy">
+
+          <div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">Em 1 frase:</strong> um cron diário revisa uma fatia rotativa do repo com modelo barato — compra o cadeado antes de roubarem a bike de novo.</p></div>
+
+          <details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+            <summary class="cursor-pointer font-medium text-teal-400">Indo mais fundo (opcional): como decidir QUAL fatia checar hoje?</summary>
+            <p class="text-sm text-neutral-300 mt-3">Dois jeitos simples. (1) <strong>Por calendário:</strong> use o dia do mês para indexar uma lista de pastas (dia 1 → pasta 0, dia 2 → pasta 1…). (2) <strong>Por prioridade:</strong> mantenha uma fila das pastas "mais quentes" (mais commits recentes, ou que tocam auth/pagamento) e gire por ela primeiro. O importante é que a fatia seja <em>pequena e diferente a cada dia</em> — assim o modelo barato dá conta e o custo fica plano. Pocock também sugere achar a <strong>causa raiz</strong>: por que esse bug viveu tanto tempo sem você notar? A resposta vira a próxima melhoria do sistema.</p>
+          </details>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- TÓPICO 5 -->
+        <section id="topico-5" data-inema-topic="modulo-5-5#topico-5" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🧱 Estruturar dados do explore</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> o detetive volta da investigação. Se ele te conta a história num parágrafo enrolado, você tem que ler tudo pra decidir. Mas se ele entrega um <em>formulário preenchido</em> — "Grave? Sim. Dá pra corrigir sozinho? Sim. Confiança? 90%" — você decide em 2 segundos, e até um robô consegue ler. O segredo do AFK é fazer o agente entregar o formulário, não a história.</p></div>
+
+          <p data-inema-block="m5-5-t5-p1" class="text-neutral-300 mb-4 leading-relaxed">Pocock descreve o fluxo completo do <span class="termo" title="A fase em que o agente investiga o problema antes de agir.">explore</span>: "bug de telemetria (Sentry) → cria issue → label <code>explore</code> → o agente retorna <strong>dado estruturado</strong> (dá pra corrigir já ou precisa de humano?) → implementa → revisa → tag <code>auto-merge</code> ou pinga o humano." O ponto-chave é o <span class="termo" title="Resposta em formato fixo (campos), legível por máquina.">structured output</span>: em vez de o agente devolver um textão, ele devolve campos fixos — gravidade, se é auto-corrigível, confiança. Por quê? Porque um campo "auto-corrigível: sim/não" é algo que <strong>outro programa consegue ler e usar pra decidir o próximo passo</strong> sozinho. Texto solto, não.</p>
+
+          <p data-inema-block="m5-5-t5-p2" class="text-neutral-300 mb-6 leading-relaxed">É o que liga a fila inteira (módulo 4-4): a issue ganha labels (<code>agent:explore</code> → <code>agent:in-progress</code>), o agente faz a triagem AFK e devolve o dado estruturado, e esse dado decide o roteamento — corrige já, ou empurra o <span class="termo" title="Ponto onde uma pessoa precisa aprovar antes de seguir.">human-in-the-loop checkpoint</span> mais pra frente. "Push human-in-the-loop checkpoints further toward the final output." <strong>Erro comum:</strong> deixar o agente responder em prosa e tentar fazer um regex adivinhar se ele aprovou. Frágil. Peça JSON com campos definidos — assim a automação encadeia sem ambiguidade.</p>
+
+          <div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+              <span class="text-xs text-teal-400 font-mono">structured output do explore (o agente devolve isto)</span>
+              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors">copiar</button>
+            </div>
+            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">{
+  "issue": 795,
+  "severity": "high",
+  "auto_fixable": true,
+  "confidence": 0.9,
+  "root_cause": "input não validado em /login",
+  "suggested_label": "agent:implement",
+  "needs_human": false
+}</pre>
+          </div>
+
+          <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 210" class="w-full h-auto" role="img" aria-label="O agente explore devolve um objeto estruturado; um roteador lê os campos e decide entre auto-corrigir ou chamar o humano">
+              <defs>
+                <linearGradient id="v55e-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+                <filter id="v55e-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v55e-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
+                <marker id="v55e-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"/></marker>
+              </defs>
+              <rect x="0" y="0" width="1000" height="210" fill="url(#v55e-grid)"/>
+              <g filter="url(#v55e-glow)"><rect x="40" y="75" width="200" height="64" rx="14" fill="url(#v55e-grad)" stroke="#14b8a6" stroke-width="2.5"/></g>
+              <text x="140" y="103" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-weight="700" font-size="15">agente explore</text>
+              <text x="140" y="123" text-anchor="middle" fill="#06281d" font-family="Inter,sans-serif" font-size="11">investiga a issue</text>
+              <path d="M240,107 L300,107" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#v55e-ah)"/>
+              <rect x="302" y="58" width="250" height="98" rx="14" fill="#0c1f1c" stroke="#2dd4bf" stroke-width="2"/>
+              <text x="427" y="82" text-anchor="middle" fill="#2dd4bf" font-family="Inter,sans-serif" font-weight="600" font-size="13">dado estruturado</text>
+              <g font-family="Inter,sans-serif" font-size="11.5" fill="#bfe6ff"><text x="320" y="106">severity: high</text><text x="320" y="126">auto_fixable: true</text><text x="320" y="146">needs_human: false</text></g>
+              <path d="M552,107 L612,107" fill="none" stroke="#2dd4bf" stroke-width="2.2" marker-end="url(#v55e-ah)"/>
+              <rect x="614" y="40" width="346" height="58" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="787" y="74" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="14">auto_fixable → implementa</text>
+              <rect x="614" y="116" width="346" height="58" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="787" y="150" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="600" font-size="14">needs_human → pinga o humano</text>
+            </svg>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">Em 1 frase:</strong> faça o explore devolver campos (JSON), não prosa — assim a automação lê, decide e encadeia sozinha.</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- TÓPICO 6 -->
+        <section id="topico-6" data-inema-topic="modulo-5-5#topico-6" class="mb-16">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">⚠️ Auto-merge com cautela</h2></div>
+            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+          </div>
+
+          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> um portão automático que abre sozinho é uma maravilha — até o dia em que abre pro carro errado. A solução não é trancar o portão pra sempre; é colocar condições claras (só abre pra placa cadastrada, de dia, com o sensor ok). Auto-merge é esse portão: ótimo com gates, perigoso solto.</p></div>
+
+          <p data-inema-block="m5-5-t6-p1" class="text-neutral-300 mb-4 leading-relaxed">No fim do fluxo, o agente "tag <span class="termo" title="Juntar o PR ao código principal sem clique humano.">auto-merge</span> ou pinga o humano". Auto-merge é o ápice do AFK: o PR entra no código principal <strong>sem ninguém clicar</strong>. Mas é também o lugar mais perigoso — por isso o nome do tópico é "com cautela". Pocock insiste no objetivo certo: "<em>push</em> human-in-the-loop checkpoints further toward the final output" — empurre o ponto de aprovação pra frente, <strong>removendo</strong> checkpoints onde dá, <strong>com cuidado</strong>. Não é tirar o humano de tudo; é tirá-lo de onde ele não agrega.</p>
+
+          <p data-inema-block="m5-5-t6-p2" class="text-neutral-300 mb-6 leading-relaxed">Onde dá pra auto-mergear com tranquilidade? Quando "o PR é só refactor interno, não muda comportamento — a IA diz 'não precisa revisar'". Mas aí vem a pergunta de ouro de Pocock: <em>"who reviews the AI that says it's fine?"</em> (quem revisa a IA que diz que está tudo bem?). A resposta: você precisa <strong>amostrar</strong> alguns PRs que o agente aprovou sozinho, pra calibrar a confiança no tempo. "We're reviewing not just the code, but the SYSTEM that produces the code." <strong>Erro comum:</strong> ligar auto-merge em tudo no dia 1. Comece estreito (só os campos <code>auto_fixable: true</code> + <code>confidence ≥ 0.9</code> + type check verde), audite uns dias, e só então amplie. Cautela aqui é o que mantém o sistema confiável.</p>
+
+          <div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+            <svg viewBox="0 0 1000 220" class="w-full h-auto" role="img" aria-label="Gate de auto-merge: três condições precisam ser verdadeiras para mergear sozinho, senão pinga o humano">
+              <defs>
+                <linearGradient id="v55f-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+                <filter id="v55f-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <pattern id="v55f-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#14b8a6" opacity="0.12"/></pattern>
+                <marker id="v55f-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"/></marker>
+              </defs>
+              <rect x="0" y="0" width="1000" height="220" fill="url(#v55f-grid)"/>
+              <g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+                <rect x="40" y="20" width="220" height="38" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="150" y="44" text-anchor="middle" fill="#bfe6ff">type check verde</text>
+                <rect x="40" y="86" width="220" height="38" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="150" y="110" text-anchor="middle" fill="#bfe6ff">confidence ≥ 0.9</text>
+                <rect x="40" y="152" width="220" height="38" rx="9" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="150" y="176" text-anchor="middle" fill="#bfe6ff">só refactor interno</text>
+              </g>
+              <g fill="none" stroke="#34d399" stroke-width="1.8" opacity="0.6"><path d="M260,39 C360,55 400,95 452,105" marker-end="url(#v55f-ah)"/><path d="M260,105 L452,107" marker-end="url(#v55f-ah)"/><path d="M260,171 C360,155 400,115 452,109" marker-end="url(#v55f-ah)"/></g>
+              <g filter="url(#v55f-glow)"><rect x="454" y="80" width="150" height="58" rx="13" fill="#0c1f1c" stroke="url(#v55f-grad)" stroke-width="2.5"/></g>
+              <text x="529" y="106" text-anchor="middle" fill="#2dd4bf" font-family="Inter,sans-serif" font-weight="700" font-size="15">GATE</text>
+              <text x="529" y="126" text-anchor="middle" fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11">todas verdadeiras?</text>
+              <path d="M604,95 C660,80 700,65 740,60" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#v55f-ah)"/>
+              <path d="M604,123 C660,138 700,150 740,156" fill="none" stroke="#9ca3af" stroke-width="2" marker-end="url(#v55f-ah)"/>
+              <rect x="742" y="36" width="218" height="48" rx="12" fill="#0e2018" stroke="#34d399" stroke-width="2"/><text x="851" y="65" text-anchor="middle" fill="#34d399" font-family="Inter,sans-serif" font-weight="600" font-size="13">sim → auto-merge</text>
+              <rect x="742" y="134" width="218" height="48" rx="12" fill="#1a1010" stroke="#f87171" stroke-width="2"/><text x="851" y="163" text-anchor="middle" fill="#fca5a5" font-family="Inter,sans-serif" font-weight="600" font-size="13">não → pinga o humano</text>
+            </svg>
+          </div>
+
+          <div data-inema-check="modulo-5-5#q2" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
+            <p class="font-medium mb-4">Recuperação rápida: qual é a postura certa do Pocock sobre auto-merge?</p>
+            <div class="inema-check-options space-y-2">
+              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Ligar auto-merge em todos os PRs no dia 1 para máximo AFK.</button>
+              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Empurrar o checkpoint humano pra frente com cuidado, com gates claros e amostrando alguns PRs aprovados.</button>
+              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Nunca usar auto-merge — sempre revisar tudo manualmente.</button>
+            </div>
+            <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
+          </div>
+
+          <div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">Em 1 frase:</strong> auto-merge é um portão automático — ótimo com gates claros, e você ainda amostra "quem revisa a IA que diz que está tudo bem?".</p></div>
+
+          <div class="flex justify-start mt-6">
+            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
+          </div>
+        </section>
+
+        <!-- RESUMO -->
         <section class="mb-12">
           <div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
             <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumo do Módulo</h2>
             <div class="space-y-4 mb-8">
-              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Esqueleto da Action</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">checkout → type check → review</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Comentar no PR</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Cron diário rotativo</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Estruturar dados do explore</strong></div></div>
-              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Auto-merge com cautela</strong></div></div>
+              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">A Action é uma esteira na nuvem</strong><span class="text-neutral-400"> — gatilho (on:) → job → steps. Sua máquina pode estar desligada.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">checkout → type check → review agent → comenta</strong><span class="text-neutral-400"> — baratos primeiro, agente caro por último; parecer no PR.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Cron diário rotativo</strong><span class="text-neutral-400"> — uma fatia por dia, modelo barato; "compre o cadeado". Revise o sistema, não só o código.</span></div></div>
+              <div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Structured output + auto-merge com cautela</strong><span class="text-neutral-400"> — campos (JSON) decidem o roteamento; gates claros, e amostre os PRs aprovados.</span></div></div>
             </div>
-            <div class="bg-dark-800/50 rounded-lg p-4 mb-8">
-              <h3 class="font-semibold text-teal-400 mb-2">Próximo:</h3>
-              <p class="text-neutral-300">5.6 — Review fluido + onde achar.</p>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-4">
-              <a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a>
-              <a href="modulo-5-6.html" class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">Próximo Módulo →</a>
-            </div>
+            <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-teal-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">5.6 — Review fluido + onde achar: vídeo walkthrough com TTS, otimizar o review humano, e onde pegar skills prontas (mattpocock/skills, aihero.dev/skills).</p></div>
+            <div class="flex flex-col sm:flex-row gap-4"><a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a><a href="modulo-5-6.html" class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors">Próximo Módulo →</a></div>
           </div>
         </section>
 
@@ -408,25 +615,23 @@ jobs: security:
     </div>
   </div>
 
-  <footer class="border-t border-dark-600 py-8 mt-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
-      <p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p>
-    </div>
-  </footer>
+  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p></div></footer>
 
   <script>
-    function toggleTopic(button) { var ti=button.closest('.topic-item'); if(!ti) return; var e=ti.querySelector('.topic-explanation'); var mc=button.closest('.bg-dark-800'); if(mc) mc.querySelectorAll('.topic-explanation.active').forEach(function(x){if(x!==e)x.classList.remove('active');}); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active').toString());} }
-    (function(){ var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}} s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
     function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
   </script>
   <script src="../../assets/learn.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
       if (window.INEMA && INEMA.registerCheck) {
-        INEMA.registerCheck('modulo-5-5#q1', { answer: 2, explain: { 0: 'Auto-merge cego é justamente o que evitar.', 1: 'Cron caro não é o ponto — o ponto é a cadência.', 2: 'Isso: a action checa o PR e o agente comenta o resultado.' } });
+        INEMA.registerCheck('modulo-5-5#q1', { answer: 1, explain: { 0: 'Ao contrário — o type check é o passo barato; o agente é o caro.', 1: 'Isso! Guard rail barato e determinístico antes de gastar tokens com o agente.', 2: 'Não — o agente lê código sim; a questão é custo e ordem.' } });
+        INEMA.registerCheck('modulo-5-5#q2', { answer: 1, explain: { 0: 'Perigoso — auto-merge em tudo no dia 1 é o erro comum; comece estreito.', 1: 'Exato! Empurrar o checkpoint com cuidado, gates claros e amostrar PRs aprovados.', 2: 'Cauteloso demais — Pocock quer remover checkpoints onde dá, com cuidado, não nunca.' } });
       }
     });
   </script>
