@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>4.4 Loops × Filas | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'amber' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'amber');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #fbbf24; cursor: help; font-weight: 600; color: #fcd34d; }
+    html:not(.dark) .termo { color: #92400e; border-color: #d97706; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217,119,6,0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217,119,6,0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217,119,6,0.18); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha4/modulo-4-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha4/modulo-4-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha4/modulo-4-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha4/modulo-4-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-4-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Ruta 4</a><span>/</span>
+<span class="text-amber-400">Módulo 4.4 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MÓDULO 4.4 · "MODO ENSEÑANZA"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧮 Bucles × Colas</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Oíste hablar del "Ralph loop" — un <code class="text-amber-400">while</code> que llama al agente una y otra vez. Funciona, pero Pocock prefiere otra idea: <strong class="text-amber-400">cola, no loop</strong>. Aquí entiendes la diferencia, ves la estructura real del loop y aprendes por qué pensar en <em>backlog de tareas</em> te deja al mando — como un rey medieval que prioriza, no uno que da órdenes a ciegas.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~45</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">4.1-4.3</div><div class="text-xs text-neutral-400">Base</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Práctica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 4.4" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:4-4" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-1">1. El bucle Ralph (Huntley)</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-2">2. Por qué loop ≠ respuesta</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-3">3. La cola de tareas</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-4">4. Clasificación y alcance</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-5">5. El rey medieval</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-6">6. Múltiples nodos en la cola</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-amber-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (los términos nuevos de este módulo)</h2>
+<p class="text-sm text-neutral-400 mb-4">La ruta 1 ya definió «modelo», «agente», «prompt» y «harness». Aquí quedan solo los términos <strong>nuevos</strong> de ciclos y colas; apréndelos antes de seguir:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Loop (bucle)</strong> — repetir la misma acción muchas veces seguidas. En código, un <code class="text-amber-400">while</code> hace esto: «mientras X siga siendo verdad, repite».</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Ralph loop</strong> — técnica de Geoffrey Huntley (artículo del 14/jul): un <code class="text-amber-400">while</code> en bash que llama a <span class="termo" title="Agente de Anthropic para programar, que se ejecuta en la terminal.">Claude Code</span> con el mismo prompt una y otra vez, sin parar.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Cola (queue)</strong> — una lista de tareas pendientes, ordenadas. Quien termina una toma la siguiente. Es el <strong>backlog</strong>.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Backlog</strong> — el conjunto de tareas, errores e ideas que aún no se han atendido. La «lista de tareas pendientes» del proyecto.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Clasificación</strong> — revisar una tarea recibida y decidir: ¿es trivial? ¿es posible? ¿es prioritaria? Clasificar antes de actuar.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Nodo (node)</strong> — cada «trabajador» que toma una tarea de la cola. Puede ser un desarrollador humano o un agente. Varios nodos = trabajo en paralelo.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">AFK</strong> — <em>Away From Keyboard</em>: activas el agente y te vas; trabaja solo. Visto en el módulo 4.1.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Label</strong> — una etiqueta en un issue (p. ej., <code class="text-amber-400">agent:implement</code>) que marca el estado y activa automatizaciones.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-4-4#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🔁 El bucle Ralph (Huntley)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> una lavadora en el ciclo de centrifugado: gira, gira, gira sin parar hasta que alguien aprieta el botón. El Ralph loop es eso con IA: «activas el centrifugado» y el agente repite la misma instrucción en círculos, por su cuenta, toda la noche.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-4-t1-p1">En julio, el ingeniero <strong>Geoffrey Huntley</strong> publicó un artículo (14/jul) que se volvió viral en la comunidad: el <span class="termo" title="Un while en bash que llama a Claude Code repetidamente con el mismo prompt.">Ralph loop</span>. La idea es deliciosamente sencilla: escribes un <span class="termo" title="Bucle: repite la acción mientras la condición sea verdadera.">bucle</span> <code class="text-amber-400">while</code> en <span class="termo" title="El lenguaje de comandos de la terminal Linux/Mac.">bash</span> que llama a <span class="termo" title="El agente de programación de Anthropic, ejecutándose en la terminal.">Claude Code</span> pasando el <em>el mismo prompt</em> una y otra vez. El agente termina una pasada, el loop se reinicia y recibe la instrucción otra vez. Funciona así, en <span class="termo" title="Away From Keyboard: te vas y el agente continúa.">AFK</span>, sin que estés frente al teclado.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-4-t1-p2">El nombre "Ralph" es una broma interna (una referencia al personaje Ralph Wiggum, de Los Simpson, que hace lo simple sin pensar demasiado) — y parte de la gracia está justamente en esto: <em>brutalmente simple y aun así eficaz</em>. ¿Por qué funciona? Porque cada nueva pasada del agente empieza con contexto nuevo y vuelve a leer el estado del <span class="termo" title="Los archivos de tu proyecto: el código.">codebase</span> y da un paso más. Es la forma más directa de sacarte de la ecuación. El error común aquí es creer que "loop = magia autónoma": el loop solo repite; quien sigue haciendo el trabajo es el agente, y depende del prompt y del harness que tiene detrás.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Diagrama del Ralph loop: el mismo prompt entra en el agente, que ejecuta y vuelve al inicio del loop repetidamente" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v44a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v44a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v44a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v44a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v44a-grid)" height="240" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="200" x="60" y="90"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="160" y="118">el mismo prompt</text><text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="160" y="138">(fijo, repetido)</text>
+<g filter="url(#v44a-glow)"><rect fill="url(#v44a-grad)" height="80" rx="16" stroke="#f59e0b" stroke-width="2.5" width="200" x="400" y="80"></rect></g>
+<text fill="#3a2200" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="115">Claude Code</text><text fill="#3a2200" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="138">ejecuta 1 pasada</text>
+<rect fill="#0e2018" height="60" rx="12" stroke="#fbbf24" stroke-width="2" width="200" x="740" y="90"></rect><text fill="#fbbf24" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="840" y="118">el codebase cambia</text><text fill="#fcd34d" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="840" y="138">+1 paso</text>
+<g fill="none" opacity="0.7" stroke="#fbbf24" stroke-width="2"><path d="M260,120 L400,120" marker-end="url(#v44a-ah)"></path><path d="M600,120 L740,120" marker-end="url(#v44a-ah)"></path></g>
+<path d="M840,150 C840,210 160,210 160,150" fill="none" marker-end="url(#v44a-ah)" opacity="0.6" stroke="#fbbf24" stroke-dasharray="6 5" stroke-width="2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="206">while true: el bucle vuelve al inicio y lanza el mismo prompt otra vez</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">El bucle Ralph: uno <code>while</code> que vuelve a inyectar el mismo prompt en Claude Code indefinidamente.</p>
+</div>
+<img alt="Ilustración conceptual: un ciclo infinito de engranajes dorados que representa el bucle while llamando al agente repetidamente" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-4-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Pensar que basta con «dejar el loop funcionando» y ocurren milagros. Sin una condición de parada, sin un criterio de «listo» y sin un prompt bien hecho, el loop puede girar toda la noche repitiendo el mismo error y consumiendo tokens. El loop es el motor de repetición; la inteligencia sigue estando en tu harness.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> el Ralph loop es un <code>while</code> que llama a Claude Code con el mismo prompt una y otra vez, por su cuenta.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Para profundizar (opcional): ¿de dónde viene «Ralph»?</summary>
+<p class="text-sm text-neutral-300 mt-3">Huntley bautizó la técnica como "Ralph" en tono de broma: el enfoque es tan directo e ingenuo como el personaje que simplemente hace la tarea obvia en un loop, sin una estrategia sofisticada. La idea clave del artículo es que, contra lo que dicta la intuición, esta simplicidad bruta a veces supera a las técnicas elaboradas, siempre que el prompt y el entorno sean buenos. Es la versión de "fuerza bruta" de la automatización agéntica.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-4-4#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🎯 Por qué loop ≠ respuesta</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> quieres que alguien pinte una pared. Puedes (a) decirle a esa persona «pinta paredes para siempre» y esperar que acierte con la tuya, o (b) darle una tarea específica: «pinta esta pared de azul». La opción (b) casi siempre es mejor. Loop ≠ tarea.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-4-t2-p1">Aquí entra la postura de Pocock, y es un cambio de perspectiva importante. Reconoce que el Ralph loop es ingenioso, pero dice claramente: <em>"no necesito ejecutarlo en bucle: solo necesito que el agente AFK tome una tarea específica y la haga."</em> En otras palabras, lo que de verdad lo desbloquea no es la <strong>repetición infinita</strong>; é o <strong>AFK</strong> (el agente trabajando sin que estés presente). El loop es solo una forma — y no la mejor — de lograrlo.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-4-t2-p2">¿Por qué? Porque un único loop que intenta «hacerlo todo» no coincide con la forma en que trabajan los equipos reales. Un equipo no tiene un robot girando para siempre; tiene un <strong>backlog</strong> de tareas claras, cada una con principio, desarrollo y final. La repetición a ciegas gasta tokens, pierde el foco y dificulta decir "esto ya está listo". La respuesta correcta, según Pocock, es cambiar el verbo: en vez de <em>"hacer un bucle"</em>, piensa en <em>"tomar la siguiente tarea de la cola"</em>. La misma autonomía, mucho más control y claridad. Un error común es confundir «ejecutarse por su cuenta» (bueno: AFK) con «dar vueltas en círculos» (rara vez es lo que quieres).</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: a la izquierda, un bucle circular y vago; a la derecha, una tarea única bien definida con principio y fin" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<pattern height="32" id="v44b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v44b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v44b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v44b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="250" y="34">BUCLE ciego (enfoque difuso)</text>
+<circle cx="250" cy="120" fill="none" r="62" stroke="#b91c1c" stroke-dasharray="7 6" stroke-width="3"></circle>
+<path d="M250,58 a62,62 0 0,1 44,18" fill="none" marker-end="url(#v44b-ah)" stroke="#b91c1c" stroke-width="3"></path>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="250" y="116">¿lo hace todo?</text>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="250" y="134">¿para cuándo?</text>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="750" y="34">TAREA única (AFK, alcance claro)</text>
+<rect fill="#0e1b26" height="50" rx="10" stroke="#38bdf8" stroke-width="2" width="120" x="600" y="76"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="660" y="106">inicio</text>
+<g filter="url(#v44b-glow)"><rect fill="#0e2018" height="50" rx="10" stroke="#fbbf24" stroke-width="2.5" width="120" x="760" y="76"></rect></g><text fill="#fbbf24" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="820" y="106">listo ✓</text>
+<path d="M720,101 L760,101" fill="none" marker-end="url(#v44b-ah)" stroke="#fbbf24" stroke-width="2.4"></path>
+<text fill="#9fd9c8" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="750" y="160">"tomar una tarea específica y hacerla" — Pocock</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-4#q1">
+<p class="font-medium mb-4">Recuperación rápida: para Pocock, ¿qué realmente libera el trabajo autónomo?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Ejecutar un <code>while</code> infinito repitiendo el mismo prompt.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">El AFK: que el agente tome una tarea específica y la haga sin que estés frente al teclado.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Cambiar al modelo más caro disponible.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> lo que te desbloquea es el AFK (una tarea específica hecha sola), no la repetición infinita del loop.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-4-4#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📋 La cola de tareas</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la fila de la caja del supermercado. Las personas (tareas) llegan y se ponen en la fila. Cada operador (nodo) llama a la siguiente, la atiende, termina y llama a la siguiente. Nadie se queda «atendiendo para siempre en círculos» — se atiende a un cliente a la vez, hasta que la fila se vacía.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-4-t3-p1">La frase central de Pocock es: <em>"yo pienso en esto principalmente como <strong>colas</strong>, no loops."</em> Una <span class="termo" title="Lista ordenada de tareas pendientes por hacer: el backlog.">cola</span> es simplemente tu <span class="termo" title="Inventario de tareas, bugs e ideas pendientes.">backlog</span> de tareas. Y da el ejemplo concreto del <strong>Sand Castle</strong> (su herramienta): él mira las <span class="termo" title="Tareas/bugs registrados en GitHub: cada uno es un elemento de trabajo.">issues</span>, hace el triaje (¿es trivial? ¿es posible?), agrega el <span class="termo" title="Etiqueta en un issue que indica el estado y activa una automatización.">label</span> <code class="text-amber-400">agent:implement</code> y el agente lo implementa mediante GitHub Actions (visto en el módulo 4.3).</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-4-t3-p2">Y entonces viene la definición que organiza todo: <em>"todo el desarrollo es solo una" <strong>cola de tareas</strong>: los PM agregan tareas a la cola y tú las completas; <strong>múltiples nodos (devs) toman elementos de la cola</strong>."</em> Fíjate cómo esto describe a cualquier equipo de software del mundo, sin ninguna IA involucrada. El <span class="termo" title="Product Manager — quien define lo que hay que hacer.">PM</span> alimenta la cola; los desarrolladores consumen. La idea de Pocock es que los «nodos» ahora pueden ser <strong>agentes</strong> en lugar de (o además de) humanos. No cambias el modelo mental del equipo: solo cambias quién toma los elementos. Por eso la fila encaja de forma natural, y el loop único que «lo hace todo» no se ajusta a cómo trabajan los equipos.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Una fila de tareas: los PM agregan elementos a la izquierda, varios nodos (desarrolladores/agentes) los toman de la derecha" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v44c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<pattern height="32" id="v44c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v44c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v44c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v44c-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="50" rx="10" stroke="#38bdf8" stroke-width="2" width="110" x="40" y="90"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="95" y="112">PMs</text><text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="95" y="130">agregan</text>
+<path d="M150,115 L195,115" fill="none" marker-end="url(#v44c-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e2018" height="46" rx="9" stroke="#fbbf24" stroke-width="2" width="115" x="200" y="92"></rect><text fill="#fcd34d" text-anchor="middle" x="257" y="120">tarea #1</text>
+<rect fill="#0e2018" height="46" rx="9" stroke="#fbbf24" stroke-width="2" width="115" x="325" y="92"></rect><text fill="#fcd34d" text-anchor="middle" x="382" y="120">tarea #2</text>
+<rect fill="#0e2018" height="46" rx="9" stroke="#fbbf24" stroke-width="2" width="115" x="450" y="92"></rect><text fill="#fcd34d" text-anchor="middle" x="507" y="120">tarea #3</text>
+<rect fill="#0e2018" height="46" rx="9" stroke="#fbbf24" stroke-width="2" width="115" x="575" y="92"></rect><text fill="#fcd34d" text-anchor="middle" x="632" y="120">tarea #4</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="445" y="78">FILA (backlog) — orden de llegada / prioridad →</text>
+<path d="M690,115 L735,115" fill="none" marker-end="url(#v44c-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+<g filter="url(#v44c-glow)">
+<rect fill="url(#v44c-grad)" height="44" rx="10" stroke="#f59e0b" stroke-width="2" width="220" x="740" y="40"></rect>
+<rect fill="url(#v44c-grad)" height="44" rx="10" stroke="#f59e0b" stroke-width="2" width="220" x="740" y="98"></rect>
+<rect fill="url(#v44c-grad)" height="44" rx="10" stroke="#f59e0b" stroke-width="2" width="220" x="740" y="156"></rect>
+</g>
+<g fill="#3a2200" font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<text text-anchor="middle" x="850" y="67">nodo 1 — dev</text>
+<text text-anchor="middle" x="850" y="125">nodo 2 — agente</text>
+<text text-anchor="middle" x="850" y="183">nodo 3 — agente</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="850" y="222">varios nodos extraen elementos de la cola</text>
+</svg>
+</div>
+<img alt="Ilustración: una cinta de tareas que alimenta a varios trabajadores (humanos y agentes de IA), que toman elementos de la fila" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-4-2.png"/>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> todo desarrollo es una cola: los PM agregan, nosotros (desarrolladores o agentes) tomamos y completamos.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-4-4#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🔎 Triaje y alcance</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la sala de urgencias de un hospital. Cuando llega el paciente, la enfermera de <em>clasificación inicial</em> no lo trata en el momento — lo clasifica: leve, urgente, gravísimo. Solo después cada caso va al lugar correcto. La cola de tareas funciona igual: clasificar antes de tratar evita el desperdicio y el caos.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-4-t4-p1">Antes de que un elemento se convierta en trabajo, pasa por <span class="termo" title="Clasificar una tarea: ¿trivial? ¿posible? ¿prioritaria?">clasificación inicial</span>. En el flujo de Sand Castle, Pocock revisa cada issue y responde dos preguntas: <em>¿es trivial?</em> e <em>¿es posible?</em> — y esto ya se puede hacer en <span class="termo" title="Away From Keyboard: el agente trabaja por su cuenta.">AFK</span>. Hay una <span class="termo" title="Issue real mostrada en el video.">issue real</span> (#795 en su ejemplo), que va cambiando de etiqueta: <code class="text-amber-400">agent:explore</code> → <code class="text-amber-400">agent:in-progress</code>, mientras el bot <code class="text-amber-400">github-actions</code> publica un comentario de <strong>"Triage"</strong> con un <span class="termo" title="Too Long; Didn't Read — resumen muy breve.">TL;DR</span> y una estimación de <strong>Difficulty</strong> (dificultad).</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-4-t4-p2">¿Por qué esto importa? Porque la clasificación te da <strong>alcance</strong> — y el alcance es lo que separa una tarea «abordable» de un pedido vago. Cuando el agente recibe «implementa la issue #795, dificultad media, TL;DR: tal», tiene un objetivo claro. Compáralo con «corrige los errores» lanzado en un bucle: no hay por dónde empezar ni cómo saber cuándo terminó. El triage también filtra lo que <em>no</em> debe ir solo al agente (cosas que necesitan una decisión humana). El error común es saltarse la clasificación y volcar todo en la cola sin filtrar; así el agente trabaja duro en el elemento equivocado o tropieza con uno imposible.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Embudo de triaje: entran issues sin procesar, pasan por las preguntas ¿trivial? y ¿posible?, y salen clasificadas como agent:implement, decisión humana o descartadas" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v44d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<pattern height="32" id="v44d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v44d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v44d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v44d-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="95"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="115" y="120">issue sin procesar</text><text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="115" y="140">sin análisis</text>
+<path d="M190,125 L235,125" fill="none" marker-end="url(#v44d-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+<g filter="url(#v44d-glow)"><polygon fill="url(#v44d-grad)" points="240,55 470,55 415,125 470,195 240,195 295,125" stroke="#f59e0b" stroke-width="2.5"></polygon></g>
+<text fill="#3a2200" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="350" y="108">TRIAJE</text>
+<text fill="#3a2200" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="350" y="130">¿es trivial?</text>
+<text fill="#3a2200" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="350" y="148">¿es posible?</text>
+<g fill="none" opacity="0.7" stroke="#fbbf24" stroke-width="2"><path d="M470,90 C540,90 590,55 660,55" marker-end="url(#v44d-ah)"></path><path d="M470,125 L660,125" marker-end="url(#v44d-ah)"></path><path d="M470,160 C540,160 590,195 660,195" marker-end="url(#v44d-ah)"></path></g>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e2018" height="44" rx="10" stroke="#fbbf24" stroke-width="2.5" width="295" x="665" y="33"></rect><text fill="#fcd34d" text-anchor="middle" x="812" y="60">trivial + seguro → agent:implement</text>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="295" x="665" y="103"></rect><text fill="#bfe6ff" text-anchor="middle" x="812" y="130">necesita una decisión → tú (humano)</text>
+<rect fill="#1a1208" height="44" rx="10" stroke="#7a5a1a" stroke-width="2" width="295" x="665" y="173"></rect><text fill="#b08a3a" text-anchor="middle" x="812" y="200">imposible / vago → descarta</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="350" y="228">clasificar antes de actuar = alcance claro para cada elemento</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">La clasificación es un embudo: clasifica cada issue por <em>¿trivial?</em> e <em>¿posible?</em> antes de convertirse en trabajo.</p>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: el ciclo de vida de una issue en la cola</h3>
+<p class="text-neutral-300 text-sm mb-3">Sigue la issue <strong>#795</strong> ("el botón de exportación no funciona en Safari") avance por la fila:</p>
+<ol class="space-y-3 text-sm text-neutral-300">
+<li class="flex gap-3"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">1</span><div><strong class="text-blue-400">Llega a la cola</strong> — el PM (o un usuario) abre la issue. Estado en bruto, sin análisis.</div></li>
+<li class="flex gap-3"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">2</span><div><strong class="text-blue-400">Label <code>agent:explore</code></strong> — inicia el triage AFK. El agente investiga y el bot publica: <em>"TL;DR: bug de compatibilidad en Safari. Difficulty: baja."</em></div></li>
+<li class="flex gap-3"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">3</span><div><strong class="text-blue-400">Priorizas</strong> — ves que es trivial y seguro. Añade <code>agent:implement</code>.</div></li>
+<li class="flex gap-3"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">4</span><div><strong class="text-blue-400">Label <code>agent:in-progress</code></strong> — GitHub Actions lo implementa, abre un PR y el punto de control humano queda solo en la revisión final.</div></li>
+</ol>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> la clasificación inicial (¿trivial? ¿posible?) define un alcance claro: sin ella, el agente trabaja en el elemento equivocado.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-4-4#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">👑 El rey medieval</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un rey en una sala del trono. Los problemas llegan a la puerta todo el día: una invasión en la frontera, una cosecha perdida, una propuesta de alianza. El rey no corre hacia cada uno; <em>recibe, evalúa y prioriza</em>. Es exactamente la postura de quien dirige una fila.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-4-t5-p1">David (el entrevistador) presentó una analogía que cristaliza la diferencia entre loop y cola: el <strong>rey medieval</strong>. Piensa en un <strong>ministro en una región distante ejecutándose en bucle</strong> por su cuenta: puede salir bien o muy mal, y el rey solo se entera cuando el daño ya está hecho. Este es el enfoque de «loop»: autonomía ciega, sin priorización central. El rey sensato no quiere eso.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-4-t5-p2">El rey quiere la <strong>enfoque de cola</strong>: los problemas <em>le llegan</em> (una invasión, un hambre, una propuesta de <em>acuerdo de marca</em> — donde primero verifica su reputación antes de aceptar), y él <strong>prioriza</strong>. De 50 bugs que llegan, quizá solo 3 sean críticos, y él decide cuáles abordar ahora. La clave, en palabras de la conversación: tú sigues <strong>en el comando</strong>. La fila no te quita el poder de decisión; lo concentra en lo que importa. El loop le entrega el reino a un ministro distante; la fila mantiene la corona en tu cabeza. Error común: delegar autonomía <em>sin</em> mantener el punto de priorización: así te conviertes en un rey ausente, y el reino hace lo que quiere.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El rey en el centro recibe los problemas que llegan (invasión, hambre, brand deal) y los prioriza, en vez de delegarlos a un ministro distante en un bucle" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v44e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<pattern height="32" id="v44e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v44e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v44e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v44e-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="30"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="55">⚔️ invasión</text>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="100"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="125">🌾 hambre</text>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="170"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="195">🤝 acuerdo de marca</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#fbbf24" stroke-width="2"><path d="M210,50 C330,70 360,100 430,118" marker-end="url(#v44e-ah)"></path><path d="M210,120 L430,120" marker-end="url(#v44e-ah)"></path><path d="M210,190 C330,170 360,140 430,122" marker-end="url(#v44e-ah)"></path></g>
+<g filter="url(#v44e-glow)"><circle cx="510" cy="120" fill="url(#v44e-grad)" r="68" stroke="#f59e0b" stroke-width="2.5"></circle></g>
+<text fill="#3a2200" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="510" y="112">👑 REY</text>
+<text fill="#3a2200" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="510" y="134">prioriza (tú)</text>
+<rect fill="#0e2018" height="44" rx="10" stroke="#fbbf24" stroke-width="2" width="300" x="650" y="68"></rect><text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="800" y="95">3 críticas → atácalas ahora</text>
+<rect fill="#1a1208" height="44" rx="10" stroke="#7a5a1a" stroke-width="2" width="300" x="650" y="128"></rect><text fill="#b08a3a" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="800" y="155">47 más pequeños → esperan en la fila</text>
+<path d="M578,108 L650,92" fill="none" marker-end="url(#v44e-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+<path d="M578,134 L650,148" fill="none" marker-end="url(#v44e-ah)" stroke="#7a5a1a" stroke-width="2.2"></path>
+</svg>
+</div>
+<img alt="Ilustración: un rey medieval en el trono que recibe mensajeros con problemas y prioriza cuál atender, en estilo futurista ámbar" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-4-3.png"/>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Loop = ministro distante</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Se ejecuta solo, lejos de ti y sin priorización.</li><li>• Puede salir bien… o convertirse en un desastre silencioso.</li><li>• Solo descubres el daño al final.</li></ul></div>
+<div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-6"><h4 class="font-bold text-amber-400 mb-4">✓ Cola = rey al mando</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Llegan problemas y tú decides la prioridad.</li><li>• 50 errores, solo 3 críticos por ahora.</li><li>• Autonomía delegada, la corona en tu cabeza.</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> sé el rey que recibe y prioriza la fila, no quien entrega el reino a un ministro en un ciclo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-4-4#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🕸️ Múltiples nodos en la cola</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> una cocina de restaurante concurrido. Hay una sola fila de pedidos (la comanda), pero varios cocineros. Cada uno toma el siguiente pedido, lo prepara y lo entrega. Más cocineros = la misma fila se vacía más rápido, sin que nadie estorbe a los demás.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-4-t6-p1">Al cerrar el módulo: la mayor ventaja de pensar en una cola es que escala con <strong>múltiples nodos</strong>. Recuerda la frase de Pocock: <em>"varios nodos (desarrolladores) toman elementos de la cola."</em> Cada <span class="termo" title="Cada trabajador que toma un elemento de la fila, humano o agente.">nodo</span> puedes ser tú, un colega o un agente que se ejecuta en <span class="termo" title="GitHub Actions: agentes en la nube, sin ralentizar tu máquina.">GitHub Actions</span> (módulo 4.3). Como cada tarea tiene un alcance claro (gracias a la clasificación), dos o tres agentes pueden trabajar <strong>en paralelo</strong> en elementos distintos sin estorbarse — exactamente lo que viste en el módulo 4.2 sobre paralelizar con sandboxes. El loop único no escala así: es un solo trabajador, dando vueltas. La cola es una arquitectura — abre espacio para «dos, tres, cuatro de ti», como Pocock describe el AFK. Usa el esqueleto de abajo para probar el Ralph loop y siente en la práctica por qué, al final, vas a querer migrar de él a una cola con clasificación:</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">ralph-loop.sh — el esqueleto del loop de Geoffrey Huntley</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">#!/usr/bin/env bash
+# Ralph loop (Geoffrey Huntley, 14/jul) — o esqueleto cru:
+# um while que chama o Claude Code com o MESMO prompt, de novo e de novo.
+
+PROMPT="Pegue a próxima tarefa pendente em TODO.md, implemente-a,
+rode os testes e marque-a como feita. Se TODO.md estiver vazio, escreva DONE.txt."
+
+while true; do
+  # injeta o mesmo prompt no agente, em modo AFK (sem você no teclado)
+  claude code -p "$PROMPT"
+
+  # condição de parada: o agente sinaliza que a fila esvaziou
+  if [ -f DONE.txt ]; then
+    echo "Fila vazia — encerrando o loop."
+    break
+  fi
+
+  sleep 2   # respiro entre as passadas
+done
+
+# Lição do módulo: isto FUNCIONA, mas é um loop cego (1 nó, foco difuso).
+# Prefira virar isto numa FILA: triagem -&gt; label agent:implement -&gt;
+# vários nós (agentes em GitHub Actions) puxam itens em paralelo. Você, o rei, prioriza.</pre>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-4#q2">
+<p class="font-medium mb-4">Recuperación rápida: ¿cuál es la mayor ventaja de la cola frente al loop único?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Usa menos líneas de código bash.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Escala con múltiples nodos (desarrolladores/agentes) que ejecutan en paralelo tareas de alcance claro.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">No requiere ninguna revisión humana.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> la fila es una arquitectura que escala — varios nodos toman tareas claras en paralelo; el loop es solo un trabajador dando vueltas.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Ralph loop (Huntley, 14/jul)</strong><span class="text-neutral-400"> — un <code>while</code> en bash que llama a Claude Code con el mismo prompt, repetidamente.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Loops ≠ respuestas</strong><span class="text-neutral-400"> — lo que desbloquea es el AFK (una tarea específica que se hace sola), no la repetición infinita.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Piensa en colas, no en loops</strong><span class="text-neutral-400"> — todo desarrollador es una fila: los PM agregan, nosotros tomamos y completamos.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">La clasificación define el alcance</strong><span class="text-neutral-400"> — ¿trivial? ¿posible? → labels agent:explore/implement, TL;DR + Difficulty.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Sé el rey, no el ministro en bucle</strong><span class="text-neutral-400"> — llegan problemas, tú priorizas; varios nodos aumentan la escala de la cola.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-amber-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">4.5 — Sistemas auto-mejorables: cron de revisión de seguridad, telemetría → issue → fix, y por qué no necesitas el modelo más caro.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="modulo-4-5.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-4-4#q1', { answer: 1, explain: { 0: 'Esse é o Ralph loop — engenhoso, mas não é o que Pocock recomenda como resposta.', 1: 'Isso! O AFK (tarefa específica feita sozinha) é o que destrava — não a repetição infinita.', 2: 'O modelo importa, mas não é o que destrava o trabalho autônomo aqui.' } });
+        INEMA.registerCheck('modulo-4-4#q2', { answer: 1, explain: { 0: 'Tamanho de código não é o ponto — é arquitetura e escala.', 1: 'Exato! A fila escala com múltiplos nós puxando tarefas de escopo claro em paralelo.', 2: 'Pelo contrário — o checkpoint humano de review continua, só é empurrado pro fim.' } });
+      }
+    });
+  </script>
+</body>
+</html>

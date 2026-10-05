@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>3.1 Anatomy of a skill | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'purple' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'purple');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #c084fc; cursor: help; font-weight: 600; color: #d8b4fe; }
+    html:not(.dark) .termo { color: #6d28d9; border-color: #7c3aed; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha3/modulo-3-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha3/modulo-3-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha3/modulo-3-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-3-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/modulo-3-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-purple-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-purple-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-purple-400" href="index.html">Track 3</a><span>/</span>
+<span class="text-purple-400">Module 3.1 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULE 3.1 · TEACHING MODE</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧬 Anatomy of a skill</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">You already know what a <span class="text-purple-400 font-semibold">skill</span> (a procedure you give the agent). Now let's look inside the skill: what it's made of, and the distinction that changes everything— <strong class="text-purple-400">procedures × abilities</strong>, the “two doors” through which a skill is triggered. Each new word is explained as it comes up.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">T1+T2</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Practice</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 3.1 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:3-1" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-purple-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-1">1. What is a skill</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-2">2. Frontmatter and body</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-3">3. Procedures (you invoke)</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-4">4. Abilities (the model invokes)</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-5">5. The two doors</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-6">6. Which One to Use When</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-purple-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-purple-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">Track 1 has already established the basic vocabulary (model, prompt, agent, harness). Here are the terms <strong>new</strong> from this skills track — remember these:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Skill</strong> — a saved package of instructions (usually a file <code>SKILL.md</code>) that teaches the agent to do something your way, consistently. It’s the "reusable procedure" from Track 1, now opened up inside.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Frontmatter</strong> — the skill header at the top of the file, between <code>---</code> e <code>---</code>. It brings <code>name</code> e <code>description</code>. It’s the “label on the can.”</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Procedure</strong> — a type of skill that <strong>you</strong> invokes it intentionally (e.g., by typing its name). Makes the model behave in a way you decided.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Ability</strong> — a type of skill that <strong>the model</strong> invokes itself when it “thinks” it’s needed (e.g., pulls in code patterns when writing React).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Invoke</strong> — "activate/call" the skill. The module’s key question is: <em>who</em> pulls the trigger—you or the model?</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">disable model invocation</strong> — an adjustment that <strong>prevents</strong> the model’s way of calling the skill on its own (and hides its description). It becomes a door only you can use. Details in module 3.2.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🧩 What is a skill</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> imagine you have a very smart new employee who has never worked in the <em>yours</em> company. Every time it does a task, you have to explain the house rules again. A <strong>skill</strong> is the laminated “procedure card” you stick on the wall: it reads it once and then does things your way—consistently.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-1-t1-p1">A <span class="termo" title="A saved instruction package (usually a SKILL.md file) that teaches the agent to do something in a defined way.">skill</span> is, in practice, a <strong>instruction text file</strong> that you give the <span class="termo" title="The model with tools, acting on its own in steps.">agent</span> for it to perform a task the same way every time. The most common format is a file called <code>SKILL.md</code> (plain text, in Markdown). It has two parts: a short header (the <span class="termo" title="The skill header, between --- and ---, with name and description.">frontmatter</span>) and the body, which contain the actual instructions. Let’s open up each part in topic 2.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t1-p2">Why does this matter so much in this learning path? Because the skill is where you <strong>encodes your way of working</strong> and returns that to the harness—without needing to repeat everything in every conversation. Matt Pocock sees skills as the heart of the modern harness: they work across several agents (Claude Code, Codex, and others) and are installed with <code>npx skills latest add</code>. O <strong>common mistake</strong> for beginners is treating a skill as a "long prompt I paste in every time." It isn't: the skill stays <em>saves</em>, it’s versionable, can be shared with the team, and—this module’s central point—it can be triggered by you <em>or</em> by the AI itself. Who pulls the trigger changes everything.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A skill is a SKILL.md file kept on a harness shelf, with a header and body, ready to be triggered by a human or the model" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v31a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v31a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v31a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v31a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#1a1230" height="190" rx="20" stroke="#c084fc" stroke-width="2" width="560" x="40" y="30"></rect>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="17" font-weight="600" x="64" y="60">SKILL.md — saved instructions</text>
+<g filter="url(#v31a-glow)"><rect fill="url(#v31a-grad)" height="46" rx="10" stroke="#a855f7" stroke-width="2.5" width="510" x="64" y="80"></rect></g>
+<text fill="#1c0a33" font-family="Inter,sans-serif" font-size="15" font-weight="700" x="84" y="108">header (frontmatter): name + description</text>
+<rect fill="#0e1b26" height="62" rx="10" stroke="#38bdf8" stroke-width="2" width="510" x="64" y="138"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" x="84" y="165">body: the steps / the rules</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" x="84" y="186">"do it this way, in this order, with these precautions…"</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="48" rx="10" stroke="#38bdf8" stroke-width="2" width="300" x="650" y="70"></rect><text fill="#bfe6ff" text-anchor="middle" x="800" y="99">you trigger (procedure)</text>
+<rect fill="#1a1230" height="48" rx="10" stroke="#c084fc" stroke-width="2" width="300" x="650" y="132"></rect><text fill="#d8b4fe" text-anchor="middle" x="800" y="161">the model triggers (ability)</text>
+</g>
+<path d="M574,103 L650,94" fill="none" opacity="0.6" stroke="#c084fc" stroke-width="2"></path>
+<path d="M574,160 L650,156" fill="none" opacity="0.6" stroke="#c084fc" stroke-width="2"></path>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The same skill, two possible triggers: you or the model. That choice is the module’s topic.</p>
+</div>
+<img alt="Concept illustration: a glowing skill file stored on a futuristic harness shelf" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-1-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Treat a skill like a "prompt I paste in every time." A skill is a saved, reusable, shareable file — and who triggers it (you or the AI) is your decision, not a minor detail.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> a skill is a saved instruction file (header + body) that can be triggered by you or by the model itself.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-purple-400">Going deeper (optional): why is the format just Markdown?</summary>
+<p class="text-sm text-neutral-300 mt-3">Markdown is plain text—the same "language" the model already thinks in. That’s why a skill doesn’t need a compiler or code: it’s a natural language instruction, with a minimal header so the agent knows <em>when</em> it serves. That’s what lets the same skill run in Claude Code, Codex, and the rest: they all read the same text file.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🏷️ Frontmatter and body</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> think of a can of food. The <em>label</em> says the name and what it’s for ("tomato sauce · for pasta"). The <em>content</em> is the real sauce. In a skill, the frontmatter is the label; the body is the sauce.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-1-t2-p1">Every skill has two clearly separate parts. The first is the <span class="termo" title="Header at the top of the file, between three-dash markers, with name and description.">frontmatter</span>: a little block at the top, between <code>---</code> e <code>---</code>, with two essential fields— <code>name</code> (the short name) and <code>description</code> (a sentence saying what the skill does and <em>when</em> using it). The second part is the <strong>body</strong>: everything after the header, in free-form text. That’s where the step-by-step instructions, rules, and examples live.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t2-p2">The practical difference between the two is crucial and comes up again throughout the rest of the module: the <strong>body is only read when the skill is activated</strong>; while the <code>description</code> of the frontmatter can stay "in view" of the model all the time, so it can decide on its own whether to call the skill. In Pocock’s words, "every skill leaks its <code>description</code> in the context window". In other words: the label costs context even when the skill isn’t used; the body doesn’t. Keep that in mind—it’s the seed of module 3.2 ("skill context cost"). The <strong>common mistake</strong> here, you write a <code>description</code> giant “just in case”: it becomes dead weight in the context. Good <code>description</code> is short and states the trigger exactly.</p>
+<div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-purple-400 font-mono">SKILL.md</span>
+<button class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">---
+name: commit-conventional
+description: Cria a mensagem de commit no padrao Conventional Commits
+  a partir das mudancas em stage. Use quando o usuario pedir "commita",
+  "faz o commit" ou "gera a mensagem de commit".
+---
+
+# Commit Conventional
+
+Quando acionada, faca nesta ordem:
+
+1. Rode `git diff --staged` e leia o que mudou.
+2. Escolha o tipo: feat | fix | docs | refactor | test | chore.
+3. Escreva o titulo: `tipo(escopo): resumo no imperativo` (ate 72 chars).
+4. No corpo, explique o PORQUE da mudanca em 1-3 linhas (nao o "o que").
+5. Se houver breaking change, adicione `BREAKING CHANGE:` no rodape.
+6. Mostre a mensagem final e PERGUNTE antes de rodar `git commit`.
+
+Regras:
+- Nunca invente arquivos que nao estao no diff.
+- Portugues, voz imperativa, sem emoji no titulo.</pre>
+</div>
+<p class="text-xs text-neutral-500 mb-6 text-center">Real-world example of <code>SKILL.md</code>: among the <code>---</code> the frontmatter (label) is here; below is the body (the procedure).</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Anatomy of the SKILL.md file: the frontmatter at the top, with name and description, is visible to the model; the body below is only read when the skill is triggered" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<filter height="180%" id="v31b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v31b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v31b-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g filter="url(#v31b-glow)"><rect fill="#1a1230" height="74" rx="12" stroke="#c084fc" stroke-width="2.5" width="500" x="60" y="30"></rect></g>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="16" font-weight="700" x="84" y="58">FRONTMATTER (the label)</text>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="13" x="84" y="82">name · description — VISIBLE to the model</text>
+<rect fill="#0e1b26" height="86" rx="12" stroke="#38bdf8" stroke-width="2" width="500" x="60" y="120"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="16" font-weight="700" x="84" y="148">BODY (the content)</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" x="84" y="172">step-by-step instructions + rules — only read WHEN TRIGGERED</text>
+<text fill="#7fb6e6" font-family="Inter,sans-serif" font-size="12" x="84" y="192">doesn't take up context while the skill is asleep</text>
+<g font-family="Inter,sans-serif" font-size="12.5">
+<rect fill="#0e1b26" height="54" rx="10" stroke="#c084fc" stroke-width="1.6" width="320" x="630" y="40"></rect><text fill="#d8b4fe" font-weight="600" text-anchor="middle" x="790" y="64">cost: the label ALWAYS leaks</text><text fill="#9ad6ff" text-anchor="middle" x="790" y="84">(even without using the skill)</text>
+<rect fill="#0e1b26" height="54" rx="10" stroke="#38bdf8" stroke-width="1.6" width="320" x="630" y="130"></rect><text fill="#bfe6ff" font-weight="600" text-anchor="middle" x="790" y="154">cost: the body does NOT leak</text><text fill="#9ad6ff" text-anchor="middle" x="790" y="174">(loads only when needed)</text>
+</g>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> frontmatter = a short label that stays visible (and uses context); body = the procedure, read only when the skill is activated.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🕹️ Procedures (you invoke)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a <strong>procedure</strong> is like your car’s “turbo mode” button: it only turns on when <em>you</em> presses it. The car never decides to turn on the turbo by itself—the driver is in control.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-1-t3-p1">The first of the two types of skill is the <span class="termo" title="A skill you intentionally invoke; it makes the model behave in a way you decided.">procedure</span>. The golden rule: <strong>who triggers it is you</strong>. You invoke the skill on purpose — by typing its name, choosing it from a menu, or running a command — and it makes the model “behave in a way” you’ve defined. In Pocock’s words, procedures are skills that “make the model behave in a way” and that <em>you</em> triggers. Everyday examples of what it does: the skill <code>grill-me</code> (that turns the model into an interviewer), the <code>two-PRD</code> e a <code>to-issues</code> — it links the three <em>in the order it wants</em>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t3-p2">Why does this matter? Because with procedures <strong>you stay at the wheel</strong>. You decide which procedure to include, when to use it, and in what order. There are no surprises: the model doesn’t pull anything in on its own. Pocock is explicit about preferring this mode: <em>"I know my skills, I don't want to delegate my thinking"</em> — I know my skills; I don't want to delegate my thinking. The <strong>common mistake</strong> is thinking this is “extra work.” It’s actually control: you trade a little automation for total predictability, and you also prevent descriptions from leaking into the context (the topic of 3.2).</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="With a procedure, the human pulls the trigger and the skill makes the model behave as defined; the model doesn’t decide anything on its own" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs>
+<lineargradient id="v31c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v31c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v31c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v31c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#v31c-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g filter="url(#v31c-glow)"><rect fill="url(#v31c-grad)" height="70" rx="14" stroke="#a855f7" stroke-width="2.5" width="200" x="50" y="70"></rect></g>
+<text fill="#1c0a33" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="150" y="100">YOU</text>
+<text fill="#1c0a33" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="150" y="122">pulls the trigger</text>
+<rect fill="#1a1230" height="70" rx="14" stroke="#c084fc" stroke-width="2" width="200" x="400" y="70"></rect>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="500" y="100">PROCEDURE</text>
+<text fill="#c9a6f5" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="122">the skill (you invoke it)</text>
+<rect fill="#0e1b26" height="70" rx="14" stroke="#38bdf8" stroke-width="2" width="200" x="750" y="70"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="850" y="100">MODEL</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="850" y="122">behaves the way you want</text>
+<path d="M250,105 L400,105" fill="none" marker-end="url(#v31c-ah)" stroke="#c084fc" stroke-width="2.4"></path>
+<path d="M600,105 L750,105" fill="none" marker-end="url(#v31c-ah)" stroke="#c084fc" stroke-width="2.4"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="175">The trigger is human. No surprise: the model doesn’t call anything on its own.</text>
+</svg>
+</div>
+<img alt="Illustration: a human hand pulling a glowing lever that triggers a procedure" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-1-2.png"/>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> procedure = the skill that <em>you</em> deliberately triggers it to make the model behave the way you decided.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🤖 Abilities (the model invokes)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a <strong>ability</strong> is like your car’s ABS brakes: you don’t press anything—the car <em>feels</em> the situation (skidding) and triggers it on its own. The ability is the skill the AI pulls in on its own when it "realizes" it needs it.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-1-t4-p1">The second type is the <span class="termo" title="A skill that the model invokes on its own when it decides it's needed, based on the description.">ability</span>. Here the golden rule is turned upside down: <strong>who triggers it is the model</strong>. It reads the <code>description</code> of the available skills and, when it "thinks" one fits the task, pulls it in on its own—without you asking. The example Pocock gives is a skill for <em>coding standards</em> (coding patterns): the model invokes it automatically when it’s about to write React, because the description says something like “use when writing React components.” The skill then reminds the model of rules like “must not use <code>useEffect</code>, should use something else.”</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t4-p2">The advantage is automation: the right rule kicks in at the right time, without you having to remember to invoke it. The downside — and this is why Pocock emphasizes it so strongly — is that <strong>the model decides</strong>, and each ability needs to maintain its <code>description</code> in plain sight so it’s “discoverable.” As we saw, this <em>leaks</em> context: 100 skills become 100 descriptions hanging in the window. Another school of thought, <em>Superpowers</em> (from the Obra project), embraces exactly this mode — the model in control. Pocock prefers the opposite. The <strong>common mistake</strong> is filling your setup with abilities “because they’re automatic” and discovering too late that the context is cluttered and behavior is unpredictable.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="With an ability, the model itself reads the descriptions, decides it needs a skill, and invokes it on its own, without the human pressing anything" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs>
+<filter height="180%" id="v31d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v31d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v31d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#v31d-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g filter="url(#v31d-glow)"><rect fill="#0e1b26" height="70" rx="14" stroke="#38bdf8" stroke-width="2.5" width="220" x="50" y="70"></rect></g>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="160" y="100">MODEL</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="160" y="122">reads the descriptions and DECIDES</text>
+<rect fill="#1a1230" height="70" rx="14" stroke="#c084fc" stroke-width="2" width="200" x="420" y="70"></rect>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="520" y="100">ABILITY</text>
+<text fill="#c9a6f5" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="520" y="122">the skill (the model invokes it)</text>
+<rect fill="#0e1b26" height="70" rx="14" stroke="#38bdf8" stroke-width="2" width="180" x="770" y="70"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="860" y="100">completed task</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="860" y="122">rule applied immediately</text>
+<path d="M270,105 L420,105" fill="none" marker-end="url(#v31d-ah)" stroke="#38bdf8" stroke-width="2.4"></path>
+<path d="M620,105 L770,105" fill="none" marker-end="url(#v31d-ah)" stroke="#38bdf8" stroke-width="2.4"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="178">No human at the trigger. Automatic—but the description keeps leaking into the context.</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: same rule, two paths</h3>
+<p class="text-neutral-300 text-sm mb-3">Scenario: you want the agent to never use, when writing React, <code>useEffect</code> without needing to. Same rule, packaged two ways:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-dark-800 border border-purple-500/30 rounded-lg p-4"><p class="text-purple-400 font-semibold text-sm mb-1">As ABILITY</p><p class="text-xs text-neutral-300"><code>description: "Padrões de React. Use ao escrever componentes."</code> → the model reads this, realizes it’s going to write React, and <strong>pulls the skill on its own</strong>. Automatic, but the description always leaks into the context.</p></div>
+<div class="bg-dark-800 border border-blue-500/30 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">As PROCEDURE</p><p class="text-xs text-neutral-300">Same skill with <code>disable model invocation: true</code>. → the model <strong>no</strong> sees it; you type <code>/react-standards</code> whenever you want. Predictable and doesn’t clutter the context — the approach Pocock prefers.</p></div>
+</div>
+<p class="text-neutral-400 text-xs mt-3">Conclusion: the <em>content</em> of the skill can be identical. What changes is <strong>who pulls the trigger</strong> — and this is the design adjustment you control.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> ability = the skill that <em>the model</em> triggers it automatically when it reads the description — convenient, but it makes the decision and the label leaks through.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🚪 The two doors</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> the same room (the skill) has <em>two doors</em>. The door on the left only opens with your key (procedure). The model can open the door on the right by itself (ability). You decide which doors to leave unlocked.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-1-t5-p1">Now put it all together. Procedure and ability <strong>aren't two different things</strong> — are <em>two entry points</em> for the same skill. The content (the body) can be identical; what changes is <strong>who holds the key</strong>. That’s why Pocock talks about “two types of skill,” but ultimately it’s a design decision for each skill: do I let the model invoke it (ability), or do I lock that door and invoke it myself (procedure)? The technical setting that locks the model out is <span class="termo" title="Setting that prevents the model from invoking the skill and hides its description.">disable model invocation</span> — you’ll see it in detail in module 3.2.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t5-p2">The practical consequence is huge. Every open model door comes with a cost: <code>description</code> of that skill stays in context so the model can find it. Locking the door (a pure procedure) zeroes out this cost and gives you predictability. Because Pocock prefers to be "in the driver's seat," he keeps most model doors locked and keeps the knowledge with the human—he cites the skill <code>engineering zoom out</code> as one of the things he hides from the model. It’s not a universal rule; it’s his style. The <strong>common mistake</strong> is not even realizing this choice exists—the person installs 50 skills, all as abilities, and the context turns into a flea market.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The same skill with two doors: the left door, for the human (procedure), and the right door, for the model (ability), which can be locked with disable model invocation" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v31e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v31e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v31e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v31e-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g filter="url(#v31e-glow)"><rect fill="#1a1230" height="100" rx="16" stroke="url(#v31e-grad)" stroke-width="2.5" width="260" x="370" y="80"></rect></g>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="500" y="124">THE SKILL</text>
+<text fill="#c9a6f5" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="148">same body · two doors</text>
+<g font-family="Inter,sans-serif">
+<rect fill="#1a1230" height="58" rx="10" stroke="#c084fc" stroke-width="2" width="220" x="60" y="70"></rect><text fill="#d8b4fe" font-size="15" font-weight="600" text-anchor="middle" x="170" y="95">🚪 HUMAN door</text><text fill="#c9a6f5" font-size="12" text-anchor="middle" x="170" y="115">procedure · you invoke</text>
+<rect fill="#0e1b26" height="58" rx="10" stroke="#38bdf8" stroke-width="2" width="220" x="60" y="138"></rect><text fill="#bfe6ff" font-size="15" font-weight="600" text-anchor="middle" x="170" y="163">🚪 MODEL door</text><text fill="#9ad6ff" font-size="12" text-anchor="middle" x="170" y="183">ability · can lock</text>
+<rect fill="#0e1b26" height="52" rx="10" stroke="#38bdf8" stroke-width="1.6" width="230" x="720" y="104"></rect><text fill="#bfe6ff" font-size="12.5" text-anchor="middle" x="835" y="128">lock = disable model</text><text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="835" y="146">invocation (doesn't leak)</text>
+</g>
+<path d="M280,99 L370,115" fill="none" opacity="0.7" stroke="#c084fc" stroke-width="2"></path>
+<path d="M280,167 L370,145" fill="none" opacity="0.7" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M630,130 L720,130" fill="none" opacity="0.6" stroke="#9ca3af" stroke-width="1.6"></path>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-1#q1">
+<p class="font-medium mb-4">Quick recall: in a <strong>ability</strong>, who triggers the skill?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">You, deliberately typing its name.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">The model itself, which reads the description and decides to load it on its own.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Nobody — an ability is just the body of the file; it never runs.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> procedure and ability are two doors to the same skill — the difference is who has the key (you or the model).</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-3-1#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎯 Which one to use and when</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> autopilot × steering wheel. On autopilot (ability), the car decides; with the steering wheel (procedure), you decide. Familiar roads and critical tasks call for the steering wheel; repetitive and safe tasks can use autopilot.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-1-t6-p1">Wrapping up: the choice isn’t “which is better,” it’s “who should decide <em>this</em> skill". Use <strong>ability</strong> when the rule is generic, always desirable, and cheap to get wrong (e.g., style patterns that always apply) — the convenience of letting the model pull it in on its own is worth it. Use <strong>procedure</strong> when you want to be in the driver’s seat: reasoning tasks, chaining steps, or anything where predictability matters more than automation. Pocock chains <code>grill-me → two-PRD → to-issues</code> as procedures for exactly that reason. And remember the cost: each ability uses up your <code>description</code> leaking into the context, so locking doors (procedure) is also good hygiene. Use the guide below when creating or auditing a skill:</p>
+<div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-purple-400 font-mono">procedure-ou-ability.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Pra cada skill, pergunte: QUEM deve apertar o gatilho?
+
+ESCOLHA ABILITY (modelo invoca) se:
+[ ] a regra vale quase sempre que o tema aparece (ex.: padroes de React)
+[ ] errar o momento e barato
+[ ] voce QUER automacao, nao controle fino
+
+ESCOLHA PROCEDURE (voce invoca) se:
+[ ] e raciocinio / planejamento / etapas encadeadas
+[ ] previsibilidade &gt; automacao ("quero estar no volante")
+[ ] a description ocupando contexto te incomoda -&gt; disable model invocation: true
+
+Regra de bolso (estilo Pocock): na duvida, PROCEDURE.
+"I know my skills, I don't want to delegate my thinking."</pre>
+</div>
+<img alt="Illustration: a crossroads with two signs, steering wheel and autopilot, a design choice" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-1-3.png"/>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-1#q2">
+<p class="font-medium mb-4">Quick recall: why does Pocock, when in doubt, prefer <strong>procedure</strong>?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because procedure is the only one that works in Claude Code.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because they want to stay in the driver’s seat (rather than delegate the thinking) and avoid the description leaking into the context.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because procedures run faster than abilities.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> ability for generic rules that are easy to get wrong; procedure (when in doubt, use this) for reasoning and control.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Skill = saved instruction file</strong><span class="text-neutral-400"> — a SKILL.md with frontmatter (label) + body (procedure).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Frontmatter leaks, body doesn’t</strong><span class="text-neutral-400"> — the description stays visible (uses context); the body only loads when you activate it.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Procedure = you invoke · Ability = the model invokes</strong><span class="text-neutral-400"> — two doors to the same skill; what changes is who has the key.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">When in doubt, procedure</strong><span class="text-neutral-400"> — Pocock prefers to be in the driver's seat and keep the context clean.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-purple-400 mb-2">Next module:</h3><p class="text-neutral-300">3.2 — Skill context cost: why each description “leaks,” what 100 skills in context means, and how to use them <code>disable model invocation</code>.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="modulo-3-2.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-3-1#q1', { answer: 1, explain: { 0: 'Esse é o caso da PROCEDURE (você invoca). Na ability quem decide é o modelo.', 1: 'Isso! Ability = o modelo lê a description e aciona sozinho.', 2: 'A skill roda, sim — só que acionada pelo modelo.' } });
+        INEMA.registerCheck('modulo-3-1#q2', { answer: 1, explain: { 0: 'Não — as duas funcionam em Claude Code e outros agentes.', 1: 'Exato: "no volante" (não delegar o pensamento) + sem description vazando no contexto.', 2: 'Velocidade não é o motivo; é controle e higiene de contexto.' } });
+      }
+    });
+  </script>
+</body>
+</html>

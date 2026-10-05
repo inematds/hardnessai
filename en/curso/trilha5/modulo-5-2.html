@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>5.2 grill-me + 10 Decisions (Teaching Mode) | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'teal' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'teal');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #2dd4bf; cursor: help; font-weight: 600; color: #5eead4; }
+    html:not(.dark) .termo { color: #0f766e; border-color: #0d9488; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13,148,136,0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13,148,136,0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13,148,136,0.18); }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha5/modulo-5-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha5/modulo-5-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha5/modulo-5-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-5-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha5/modulo-5-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-teal-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-teal-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-teal-400" href="index.html">Track 5</a><span>/</span>
+<span class="text-teal-400">Module 5.2 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MODULE 5.2 · "TEACHING MODE"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔍 grill-me + 10 decisions</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Two pieces <strong class="text-teal-400">ready to copy</strong>: the skill <em>grill-me</em> (the actual text, ~4-5 sentences that turn the AI into an adversarial interviewer) and David Ondrej’s favorite prompt—“describe my vision, list the 10 most consequential decisions, and interview me until you’re 98% sure.” Here we align <strong class="text-teal-400">before</strong> to write a line of code.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~35</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Copy</div><div class="text-xs text-neutral-400">2 artifacts</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Practical</div><div class="text-xs text-neutral-400">Level</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 5.2 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:5-2" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-teal-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-1">1. The grill-me skill (text)</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-2">2. The prompt with 10 decisions</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-3">3. "Interview me until 98%"</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-4">4. When to use it</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-5">5. Adapt it to your project</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-6">6. Common Mistakes</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-teal-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-teal-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">These are the NEW terms in this module. The core vocabulary (model, prompt, agent, skill, codebase, harness) was defined in Track 1 — here we just use it.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">grill-me</strong> — a <em>skill</em> short (4–5 sentences) that turns the AI into a <strong>interviewer</strong>: instead of obeying, it grills you about your plan until you both understand it the same way. “Grill” in English means “interrogate” / “cook over a fire.”</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">adversarial</strong> — "contrarian" in a good way: the AI pulls at the thread of your assumptions, points out gaps, and raises ideas you hadn't considered—instead of just agreeing.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">plan mode</strong> — Claude Code mode where it only plans (doesn't edit files) before executing. Grill-me is used as a <em>replacement</em> more active in this mode.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">shared understanding</strong> — "shared understanding": the point where you and the AI have the SAME picture of what will be built. That's the goal of grill-me.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">design tree</strong> — the project's "decision tree": each choice opens branches (sub-choices) that depend on the previous one. grill-me goes down branch by branch.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">consequential decision</strong> — a choice that <em>shapes the entire project</em> (architecture, product), difficult to undo later. The 10-decisions prompt targets exactly these.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-5-2#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🔥 The grill-me skill (text)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> before building a house, a good architect doesn’t say “okay, I’ll get started.” They <em>asks too many questions</em>: how many bedrooms? Morning or afternoon sun? Budget? Each answer prevents a wall from going in the wrong place. Grill-me turns the AI into that fussy architect—and that’s why it works.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-2-t1-p1">A <span class="termo" title="A short skill that turns AI into an adversarial interviewer until you reach shared understanding.">grill-me</span> is, in Matt Pocock’s words, <em>"unreasonably effective"</em> (effective to a point that seems unfair) — and the secret is that it <strong class="text-teal-400">tiny</strong>: fits in 4-5 sentences. It doesn’t teach the AI to code; it only changes the <em>stance</em> Instead of AI taking your vague request and coding based on assumptions, it becomes an interviewer <span class="termo" title="A good kind of contrarian: pulls at the thread of assumptions and points out gaps.">adversarial</span> that asks questions, raises ideas you hadn’t considered, and solves the <span class="termo" title="The project’s decision tree, branch by branch.">design tree dependencies</span> one at a time.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t1-p2">The detail that makes the skill shine is in the final instructions: <strong>one question at a time</strong> (not a 20-item questionnaire that paralyzes you), <strong>with the recommended answer already included</strong> (you only confirm or correct—much faster) and <strong>if the question can be answered by looking at the codebase, the AI looks at the codebase</strong> instead of asking you. This last point is what separates grill-me from a chatty chatbot: it only spends the <em>your</em> time on what really requires your mind. Below is the REAL skill text (frame 31 of the video)—copy and paste:</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">grill-me.md</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Interview me relentlessly about every aspect of this plan
+until we reach a shared understanding. Walk down each branch
+of the design tree, resolving dependencies between decisions
+one-by-one. For each question, provide your recommended answer.
+Ask the questions one at a time. If a question can be answered
+by exploring the codebase, explore the codebase instead.</pre>
+</div>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The grill-me skill flips the relationship: instead of you instructing the AI, the AI interviews you one question at a time until shared understanding clicks into place" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v52a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v52a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v52a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v52a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v52a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="70" rx="14" stroke="#38bdf8" stroke-width="2" width="200" x="60" y="90"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="160" y="122">YOU</text><text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="160" y="143">has the vision</text>
+<g filter="url(#v52a-glow)"><rect fill="#0c1f1c" height="90" rx="16" stroke="url(#v52a-grad)" stroke-width="2.5" width="200" x="400" y="80"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="115">grill-me</text>
+<text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="138">the AI interviews</text>
+<text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="156">1 question at a time</text>
+<rect fill="#0c1f1c" height="70" rx="14" stroke="#2dd4bf" stroke-width="2" width="200" x="740" y="90"></rect><text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="840" y="122">SHARED</text><text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="840" y="143">understanding</text>
+<g fill="none" opacity="0.7" stroke="#2dd4bf" stroke-width="2"><path d="M260,125 L400,125" marker-end="url(#v52a-ah)"></path><path d="M600,125 L740,125" marker-end="url(#v52a-ah)"></path></g>
+<path d="M400,145 C330,200 330,200 262,148" fill="none" marker-end="url(#v52a-ah)" opacity="0.55" stroke="#38bdf8" stroke-width="2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="330" y="222">question → you answer → next question</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The skill flips the script: the AI questions you instead of guessing. The result is shared understanding.</p>
+</div>
+<img alt="Conceptual illustration: an AI represented as an adversarial interviewer asking sharp questions of a human" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-2-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Think that "good skill" = "big skill." grill-me is powerful <strong>because</strong> is short. If you inflate it with 30 rules, it becomes noise, uses up context window, and loses focus. Resist the urge to “improve” it by making it longer.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> grill-me is 5 sentences that turn the AI into an adversarial interviewer—one question at a time, with a guess included.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-teal-400">Going deeper (optional): why does "one question at a time" change everything?</summary>
+<p class="text-sm text-neutral-300 mt-3">When AI dumps 15 questions at once, you answer on autopilot and the important decisions get lost in the middle. One question at a time forces <em>focus</em>: every answer you give updates the context and refines the next question. It’s a dialogue, not a form. Add “give your recommended answer” and you go from writing answers to reviewing them—much less effort per decision.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-5-2#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🔟 The 10-decisions prompt</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you’re going on a road trip across the country. There are a thousand decisions (which gas station, which snack), but only about 10 can change the whole trip: route, car, dates, who’s going with you. Picking the wrong diner costs 5 minutes; taking the wrong route costs the day. David's prompt makes AI list the "routes" before letting you hit the road.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-2-t2-p1">While grill-me is a <em>saved skill</em>, the favorite prompt of <strong class="text-teal-400">David Ondrej</strong> is an instruction it pastes directly. The structure has three moves in a single sentence: (1) <strong>"describe my vision"</strong> — makes the AI tell you, in its own words, what it understood you want (so you can catch misunderstandings early); (2) <strong>"list the 10 most consequential decisions"</strong> — of <span class="termo" title="How the system is structured internally.">software design / architecture</span> and of <span class="termo" title="What the product does and who it's for.">product</span> — that will shape the project; and (3) <strong>"interview me until you understand 98%"</strong>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t2-p2">The number "10" isn't magic — it's a <strong>attention budget</strong>. It forces the AI to <em>prioritize</em>: separate the choices that shape everything (a <span class="termo" title="A choice that shapes the entire project and is costly to undo.">consequential decision</span>, such as “monolith or microservices,” “which database,” “custom or third-party auth”), from reversible and inexpensive ones (the color of a button). Without this ceiling, the AI either lists 3 obvious things or dumps 50 trivial items. Asking for exactly the 10 most consequential ones is what makes for a conversation worth your time. Copy the prompt:</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">prompt-10-decisoes.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Describe my vision for this project in your own words.
+Then list the 10 most consequential decisions—about software
+design/architecture and product—that will shape this project.
+Then interview me, one question at a time, until you understand
+my vision at 98%. For each question, give your recommended
+answer. If something can be answered by exploring the codebase,
+explore the codebase instead of asking me.</pre>
+</div>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The 10 decisions prompt filters hundreds of choices and keeps only the few that shape the entire project" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v52b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v52b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v52b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v52b-grid)" height="230" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="150" y="40">hundreds of choices</text>
+<g fill="#0e1b26" stroke="#38bdf8" stroke-width="1.5">
+<rect height="22" rx="6" width="60" x="40" y="55"></rect><rect height="22" rx="6" width="60" x="110" y="55"></rect><rect height="22" rx="6" width="60" x="180" y="55"></rect>
+<rect height="22" rx="6" width="60" x="40" y="85"></rect><rect height="22" rx="6" width="60" x="110" y="85"></rect><rect height="22" rx="6" width="60" x="180" y="85"></rect>
+<rect height="22" rx="6" width="60" x="40" y="115"></rect><rect height="22" rx="6" width="60" x="110" y="115"></rect><rect height="22" rx="6" width="60" x="180" y="115"></rect>
+<rect height="22" rx="6" width="60" x="40" y="145"></rect><rect height="22" rx="6" width="60" x="110" y="145"></rect><rect height="22" rx="6" width="60" x="180" y="145"></rect>
+</g>
+<path d="M270,110 L420,110" fill="none" stroke="#2dd4bf" stroke-width="2.5"></path>
+<polygon fill="#0c1f1c" points="400,150 520,110 400,70" stroke="#2dd4bf" stroke-width="2"></polygon>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="448" y="111">filter</text>
+<text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="448" y="126">"10 more</text>
+<text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="448" y="139">consequential"</text>
+<path d="M520,110 L600,110" fill="none" stroke="#2dd4bf" stroke-width="2.5"></path>
+<g filter="url(#v52b-glow)"><rect fill="#0c1f1c" height="110" rx="16" stroke="url(#v52b-grad)" stroke-width="2.5" width="360" x="600" y="60"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="780" y="92">the 10 decisions that matter</text>
+<text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="780" y="118">architecture · database · auth · stack ·</text>
+<text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="780" y="138">scope · audience · integrations · deploy</text>
+</svg>
+</div>
+<img alt="Illustration: a futuristic funnel that filters dozens of decisions and keeps only the ten most important ones glowing" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-2-2.png"/>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> "describe the vision → list the 10 most consequential decisions → interview me until 98%" makes the AI prioritize before coding.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-5-2#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🎯 "Interview me until 98%"</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> "I understand 100%" doesn't exist—there's always a detail that only shows up while coding. But "I understand 60%" is a recipe for rework. 98% is the sweet spot: aligned enough to get started, without turning it into an endless meeting in pursuit of perfection.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-2-t3-p1">The “98%” is a <strong>stop number</strong> clever. It solves the opposite problem of a loose grill-me: without a target, the interview either ends too soon (the AI thinks it understands and disappears around 50%) or never ends (asking trivial details until the end of the world). By asking for "up to 98%", you tell the AI: <em>keep questioning me as long as consequential decisions remain open; stop when only details that can be resolved during implementation remain</em>. It’s the practical translation of the <span class="termo" title="The point at which you and the AI have the same picture of the project.">shared understanding</span> by Pocock.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t3-p2">Why not 100%? Because the last 2% only show up when you’re working with the code—trying to nail them down in the interview is a waste. And why is this prior alignment so valuable? Because it’s <strong>here</strong>, in the cheap conversation, where you "work out the weirdness before implementing" (<em>flush out weirdness before we implement</em>, in Pocock’s words). A misunderstanding caught in the interview costs one sentence; the same misunderstanding caught after 2 hours of coding costs those 2 hours—plus your patience. <strong>Common mistake:</strong> treating the interview as a formality and answering "whatever" to everything — then the 98% is false, and the rework comes back.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="An understanding bar: zero means coding in the dark, 60 percent means rework, 98 percent is the sweet spot to start, 100 percent is wasted time" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="v52c-grad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0c1f1c"></stop><stop offset="0.98" stop-color="#2dd4bf"></stop></lineargradient>
+<filter height="180%" id="v52c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v52c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v52c-grid)" height="200" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="44" rx="22" stroke="#374151" stroke-width="1.5" width="880" x="60" y="80"></rect>
+<rect fill="url(#v52c-grad)" height="44" opacity="0.85" rx="22" width="862" x="60" y="80"></rect>
+<line stroke="#9ca3af" stroke-dasharray="3 3" stroke-width="1.5" x1="60" x2="60" y1="70" y2="134"></line><text fill="#f87171" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="60" y="62">0% — coding in the dark</text>
+<line stroke="#9ca3af" stroke-dasharray="3 3" stroke-width="1.5" x1="588" x2="588" y1="70" y2="134"></line><text fill="#fbbf24" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="588" y="62">60% — guaranteed rework</text>
+<g filter="url(#v52c-glow)"><line stroke="#2dd4bf" stroke-width="3" x1="922" x2="922" y1="66" y2="138"></line></g><text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="900" y="58">98% — start here</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="900" y="158">the final 2% only show up when you code</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: grill-me on a “notes app”</h3>
+<p class="text-neutral-300 text-sm mb-3">You paste the prompt for the 10 decisions with the vision "I want an app where I can jot down ideas." The AI describes your vision and starts the interview, one question at a time, with a suggestion included:</p>
+<div class="space-y-3">
+<div class="bg-dark-800/60 rounded-lg p-3"><p class="text-xs text-teal-400 font-semibold mb-1">AI · question 1 (decision: audience)</p><p class="text-xs text-neutral-300">"Is it just for you or multi-user? <em>I recommend:</em> only you in v1 — cut auth and synchronization now." → <strong class="text-neutral-100">You: “just me.”</strong></p></div>
+<div class="bg-dark-800/60 rounded-lg p-3"><p class="text-xs text-teal-400 font-semibold mb-1">AI · question 2 (decision: persistence)</p><p class="text-xs text-neutral-300">"Notes in the browser (localStorage) or in a file on disk?" <em>I recommend:</em> .md files in a folder—portable and versionable." → <strong class="text-neutral-100">You: “.md files, yes.”</strong></p></div>
+<div class="bg-dark-800/60 rounded-lg p-3"><p class="text-xs text-teal-400 font-semibold mb-1">AI · question 3 (decision: search)</p><p class="text-xs text-neutral-300">"Is text search enough, or do you want tags?" <em>I recommend:</em> text in v1, tags later." → <strong class="text-neutral-100">You: “text is enough.”</strong></p></div>
+</div>
+<p class="text-neutral-300 text-sm mt-3">In 3 questions, three consequential decisions were locked in— <em>before</em> a line of code. The AI gets to 98% and only then proposes the plan. Without grill-me, it would have guessed “multi-user + Postgres database + auth,” and you’d discover the overkill only during review.</p>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-2#q1">
+<p class="font-medium mb-4">Quick recall: why does the prompt ask for "98%" and not "100%"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because AI can never reach 100%.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because the final 2% only show up during implementation—hunting for them in the interview is a waste.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because 98% is the skill’s token limit.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> 98% means “aligned enough to start” — the final 2% gets worked out hands-on in the code.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-5-2#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">⏱️ When to use</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you don’t call the architect to change a light bulb. But to build a house? Always. Grill-me is the architect: use it when the task is new, ambiguous, or easy to get wrong — not for a one-line change.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-2-t4-p1">Pocock positions grill-me as <strong>replacement for the <span class="termo" title="A Claude Code mode that only plans before executing.">plan mode</span></strong>: instead of the agent spitting out a plan for you to approve blindly, it interviews you first. Its phrase sums up the trigger: <em>"here's my idea, interview me, let's reach shared understanding, flush out weirdness before we implement."</em> In other words: always use it whenever there’s a <strong>ambiguous idea</strong> to resolve before execution.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t4-p2">In practice, it’s worth it when: the feature is <strong>new</strong> (there’s no established pattern in the codebase), there’s <strong>architecture or product decisions</strong> in play, the cost of getting it wrong is <strong>high</strong> (redoing it hurts), or you feel that your own idea is still <strong>nebula</strong>. It doesn’t apply to small, obvious tasks (“rename this variable,” “fix this typo”)—there, the interview just adds friction. <strong>Common mistake:</strong> using grill-me on everything, including trivial things, and getting annoyed with the AI for “asking too many questions” — the problem isn’t the skill, it’s the wrong context for using it.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6"><h4 class="font-bold text-teal-400 mb-4">✓ Use grill-me when…</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• New feature, with no pattern in the codebase.</li><li>• Architecture/product decisions are at stake.</li><li>• The cost of getting it wrong is high (redoing it hurts).</li><li>• Your own idea is still unclear.</li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Skip grill-me when…</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• It’s a typo, rename, or one-line tweak.</li><li>• There’s already a clear pattern to follow.</li><li>• The task is mechanical and reversible.</li><li>• You just want a quick draft to throw away.</li></ul></div>
+</div>
+<img alt="Illustration: a fork in the road showing when to use the adversarial interview and when to proceed directly" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-2-3.png"/>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A fork in the road: a new task or one that looks easy to get wrong goes to grill-me; a trivial, reversible task goes straight to implementation" class="w-full h-auto" role="img" viewbox="0 0 1000 190">
+<defs>
+<lineargradient id="v52d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v52d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v52d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v52d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v52d-grid)" height="190" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="44" rx="12" stroke="#38bdf8" stroke-width="2" width="200" x="60" y="74"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="160" y="101">a task arrives</text>
+<path d="M260,96 C330,96 330,50 400,50" fill="none" marker-end="url(#v52d-ah)" opacity="0.75" stroke="#2dd4bf" stroke-width="2"></path>
+<path d="M260,96 C330,96 330,150 400,150" fill="none" marker-end="url(#v52d-ah)" opacity="0.6" stroke="#9ca3af" stroke-width="2"></path>
+<text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="11" x="318" y="44">new / ambiguous / expensive</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" x="318" y="170">trivial / reversible</text>
+<g filter="url(#v52d-glow)"><rect fill="#0c1f1c" height="44" rx="12" stroke="url(#v52d-grad)" stroke-width="2.5" width="240" x="400" y="28"></rect></g><text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="520" y="55">→ grill me first</text>
+<rect fill="#0e1b26" height="44" rx="12" stroke="#374151" stroke-width="2" width="240" x="400" y="128"></rect><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="520" y="155">→ go straight to coding</text>
+<path d="M640,50 C740,50 740,96 800,96" fill="none" marker-end="url(#v52d-ah)" opacity="0.6" stroke="#2dd4bf" stroke-width="2"></path>
+<path d="M640,150 C740,150 740,96 800,96" fill="none" marker-end="url(#v52d-ah)" opacity="0.6" stroke="#2dd4bf" stroke-width="2"></path>
+<rect fill="#0c1f1c" height="44" rx="12" stroke="#2dd4bf" stroke-width="2" width="150" x="800" y="74"></rect><text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="875" y="101">implement</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> use grill-me as a substitute for plan mode for anything new, ambiguous, or costly to get wrong—not for trivial tasks.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-5-2#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🛠️ Adapt it to your project</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> the grill-me is a base cake recipe. It works as is, but gets better when you adjust it to your oven: change the number of decisions, the project focus, the tone. The structure stays; you calibrate the ingredients.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-2-t5-p1">Pocock insists that skills are for <strong>adapt</strong>, not worship it. grill-me and the 10-decisions prompt are starting points; the real gains come from calibrating them to your <em>your</em> context. Three levers: (1) <strong>the number</strong> — "10 decisions" might be 5 for a bug fix or 15 for a greenfield product; (2) <strong>the focus</strong> — ask that decisions prioritize what matters to you (performance? accessibility? infrastructure cost?); (3) <strong>the codebase trigger</strong> — in an existing project, reinforce “explore the codebase before asking me” so it doesn't interrogate you about things already decided in the code.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t5-p2">Another powerful adaptation: save the grill-me as a <strong>named skill</strong> (e.g.: <code class="text-teal-400">/grill-me</code>) to invoke with a command, and keep the 10 decisions versioned as a <em>snippet</em> that you paste in when the project is large. And the point that connects to the next lesson: grill-me rarely works alone — it’s the <strong>first link</strong> a pipeline (grill-me → PRD → issues) that you’ll see in module 5.3. <strong>Common mistake:</strong> copy the English text and never translate or adapt it to your domain — the skill works much better when it speaks your project's language.</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">grill-me-adaptada.md (example)</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">---
+name: grill-me
+description: Entrevista adversarial antes de implementar.
+---
+Descreva a minha visão com as suas palavras. Liste as N decisões
+mais consequentes (arquitetura + produto), priorizando CUSTO e
+SIMPLICIDADE. Me entreviste uma pergunta por vez até 98% de
+entendimento, sempre com a sua resposta recomendada. Se a
+resposta estiver no codebase, explore o codebase em vez de
+perguntar. (N = 5 pra bug fix, 10 padrão, 15 pra projeto novo.)</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> keep the structure (describe → list → interview up to 98%) and calibrate the number, focus, and codebase trigger to your project.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-5-2#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🚧 Common mistakes</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> The world’s best architect is no help if you answer “whatever” to every question. grill-me only works if you play along—it amplifies your clarity; it doesn’t replace it.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-2-t6-p1">The grill-me fails in a few predictable ways. The first is <strong>inflate the skill</strong>: you "improve" the text by stuffing it with rules, it loses focus and the effect disappears. The second is <strong>answer automatically</strong> ("whatever", "could be") — then the 98% is false and the rework you wanted to avoid comes back. The third is <strong>skip the codebase trigger</strong>: without “explore the codebase instead of asking me,” the AI grills you about things that are already decided in the code, and you get tired for no reason.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-2-t6-p2">The fourth is <strong>use in the wrong context</strong> (interviewing over a typo) — pure friction. And the fifth, more subtle: <strong>blindly accept the AI’s guess</strong>. The “recommended answers” are a great shortcut, but you own the product (remember Track 2) — if its guess goes against your vision, the point is to <em>fix</em>, not confirm. grill-me gives you a copilot that asks questions; you’re still the pilot. Use the checklist below before each interview:</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Five grill-me pitfalls block the way; getting past them all leads to genuine shared understanding" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="v52e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v52e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v52e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v52e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v52e-grid)" height="200" width="1000" x="0" y="0"></rect>
+<line marker-end="url(#v52e-ah)" opacity="0.5" stroke="#2dd4bf" stroke-width="2" x1="40" x2="800" y1="100" y2="100"></line>
+<g fill="#f87171" font-family="Inter,sans-serif" font-size="10.5">
+<g><rect fill="#1f0f0f" height="52" rx="3" stroke="#ef4444" stroke-width="1.5" width="14" x="70" y="74"></rect><text text-anchor="middle" x="77" y="148">inflate</text></g>
+<g><rect fill="#1f0f0f" height="52" rx="3" stroke="#ef4444" stroke-width="1.5" width="14" x="210" y="74"></rect><text text-anchor="middle" x="217" y="148">automatic</text></g>
+<g><rect fill="#1f0f0f" height="52" rx="3" stroke="#ef4444" stroke-width="1.5" width="14" x="350" y="74"></rect><text text-anchor="middle" x="357" y="148">without a codebase</text></g>
+<g><rect fill="#1f0f0f" height="52" rx="3" stroke="#ef4444" stroke-width="1.5" width="14" x="490" y="74"></rect><text text-anchor="middle" x="497" y="148">wrong context</text></g>
+<g><rect fill="#1f0f0f" height="52" rx="3" stroke="#ef4444" stroke-width="1.5" width="14" x="630" y="74"></rect><text text-anchor="middle" x="637" y="148">blind guess</text></g>
+</g>
+<g filter="url(#v52e-glow)"><rect fill="#0c1f1c" height="48" rx="12" stroke="url(#v52e-grad)" stroke-width="2.5" width="150" x="810" y="76"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="885" y="98">98% real</text>
+<text fill="#7fe6d6" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="885" y="115">shared understanding</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The five pitfalls along the way. Avoid them all and you’ll reach a real 98%.</p>
+</div>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">checklist-grill-me.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de rodar a grill-me, cheque:
+[ ] A skill está CURTA (4-5 frases)? Não inchei de regras?
+[ ] A tarefa é nova/ambígua/cara de errar? (Se trivial, pule.)
+[ ] Incluí "uma pergunta por vez" + "dê sua resposta recomendada"?
+[ ] Incluí "explore o codebase em vez de me perguntar"?
+[ ] Vou responder DE VERDADE (nada de "tanto faz")?
+[ ] Lembro que o palpite da IA é sugestão — eu decido o produto?</pre>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-2#q2">
+<p class="font-medium mb-4">Quick recall: which of these is NOT a misuse of grill-me?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Inflate the skill with 30 rules to "improve" it.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Correct the AI's guess when it goes against your perspective.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Answer “whatever” to every question.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> the grill-me amplifies your clarity — it fails when you bloat the skill, answer on autopilot, or give up making decisions.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">grill-me = adversarial interviewer</strong><span class="text-neutral-400"> — 4-5 sentences that turn the AI into an interrogator: one question at a time, with a recommended answer, exploring the codebase when possible.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">10-decisions prompt</strong><span class="text-neutral-400"> — describe the vision → list the 10 most consequential decisions (architecture/product) → interview me until 98%.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">98% is the stopping point</strong><span class="text-neutral-400"> — aligned enough to get started; the final 2% only appears once you’re coding.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Use for new/ambiguous/expensive work; adapt it to your project</strong><span class="text-neutral-400"> — skip it for trivial tasks; calibrate the number, focus, and codebase trigger. You decide on the product.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-teal-400 mb-2">Next module:</h3><p class="text-neutral-300">5.3 — grill-me → PRD → issues Pipeline: chain the interview into a flow from brain to backlog.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="modulo-5-3.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-5-2#q1', { answer: 1, explain: { 0: 'A IA até chega perto, mas o motivo prático é outro.', 1: 'Isso! Os 2% finais só aparecem ao codar — caçá-los na entrevista é desperdício.', 2: 'Não existe esse "limite de 98%"; é um alvo de alinhamento, não de tokens.' } });
+        INEMA.registerCheck('modulo-5-2#q2', { answer: 1, explain: { 0: 'É erro sim — inflar a skill mata o foco dela.', 1: 'Correto! Corrigir o palpite quando contraria sua visão é exatamente o uso certo — você é o dono do produto.', 2: 'É erro grave — responder no automático produz um 98% falso e traz retrabalho.' } });
+      }
+    });
+  </script>
+</body>
+</html>

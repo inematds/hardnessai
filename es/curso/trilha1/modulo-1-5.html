@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>1.5 Ahorro de tokens | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha1/modulo-1-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha1/modulo-1-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha1/modulo-1-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Ruta 1</a><span>/</span>
+<span class="text-emerald-400">Módulo 1.5 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.5 · MODO ENSEÑANZA</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">💸 Ahorro de tokens</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Hay una idea que parece un hechizo, pero es solo ingeniería: <strong class="text-emerald-400">un codebase fácil de modificar te permite usar un modelo más barato para hacer el mismo trabajo</strong>. Aquí entiendes qué es un <em>token</em>, por qué cuesta dinero y cómo tu harness —no el modelo— decide cuánto pagas. Cada palabra nueva se explica en el momento.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">1.1–1.4</div><div class="text-xs text-neutral-400">Prerreq.</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Práctico</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 1.5" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-5" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. La arquitectura reduce tokens</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. Las barreras de seguridad evitan tropiezos</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Cuándo basta un modelo más tonto</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. El costo real de un codebase deficiente</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. Refactorizar para reducir costos</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Métrica: tokens por cambio</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-emerald-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">Este módulo habla de <strong>costo</strong>. Antes que nada, fija qué es un <em>token</em> — es la "moneda" que gastas cuando usas IA. Ya viste los demás términos en los módulos 1.1–1.4; aquí vuelven aplicados al bolsillo:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Token</strong> — la unidad más pequeña de texto que el modelo lee y escribe. No es exactamente una palabra: es un fragmento de ella (en promedio, ~4 letras ≈ 1 token; «programación» puede convertirse en 3-4 tokens). <strong>Pagas por token</strong>: cada token que entra (tu pedido + el contexto) y cada token que sale (la respuesta) tiene un precio. Los tokens son la «moneda» de la IA.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Gasto de tokens</strong> — cuántos tokens consume una tarea de principio a fin. Cuanto más intenta el agente, se equivoca, vuelve a leer archivos e intenta de nuevo, más tokens consume — y más caro resulta.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Guard rail</strong> — «barrera de protección»: algo en el codebase que <em>impide</em> la IA para que no siga un camino equivocado (una prueba, un tipo, un lint, un error claro). Como la baranda de una pista de bolos infantil.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Modelo más barato / más tonto</strong> — un modelo más pequeño y más barato por token (p. ej., un "Haiku" en lugar de un "Opus"). Menos capaz por sí solo, pero con un buen harness hace el mismo trabajo por una fracción del precio.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Hamstringing</strong> — «ponerle trabas» al modelo: darle un codebase confuso, sin guard rails, sin documentación. Tropieza, gasta tokens en vano y te ves obligado a usar el modelo caro para compensar.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Refactorizar</strong> — reescribir el código internamente para que sea más simple y claro, <em>sin cambiar lo que hace externamente</em>. Es poner la casa en orden para que el próximo cambio sea barato.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🏗️ La arquitectura reduce tokens</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> le pides a un repartidor que deje un paquete. En una casa con una dirección clara y un portón al frente, lo entrega en 2 minutos. En un condominio laberíntico y sin letreros, da vueltas durante media hora, y tú pagas por su tiempo. El paquete es el mismo; el <em>terreno</em> es quien decidió el costo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-5-t1-p1">La frase clave de Matt Pocock sobre este tema es directa: <em>"¿Cómo optimizas el gasto de tokens? Teniendo un codebase al que sea más fácil hacerle cambios."</em> Fíjate: su respuesta <strong>no</strong> no es «usa un prompt mágico» ni «espera a que haya un modelo mejor». Es <strong>arquitectura</strong> — la forma en que tu <span class="termo" title="El conjunto de archivos de tu proyecto: el código.">codebase</span> está organizado. Cada vez que el agente necesita entender el código para cambiar algo, <strong>lee</strong> archivos (tokens de entrada) y <strong>escribe</strong> intentos (tokens de salida). Cuanto más confuso sea el terreno, más necesita leer e intentar, y el <span class="termo" title="Cuántos tokens consume una tarea de principio a fin.">gasto de tokens</span> sube.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t1-p2">¿Por qué esto es fundamental y no un detalle? Porque el precio de la IA se cobra por <span class="termo" title="La unidad de texto más pequeña que el modelo lee y escribe; pagas por cada una.">token</span> — tanto lo que entra como lo que sale. Un archivo gigante de mil líneas obliga al agente a tragárselo todo solo para cambiar una función. En cambio, un codebase modular (archivos pequeños, nombres obvios, cada cosa en su lugar) permite que el agente lea <em>solo la parte relevante</em>. La misma tarea, el mismo modelo, una fracción de los tokens. El <strong class="text-emerald-400">error común</strong> de principiante es tratar el costo de la IA como una cifra fija en la factura, cuando en realidad es consecuencia directa de cuán fácil dejaste de recorrer tu código.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dos codebases: el desordenado obliga al agente a leerlo todo (muchos tokens); el modular le permite leer solo un módulo (pocos tokens)" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v15a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v15a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v15a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v15a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#1a0e0e" height="190" rx="18" stroke="#f87171" stroke-width="2" width="430" x="40" y="30"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="60" y="58">CODEBASE DESORDENADO</text>
+<g fill="#fca5a5" font-family="Inter,sans-serif" font-size="11">
+<rect fill="#2a1414" height="34" rx="7" stroke="#f87171" stroke-width="1.4" width="390" x="60" y="74"></rect><text x="74" y="95">arquivo-gigante.js (1200 líneas, todo junto)</text>
+<rect fill="#2a1414" height="34" rx="7" stroke="#f87171" stroke-width="1.4" width="390" x="60" y="116"></rect><text x="74" y="137">el agente necesita leer TODO para cambiar 1 función</text>
+</g>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="22" font-weight="700" text-anchor="middle" x="255" y="195">≈ 40k tokens 💸</text>
+<rect fill="#0e2018" height="190" rx="18" stroke="#34d399" stroke-width="2" width="430" x="530" y="30"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="550" y="58">CODEBASE MODULAR</text>
+<g font-family="Inter,sans-serif" font-size="11">
+<rect fill="#0e1b26" height="30" rx="7" stroke="#38bdf8" stroke-width="1.4" width="120" x="550" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="610" y="93">auth/</text>
+<rect fill="#0e1b26" height="30" rx="7" stroke="#38bdf8" stroke-width="1.4" width="120" x="685" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="745" y="93">ui/</text>
+<g filter="url(#v15a-glow)"><rect fill="url(#v15a-grad)" height="30" rx="7" stroke="#10b981" stroke-width="2" width="120" x="820" y="74"></rect></g><text fill="#06281d" font-weight="700" text-anchor="middle" x="880" y="93">pagamento/</text>
+<rect fill="#0e1b26" height="30" rx="7" stroke="#38bdf8" stroke-width="1.4" width="390" x="550" y="116"></rect><text fill="#9fe7c8" font-size="11" x="564" y="135">lee SOLO el módulo correcto</text>
+</g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="22" font-weight="700" text-anchor="middle" x="745" y="195">≈ 5k tokens ✓</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">La misma tarea, el mismo modelo. Toda la diferencia de costo está en la arquitectura.</p>
+</div>
+<img alt="Ilustración conceptual: dos caminos para la IA: un laberinto caótico lleno de tokens desperdiciados y una ruta limpia y directa" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-5-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Creer que «la IA es cara» es culpa del modelo y que la solución es suscribirse a un plan más grande. Casi siempre ocurre lo contrario: el codebase está obligando al agente a leer e intentar mucho más de lo necesario. La factura es un síntoma de la arquitectura.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> un codebase fácil de modificar es un codebase barato de modificar — porque el agente lee e intenta menos.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-emerald-400">Profundiza (opcional): ¿por qué «token» y no «palabra»?</summary>
+<p class="text-sm text-neutral-300 mt-3">Los modelos no leen letra por letra ni palabra por palabra: dividen el texto en «tokens», fragmentos que se repiten mucho en el idioma (prefijos, sufijos, palabras cortas completas). Una palabra común se convierte en 1 token; una rara o larga, en varios. Por eso el precio se calcula por token: es la unidad que el modelo realmente procesa. Una estimación práctica para portugués y código: divide el número de caracteres por ~4 para obtener un orden de magnitud de tokens.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🛡️ Los guard rails evitan tropiezos</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> esas pistas de bolos infantiles con barreras en los canales. El niño no necesita ser un jugador profesional para derribar los bolos — la barrera corrige la trayectoria de la bola. <span class="termo" title="Barreras de protección que impiden que la IA siga un camino equivocado.">Guard rails</span> hacen esto con la IA: no hace falta que sea genial si el codebase la empuja de vuelta al camino correcto.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-5-t2-p1">Pocock usa una imagen excelente para explicar el costo: sin protección, el modelo queda <em>"dándose de cabeza contra la pared"</em> — intentando, fallando, intentando de nuevo, quemando tokens en cada intento. La solución no es un modelo más inteligente: son <strong class="text-emerald-400">guard rails</strong>. Un guard rail es cualquier cosa en la base de código que <em>impide</em> el camino equivocado y <em>señala</em> el correcto: un <span class="termo" title="Tipo de dato declarado: obliga al código a estar correcto antes de ejecutarse.">tipo (type)</span> que no compila si le pasas el valor incorrecto; un <span class="termo" title="Verificación automática que indica si el código sigue haciendo lo que debería.">prueba</span> que falla de inmediato; un <span class="termo" title="Herramienta que señala errores de estilo y posibles bugs en el código.">linter</span> que se queja; un mensaje de error claro que dice exactamente qué falta.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t2-p2">La razón es puro costo: cada guard rail convierte una <em>tropiezo costoso</em> (el agente descubre el error tarde, después de reescribir medio sistema) en una <em>corrección barata</em> (el error aparece de inmediato, en una línea). Pocock resume: <em>"mejores barreras de seguridad, menos tokens chocando contra la pared."</em> O <strong>error común</strong> aquí es lo opuesto — gente que elimina las pruebas «para ir más rápido». Sin barreras de seguridad, la IA avanza a ciegas, se desvía más y te cuesta más a cada paso.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Sin guard rails, la bola de la IA cae en la canaleta y se golpea la cabeza; con guard rails, el muro la corrige hasta llegar al resultado correcto" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v15b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v15b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v15b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v15b-grid)" height="240" width="1000" x="0" y="0"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="14" font-weight="600" x="60" y="40">SIN guard rails</text>
+<path d="M60,70 C200,70 260,120 360,118" fill="none" stroke="#f87171" stroke-dasharray="6 5" stroke-width="2.4"></path>
+<circle cx="60" cy="70" fill="#f87171" r="9"></circle>
+<rect fill="#2a1414" height="52" rx="10" stroke="#f87171" stroke-width="2" width="120" x="360" y="92"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="420" y="116">pared 💥</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="420" y="133">vuelve a intentar…</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="240" y="170">muchos tokens, varios errores</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" x="560" y="40">CON guard rails (type · teste · lint)</text>
+<rect fill="#0e2018" height="18" rx="9" stroke="#34d399" stroke-width="1.6" width="420" x="540" y="58"></rect>
+<rect fill="#0e2018" height="18" rx="9" stroke="#34d399" stroke-width="1.6" width="420" x="540" y="150"></rect>
+<path d="M560,113 C700,90 820,135 900,113" fill="none" stroke="#34d399" stroke-width="2.4"></path>
+<circle cx="560" cy="113" fill="#34d399" r="9"></circle>
+<g filter="url(#v15b-glow)"><circle cx="900" cy="113" fill="url(#v15b-grad)" r="14" stroke="#10b981" stroke-width="2"></circle></g>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="730" y="200">el bordillo corrige la pelota → acierto a la primera</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: el type que ahorra 10 intentos</h3>
+<p class="text-neutral-300 text-sm mb-3">La IA necesita llamar a una función <code class="text-emerald-400">enviarEmail(destino, assunto, corpo)</code>.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Sin guard rail</p><p class="text-xs text-neutral-300">La función acepta cualquier cosa. La IA invoca <code>enviarEmail(corpo, destino)</code> cambiado. Nadie se queja en el momento. Solo falla al ejecutarlo: ella lo vuelve a leer todo, lo intenta de nuevo, lo vuelve a leer… 8 intentos, miles de tokens.</p></div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-semibold text-sm mb-1">Con guard rail (type)</p><p class="text-xs text-neutral-300">Los parámetros tienen tipos. En el 1.er intento incorrecto, el verificador de tipos lo señala <em>"el destino espera Email, recibió Texto"</em>. La IA corrige al instante. 1 intento, pocos tokens.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> un guard rail es la baranda que hace que la IA acierte sin ser un genio, y cada acierto en el momento ahorra tokens.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🪙 Cuándo basta con un modelo menos inteligente</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> en una cocina bien organizada — todo etiquetado, cuchillo afilado, receta en la encimera — hasta un cocinero principiante prepara un plato decente. En una cocina caótica, solo un chef con experiencia se las arregla. La cocina (el harness) determina qué nivel de cocinero (modelo) necesitas.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-5-t3-p1">Aquí está el corazón del módulo, en palabras de Pocock: <em>"Ten un codebase más fácil de modificar → puedes usar un modelo más tonto/más barato para hacer el mismo trabajo."</em> Fíjate en la lógica: la capacidad necesaria del modelo <strong>no es fija</strong> — depende de lo difícil que hayas hecho la tarea. Un buen harness <em>baja el nivel</em> de inteligencia necesaria. Por eso, un <span class="termo" title="Modelo más pequeño y menos capaz, pero mucho más barato por token.">modelo más barato</span> puede entregar lo que, en un codebase deficiente, solo entregaría un modelo costoso.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t3-p2">Y el reverso, que Pocock llama por su nombre: <em>"Dejas tu modelo limitado desde el primer día → necesitas un modelo inteligente."</em> <span class="termo" title="Atarle una pierna al modelo: darle un terreno confuso que lo obliga a ser costoso.">Hamstringing</span> (literalmente «cortar el tendón») es darle a la IA un terreno confuso, sin guard rails ni documentación. Entonces tropieza con todo, y tú estás <em>gracias</em> a pagar por el modelo más avanzado solo para que no se pierda. Conexión con el módulo 1.1: como el harness representa el 50% del resultado, es él —no el modelo— quien define el límite de costo. El <strong>error común</strong> es la carrera por el «modelo del momento»: invertir en un motor caro para compensar un chasis que tú mismo podrías haber arreglado por mucho menos.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Un buen harness permite usar un modelo barato; un harness malo (hamstring) obliga a usar un modelo caro" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs><pattern height="32" id="v15c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v15c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><lineargradient id="v15c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient><marker id="v15c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker><marker id="v15c-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker></defs>
+<rect fill="url(#v15c-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e2018" height="56" rx="12" stroke="#34d399" stroke-width="2" width="300" x="60" y="40"></rect>
+<text fill="#34d399" font-size="15" font-weight="600" text-anchor="middle" x="210" y="64">harness BUENO</text>
+<text fill="#9fe7c8" font-size="12" text-anchor="middle" x="210" y="84">modular + guard rails + documentación</text>
+<path d="M360,68 L460,68" marker-end="url(#v15c-ah)" stroke="#34d399" stroke-width="2.4"></path>
+<g filter="url(#v15c-glow)"><rect fill="url(#v15c-grad)" height="56" rx="12" stroke="#10b981" stroke-width="2.5" width="300" x="470" y="40"></rect></g>
+<text fill="#06281d" font-size="15" font-weight="700" text-anchor="middle" x="620" y="64">Basta con un modelo BARATO</text>
+<text fill="#06281d" font-size="12" text-anchor="middle" x="620" y="84">el mismo trabajo, una fracción del costo</text>
+<text fill="#34d399" font-size="22" font-weight="700" x="815" y="74">💸↓</text>
+<rect fill="#1a0e0e" height="56" rx="12" stroke="#f87171" stroke-width="2" width="300" x="60" y="124"></rect>
+<text fill="#f87171" font-size="15" font-weight="600" text-anchor="middle" x="210" y="148">harness MALO (hamstring)</text>
+<text fill="#fca5a5" font-size="12" text-anchor="middle" x="210" y="168">laberinto sin protección</text>
+<path d="M360,152 L460,152" marker-end="url(#v15c-ahr)" stroke="#f87171" stroke-width="2.4"></path>
+<rect fill="#2a1414" height="56" rx="12" stroke="#f87171" stroke-width="2" width="300" x="470" y="124"></rect>
+<text fill="#fca5a5" font-size="15" font-weight="700" text-anchor="middle" x="620" y="148">necesita el modelo CARO</text>
+<text fill="#fca5a5" font-size="12" text-anchor="middle" x="620" y="168">solo él no se pierde</text>
+<text fill="#f87171" font-size="22" font-weight="700" x="815" y="158">💸↑</text>
+</g>
+</svg>
+</div>
+<img alt="Ilustración: una moneda-token brillante dividida: de un lado, un robot simple y barato que trabaja tranquilo; del otro, un robot caro que suda en un laberinto" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-5-2.png"/>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-5#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿qué significa «limitar las capacidades de tu modelo»?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Usar un modelo de propósito más barato para ahorrar.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Darle a la IA un codebase confuso y sin guard rails, lo que te obliga a usar el modelo caro.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Limitar cuántos tokens puede gastar la IA por día.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> codebase fácil = basta con un modelo barato; codebase difícil (hamstring) = tienes que pagar por el modelo caro.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🕳️ El costo real de un codebase deficiente</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un grifo que gotea. Cada gota cuesta poco: ni lo notas. Pero al final del mes, la factura del agua asusta. Un codebase deficiente gotea tokens en <em>cada</em> cambio, todo el año.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-5-t4-p1">El costo de un codebase deficiente no es un cobro único; es un <strong>impuesto recurrente</strong> sobre cada tarea futura. La IA vuelve a leer archivos que no necesitaba leer, intenta enfoques que un guard rail habría bloqueado y genera código que rompe otras partes (porque no podía saber que existían). Cada una de esas idas y vueltas es <span class="termo" title="La unidad de texto más pequeña que se cobra: entrada y salida.">token</span> costo. Multiplícalo por todos los cambios del proyecto y el «impuesto» se convierte en el rubro más grande de tu factura.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t4-p2">Hay un efecto todavía más engañoso: un codebase malo también <em>oculta bugs</em>, y los bugs ocultos cuestan tokens (y dinero) cada vez que la IA tropieza con ellos. Pocock observa que muchos bugs profundos no requieren un modelo genial para encontrarlos: <em>"podrías descubrir estos errores con modelos más baratos si buscaras en los lugares correctos y dieras el prompt/harness adecuado."</em> Es decir: lo que parecía «necesitar una IA cara» era, una vez más, un problema de harness. El <strong>error común</strong> es normalizar el grifo que gotea («es así, la IA es cara») en vez de cerrarlo.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Costo acumulado a lo largo del tiempo: una codebase deficiente sube en una curva pronunciada de tokens; una buena crece lentamente" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs><pattern height="32" id="v15d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v15d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v15d-grid)" height="200" width="1000" x="0" y="0"></rect>
+<line stroke="#9ca3af" stroke-width="2" x1="80" x2="940" y1="170" y2="170"></line>
+<line stroke="#9ca3af" stroke-width="2" x1="80" x2="80" y1="20" y2="170"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="end" x="62" y="30">tokens</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="500" y="192">cambios a lo largo del tiempo →</text>
+<path d="M80,165 L240,150 L400,118 L560,78 L720,42 L900,28" fill="none" stroke="#f87171" stroke-width="3"></path>
+<circle cx="900" cy="28" fill="#f87171" r="6"></circle><text fill="#f87171" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="end" x="884" y="22">codebase malo 💸💸</text>
+<path d="M80,165 L240,162 L400,156 L560,150 L720,143 L900,138" fill="none" stroke="#34d399" stroke-width="3"></path>
+<g filter="url(#v15d-glow)"><circle cx="900" cy="138" fill="#34d399" r="6"></circle></g><text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="end" x="884" y="132">codebase bueno ✓</text>
+</svg>
+</div>
+<img alt="Ilustración: un grifo que gotea monedas-token, con una cuenta creciente al fondo que representa el costo recurrente de un codebase deficiente" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-5-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> un codebase malo no te cobra una sola vez: te cobra un impuesto en tokens con cada cambio futuro.</p></div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-emerald-400">Para profundizar (opcional): «si te roban la bici, compra un candado»</summary>
+<p class="text-sm text-neutral-300 mt-3">Pocock usa esta analogía: si un bug (o un costo) se repite, no basta con corregir el caso; instala el "candado" que impide que vuelva a ocurrir. En nuestro tema: si un área del código hace que la IA consuma muchos tokens una y otra vez, no basta con pagar la cuenta; refactoriza esa área y agrega guard rails. Es la diferencia entre tratar el síntoma y tratar la causa raíz. (Verás cómo esto se convierte en un sistema en la Trilha 4, "Sistemas auto-mejorables".)</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🔧 Refactorizar para reducir costos</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> afilar el hacha antes de cortar el árbol. Detenerse 10 minutos para afilarla parece un retraso, pero cada corte después es el doble de rápido. <span class="termo" title="Reescribir el código por dentro para que sea más sencillo, sin cambiar lo que hace por fuera.">Refactorizar</span> es afilar el hacha de tu codebase.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-5-t5-p1">La buena noticia: no estás atado al codebase que tienes. <span class="termo" title="Reescribir el código por dentro para que sea más sencillo, sin cambiar el comportamiento.">Refactorizar</span> es reorganizar el código por dentro — dividir el archivo gigante en módulos, poner nombres claros, agregar tipos y pruebas — <em>sin</em> cambiar lo que hace el sistema por fuera. Y aquí está el giro: <strong>la propia IA refactoriza por ti</strong>. Gastas tokens una vez para poner todo en orden y, con cada cambio futuro, pagas mucho menos. Es una inversión, no un gasto.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t5-p2">Cómo Pocock lo plantea en DX × AX: mejorar el codebase es una de las palancas <em>"frecuentemente olvidadas"</em> para mejorar la experiencia del agente y, con ella, el costo. Refactorizar agrega guard rails (tema 2), hace que el terreno sea navegable (tema 1) y cierra la llave que gotea (tema 4), todo de una vez. El <strong>error común</strong> es posponer la refactorización «para cuando haya tiempo»: como el costo es recurrente, cada día que la pospones son más tokens desperdiciados. Mira en el cuadro de copia de abajo cómo cambia solo el <em>manera de pedir</em> la refactorización — del prompt vago al prompt con guard rails:</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">prompt-refatorar.txt — antes × después</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">❌ ANTES (prompt vago → muitos tokens, resultado incerto)
+"arruma esse arquivo aí, tá uma bagunça"
+
+✅ DEPOIS (prompt com guard rails → poucos tokens, resultado seguro)
+Refatore o arquivo src/pagamento.js, SEM mudar o comportamento.
+Objetivo: baratear mudanças futuras.
+Regras (guard rails):
+1. Quebre em módulos pequenos por responsabilidade (1 arquivo = 1 tema).
+2. Adicione TIPOS nas funções públicas (assinaturas explícitas).
+3. NÃO toque na lógica de negócio — só na organização.
+4. Rode os testes existentes ao final; todos têm que continuar passando.
+5. Se faltar teste pra um caminho crítico, escreva o teste antes de mover o código.
+Entregue: lista do que mudou + confirmação de testes verdes.</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> refactorizar es afilar el hacha: gastas tokens una vez para ahorrar tokens en cada cambio siguiente.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-5#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">📊 Métrica: tokens por cambio</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> el consumo de tu auto: litros por cada 100 km. No miras solo el tanque lleno: miras cuánto consume <em>por viaje</em>. Con la IA, la métrica equivalente es <strong>tokens por cambio</strong>.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-5-t6-p1">Lo que no se mide no se mejora. La métrica adecuada no es "cuánto gasté este mes" (eso oculta la causa), sino <strong class="text-emerald-400">tokens por cambio</strong>: cuántos tokens consume una tarea típica, desde el pedido hasta la entrega. Si esta cifra es alta, es señal de hamstringing: el codebase obliga al agente a leer y probar demasiado. Si baja después de una refactorización, acabas de demostrar con números que el harness mejoró. Es el resumen práctico de todo el módulo: la arquitectura (T1) y los guard rails (T2) reducen la cifra; un codebase deficiente (T4) la aumenta; refactorizar (T5) la reduce; y una cifra baja permite usar el modelo económico (T3). Copia la lista de verificación de abajo y úsala cada vez que una tarea consuma más de lo debido:</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">diagnostico-tokens-por-mudanca.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Tarefa gastou tokens demais? Diagnostique o HARNESS, não o modelo:
+[ ] ARQUITETURA — a IA teve que ler arquivos gigantes/irrelevantes?
+[ ] GUARD RAILS — faltou type/teste/lint pra barrar o erro na hora?
+[ ] DOCS — faltou um README/comentário apontando o lugar certo?
+[ ] REPETIÇÃO — a IA tentou, errou e retentou o mesmo erro várias vezes?
+Ação: refatore a área cara + adicione 1 guard rail.
+Depois, reduza o modelo (ex.: do caro pro barato) e confirme que ainda passa.
+Meta: o número de "tokens por mudança" cair na próxima vez.</pre>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Ciclo de mejora: medir los tokens por cambio, refactorizar, agregar guard rail, reducir el modelo, volver a medir" class="w-full h-auto" role="img" viewbox="0 0 1000 170">
+<defs><pattern height="32" id="v15f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v15f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v15f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker></defs>
+<rect fill="url(#v15f-grid)" height="170" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<g filter="url(#v15f-glow)"><rect fill="#0e2018" height="48" rx="11" stroke="#34d399" stroke-width="2.2" width="160" x="40" y="60"></rect></g><text fill="#34d399" text-anchor="middle" x="120" y="89">1 · medir</text>
+<path d="M200,84 L250,84" marker-end="url(#v15f-ah)" stroke="#34d399" stroke-width="2"></path>
+<rect fill="#0e1b26" height="48" rx="11" stroke="#38bdf8" stroke-width="2" width="160" x="252" y="60"></rect><text fill="#bfe6ff" text-anchor="middle" x="332" y="89">2 · refactorizar</text>
+<path d="M412,84 L462,84" marker-end="url(#v15f-ah)" stroke="#34d399" stroke-width="2"></path>
+<rect fill="#0e1b26" height="48" rx="11" stroke="#38bdf8" stroke-width="2" width="160" x="464" y="60"></rect><text fill="#bfe6ff" text-anchor="middle" x="544" y="89">3 · + barrera de protección</text>
+<path d="M624,84 L674,84" marker-end="url(#v15f-ah)" stroke="#34d399" stroke-width="2"></path>
+<rect fill="#0e1b26" height="48" rx="11" stroke="#38bdf8" stroke-width="2" width="180" x="676" y="60"></rect><text fill="#bfe6ff" text-anchor="middle" x="766" y="89">4 · reducir el modelo</text>
+</g>
+<path d="M856,108 C900,140 500,150 120,124 L120,112" fill="none" marker-end="url(#v15f-ah)" opacity="0.5" stroke="#34d399" stroke-dasharray="6 5" stroke-width="1.8"></path>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="500" y="158">…y vuelve a medir: menos tokens por cambio = un harness mejor</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-5#q2">
+<p class="font-medium mb-4">Recuperación rápida: ¿qué métrica muestra MEJOR si tu harness se volvió más barato?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">El total de tokens gastados en el mes.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Cuántos tokens consume una tarea típica: "tokens por cambio".</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Cuál es el modelo más nuevo del mercado.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> mide los tokens por cambio — es el «litros por cada 100 km» de tu harness y lo que realmente reduces.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Token = la moneda de la IA</strong><span class="text-neutral-400"> — pagas por cada fragmento de texto que entra y que sale.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Codebase fácil = modelo barato</strong><span class="text-neutral-400"> — la arquitectura y los guard rails reducen la inteligencia necesaria.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Hamstring = cuenta cara</strong><span class="text-neutral-400"> — una base de código confusa obliga a usar el modelo más avanzado y quema tokens en intentos fallidos.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Refactoriza y mide</strong><span class="text-neutral-400"> — afila el hacha y sigue los «tokens por cambio».</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">1.6 — La ventana de contexto es escasa: por qué cada skill «cobra» espacio en el contexto y cómo mantener la higiene.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-6.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-1-5#q1', { answer: 1, explain: { 0: 'Isso é o contrário — usar modelo barato é o RESULTADO de um bom harness, não o hamstring.', 1: 'Isso! Hamstring = amarrar a perna da IA com um codebase ruim, e aí você precisa do modelo caro.', 2: 'Isso é um limite de orçamento, não o hamstring. Hamstring é sobre a qualidade do codebase.' } });
+        INEMA.registerCheck('modulo-1-5#q2', { answer: 1, explain: { 0: 'O total do mês esconde a causa — pode subir só porque você trabalhou mais.', 1: 'Exato! "Tokens por mudança" isola o custo de uma tarefa típica e mostra se o harness melhorou.', 2: 'A novidade do modelo não diz nada sobre o seu custo por tarefa.' } });
+      }
+    });
+  </script>
+</body>
+</html>

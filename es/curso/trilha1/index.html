@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>Ruta 1 · Fundamentos del Harness | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) .group:hover .group-hover\:text-emerald-400 { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha1/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha1/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha1/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../../curso/trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../../curso/trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../../curso/trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../../curso/trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">RUTA 1</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🏎️ Fundamentos del Harness</h1>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">El modelo es el motor; el harness es todo el auto. Esta ruta fija la tesis central del método Pocock: por qué el harness (no el modelo) es tu palanca y cómo dejar de cambiar de herramienta cada semana.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<img alt="Ilustración de la ruta 1: Fundamentos del Harness" class="w-full h-auto rounded-xl mb-4" loading="lazy" src="../../../curso/trilha1/assets/img/hero.png"/>
+<svg aria-label="Diagrama: las cuatro palancas del harness convergen en un resultado" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="t1h-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="t1h-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t1h-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="t1h-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+</defs>
+<rect fill="url(#t1h-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="34"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="54">prompts</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="94">skills</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="114"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="134">entorno</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="154"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="174">codebase</text></g>
+</g>
+<g fill="none" opacity="0.5" stroke="#34d399" stroke-width="1.8">
+<path d="M190,49 C320,49 360,108 470,108" marker-end="url(#t1h-ah)"></path>
+<path d="M190,89 C320,89 360,108 470,108" marker-end="url(#t1h-ah)"></path>
+<path d="M190,129 C320,129 360,108 470,108" marker-end="url(#t1h-ah)"></path>
+<path d="M190,169 C320,169 360,108 470,108" marker-end="url(#t1h-ah)"></path>
+</g>
+<g filter="url(#t1h-glow)"><rect fill="#0e2018" height="76" rx="16" stroke="url(#t1h-grad)" stroke-width="2.5" width="210" x="470" y="70"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="18" font-weight="600" text-anchor="middle" x="575" y="103">HARNESS</text>
+<text fill="#cbd5e1" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="575" y="124">el sistema que controlas</text>
+<path d="M680,108 L800,108" fill="none" marker-end="url(#t1h-ah)" stroke="#34d399" stroke-width="2"></path>
+<rect fill="#1f2937" height="52" rx="12" stroke="#9ca3af" stroke-width="2" width="160" x="800" y="82"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="880" y="113">Resultado</text>
+</svg>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-2 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Módulos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">36</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~3h</div><div class="text-xs text-neutral-400">Duración</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Base</div><div class="text-xs text-neutral-400">Nivel</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso de la ruta 1" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="trilha:1" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso de la ruta:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 36</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="conteudo">
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Mapa de la ruta</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-1">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🏎️ Motor × chasis</h3>
+<p class="text-xs text-neutral-400">El modelo no lo es todo</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-2">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">⏳ La Bitter Lesson</h3>
+<p class="text-xs text-neutral-400">No esperes al modelo</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-3">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🧭 Configuración agnóstica al agente</h3>
+<p class="text-xs text-neutral-400">Fundamentos de 30 años</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-4">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🤝 DX × AX</h3>
+<p class="text-xs text-neutral-400">Diseña para el agente</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-5">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">💸 Ahorro de tokens</h3>
+<p class="text-xs text-neutral-400">Codebase fácil = modelo barato</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-emerald-500/30 p-5 transition-all" href="#modulo-1-6">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold text-sm">1.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-emerald-400 transition-colors">🪟 Ventana de contexto escasa</h3>
+<p class="text-xs text-neutral-400">Cada skill cobra</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Contenido detallado</h2>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-1" data-inema-track="1" id="modulo-1-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🏎️ Motor × chasis</h3>
+<p class="text-neutral-400 text-sm">La tesis central: enfócate en el harness, no en el modelo.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">⚙️</span><div><span class="font-medium">Qué es el harness</span><span class="text-neutral-500 text-sm ml-2">- El sistema, no la pieza</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Todo lo que involucra al modelo: prompts, skills, entorno y codebase.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es donde está la palanca que realmente controlas.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Motor = modelo; auto = harness; control casi total.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🏎️</span><div><span class="font-medium">La analogía de la Fórmula 1</span><span class="text-neutral-500 text-sm ml-2">- Motor frente al auto completo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El motor es una parte; el chasis y la aerodinámica hacen que el auto gane.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Reorienta tu enfoque del juguete brillante al sistema.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Sistema &gt; pieza; mentalidad de chasis.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🎛️</span><div><span class="font-medium">Por qué tú controlas el harness</span><span class="text-neutral-500 text-sm ml-2">- Palancas reales</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Los prompts, el entorno y el codebase están 100% en tus manos.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cambia dónde vale la pena invertir tiempo: en lo que cambias hoy.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Tres palancas; mejora independiente del modelo.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">⚠️</span><div><span class="font-medium">El error de enfocarse en el modelo</span><span class="text-neutral-500 text-sm ml-2">- El juguete brillante</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La obsesión por el modelo nuevo y el vibe coder que cambia cada semana.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Evita quedar atado a un modelo y no aprender nunca los fundamentos.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Pensar desde el harness, no desde el modelo.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">⚖️</span><div><span class="font-medium">Modelo y harness son 50/50</span><span class="text-neutral-500 text-sm ml-2">- No 90/10</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Pocock pondera el modelo y el harness por igual.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La mitad del resultado está bajo tu control directo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Equilibrio 50/50; el harness abarata el modelo.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">Dónde está tu palanca</span><span class="text-neutral-500 text-sm ml-2">- Diagnóstico</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Traducir «mejorar la IA» en «mejorar el harness».</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Mayor retorno por hora invertida.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Lista de verificación: prompt, skills, entorno, codebase.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-1')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-1.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-2" data-inema-track="1" id="modulo-1-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">⏳ La Bitter Lesson</h3>
+<p class="text-neutral-400 text-sm">Por qué «solo esperar a que el modelo mejore» es una trampa y cuál es el equilibrio adecuado.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">📜</span><div><span class="font-medium">Qué es Bitter Lesson</span><span class="text-neutral-500 text-sm ml-2">- El cómputo se impone</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Idea de ML (Rich Sutton): el cómputo bruto supera las optimizaciones hechas a mano.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Explica por qué apostar contra el avance de los modelos suele ser una apuesta perdida.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El cómputo crece rápido; los métodos generales &gt; los trucos manuales.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🛌</span><div><span class="font-medium">La tentación de esperar a la AGI</span><span class="text-neutral-500 text-sm ml-2">- Solo esperar al motor</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La idea de simplemente esperar a que el modelo mejore: “esperar a que el motor mejore”.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el error opuesto: delegar todo el progreso al laboratorio.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Esperar sin hacer nada ≠ estrategia.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">📈</span><div><span class="font-medium">El cómputo supera la optimización (y el límite)</span><span class="text-neutral-500 text-sm ml-2">- El contrapeso</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Incluso con Bitter Lesson, todavía se puede ganar mucho optimizando el harness hoy.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El límite de la lección: no te dice que no hagas nada.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El cómputo aumenta; el harness todavía multiplica el resultado ahora.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🏃</span><div><span class="font-medium">Por qué actuar ahora</span><span class="text-neutral-500 text-sm ml-2">- Nada de quedarse esperando</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">“Quedarse esperando a la AGI sin hacer nada fue una idea muy tonta.”</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La acción se compone: cada mejora del harness genera intereses mientras el modelo evoluciona.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Actuar ahora &gt; esperar; las mejoras se acumulan.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">⚖️</span><div><span class="font-medium">El equilibrio de Pocock</span><span class="text-neutral-500 text-sm ml-2">- Término medio</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un punto medio: mejorar toda la configuración cada día Y usar el mejor modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Evita los dos extremos: optimizar demasiado el harness o solo esperar al motor.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">“Hago lo mejor que puedo con lo que tengo ahora.”</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧭</span><div><span class="font-medium">Aplicar sin caer en la trampa</span><span class="text-neutral-500 text-sm ml-2">- En la práctica</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Invertir en el harness ahora; usar el mejor modelo; no apostarlo todo a esperar.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Convierte la teoría en una rutina semanal.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Rutina: 1 mejora del harness por semana + mejor modelo.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-2')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-2.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-3" data-inema-track="1" id="modulo-1-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🧭 Configuración agnóstica al agente</h3>
+<p class="text-neutral-400 text-sm">Mantén el harness independiente del modelo y basado en lo que funciona desde hace décadas.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🧭</span><div><span class="font-medium">Mantenerse agnóstico</span><span class="text-neutral-500 text-sm ml-2">- Independiente del modelo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Mantener el workspace/harness lo más independiente posible del modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Lo que es agnóstico sobrevive al próximo cambio de modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Agnosticismo = robustez ante los cambios.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔒</span><div><span class="font-medium">El costo de optimizar para un solo modelo</span><span class="text-neutral-500 text-sm ml-2">- Perder el enfoque</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">“Si sobreoptimizo en torno a un modelo, pierdo de vista los fundamentos.”</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Acoplarse a un modelo genera deuda cuando este cambia.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">La sobreoptimización = deuda futura.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🏛️</span><div><span class="font-medium">Fundamentos que no caducan</span><span class="text-neutral-500 text-sm ml-2">- 30-40 años</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Enfocarse en lo que funciona desde hace 30-40 años; tiende a seguir funcionando.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Los fundamentos antiguos son la apuesta más segura a largo plazo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Buenas prácticas atemporales &gt; novedad brillante.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🌀</span><div><span class="font-medium">El vibe coder que cambia todas las semanas</span><span class="text-neutral-500 text-sm ml-2">- El contraejemplo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Saltar de una herramienta a otra sin aprender ningún principio.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es lo opuesto al agnosticismo: mucha novedad, cero base.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Cambiar todo ≠ evolucionar.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🛡️</span><div><span class="font-medium">Protege tu setup</span><span class="text-neutral-500 text-sm ml-2">- Fundamentos aplicados</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Aplicar buenos fundamentos para sobrevivir a los cambios de modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Un setup blindado cuesta menos con cada cambio de modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Patrones portables; bajo acoplamiento.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">✅</span><div><span class="font-medium">Lista de verificación de agnosticismo</span><span class="text-neutral-500 text-sm ml-2">- Auditar</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cómo auditar si dependes de un modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Hace que el agnosticismo sea verificable, no vago.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Lista de verificación objetiva.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-3')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-3.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-4" data-inema-track="1" id="modulo-1-4">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🤝 DX × AX</h3>
+<p class="text-neutral-400 text-sm">Developer Experience se encuentra con Agent Experience, y la superposición es enorme.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🤖</span><div><span class="font-medium">Qué es Agent Experience</span><span class="text-neutral-500 text-sm ml-2">- La experiencia del agente</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La experiencia que tiene el agente al trabajar en tu codebase.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Una buena AX hace que el agente sea más eficaz y más barato.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">AX = entorno del agente.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔗</span><div><span class="font-medium">La intersección DX/AX</span><span class="text-neutral-500 text-sm ml-2">- La misma raíz</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">DX y AX se superponen enormemente; un buen DX ya mejora el AX.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">No tienes que elegir: mejorar uno mejora el otro.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Un buen sénior que ofrece un buen DX ya ofrece AX.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🛤️</span><div><span class="font-medium">Guard rails y navegabilidad</span><span class="text-neutral-500 text-sm ml-2">- Sin complicaciones</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Lo que ayuda al agente a explorar sin tropezar.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Los guard rails reducen el ensayo y error y el costo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Límites claros + caminos obvios.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🗺️</span><div><span class="font-medium">Documentación que señala el camino</span><span class="text-neutral-500 text-sm ml-2">- Solo lo suficiente</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">“Documentación suficiente para guiar a la IA hacia los lugares correctos.”</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Demasiada documentación se convierte en ruido; la adecuada acelera al agente.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Documentación concisa y orientativa.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🏗️</span><div><span class="font-medium">El codebase como entorno del agente</span><span class="text-neutral-500 text-sm ml-2">- Se olvida con frecuencia</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Mejorar el codebase es mejorar el entorno en el que funciona el modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es la palanca de AX más olvidada — y una de las más potentes.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Codebase = entorno; entorno = AX.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">📐</span><div><span class="font-medium">Cómo medir una buena AX</span><span class="text-neutral-500 text-sm ml-2">- Señales</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Señales de un codebase con buena AX.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Lo que mides, lo mejoras.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Señales observables de AX.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-4')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-4.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-5" data-inema-track="1" id="modulo-1-5">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">💸 Ahorro de tokens</h3>
+<p class="text-neutral-400 text-sm">La verdadera optimización de costos: un codebase fácil de modificar permite que un modelo más barato rinda igual.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🏗️</span><div><span class="font-medium">La arquitectura reduce los tokens</span><span class="text-neutral-500 text-sm ml-2">- La respuesta de Pocock</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">“¿Cómo optimizar el gasto de tokens? Ten un codebase más fácil de cambiar.”</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La arquitectura es la palanca de costos más subestimada.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Fácil de cambiar = barato de operar.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🛡️</span><div><span class="font-medium">Los guard rails evitan dar vueltas</span><span class="text-neutral-500 text-sm ml-2">- Menos prueba y error</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Mejores guard rails → el modelo gasta menos tokens dando vueltas.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cada intervención evitada es un token ahorrado.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Guard rails = menos ensayo y error.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🪙</span><div><span class="font-medium">Cuando basta con un modelo menos inteligente</span><span class="text-neutral-500 text-sm ml-2">- Reduce costos con el chasis</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Codebase mejor → un modelo más barato/sencillo hace el mismo trabajo.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es como pagar menos por API sin perder resultados.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Un buen harness reduce el nivel de modelo necesario.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🧨</span><div><span class="font-medium">El costo real de un codebase deficiente</span><span class="text-neutral-500 text-sm ml-2">- Obstaculización</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">“Encadenar al modelo desde el día 1” obliga a usar un modelo caro.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El costo aparece como dependencia de un modelo caro.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Codebase malo = impuesto permanente.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🔧</span><div><span class="font-medium">Refactorizar para reducir costos</span><span class="text-neutral-500 text-sm ml-2">- Una inversión que da frutos</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Refactorizar para que sea fácil de cambiar es optimizar costos.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cada refactorización reduce los tokens que se gastan en los siguientes cambios.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Refactorizar = reducir el costo marginal.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">📏</span><div><span class="font-medium">Métrica: tokens por cambio</span><span class="text-neutral-500 text-sm ml-2">- Qué medir</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cómo pensar el costo por cambio.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Da una cifra para orientar las refactorizaciones.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Tokens/cambio como brújula.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-5')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-5.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="1-6" data-inema-track="1" id="modulo-1-6">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-emerald-400 font-bold">1.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🪟 Ventana de contexto escasa</h3>
+<p class="text-neutral-400 text-sm">Cada skill filtra su descripción en el contexto. La higiene del contexto forma parte del harness.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">💧</span><div><span class="font-medium">Lo que se filtra en el contexto</span><span class="text-neutral-500 text-sm ml-2">- La descripción</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Toda skill expone su descripción en la context window.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El contexto es finito; cada filtración ocupa espacio.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Descripción de la skill = costo de contexto.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">💯</span><div><span class="font-medium">El costo de 100 skills</span><span class="text-neutral-500 text-sm ml-2">- 100 descripciones</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">100 skills = 100 descripciones filtrándose en el contexto.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La «lista de habilidades» no es gratis.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Más skills = más filtraciones.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🫥</span><div><span class="font-medium">disable model invocation</span><span class="text-neutral-500 text-sm ml-2">- Ocultar la skill</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">`disable model invocation: true` → skill invocada solo por ti, sin filtrar la descripción.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Permite tener la skill sin pagar el costo de contexto que implica.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Procedure solo para el usuario; descripción oculta.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🧹</span><div><span class="font-medium">Bloat de instrucciones</span><span class="text-neutral-500 text-sm ml-2">- El exceso atasca</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">“Todo el mundo llena la ventana de contexto con demasiadas cosas, demasiadas instrucciones.”</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El exceso de instrucciones empeora el rendimiento, no lo mejora.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Menos es más en el contexto.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">♻️</span><div><span class="font-medium">El reset radical (avance)</span><span class="text-neutral-500 text-sm ml-2">- Gancho de la T5</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Volver al blank slate y observar al agente puro.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Solo así ves lo que realmente necesitas volver a agregar.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Borrar todo → observar → recamadar.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧼</span><div><span class="font-medium">Higiene del contexto</span><span class="text-neutral-500 text-sm ml-2">- Rutina</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-emerald-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Eliminar lo que no aporta; mantener el conocimiento en la persona.</p></div>
+<div><span class="text-emerald-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Un contexto limpio mejora el rendimiento y reduce los costos.</p></div>
+<div><span class="text-emerald-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Higiene continua del contexto.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-1-6')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors" href="modulo-1-6.html">Ver completo</a>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 mt-10">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../../index.html">← Inicio</a>
+<a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="../trilha2/index.html">Ruta 2: Habilidades Humanas →</a>
+</div>
+</main>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-1" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.1</span><span class="font-semibold">Motor × Chasis</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-1.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-2" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.2</span><span class="font-semibold">The Bitter Lesson</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-2.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-3" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.3</span><span class="font-semibold">Configuración independiente del agente</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-3.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-4" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.4</span><span class="font-semibold">DX × AX</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-4.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-5" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.5</span><span class="font-semibold">Economía de tokens</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-5.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-1-6" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-emerald-400 font-bold">1.6</span><span class="font-semibold">Context window escasa</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-1-6.html"></iframe></div></div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
+    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&INEMA.init)INEMA.init();});</script>
+</body>
+</html>

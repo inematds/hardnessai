@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>4.2 Paralelizar &amp; sandboxes | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'amber' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'amber');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #fbbf24; cursor: help; font-weight: 600; color: #fcd34d; }
+    html:not(.dark) .termo { color: #92400e; border-color: #d97706; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217,119,6,0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217,119,6,0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217,119,6,0.18); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha4/modulo-4-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha4/modulo-4-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha4/modulo-4-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha4/modulo-4-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-4-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Ruta 4</a><span>/</span>
+<span class="text-amber-400">Módulo 4.2 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MÓDULO 4.2 · "MODO ENSEÑANZA"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">📦 Paralelizar y sandboxes</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">En el módulo anterior aprendiste a salir del loop y trabajar <strong class="text-amber-400">lejos del teclado</strong>. Pero si el agente va a actuar por su cuenta, ¿dónde actúa? Dar acceso directo a un agente en tu máquina es arriesgado: puede borrar archivos o filtrar tus contraseñas. La solución es la <strong class="text-amber-400">sandbox</strong>: una caja aislada y descartable. Y cuando cada agente tiene su propia caja, ejecutas <strong class="text-amber-400">varios al mismo tiempo</strong>.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">4.1</div><div class="text-xs text-neutral-400">Prerequisito</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Práctica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 4.2" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:4-2" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-1">1. Por qué paralelizar</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-2">2. El riesgo de trabajar sin sandbox</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-3">3. Sand Castle</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-4">4. Docker / Podman</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-5">5. Sandboxes de Vercel</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-6">6. Flota en paralelo</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-amber-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">Los términos básicos (modelo, agente, harness, skill) ya los afianzaste en las Trilhas 1-3. Aquí están los términos <strong>nuevos</strong> de este módulo —todos de infraestructura. No los memorices: entiende la idea de cada uno:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Sandbox</strong> — una "caja de arena": un entorno <em>aislado y descartable</em> donde se ejecuta el agente. Lo que hace allí dentro (borrar, instalar, romper) <strong>no toca</strong> tu máquina real. Si algo sale mal, tiras la caja.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Paralelizar</strong> — ejecutar <em>varios</em> agentes al mismo tiempo, cada uno con su tarea, en vez de uno a la vez. Cómo tener «dos, tres, cuatro de ti».</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Contenedor</strong> — un paquete de software con todo lo que un programa necesita para ejecutarse (sistema, bibliotecas, código), aislado del resto de la computadora. Es la base técnica de la sandbox.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Docker / Podman</strong> — los dos programas más comunes para crear y ejecutar contenedores en tu propia máquina. Describes la caja en un archivo y ellos la arman.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Sand Castle</strong> — la herramienta de Matt Pocock que orquesta agentes dentro de sandboxes y los ejecuta en paralelo. Es el «gerente de cajas».</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Vercel sandboxes</strong> — sandboxes que se ejecutan <em>en la nube</em> (en Vercel), no en tu computadora. No consumen los recursos de tu máquina.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">env vars (variables de entorno)</strong> — secretos que quedan en el entorno: claves de API, contraseñas, tokens. Son el objetivo clásico de quienes quieren «filtrar» datos.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Exfiltración</strong> — cuando un programa (o agente) <em>roba y envía afuera</em> datos secretos. Ej.: leer tus claves y enviarlas a un servidor desconocido.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">⚡ Por qué paralelizar</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> eres el jefe de una cocina. Puedes cocinar un plato a la vez, solo, o tener cinco cocineros, cada uno en su estación, preparando cinco platos al mismo tiempo. Tú solo repartes las comandas y pruebas el resultado. La misma noche rinde cinco veces más.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-2-t1-p1">En el módulo 4.1 viste el <span class="termo" title="Away From Keyboard: pones al agente a trabajar y él trabaja por su cuenta, sin que tengas que aprobar cada paso.">AFK</span> (away from keyboard): en vez de aprobar cada paso, lanzas el agente y él se encarga. Pocock describe esto como el momento en que "entró de verdad" en la programación con IA, porque "te quita de la ecuación" y abre una puerta nueva: si el agente no te necesita al lado, no tienes que ejecutar <strong>un</strong> agente — puedes ejecutarlo <strong>varios</strong>. Es lo que se llama <span class="termo" title="Ejecutar varios agentes al mismo tiempo, cada uno con su tarea.">paralelizar</span>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t1-p2">La imagen que usa es literal: "two, three, four, five of me" — dos, tres, cuatro, cinco de ti, cada copia encargándose de una tarea diferente. Mientras un agente refactoriza un módulo, otro escribe pruebas y un tercero corrige un bug. El cuello de botella deja de ser "cuánto código puedo escribir" y pasa a ser "cuántas tareas bien delimitadas puedo despachar". El <strong>porqué</strong> es directo: el tiempo del agente es barato y abundante; el tuyo es caro y escaso. Paralelizar cambia el recurso escaso (tú) por el abundante (agentes). El <strong>error común</strong> aquí es querer paralelizar tareas vagas o que dependen unas de otras; entonces los agentes se estorban. Paraleliza solo lo que sea independiente y tenga un alcance claro (practicaste esto en la Trilha 2, «delegación»).</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: en serie (un agente hace cuatro tareas en fila) frente a en paralelo (cuatro agentes hacen cuatro tareas al mismo tiempo)" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v42a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v42a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v42a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v42a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="14" font-weight="600" x="40" y="38">SERIAL — uno a la vez (lento)</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="100" x="40" y="52"></rect><text fill="#bfe6ff" text-anchor="middle" x="90" y="74">tarea 1</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="100" x="155" y="52"></rect><text fill="#bfe6ff" text-anchor="middle" x="205" y="74">tarea 2</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="100" x="270" y="52"></rect><text fill="#bfe6ff" text-anchor="middle" x="320" y="74">tarea 3</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="100" x="385" y="52"></rect><text fill="#bfe6ff" text-anchor="middle" x="435" y="74">tarea 4</text>
+</g>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" x="510" y="74">→ 4× el tiempo</text>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="14" font-weight="600" x="40" y="138">PARALELO — flota AFK (rápido)</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<g filter="url(#v42a-glow)"><rect fill="#1f1604" height="40" rx="9" stroke="url(#v42a-grad)" stroke-width="2.5" width="110" x="40" y="152"></rect></g><text fill="#fcd34d" text-anchor="middle" x="95" y="177">agente 1</text>
+<g filter="url(#v42a-glow)"><rect fill="#1f1604" height="40" rx="9" stroke="url(#v42a-grad)" stroke-width="2.5" width="110" x="170" y="152"></rect></g><text fill="#fcd34d" text-anchor="middle" x="225" y="177">agente 2</text>
+<g filter="url(#v42a-glow)"><rect fill="#1f1604" height="40" rx="9" stroke="url(#v42a-grad)" stroke-width="2.5" width="110" x="300" y="152"></rect></g><text fill="#fcd34d" text-anchor="middle" x="355" y="177">agente 3</text>
+<g filter="url(#v42a-glow)"><rect fill="#1f1604" height="40" rx="9" stroke="url(#v42a-grad)" stroke-width="2.5" width="110" x="430" y="152"></rect></g><text fill="#fcd34d" text-anchor="middle" x="485" y="177">agente 4</text>
+</g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" x="580" y="177">→ 1× el tiempo</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" x="40" y="228">El mismo trabajo, pero cada agente funciona en su propia caja, al mismo tiempo.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">En serie, las tareas esperan en la fila. En paralelo, cada agente trabaja en su propio espacio, simultáneamente.</p>
+</div>
+<img alt="Ilustración conceptual: varios agentes brillantes que trabajan en paralelo, cada uno en su propia estación aislada" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-2-1.png"/>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> si el agente trabaja solo (AFK), no ejecutas uno: ejecutas una flota, y tu tiempo deja de ser el cuello de botella.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">☢️ El riesgo de ejecutar sin sandbox</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> tú le das las llaves de toda tu casa a un pasante muy rápido y muy seguro de sí mismo, y te vas. La mayoría de las veces hace el trabajo. Pero si entiende mal "limpia el desorden", puede tirar cosas que nunca recuperarás. Peor aún: puede anotar la contraseña de la caja fuerte y llevársela.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-2-t2-p1">Aquí está la razón de todo lo que viene después. Cuando el agente trabaja AFK, nadie lo está mirando mientras ejecuta comandos. Si se ejecuta directamente en tu máquina, tiene el <strong>tu</strong> poder: puede borrar archivos, instalar cosas, leer secretos. Pocock es explícito sobre lo que puede salir mal sin aislamiento: el agente puede <em>"delete your home directory"</em> (borrar tu carpeta personal — el famoso <code class="text-amber-400">rm -rf</code> que lo limpia todo) o <em>"exfiltrate env vars"</em> — hacer <span class="termo" title="Robar datos secretos y enviarlos afuera.">exfiltración</span> de tus <span class="termo" title="Variables de entorno: claves de API, contraseñas y tokens guardados en el entorno.">env vars</span> (tus claves de API y contraseñas).</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t2-p2">No es que el modelo sea «malvado». El problema es la probabilidad: un agente que ejecuta miles de comandos sin supervisión, tarde o temprano, interpretará mal una instrucción, seguirá un comando peligroso copiado de un README o caerá en un <span class="termo" title="Texto malicioso escondido en datos que lee el agente y que lo instruye para hacer algo peligroso.">inyección de prompt</span> oculto en un archivo. Cuanto más paralelizas (tema 1), más comandos se ejecutan sin que nadie los supervise — así que el riesgo <em>crece junto</em> con la productividad. El <strong>error común</strong> es pensar «nunca me ha pasado, así que es seguro». La regla de oro del AFK es: <strong>nunca</strong> dale al agente sin supervisión un poder que no estarías dispuesto a perder. La respuesta es el tema 3: el sandbox.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Sin sandbox: el agente accede directamente a tu máquina y puede borrar tu carpeta personal y filtrar las claves de API" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<filter height="180%" id="v42b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v42b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v42b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#v42b-grid)" height="240" width="1000" x="0" y="0"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="32">SIN SANDBOX — el agente accede a la máquina real</text>
+<g filter="url(#v42b-glow)"><rect fill="#1f1604" height="80" rx="14" stroke="#fbbf24" stroke-width="2.5" width="200" x="60" y="80"></rect></g>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="160" y="115">AGENTE AFK</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="160" y="138">sin que nadie mire</text>
+<rect fill="#26110f" height="130" rx="16" stroke="#f87171" stroke-width="2.5" width="300" x="640" y="55"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="790" y="84">TU MÁQUINA REAL</text>
+<text fill="#fecaca" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="790" y="115">🗂️ carpeta personal (~/)</text>
+<text fill="#fecaca" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="790" y="142">🔑 variables de entorno (claves, contraseñas)</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="790" y="166">rm -rf · exfiltración</text>
+<path d="M262,120 L636,120" fill="none" marker-end="url(#v42b-ah)" stroke="#f87171" stroke-width="2.5"></path>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="450" y="110">acceso total, sin barreras</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="222">Nada separa al agente de tus archivos y secretos. Un comando equivocado = daño real.</text>
+</svg>
+</div>
+<img alt="Ilustración: un agente sin barreras de protección que accede a archivos y claves de una máquina, con señales de alerta" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-2-2.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Habilitar "aceptar todo / no me preguntes" (modo sin confirmaciones) en un agente que se ejecuta <strong>en tu máquina</strong>, sin aislamiento. Es exactamente la combinación que Pocock señala como peligrosa: AFK + sin sandbox = confías al 100 % en un proceso que ejecuta comandos sin que nadie los revise.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> un agente AFK en tu máquina sin protección puede borrar tu carpeta personal o filtrar tus claves — el riesgo es real, no teórico.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🏰 Sand Castle</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un castillo de arena en la playa. Los niños lo construyen, lo derriban y lo vuelven a hacer — y nada de eso afecta tu casa. Si una ola se lleva todo, a nadie le importa: estaba hecho para ser desechable. La <span class="termo" title="Entorno aislado y desechable donde el agente se ejecuta de forma segura.">sandbox</span> es exactamente eso para el agente.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-2-t3-p1">La solución al tema 2 es darle al agente una <strong class="text-amber-400">sandbox</strong> — una caja de arena aislada donde puede hacer lo que quiera sin tocar tu máquina. La herramienta que Pocock usa para esto se llama <strong class="text-amber-400">Sand Castle</strong> (castillo de arena): "ejecuta agentes en sandboxes" y los orquesta. Es el corazón de su configuración AFK — "la mayor parte de mi trabajo es AFK", y ese trabajo ocurre dentro de Sand Castle, no en la máquina sin protección. La idea central: cada agente recibe un entorno propio, aislado y desechable.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t3-p2">¿Por qué esto lo desbloquea todo? Porque resuelve los dos problemas de una vez. (1) <strong>Seguridad</strong>: si el agente intenta <code class="text-amber-400">rm -rf</code> o leer tus env vars, solo alcanza lo que está <em>dentro de la caja</em> — tu carpeta personal y tus claves reales quedan fuera. (2) <strong>Paralelismo</strong>: como cada caja es independiente, puedes abrir diez sin que un agente interfiera con otro. Pocock combina Sand Castle con GitHub Actions (lo verás en el módulo 4.3) y dice que es <em>"unreasonably effective"</em> — increíblemente eficaz, porque puedes «paralelizar todo lo que quieras, sin preocuparte por los recursos locales». El <strong>error común</strong>: tratar el sandbox como algo opcional («después lo configuro»). Es un requisito previo para ejecutar en paralelo en modo AFK, no un lujo.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Con Sand Castle: el agente se ejecuta dentro de una caja aislada; el daño queda confinado en la caja y la máquina real permanece protegida" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v42c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v42c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v42c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v42c-x" markerheight="9" markerwidth="9" refx="4.5" refy="4.5"><path d="M1,1 L8,8 M8,1 L1,8" stroke="#f87171" stroke-width="1.8"></path></marker>
+</defs>
+<rect fill="url(#v42c-grid)" height="250" width="1000" x="0" y="0"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="32">CON SAND CASTLE — el daño queda encerrado en la caja</text>
+<rect fill="#1f1604" height="160" rx="18" stroke="url(#v42c-grad)" stroke-dasharray="7 5" stroke-width="2.5" width="430" x="50" y="60"></rect>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="15" font-weight="700" x="70" y="88">🏰 SANDBOX (desechable)</text>
+<g filter="url(#v42c-glow)"><rect fill="#0e1b26" height="70" rx="12" stroke="#38bdf8" stroke-width="2.5" width="200" x="90" y="108"></rect></g>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="190" y="140">AGENTE</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="190" y="162">haz lo que quieras AQUÍ</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12" x="330" y="135">rm -rf? solo borra</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12" x="330" y="153">la caja misma.</text>
+<line marker-end="url(#v42c-x)" stroke="#f87171" stroke-dasharray="6 4" stroke-width="2.5" x1="480" x2="650" y1="140" y2="140"></line>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="565" y="128">bloqueado</text>
+<rect fill="#0e2018" height="120" rx="16" stroke="#34d399" stroke-width="2.5" width="280" x="670" y="80"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="810" y="112">TU MÁQUINA REAL</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="810" y="142">🗂️ carpeta personal — intacta</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="810" y="166">🔑 claves — protegidas</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="238">¿Salió mal? Tira la caja y abre otra. La máquina real nunca se tocó.</text>
+</svg>
+</div>
+<img alt="Ilustración: un castillo de arena futurista que representa una sandbox, con un agente trabajando aislado en su interior" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-2-3.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: la misma tarea peligrosa, con y sin sandbox</h3>
+<p class="text-neutral-300 text-sm mb-3">Tarea AFK: "limpia los archivos temporales del proyecto y ejecuta la build". Por error, el agente arma un comando demasiado amplio: <code class="text-red-400">rm -rf ~/</code> (borrar toda la carpeta personal). Mira los dos desenlaces:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Sin sandbox (en la máquina sin protección)</p><p class="text-xs text-neutral-300">El comando se ejecuta con tu usuario. Tu carpeta personal desaparece: fotos, configuraciones, claves SSH. No hay "deshacer". Te das cuenta cuando vuelves al teclado, horas después.</p></div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-semibold text-sm mb-1">Con sandbox (Sand Castle)</p><p class="text-xs text-neutral-300">O <code>~/</code> de la caja es vacío y aislado. El comando borra solo el contenido de la propia sandbox. Desechas la caja, lees el log, ajustas el prompt y lo ejecutas de nuevo. Daño real: cero.</p></div>
+</div>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Profundiza (opcional): ¿por qué el nombre «Sand Castle»?</summary>
+<p class="text-sm text-neutral-300 mt-3">La metáfora se conecta con «sandbox» (caja de <em>arena</em>). Si el sandbox es la caja donde juega el agente, el <em>Sand Castle</em> es lo que construyes con varias cajas: crea, administra y paraleliza muchos sandboxes al mismo tiempo, como un castillo hecho de muchos baldes de arena. Y, como un castillo de arena de verdad, cada caja es <strong>efímera</strong> — hecha para descartarse y rehacerse sin costo.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> Sand Castle le da a cada agente su propio castillo de arena: puede derribarlo todo ahí dentro sin tocar nunca tu casa.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🐳 Docker / Podman</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un contenedor de barco. No importa qué lleva dentro — electrónicos, frutas, muebles — la caja tiene la misma forma, se cierra igual y queda sellada. Apilas cuantos quieras, y lo que hay en uno no se filtra al otro. <span class="termo" title="Caja aislada de software con todo lo que un programa necesita para ejecutarse.">Contenedores</span> de software son la misma idea.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-2-t4-p1">Por debajo, el sandbox generalmente es un <span class="termo" title="Caja de software aislada con sistema, bibliotecas y código, separada del resto de la máquina.">container</span>. Las dos herramientas más comunes para crear contenedores en tu propia máquina son <strong class="text-amber-400">Docker</strong> e <strong class="text-amber-400">Podman</strong> — Pocock las cita precisamente como base de las sandboxes locales. Describes la caja en un archivo de receta (qué sistema, qué bibliotecas, qué código entra) y la herramienta crea a partir de ahí un entorno aislado. El agente trabaja dentro de ese entorno y solo tiene acceso a lo que pusiste en la caja: nada más de la máquina.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t4-p2">La diferencia práctica entre los dos es pequeña para nuestro uso: <strong>Docker</strong> es el más popular y tiene un «daemon» (un servicio que se ejecuta todo el tiempo) con privilegios elevados; <strong>Podman</strong> hace casi lo mismo, pero sin daemon y pudiendo ejecutarse «rootless» (sin privilegios de administrador), algo que mucha gente prefiere por seguridad. Para el agente, ambos ofrecen lo que importa: <strong>aislamiento</strong> (lo que pasa en la caja se queda en la caja) y <strong>descartabilidad</strong> (terminó o algo salió mal, borras el contenedor y abres otro limpio en segundos). El <strong>error común</strong> es confundir un contenedor con una máquina virtual: el contenedor es mucho más ligero y rápido de iniciar, por eso puedes abrir decenas para paralelizar, algo inviable con máquinas virtuales pesadas.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Una máquina anfitriona con varios contenedores aislados apilados encima, cada uno ejecutando un agente" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v42d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v42d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v42d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v42d-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="50" rx="12" stroke="#38bdf8" stroke-width="2" width="880" x="60" y="160"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="191">MÁQUINA HOST + Docker / Podman</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<g filter="url(#v42d-glow)"><rect fill="#1f1604" height="92" rx="12" stroke="url(#v42d-grad)" stroke-width="2.5" width="180" x="90" y="48"></rect></g>
+<text fill="#fcd34d" font-size="22" text-anchor="middle" x="180" y="78">📦</text><text fill="#fcd34d" text-anchor="middle" x="180" y="104">container 1</text><text fill="#fde68a" font-size="11" text-anchor="middle" x="180" y="124">agente A</text>
+<g filter="url(#v42d-glow)"><rect fill="#1f1604" height="92" rx="12" stroke="url(#v42d-grad)" stroke-width="2.5" width="180" x="320" y="48"></rect></g>
+<text fill="#fcd34d" font-size="22" text-anchor="middle" x="410" y="78">📦</text><text fill="#fcd34d" text-anchor="middle" x="410" y="104">container 2</text><text fill="#fde68a" font-size="11" text-anchor="middle" x="410" y="124">agente B</text>
+<g filter="url(#v42d-glow)"><rect fill="#1f1604" height="92" rx="12" stroke="url(#v42d-grad)" stroke-width="2.5" width="180" x="550" y="48"></rect></g>
+<text fill="#fcd34d" font-size="22" text-anchor="middle" x="640" y="78">📦</text><text fill="#fcd34d" text-anchor="middle" x="640" y="104">container 3</text><text fill="#fde68a" font-size="11" text-anchor="middle" x="640" y="124">agente C</text>
+<g filter="url(#v42d-glow)"><rect fill="#1f1604" height="92" rx="12" stroke="url(#v42d-grad)" stroke-width="2.5" width="160" x="780" y="48"></rect></g>
+<text fill="#fcd34d" font-size="22" text-anchor="middle" x="860" y="78">📦</text><text fill="#fcd34d" text-anchor="middle" x="860" y="104">container 4</text><text fill="#fde68a" font-size="11" text-anchor="middle" x="860" y="124">agente D</text>
+</g>
+<line stroke="#38bdf8" stroke-width="2" x1="180" x2="180" y1="140" y2="160"></line>
+<line stroke="#38bdf8" stroke-width="2" x1="410" x2="410" y1="140" y2="160"></line>
+<line stroke="#38bdf8" stroke-width="2" x1="640" x2="640" y1="140" y2="160"></line>
+<line stroke="#38bdf8" stroke-width="2" x1="860" x2="860" y1="140" y2="160"></line>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Los contenedores ligeros se apilan en una sola máquina: cada uno aislado, cada uno con un agente. Así es como la flota paraleliza.</p>
+</div>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">rodar-agente-em-sandbox.sh</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># Rodar um agente DENTRO de uma sandbox (container Docker ou Podman).
+# Troque "docker" por "podman" — os comandos são compatíveis.
+
+docker run --rm -it \
+  --name agente-1 \                 # nome da caixa; --rm = some ao terminar
+  --network none \                  # SEM rede: bloqueia exfiltração de chaves
+  --memory 4g --cpus 2 \            # limites de recurso por agente
+  -v "$PWD":/work -w /work \        # monta SÓ esta pasta (não a home inteira)
+  agent-sandbox:latest \           # imagem com Node, git e o CLI do agente
+  claude --dangerously-skip-permissions \
+         -p "Implemente a issue #795 e rode os testes"
+
+# Frota: rode em paralelo, um container por tarefa (cada um isolado).
+for n in 1 2 3 4; do
+  docker run --rm -d --name "agente-$n" --network none \
+    -v "$PWD/worktree-$n":/work -w /work agent-sandbox:latest \
+    claude --dangerously-skip-permissions -p "$(cat tarefas/$n.md)"
+done
+
+# Alternativa pronta: deixe o Sand Castle orquestrar as sandboxes por você.
+# npx sandcastle run --parallel 4 --queue ./tarefas</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> Docker y Podman crean contenedores ligeros y desechables en tu máquina: la forma local de darle un entorno aislado a cada agente.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">☁️ Sandboxes de Vercel</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> en lugar de cocinar todo en tu cocina (que se calienta, se ensucia y tiene espacio limitado), alquilas cocinas industriales por hora, en la ciudad. Cada cocinero usa una; cuando termina, la devuelve. Tu casa nunca se usa, y puedes alquilar diez a la vez.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-2-t5-p1">Los contenedores locales (tema 4) usan los recursos de la <em>tu</em> máquina: CPU, memoria, disco. Si abres diez agentes pesados, tu portátil se recalienta. La alternativa que menciona Pocock son las <strong class="text-amber-400">Vercel sandboxes</strong> — sandboxes que se ejecutan <span class="termo" title="En servidores remotos, no en tu computadora.">en la nube</span>, en la infraestructura de Vercel. El aislamiento es el mismo (cada agente en su propia caja), pero el "computador" que sufre es el de ellos, no el tuyo.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t5-p2">Es exactamente lo que resume al combinarlo todo con GitHub Actions: «paralelizas todo lo que quieras, <em>sin preocuparte por los recursos locales</em>". Esa es la principal ventaja del sandbox en la nube — desacoplas la escala de los agentes de la potencia de tu hardware. ¿Quieres ejecutar 1 o 50 agentes? Tu laptop sigue fría y libre para que trabajes. El <strong>trade-off</strong> (e o <strong>error común</strong> de ignorarlo): la nube cuesta dinero según el tiempo de ejecución y los secretos pasan por servidores de terceros; por eso igual tienes que configurar qué env vars entran en la caja y mantener el principio del tema 2 (dar solo lo mínimo necesario). Local (Docker/Podman) es gratis y privado, pero está limitado por tu hardware; la nube (Vercel) escala sin límites, pero cobra y exige cuidado con los secretos.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación entre un sandbox local en tu máquina y uno en la nube de Vercel, con los pros y los contras de cada uno" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v42e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v42e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v42e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v42e-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="160" rx="16" stroke="#38bdf8" stroke-width="2" width="420" x="50" y="40"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="260" y="70">LOCAL · Docker / Podman</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" x="80" y="104">✓ gratis y privado</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" x="80" y="130">✓ los secretos no salen de la máquina</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" x="80" y="156">✗ limitado a tu hardware</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" x="80" y="182">✗ 10 agentes = la laptop se recalienta</text>
+<g filter="url(#v42e-glow)"><rect fill="#1f1604" height="160" rx="16" stroke="url(#v42e-grad)" stroke-width="2.5" width="420" x="530" y="40"></rect></g>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="740" y="70">NUBE · Vercel sandboxes ☁️</text>
+<text fill="#fde68a" font-family="Inter,sans-serif" font-size="13" x="560" y="104">✓ escala sin tocar tu PC</text>
+<text fill="#fde68a" font-family="Inter,sans-serif" font-size="13" x="560" y="130">✓ paraleliza «cuanto quieras»</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" x="560" y="156">✗ cuesta según el tiempo de ejecución</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" x="560" y="182">✗ los secretos pasan por terceros</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-2#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿cuál es la principal ventaja de un sandbox en la nube (Vercel) sobre uno local (Docker)?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Es más segura porque el agente se porta «bien» en la nube.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Paralelizas sin consumir los recursos de tu máquina local.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">No necesita un sandbox: se ejecuta directamente en la máquina real.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> Los Vercel sandboxes llevan las cajas a la nube: puedes escalar la flota sin recalentar (ni ocupar) tu propia computadora.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-4-2#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🛰️ Flota en paralelo</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un controlador de tráfico aéreo. No pilota ningún avión — despacha varios, cada uno en su ruta y a su altitud, y solo interviene cuando hace falta tomar una decisión. Cuanto más organizado está el espacio aéreo, más aviones vuelan al mismo tiempo, con seguridad.</p>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-2-t6-p1">Al juntar todo: <strong>sandbox</strong> (aislamiento) + <strong>paralelizar</strong> (varios agentes) = una <strong class="text-amber-400">flota</strong> que trabaja por ti. El camino mental es una escalera: (1) activas AFK en vez de aprobar paso a paso; (2) cada agente va a su sandbox (Sand Castle, sobre Docker/Podman o Vercel), así que ninguno puede borrar tu carpeta personal ni filtrar tus claves; (3) como las cajas están aisladas, abres tantas como quieras. Pocock llama a esto <em>"unreasonably effective"</em>: combinado con GitHub Actions (módulo 4.3), «paralelizas todo lo que quieras, sin preocuparte por los recursos locales». Tu papel cambia: de quien escribe código a quien <strong>asigna y revisa</strong> una flota. Antes de desplegarla, ejecuta esta lista de verificación:</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">checklist-frota-segura.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de soltar a frota de agentes AFK em paralelo:
+[ ] SANDBOX — cada agente roda numa caixa isolada (Sand Castle / Docker / Podman / Vercel)?
+[ ] SEGREDOS — só as env vars mínimas entram na caixa? (rede off ou restrita?)
+[ ] ESCOPO — cada tarefa é independente e bem-escopada (não dependem uma da outra)?
+[ ] DESCARTÁVEL — se uma caixa der ruim, eu jogo fora sem perder nada real?
+[ ] SAÍDA — o resultado sai como PR/commit pra eu revisar (não direto na main)?
+Se algum falhar: NÃO paralelize ainda. Conserte o harness primeiro.</pre>
+</div>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Tú en el centro, asignando tareas a una flota de agentes, cada uno en su sandbox, y recibiendo pull requests para revisar" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="v42f-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v42f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v42f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v42f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+<marker id="v42f-ag" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+</defs>
+<rect fill="url(#v42f-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g filter="url(#v42f-glow)"><rect fill="#1f1604" height="60" rx="14" stroke="url(#v42f-grad)" stroke-width="2.5" width="170" x="40" y="70"></rect></g>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="125" y="98">TÚ</text>
+<text fill="#fde68a" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="125" y="118">asigna + revisa</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1b26" height="40" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="420" y="20"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="45">🏰 agente 1 (sandbox)</text>
+<rect fill="#0e1b26" height="40" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="420" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="105">🏰 agente 2 (sandbox)</text>
+<rect fill="#0e1b26" height="40" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="420" y="140"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="165">🏰 agente 3 (sandbox)</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"><path d="M210,90 C320,90 340,40 416,40" marker-end="url(#v42f-ah)"></path><path d="M210,100 L416,100" marker-end="url(#v42f-ah)"></path><path d="M210,110 C320,110 340,160 416,160" marker-end="url(#v42f-ah)"></path></g>
+<rect fill="#0e2018" height="60" rx="14" stroke="#34d399" stroke-width="2.5" width="250" x="700" y="70"></rect><text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="825" y="98">Pull Requests</text><text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="825" y="118">revisas y haces merge</text>
+<g fill="none" opacity="0.6" stroke="#34d399" stroke-width="1.8"><path d="M620,40 C680,40 700,90 698,98" marker-end="url(#v42f-ag)"></path><path d="M620,100 L696,100" marker-end="url(#v42f-ag)"></path><path d="M620,160 C680,160 700,110 698,104" marker-end="url(#v42f-ag)"></path></g>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-2#q2">
+<p class="font-medium mb-4">Recuperación rápida: ¿por qué la sandbox es lo que <em>desbloquea</em> ¿ejecutar muchos agentes en paralelo?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Porque el sandbox hace que el modelo sea más inteligente.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Porque cada agente queda aislado en una caja desechable, así que uno no puede dañar la máquina ni estorbar al otro.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Porque elimina la necesidad de revisar el resultado de los agentes.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> sandbox aísla el riesgo y el aislamiento libera la escala: eso es lo que transforma «un agente» en una flota que solo tienes que despachar y revisar.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Paralelizar = «varios de ti»</strong><span class="text-neutral-400"> — si el agente se ejecuta AFK, ejecuta una flota, no uno solo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Sin sandbox es peligroso</strong><span class="text-neutral-400"> — el agente puede borrar tu carpeta personal (rm -rf) o filtrar tus claves (exfiltración).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Sandbox = caja aislada y descartable</strong><span class="text-neutral-400"> — el Sand Castle de Matt coordina muchas de ellas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Local × nube</strong><span class="text-neutral-400"> — Docker/Podman en tu máquina; Vercel sandboxes en la nube, sin consumir recursos locales.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-amber-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">4.3 — GitHub Actions + agentes: AFK en la nube; agentes que se ejecutan en un PR y entregan el trabajo como pull request.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="modulo-4-3.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-4-2#q1', { answer: 1, explain: { 0: 'Não — "bonzinho" não tem a ver; a sandbox isola em qualquer lugar.', 1: 'Isso! Na nuvem você escala a frota sem gastar CPU/memória/disco do seu computador.', 2: 'Ao contrário — a Vercel sandbox É uma sandbox; ela não roda na sua máquina real.' } });
+        INEMA.registerCheck('modulo-4-2#q2', { answer: 1, explain: { 0: 'A sandbox isola — não muda a inteligência do modelo.', 1: 'Exato! Isolamento descartável = um agente não danifica a máquina nem atrapalha o outro, então dá pra abrir muitas caixas.', 2: 'Não — você ainda revisa a saída (PRs); a sandbox não dispensa o review.' } });
+      }
+    });
+  </script>
+</body>
+</html>

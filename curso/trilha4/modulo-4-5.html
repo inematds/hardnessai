@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+
+<html class="dark" lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="inema-course" content="harness">
-  <title>4.5 Sistemas auto-melhoráveis | HARNESS</title>
-  <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>4.5 Sistemas auto-melhoráveis | HARNESS</title>
+<script>
   (function () {
     try {
       var html = document.documentElement;
@@ -29,13 +30,13 @@
     } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
   })();
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
     tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/learn.css">
-  <script type="application/json" data-inema-manifest>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
 {
   "course": "harness",
   "tracks": [
@@ -82,7 +83,7 @@
   ]
 }
 </script>
-  <style>
+<style>
     body { font-family: 'Inter', sans-serif; }
     .dark body { background-color: #111827; }
     [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
@@ -127,457 +128,394 @@
     .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
     html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
   </style>
-</head>
-<body class="bg-dark-900 text-neutral-100 min-h-screen">
-  <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg">Pular para o conteúdo</a>
-
-  <nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-14">
-        <div class="flex items-center space-x-4">
-          <a href="../../index.html" class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
-          <span class="text-neutral-600">|</span>
-          <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300 text-sm font-medium">INEMA.CLUB</a>
-        </div>
-        <div class="flex items-center space-x-1 sm:space-x-2">
-          <a href="../trilha1/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
-          <a href="../trilha2/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
-          <a href="../trilha3/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
-          <a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
-          <a href="../trilha5/index.html" class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluções</span></a>
-          <button type="button" data-inema-journey-open class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1"><span aria-hidden="true">◷</span><span>Minha jornada</span><span class="inema-journey-badge hidden" aria-hidden="true"></span></button>
-          <button id="theme-toggle" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" aria-label="Alternar tema">
-            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-neutral-300" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Trilha de navegação">
-    <div class="flex items-center space-x-2 text-sm text-neutral-400">
-      <a href="../../index.html" class="hover:text-amber-400">Início</a><span>/</span>
-      <a href="index.html" class="hover:text-amber-400">Trilha 4</a><span>/</span>
-      <span class="text-amber-400">Módulo 4.5 · modo ensino</span>
-    </div>
-  </nav>
-
-  <header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MÓDULO 4.5 · "MODO ENSINO"</span>
-      <h1 class="text-3xl sm:text-4xl font-bold mb-4">♻️ Sistemas auto-melhoráveis</h1>
-      <p class="text-lg text-neutral-400 max-w-3xl">Achar bugs profundos não é mágica do modelo caro. Matt Pocock mostra como montar um sistema que <strong class="text-amber-400">se cuida sozinho</strong>: um <em>cron</em> diário de security review que cada dia olha uma parte nova do código, telemetria que vira issue que vira fix — e, acima de tudo, a pergunta certa: <em>"se continuam roubando sua bike, compre um cadeado"</em>. Aqui você aprende a revisar não só o código, mas o <strong>sistema que produz o código</strong>.</p>
-      <div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">T1-T4</div><div class="text-xs text-neutral-400">Pré-requisito</div></div>
-        <div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Prática</div><div class="text-xs text-neutral-400">Tipo</div></div>
-      </div>
-      <div class="mt-6 max-w-2xl">
-        <div data-inema-meter="modulo:4-5" class="inema-meter flex items-center gap-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do módulo 4.5">
-          <span class="text-sm text-neutral-400">Progresso:</span>
-          <span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
-          <span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
-      <nav data-inema-toc aria-label="Índice da página" class="hidden lg:block sticky top-24 self-start">
-        <p class="text-sm text-neutral-400 mb-3">Seção <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
-        <ul class="space-y-1 text-sm">
-          <li><a href="#topico-1" class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10">1. Não precisa do modelo caro</a></li>
-          <li><a href="#topico-2" class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10">2. Cron de security review</a></li>
-          <li><a href="#topico-3" class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10">3. Telemetria → issue → fix</a></li>
-          <li><a href="#topico-4" class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10">4. A causa raiz do bug</a></li>
-          <li><a href="#topico-5" class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10">5. Loops de auto-melhoria</a></li>
-          <li><a href="#topico-6" class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10">6. Revisar o sistema</a></li>
-        </ul>
-      </nav>
-
-      <main id="conteudo" class="inema-prose min-w-0">
-
-        <!-- GLOSSÁRIO VIVO -->
-        <div class="bg-dark-800 border border-amber-500/30 rounded-xl p-6 mb-12">
-          <h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glossário vivo (leia antes — volte sempre que precisar)</h2>
-          <p class="text-sm text-neutral-400 mb-4">Esta trilha já assumiu o vocabulário base (modelo, agente, skill, AFK, sandbox, fila). Aqui ficam os termos <strong>novos</strong> deste módulo — fixe estes:</p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Sistema auto-melhorável</strong> — um setup que, sozinho e de forma recorrente, descobre problemas no seu código e te ajuda a corrigi-los e a evitá-los de novo. Não é o código que "se conserta"; é o <em>processo</em> em volta que vai ficando melhor.</div>
-            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Cron</strong> — um agendador: "rode tal comando todo dia às 6h". A "linha de crontab" é uma linha de texto que descreve <em>quando</em> e <em>o quê</em> rodar. É o coração de tarefas que acontecem sem você apertar nada.</div>
-            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Security review</strong> — revisão de segurança: olhar o código procurando falhas (senha exposta, injeção, permissão errada) <em>antes</em> que alguém abuse delas.</div>
-            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Telemetria</strong> — os dados que sua aplicação manda sobre como ela está rodando (erros, lentidão, exceções). Ferramentas como o <em>Sentry</em> coletam isso em produção.</div>
-            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Issue</strong> — um "chamado" registrado (no GitHub, por exemplo): uma tarefa ou bug anotado pra alguém — humano ou agente — resolver.</div>
-            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Causa raiz (root cause)</strong> — o motivo de fundo do problema, não o sintoma. Não "o bug X aconteceu", mas "por que ele existiu tanto tempo sem ninguém notar?".</div>
-            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Test suite</strong> — o conjunto de testes automáticos do projeto. Cada teste verifica que uma parte funciona; rodar a suíte avisa quando algo quebrou.</div>
-            <div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Rotativo</strong> — que muda de alvo a cada execução. Um cron rotativo de review checa hoje uma pasta, amanhã outra — cobrindo o repo inteiro ao longo do tempo.</div>
-          </div>
-        </div>
-
-        <!-- TÓPICO 1 -->
-        <section id="topico-1" data-inema-topic="modulo-4-5#topico-1" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">💡 Não precisa do modelo caro</h2></div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-
-          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
-            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> um detetive medíocre num bairro bem iluminado acha mais crimes do que um detetive genial vendado num quarto escuro. Não é só talento — é <em>estar no lugar certo, com a lanterna certa</em>. Achar bug profundo é a mesma coisa: o lugar e a luz (o harness) pesam tanto quanto o "QI" do modelo.</p>
-          </div>
-
-          <p data-inema-block="m4-5-t1-p1" class="text-neutral-300 mb-4 leading-relaxed">Existe um mito sedutor: "se eu usar o modelo mais inteligente (e mais caro), ele vai achar aqueles bugs profundos que nenhum outro acha". Na conversa, contou-se que um modelo encontrou <span class="termo" title="Bugs sérios, escondidos no fundo do código, que revisões superficiais não pegam.">bugs profundos</span> e falhas de <span class="termo" title="Revisão de segurança: olhar o código atrás de falhas exploráveis antes que virem incidente.">security</span> que outros modelos não tinham visto. A reação fácil é: "viu? precisa do modelo top". Pocock discorda na raiz. Nas palavras dele: <em>"você poderia descobrir esses bugs com modelos mais baratos se olhasse nos lugares certos e desse a ele o prompt/harness certo"</em>. Traduzindo: o que faltava aos "outros modelos" não era inteligência — era <strong>direção</strong>.</p>
-
-          <p data-inema-block="m4-5-t1-p2" class="text-neutral-300 mb-6 leading-relaxed">Isso conecta direto com o que você viu na Trilha 1 (Economia de tokens): um <strong class="text-amber-400">harness</strong> bom deixa um modelo "mais burro" fazer o mesmo trabalho. Aqui a ideia é a mesma aplicada à <em>descoberta de defeitos</em>. Em vez de pagar caro por um modelo gênio rodando uma vez, você monta um sistema que coloca um modelo simples no lugar certo, repetidamente. O <strong>porquê</strong> importa: modelo caro é um custo que cresce a cada chamada; um sistema bem-direcionado é um ativo que rende todo dia. O <strong>erro comum</strong> é confundir "achou um bug difícil" com "preciso sempre do modelo difícil" — quando o que achou o bug, de fato, foi <em>onde</em> e <em>como</em> você olhou.</p>
-
-          <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-            <svg viewBox="0 0 1000 250" class="w-full h-auto" role="img" aria-label="Comparação: modelo caro olhando no escuro acha pouco; modelo barato com harness e lanterna acha muito">
-              <defs>
-                <linearGradient id="v45a-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
-                <filter id="v45a-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                <pattern id="v45a-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
-              </defs>
-              <rect x="0" y="0" width="1000" height="250" fill="url(#v45a-grid)"/>
-              <rect x="40" y="40" width="430" height="170" rx="18" fill="#1f1604" stroke="#6b7280" stroke-width="2"/>
-              <text x="64" y="70" fill="#9ca3af" font-family="Inter,sans-serif" font-weight="600" font-size="15">Modelo CARO, sem direção</text>
-              <rect x="120" y="92" width="120" height="62" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/>
-              <text x="180" y="128" text-anchor="middle" fill="#bfe6ff" font-family="Inter,sans-serif" font-weight="700" font-size="14">$$$ gênio</text>
-              <text x="255" y="190" fill="#9ca3af" font-family="Inter,sans-serif" font-size="13">olha no escuro → acha 1</text>
-              <rect x="530" y="40" width="430" height="170" rx="18" fill="#1f1604" stroke="#fbbf24" stroke-width="2.5"/>
-              <text x="554" y="70" fill="#fbbf24" font-family="Inter,sans-serif" font-weight="600" font-size="15">Modelo BARATO + harness</text>
-              <g filter="url(#v45a-glow)"><rect x="610" y="92" width="120" height="62" rx="12" fill="url(#v45a-grad)" stroke="#f59e0b" stroke-width="2.5"/></g>
-              <text x="670" y="122" text-anchor="middle" fill="#3a2606" font-family="Inter,sans-serif" font-weight="700" font-size="14">$ simples</text>
-              <text x="670" y="142" text-anchor="middle" fill="#3a2606" font-family="Inter,sans-serif" font-size="11">+ lanterna</text>
-              <text x="745" y="190" fill="#fcd34d" font-family="Inter,sans-serif" font-size="13">lugar certo → acha 5</text>
-            </svg>
-            <p class="text-xs text-neutral-500 mt-2 text-center">O segredo não é o cérebro do modelo — é onde você aponta a lanterna (o harness).</p>
-          </div>
-
-          <img src="assets/img/m4-5-1.png" alt="Ilustração conceitual: uma lanterna iluminando código escondido, com um modelo simples encontrando falhas que um modelo caro no escuro não vê" class="w-full h-auto rounded-xl mb-6" loading="lazy">
-
-          <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
-            <h3 class="font-semibold text-red-400 mb-2">⚠️ Erro comum de iniciante</h3>
-            <p class="text-neutral-300 text-sm">Concluir "preciso do modelo mais caro pra achar bugs sérios". Quase sempre a falha estava ao alcance de um modelo barato — só faltava <em>apontar</em> ele pro lugar certo, com o prompt certo. Pague pelo sistema, não pelo cérebro.</p>
-          </div>
-
-          <div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
-            <p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> bug profundo se acha com lugar certo + prompt certo — não com o modelo mais caro.</p>
-          </div>
-
-          <details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
-            <summary class="cursor-pointer font-medium text-amber-400">Indo mais fundo (opcional): por que o modelo barato basta aqui?</summary>
-            <p class="text-sm text-neutral-300 mt-3">Achar um bug não exige raciocínio sobre o projeto inteiro de uma vez — exige olhar um pedaço pequeno e bem delimitado com uma pergunta clara ("esta função valida a entrada?"). Quando você reduz o escopo e dá o prompt certo, o problema vira fácil o bastante pra um modelo simples. Modelo caro brilha em tarefas grandes e ambíguas; revisão fatiada é o oposto disso — então você economiza sem perder qualidade.</p>
-          </details>
-
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-          </div>
-        </section>
-
-        <!-- TÓPICO 2 -->
-        <section id="topico-2" data-inema-topic="modulo-4-5#topico-2" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⏰ Cron de security review</h2></div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-
-          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
-            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> um vigia que faz a ronda do prédio. Ele não checa todos os 30 andares por noite — checaria mal. Ele checa <em>um andar por noite</em>, com calma, e em um mês cobriu o prédio inteiro, várias vezes. O cron de security review é esse vigia.</p>
-          </div>
-
-          <p data-inema-block="m4-5-t2-p1" class="text-neutral-300 mb-4 leading-relaxed">A receita concreta de Pocock: rode um <span class="termo" title="Agendador que dispara um comando em horários fixos, sem ninguém apertar nada.">cron</span> diário de <span class="termo" title="Revisão de segurança automatizada do código.">security review</span> que, a cada dia, checa <strong>uma parte nova do repositório</strong>, usando um modelo relativamente simples. A palavra-chave é <span class="termo" title="Que muda de alvo a cada execução, cobrindo o repo inteiro ao longo do tempo.">rotativo</span>: você não tenta varrer o projeto inteiro de uma vez (caro, raso e estourando o context window). Você fatia. Hoje a pasta de autenticação; amanhã a de pagamentos; depois a de uploads. Em poucas semanas o repo inteiro foi auditado — e o ciclo recomeça, pegando o que mudou.</p>
-
-          <p data-inema-block="m4-5-t2-p2" class="text-neutral-300 mb-6 leading-relaxed">Por que <em>agendado</em> e não "quando eu lembrar"? Porque a lição que Pocock tira de um incidente é direta: <em>"o que você aprendeu? Que há problemas de segurança no seu código — você deveria ter algo que roda e checa por mais no futuro."</em> Segurança não pode depender da sua memória num dia corrido. O <strong>porquê</strong> do modelo simples: review fatiado é tarefa pequena e bem-escopada — exatamente onde o modelo barato basta (tópico 1). O <strong>erro comum</strong> é montar um cron que revisa o repo todo de uma vez: fica caro, vira ruído e ninguém lê o relatório gigante. Pequeno, diário, rotativo, acionável.</p>
-
-          <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-            <svg viewBox="0 0 1000 220" class="w-full h-auto" role="img" aria-label="Um relógio dispara, todo dia, uma revisão de uma fatia diferente do repositório, cobrindo tudo ao longo da semana">
-              <defs>
-                <linearGradient id="v45b-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
-                <filter id="v45b-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                <pattern id="v45b-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
-                <marker id="v45b-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"/></marker>
-              </defs>
-              <rect x="0" y="0" width="1000" height="220" fill="url(#v45b-grid)"/>
-              <g filter="url(#v45b-glow)"><circle cx="110" cy="110" r="56" fill="#1f1604" stroke="url(#v45b-grad)" stroke-width="3"/></g>
-              <circle cx="110" cy="110" r="56" fill="none" stroke="#fbbf24" stroke-width="2"/>
-              <line x1="110" y1="110" x2="110" y2="72" stroke="#fbbf24" stroke-width="3"/>
-              <line x1="110" y1="110" x2="138" y2="120" stroke="#fbbf24" stroke-width="3"/>
-              <text x="110" y="190" text-anchor="middle" fill="#fbbf24" font-family="Inter,sans-serif" font-weight="600" font-size="14">cron diário</text>
-              <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
-                <rect x="280" y="30" width="180" height="42" rx="10" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="370" y="56" text-anchor="middle" fill="#bfe6ff">seg · /auth</text>
-                <rect x="280" y="88" width="180" height="42" rx="10" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="370" y="114" text-anchor="middle" fill="#bfe6ff">ter · /payments</text>
-                <rect x="280" y="146" width="180" height="42" rx="10" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="370" y="172" text-anchor="middle" fill="#bfe6ff">qua · /uploads</text>
-              </g>
-              <path d="M166,90 C220,60 240,51 280,51" fill="none" stroke="#fbbf24" stroke-width="1.8" opacity="0.6" marker-end="url(#v45b-ah)"/>
-              <path d="M166,110 C220,110 240,109 280,109" fill="none" stroke="#fbbf24" stroke-width="1.8" opacity="0.6" marker-end="url(#v45b-ah)"/>
-              <path d="M166,130 C220,160 240,167 280,167" fill="none" stroke="#fbbf24" stroke-width="1.8" opacity="0.6" marker-end="url(#v45b-ah)"/>
-              <rect x="560" y="78" width="380" height="64" rx="14" fill="#1f1604" stroke="#fbbf24" stroke-width="2.5"/>
-              <text x="750" y="105" text-anchor="middle" fill="#fbbf24" font-family="Inter,sans-serif" font-weight="600" font-size="15">repo inteiro coberto</text>
-              <text x="750" y="126" text-anchor="middle" fill="#fcd34d" font-family="Inter,sans-serif" font-size="12">uma fatia por dia, ciclo recomeça</text>
-              <path d="M460,109 C500,109 520,109 560,109" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.6" marker-end="url(#v45b-ah)"/>
-            </svg>
-          </div>
-
-          <p data-inema-block="m4-5-t2-p3" class="text-neutral-300 mb-4 leading-relaxed">Abaixo, o <strong>artefato copiável</strong>: uma linha de <span class="termo" title="O arquivo que lista as tarefas agendadas — cada linha é horário + comando.">crontab</span> que dispara, todo dia às 6h da manhã, um agente headless de security review apontado para a "fatia do dia". Cole no seu crontab (<code class="text-amber-400">crontab -e</code>) e ajuste o caminho do repo:</p>
-
-          <div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
-            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
-              <span class="text-xs text-amber-400 font-mono">crontab · security-review-diário</span>
-              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors">copiar</button>
-            </div>
-            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># Edite com:  crontab -e
+<link href="https://inematds.github.io/hardnessai/curso/trilha4/modulo-4-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha4/modulo-4-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha4/modulo-4-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-4-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha4/modulo-4-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha4/modulo-4-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg" href="#conteudo">Pular para o conteúdo</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avançado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluções</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Minha jornada</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Alternar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Trilha de navegação" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Início</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Trilha 4</a><span>/</span>
+<span class="text-amber-400">Módulo 4.5 · modo ensino</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MÓDULO 4.5 · "MODO ENSINO"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">♻️ Sistemas auto-melhoráveis</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Achar bugs profundos não é mágica do modelo caro. Matt Pocock mostra como montar um sistema que <strong class="text-amber-400">se cuida sozinho</strong>: um <em>cron</em> diário de security review que cada dia olha uma parte nova do código, telemetria que vira issue que vira fix — e, acima de tudo, a pergunta certa: <em>"se continuam roubando sua bike, compre um cadeado"</em>. Aqui você aprende a revisar não só o código, mas o <strong>sistema que produz o código</strong>.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Tópicos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">T1-T4</div><div class="text-xs text-neutral-400">Pré-requisito</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Prática</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progresso do módulo 4.5" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:4-5" role="progressbar">
+<span class="text-sm text-neutral-400">Progresso:</span>
+<span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice da página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Seção <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-1">1. Não precisa do modelo caro</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-2">2. Cron de security review</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-3">3. Telemetria → issue → fix</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-4">4. A causa raiz do bug</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-5">5. Loops de auto-melhoria</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-6">6. Revisar o sistema</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-amber-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glossário vivo (leia antes — volte sempre que precisar)</h2>
+<p class="text-sm text-neutral-400 mb-4">Esta trilha já assumiu o vocabulário base (modelo, agente, skill, AFK, sandbox, fila). Aqui ficam os termos <strong>novos</strong> deste módulo — fixe estes:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Sistema auto-melhorável</strong> — um setup que, sozinho e de forma recorrente, descobre problemas no seu código e te ajuda a corrigi-los e a evitá-los de novo. Não é o código que "se conserta"; é o <em>processo</em> em volta que vai ficando melhor.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Cron</strong> — um agendador: "rode tal comando todo dia às 6h". A "linha de crontab" é uma linha de texto que descreve <em>quando</em> e <em>o quê</em> rodar. É o coração de tarefas que acontecem sem você apertar nada.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Security review</strong> — revisão de segurança: olhar o código procurando falhas (senha exposta, injeção, permissão errada) <em>antes</em> que alguém abuse delas.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Telemetria</strong> — os dados que sua aplicação manda sobre como ela está rodando (erros, lentidão, exceções). Ferramentas como o <em>Sentry</em> coletam isso em produção.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Issue</strong> — um "chamado" registrado (no GitHub, por exemplo): uma tarefa ou bug anotado pra alguém — humano ou agente — resolver.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Causa raiz (root cause)</strong> — o motivo de fundo do problema, não o sintoma. Não "o bug X aconteceu", mas "por que ele existiu tanto tempo sem ninguém notar?".</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Test suite</strong> — o conjunto de testes automáticos do projeto. Cada teste verifica que uma parte funciona; rodar a suíte avisa quando algo quebrou.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Rotativo</strong> — que muda de alvo a cada execução. Um cron rotativo de review checa hoje uma pasta, amanhã outra — cobrindo o repo inteiro ao longo do tempo.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">💡 Não precisa do modelo caro</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> um detetive medíocre num bairro bem iluminado acha mais crimes do que um detetive genial vendado num quarto escuro. Não é só talento — é <em>estar no lugar certo, com a lanterna certa</em>. Achar bug profundo é a mesma coisa: o lugar e a luz (o harness) pesam tanto quanto o "QI" do modelo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t1-p1">Existe um mito sedutor: "se eu usar o modelo mais inteligente (e mais caro), ele vai achar aqueles bugs profundos que nenhum outro acha". Na conversa, contou-se que um modelo encontrou <span class="termo" title="Bugs sérios, escondidos no fundo do código, que revisões superficiais não pegam.">bugs profundos</span> e falhas de <span class="termo" title="Revisão de segurança: olhar o código atrás de falhas exploráveis antes que virem incidente.">security</span> que outros modelos não tinham visto. A reação fácil é: "viu? precisa do modelo top". Pocock discorda na raiz. Nas palavras dele: <em>"você poderia descobrir esses bugs com modelos mais baratos se olhasse nos lugares certos e desse a ele o prompt/harness certo"</em>. Traduzindo: o que faltava aos "outros modelos" não era inteligência — era <strong>direção</strong>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t1-p2">Isso conecta direto com o que você viu na Trilha 1 (Economia de tokens): um <strong class="text-amber-400">harness</strong> bom deixa um modelo "mais burro" fazer o mesmo trabalho. Aqui a ideia é a mesma aplicada à <em>descoberta de defeitos</em>. Em vez de pagar caro por um modelo gênio rodando uma vez, você monta um sistema que coloca um modelo simples no lugar certo, repetidamente. O <strong>porquê</strong> importa: modelo caro é um custo que cresce a cada chamada; um sistema bem-direcionado é um ativo que rende todo dia. O <strong>erro comum</strong> é confundir "achou um bug difícil" com "preciso sempre do modelo difícil" — quando o que achou o bug, de fato, foi <em>onde</em> e <em>como</em> você olhou.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparação: modelo caro olhando no escuro acha pouco; modelo barato com harness e lanterna acha muito" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v45a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v45a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v45a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v45a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#1f1604" height="170" rx="18" stroke="#6b7280" stroke-width="2" width="430" x="40" y="40"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="64" y="70">Modelo CARO, sem direção</text>
+<rect fill="#0e1b26" height="62" rx="12" stroke="#38bdf8" stroke-width="2" width="120" x="120" y="92"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="180" y="128">$$$ gênio</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" x="255" y="190">olha no escuro → acha 1</text>
+<rect fill="#1f1604" height="170" rx="18" stroke="#fbbf24" stroke-width="2.5" width="430" x="530" y="40"></rect>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="554" y="70">Modelo BARATO + harness</text>
+<g filter="url(#v45a-glow)"><rect fill="url(#v45a-grad)" height="62" rx="12" stroke="#f59e0b" stroke-width="2.5" width="120" x="610" y="92"></rect></g>
+<text fill="#3a2606" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="670" y="122">$ simples</text>
+<text fill="#3a2606" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="670" y="142">+ lanterna</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" x="745" y="190">lugar certo → acha 5</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">O segredo não é o cérebro do modelo — é onde você aponta a lanterna (o harness).</p>
+</div>
+<img alt="Ilustração conceitual: uma lanterna iluminando código escondido, com um modelo simples encontrando falhas que um modelo caro no escuro não vê" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="assets/img/m4-5-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Erro comum de iniciante</h3>
+<p class="text-neutral-300 text-sm">Concluir "preciso do modelo mais caro pra achar bugs sérios". Quase sempre a falha estava ao alcance de um modelo barato — só faltava <em>apontar</em> ele pro lugar certo, com o prompt certo. Pague pelo sistema, não pelo cérebro.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> bug profundo se acha com lugar certo + prompt certo — não com o modelo mais caro.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Indo mais fundo (opcional): por que o modelo barato basta aqui?</summary>
+<p class="text-sm text-neutral-300 mt-3">Achar um bug não exige raciocínio sobre o projeto inteiro de uma vez — exige olhar um pedaço pequeno e bem delimitado com uma pergunta clara ("esta função valida a entrada?"). Quando você reduz o escopo e dá o prompt certo, o problema vira fácil o bastante pra um modelo simples. Modelo caro brilha em tarefas grandes e ambíguas; revisão fatiada é o oposto disso — então você economiza sem perder qualidade.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⏰ Cron de security review</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> um vigia que faz a ronda do prédio. Ele não checa todos os 30 andares por noite — checaria mal. Ele checa <em>um andar por noite</em>, com calma, e em um mês cobriu o prédio inteiro, várias vezes. O cron de security review é esse vigia.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t2-p1">A receita concreta de Pocock: rode um <span class="termo" title="Agendador que dispara um comando em horários fixos, sem ninguém apertar nada.">cron</span> diário de <span class="termo" title="Revisão de segurança automatizada do código.">security review</span> que, a cada dia, checa <strong>uma parte nova do repositório</strong>, usando um modelo relativamente simples. A palavra-chave é <span class="termo" title="Que muda de alvo a cada execução, cobrindo o repo inteiro ao longo do tempo.">rotativo</span>: você não tenta varrer o projeto inteiro de uma vez (caro, raso e estourando o context window). Você fatia. Hoje a pasta de autenticação; amanhã a de pagamentos; depois a de uploads. Em poucas semanas o repo inteiro foi auditado — e o ciclo recomeça, pegando o que mudou.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t2-p2">Por que <em>agendado</em> e não "quando eu lembrar"? Porque a lição que Pocock tira de um incidente é direta: <em>"o que você aprendeu? Que há problemas de segurança no seu código — você deveria ter algo que roda e checa por mais no futuro."</em> Segurança não pode depender da sua memória num dia corrido. O <strong>porquê</strong> do modelo simples: review fatiado é tarefa pequena e bem-escopada — exatamente onde o modelo barato basta (tópico 1). O <strong>erro comum</strong> é montar um cron que revisa o repo todo de uma vez: fica caro, vira ruído e ninguém lê o relatório gigante. Pequeno, diário, rotativo, acionável.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Um relógio dispara, todo dia, uma revisão de uma fatia diferente do repositório, cobrindo tudo ao longo da semana" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v45b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v45b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v45b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v45b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v45b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g filter="url(#v45b-glow)"><circle cx="110" cy="110" fill="#1f1604" r="56" stroke="url(#v45b-grad)" stroke-width="3"></circle></g>
+<circle cx="110" cy="110" fill="none" r="56" stroke="#fbbf24" stroke-width="2"></circle>
+<line stroke="#fbbf24" stroke-width="3" x1="110" x2="110" y1="110" y2="72"></line>
+<line stroke="#fbbf24" stroke-width="3" x1="110" x2="138" y1="110" y2="120"></line>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="110" y="190">cron diário</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="180" x="280" y="30"></rect><text fill="#bfe6ff" text-anchor="middle" x="370" y="56">seg · /auth</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="180" x="280" y="88"></rect><text fill="#bfe6ff" text-anchor="middle" x="370" y="114">ter · /payments</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="180" x="280" y="146"></rect><text fill="#bfe6ff" text-anchor="middle" x="370" y="172">qua · /uploads</text>
+</g>
+<path d="M166,90 C220,60 240,51 280,51" fill="none" marker-end="url(#v45b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"></path>
+<path d="M166,110 C220,110 240,109 280,109" fill="none" marker-end="url(#v45b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"></path>
+<path d="M166,130 C220,160 240,167 280,167" fill="none" marker-end="url(#v45b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"></path>
+<rect fill="#1f1604" height="64" rx="14" stroke="#fbbf24" stroke-width="2.5" width="380" x="560" y="78"></rect>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="750" y="105">repo inteiro coberto</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="750" y="126">uma fatia por dia, ciclo recomeça</text>
+<path d="M460,109 C500,109 520,109 560,109" fill="none" marker-end="url(#v45b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="2"></path>
+</svg>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t2-p3">Abaixo, o <strong>artefato copiável</strong>: uma linha de <span class="termo" title="O arquivo que lista as tarefas agendadas — cada linha é horário + comando.">crontab</span> que dispara, todo dia às 6h da manhã, um agente headless de security review apontado para a "fatia do dia". Cole no seu crontab (<code class="text-amber-400">crontab -e</code>) e ajuste o caminho do repo:</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">crontab · security-review-diário</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># Edite com:  crontab -e
 # Roda TODO DIA às 06:00 — checa uma fatia rotativa do repo (dia-do-mês % nº de pastas).
-0 6 * * * cd /caminho/do/repo && DIRS=(auth payments uploads api db) && TARGET=${DIRS[$(( $(date +\%d) \% ${#DIRS[@]} ))]} && claude -p "Faça um SECURITY REVIEW so da pasta ./$TARGET. Liste cada falha (arquivo:linha), severidade (alta/media/baixa) e a correcao sugerida. Se nada grave, responda 'OK'. Saida em markdown." --model claude-haiku-4-5 --allowedTools "Read,Grep,Glob" >> ~/security-reviews/$(date +\%F)-$TARGET.md 2>&1</pre>
-          </div>
-
-          <div data-inema-check="modulo-4-5#q1" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
-            <p class="font-medium mb-4">Recuperação rápida: por que o cron de security review checa só uma fatia por dia?</p>
-            <div class="inema-check-options space-y-2">
-              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Porque o modelo barato não consegue ler arquivos.</button>
-              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Porque fatiar mantém a tarefa pequena, barata e acionável — e em poucos dias cobre o repo inteiro, em rodízio.</button>
-              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Porque o GitHub proíbe revisar mais de uma pasta por dia.</button>
-            </div>
-            <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
-          </div>
-
-          <div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> um vigia agendado que revisa uma fatia por dia cobre o prédio inteiro sem custar uma fortuna.</p></div>
-
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-          </div>
-        </section>
-
-        <!-- TÓPICO 3 -->
-        <section id="topico-3" data-inema-topic="modulo-4-5#topico-3" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📡 Telemetria → issue → fix</h2></div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-
-          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
-            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> o alarme de fumaça da sua casa não só apita — ele liga sozinho pros bombeiros, que já chegam sabendo o cômodo. Telemetria → issue → fix é montar esse encanamento: o erro em produção aciona uma cadeia que termina (quase) sozinha numa correção.</p>
-          </div>
-
-          <p data-inema-block="m4-5-t3-p1" class="text-neutral-300 mb-4 leading-relaxed">Aqui a auto-melhoria deixa de ser proativa (o cron) e vira <em>reativa, mas automatizada</em>. O exemplo de Pocock: um bug de <span class="termo" title="Dados que a aplicação reporta sobre como está rodando em produção: erros, lentidão, exceções.">telemetria</span> aparece numa ferramenta como o <span class="termo" title="Sentry: serviço que captura e agrupa erros que acontecem em produção.">Sentry</span>. Em vez de você ler, copiar e abrir um chamado na mão, o sistema <strong>cria uma issue automaticamente</strong> e a marca com um <em>label</em> (etiqueta) tipo <code class="text-amber-400">agent:explore</code>. Esse label dispara um agente — exatamente o padrão de fila do módulo 4.4.</p>
-
-          <p data-inema-block="m4-5-t3-p2" class="text-neutral-300 mb-6 leading-relaxed">O agente então <strong>retorna dado estruturado</strong>: dá pra corrigir já, ou precisa de um humano? Se for direto, ele implementa, abre o <span class="termo" title="Pull request: a proposta de mudança no código que alguém revisa antes de entrar.">PR</span>, e o fluxo segue para review — eventualmente com uma tag de <em>auto-merge</em> (entra sozinho) ou um ping pra você decidir. A frase que organiza tudo isso é de Pocock: <em>"empurre os checkpoints de human-in-the-loop o mais para perto possível do resultado final."</em> Ou seja: a máquina faz o caminho todo; você só entra perto da linha de chegada, onde sua atenção rende mais. O <strong>erro comum</strong> é deixar o pipeline fazer <em>auto-merge de tudo</em> — sem nenhum gate humano nas mudanças que mexem em comportamento, você troca trabalho manual por risco silencioso.</p>
-
-          <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-            <svg viewBox="0 0 1000 200" class="w-full h-auto" role="img" aria-label="Esteira: telemetria do Sentry vira issue com label explore, que dispara o agente, que abre PR, que vai para review ou auto-merge">
-              <defs>
-                <pattern id="v45c-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
-                <filter id="v45c-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                <marker id="v45c-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"/></marker>
-              </defs>
-              <rect x="0" y="0" width="1000" height="200" fill="url(#v45c-grid)"/>
-              <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
-                <rect x="30" y="74" width="150" height="52" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="105" y="98" text-anchor="middle" fill="#bfe6ff">telemetria</text><text x="105" y="116" text-anchor="middle" fill="#9ad6ff" font-size="11">(Sentry)</text>
-                <rect x="230" y="74" width="150" height="52" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="305" y="98" text-anchor="middle" fill="#bfe6ff">issue</text><text x="305" y="116" text-anchor="middle" fill="#9ad6ff" font-size="11">label: explore</text>
-                <g filter="url(#v45c-glow)"><rect x="430" y="74" width="150" height="52" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2.5"/></g><text x="505" y="98" text-anchor="middle" fill="#fbbf24">agente</text><text x="505" y="116" text-anchor="middle" fill="#fcd34d" font-size="11">dado estruturado</text>
-                <rect x="630" y="74" width="150" height="52" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="705" y="104" text-anchor="middle" fill="#bfe6ff">PR / fix</text>
-                <rect x="830" y="40" width="150" height="46" rx="12" fill="#1f1604" stroke="#fbbf24" stroke-width="2"/><text x="905" y="68" text-anchor="middle" fill="#fbbf24">auto-merge</text>
-                <rect x="830" y="114" width="150" height="46" rx="12" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="905" y="142" text-anchor="middle" fill="#bfe6ff">pinga você</text>
-              </g>
-              <g fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.6">
-                <path d="M180,100 L230,100" marker-end="url(#v45c-ah)"/>
-                <path d="M380,100 L430,100" marker-end="url(#v45c-ah)"/>
-                <path d="M580,100 L630,100" marker-end="url(#v45c-ah)"/>
-                <path d="M780,90 C805,80 810,70 830,65" marker-end="url(#v45c-ah)"/>
-                <path d="M780,110 C805,120 810,130 830,135" marker-end="url(#v45c-ah)"/>
-              </g>
-            </svg>
-          </div>
-
-          <img src="assets/img/m4-5-2.png" alt="Ilustração: uma esteira de automação levando um sinal de erro de telemetria até uma correção, com um ponto de decisão humano perto do fim" class="w-full h-auto rounded-xl mb-6" loading="lazy">
-
-          <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
-            <h3 class="font-semibold text-blue-400 mb-3">🔬 Exemplo resolvido: do erro no Sentry à correção</h3>
-            <p class="text-neutral-300 text-sm mb-3">Cenário ponta a ponta — um <code>TypeError</code> intermitente no checkout:</p>
-            <ol class="space-y-2 text-sm text-neutral-300 list-decimal pl-5">
-              <li><strong class="text-blue-400">Telemetria:</strong> o Sentry agrupa 312 ocorrências de <code>Cannot read 'total' of undefined</code> em <code>checkout.ts</code>.</li>
-              <li><strong class="text-blue-400">Issue automática:</strong> um webhook cria a issue <code>#812</code> com o stack trace e aplica o label <code>agent:explore</code>.</li>
-              <li><strong class="text-blue-400">Agente explora:</strong> disparado pelo label, retorna estruturado — <em>causa: carrinho vazio não tratado; dificuldade: trivial; pode corrigir AFK: sim</em>.</li>
-              <li><strong class="text-blue-400">Fix + PR:</strong> o agente adiciona o guard <code>cart?.total ?? 0</code> + um teste, abre o PR <code>#813</code> linkando a issue.</li>
-              <li><strong class="text-blue-400">Checkpoint no fim:</strong> como mexe em comportamento, NÃO faz auto-merge — pinga você, que revisa em 30s e aprova.</li>
-            </ol>
-            <p class="text-neutral-300 text-sm mt-3">Você só apareceu no passo 5 — o checkpoint foi empurrado para perto do resultado final.</p>
-          </div>
-
-          <div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> o erro em produção aciona, sozinho, a cadeia issue→agente→fix; você só decide perto da linha de chegada.</p></div>
-
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-          </div>
-        </section>
-
-        <!-- TÓPICO 4 -->
-        <section id="topico-4" data-inema-topic="modulo-4-5#topico-4" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🔒 A causa raiz do bug</h2></div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-
-          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
-            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> roubaram sua bike. Você compra outra bike. Roubam de novo. Compra outra. A pergunta certa não é "qual bike comprar" — é <em>"por que ela fica roubável? Cadê o cadeado?"</em>. Corrigir o bug é comprar outra bike. Achar a causa raiz é instalar o cadeado.</p>
-          </div>
-
-          <p data-inema-block="m4-5-t4-p1" class="text-neutral-300 mb-4 leading-relaxed">Essa é a virada de chave do módulo, e Pocock resume numa imagem que gruda: <em>"se alguém vive roubando sua bike, talvez compre um cadeado."</em> Corrigir o bug que apareceu é tratar o sintoma. A pergunta que de verdade melhora o sistema é sobre a <span class="termo" title="O motivo de fundo do problema, não o sintoma visível.">causa raiz (root cause)</span>: <strong>por que esse bug existiu tanto tempo sem você notar?</strong> O que faltou no seu processo — um teste, uma revisão, um lint — para que ele passasse batido até virar incidente?</p>
-
-          <p data-inema-block="m4-5-t4-p2" class="text-neutral-300 mb-6 leading-relaxed">Repare na diferença de nível. "Achei um bug de security e corrigi" para na bike. "Há falhas de security no meu código, então vou montar <strong>algo que roda e checa por mais no futuro</strong>" instala o cadeado — é literalmente o cron do tópico 2 nascendo de um incidente. Cada bug, em vez de só um conserto, vira uma pergunta: <em>que guarda-corpo do sistema deixou isso passar?</em> A resposta vira test suite, review automatizado ou refactor. O <strong>erro comum</strong> é parar feliz no fix: você fecha a issue, sente que resolveu — e o mesmo tipo de bug volta por outra porta, porque o cadeado nunca foi comprado.</p>
-
-          <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-            <svg viewBox="0 0 1000 220" class="w-full h-auto" role="img" aria-label="Dois caminhos: corrigir o bug repetidamente (comprar bikes) versus achar a causa raiz e instalar o cadeado (um sistema que previne)">
-              <defs>
-                <linearGradient id="v45d-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
-                <filter id="v45d-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                <pattern id="v45d-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
-              </defs>
-              <rect x="0" y="0" width="1000" height="220" fill="url(#v45d-grid)"/>
-              <text x="500" y="34" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="13">"roubaram a bike?"</text>
-              <rect x="40" y="56" width="430" height="140" rx="16" fill="#2a0e0e" stroke="#b91c1c" stroke-width="2"/>
-              <text x="64" y="84" fill="#f87171" font-family="Inter,sans-serif" font-weight="600" font-size="15">😵 Tratar o sintoma</text>
-              <text x="64" y="112" fill="#fca5a5" font-family="Inter,sans-serif" font-size="13">compra bike → roubam → compra bike…</text>
-              <text x="64" y="138" fill="#fca5a5" font-family="Inter,sans-serif" font-size="13">corrige o bug → ele volta por outra porta</text>
-              <text x="64" y="170" fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5">o ciclo nunca para</text>
-              <g filter="url(#v45d-glow)"><rect x="530" y="56" width="430" height="140" rx="16" fill="#1f1604" stroke="url(#v45d-grad)" stroke-width="2.5"/></g>
-              <text x="554" y="84" fill="#fbbf24" font-family="Inter,sans-serif" font-weight="600" font-size="15">🔒 Tratar a causa raiz</text>
-              <text x="554" y="112" fill="#fcd34d" font-family="Inter,sans-serif" font-size="13">"por que existiu tanto tempo?"</text>
-              <text x="554" y="138" fill="#fcd34d" font-family="Inter,sans-serif" font-size="13">instala o cadeado: teste + cron + review</text>
-              <text x="554" y="170" fill="#fcd34d" font-family="Inter,sans-serif" font-size="12.5">o sistema fica mais forte</text>
-            </svg>
-          </div>
-
-          <img src="assets/img/m4-5-3.png" alt="Ilustração: uma bicicleta presa por um cadeado robusto e brilhante, simbolizando tratar a causa raiz em vez do sintoma" class="w-full h-auto rounded-xl mb-6" loading="lazy">
-
-          <details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
-            <summary class="cursor-pointer font-medium text-amber-400">Indo mais fundo (opcional): os "5 porquês"</summary>
-            <p class="text-sm text-neutral-300 mt-3">Uma técnica clássica pra chegar na causa raiz é perguntar "por quê?" cinco vezes. <em>Bug no checkout → por quê? Carrinho vazio não tratado → por quê? Ninguém testou esse caso → por quê? Não havia teste de carrinho vazio → por quê? A suíte não cobre estados de borda → por quê? Não temos um cron/checklist que cobra esses casos.</em> No quinto "porquê" você não está mais olhando o bug — está olhando o <strong>sistema que o deixou passar</strong>. É ali que se compra o cadeado.</p>
-          </details>
-
-          <div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> não compre outra bike — pergunte por que ela fica roubável e instale o cadeado.</p></div>
-
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-          </div>
-        </section>
-
-        <!-- TÓPICO 5 -->
-        <section id="topico-5" data-inema-topic="modulo-4-5#topico-5" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">♻️ Loops de auto-melhoria</h2></div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-
-          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
-            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma academia onde cada treino fica registrado, e o registro ajusta o próximo treino. Você não fica mais forte "de graça" — fica porque o <em>sistema de treino</em> aprende com cada sessão. Loops de auto-melhoria são isso aplicados ao seu código.</p>
-          </div>
-
-          <p data-inema-block="m4-5-t5-p1" class="text-neutral-300 mb-4 leading-relaxed">Juntando tudo: um <span class="termo" title="Setup recorrente que descobre, corrige e previne problemas, ficando melhor a cada ciclo.">sistema auto-melhorável</span> é feito de <em>vários laços</em> que se reforçam. Pocock nomeia três ingredientes concretos: <strong class="text-amber-400">test suites</strong> (que pegam regressões antes de chegarem ao usuário), <strong class="text-amber-400">human reviews</strong> (que dão insight no sistema, não só no código) e <strong class="text-amber-400">refactor</strong> (que reduz a chance de o próximo bug aparecer). Cada incidente alimenta esses laços: virou teste, virou checklist de review, virou uma parte mais limpa do código.</p>
-
-          <p data-inema-block="m4-5-t5-p2" class="text-neutral-300 mb-6 leading-relaxed">O detalhe crítico — e aqui ele cruza com o módulo 4.4 (Loops × Filas) — é que "auto-melhorável" <strong>não</strong> significa "deixa um loop infinito rodando sozinho e some". Significa montar gatilhos (cron, telemetria, label) que <em>colocam tarefas numa fila</em>, e laços de feedback que tornam cada passagem melhor que a anterior. Você continua sendo o rei: prioriza, revisa os pontos perigosos, ajusta os gatilhos. O <strong>erro comum</strong> é fantasiar um sistema 100% autônomo que se conserta para sempre sem supervisão — isso não existe; o que existe é um sistema que faz o trabalho repetitivo e te chama nos momentos que importam.</p>
-
-          <div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
-            <svg viewBox="0 0 1000 230" class="w-full h-auto" role="img" aria-label="Ciclo de auto-melhoria: detectar leva a corrigir, que leva a prevenir, que leva a aprender, voltando a detectar melhor">
-              <defs>
-                <linearGradient id="v45e-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
-                <filter id="v45e-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-                <pattern id="v45e-grid" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1.3" cy="1.3" r="1.3" fill="#f59e0b" opacity="0.12"/></pattern>
-                <marker id="v45e-ah" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"/></marker>
-              </defs>
-              <rect x="0" y="0" width="1000" height="230" fill="url(#v45e-grid)"/>
-              <g font-family="Inter,sans-serif" font-size="14" font-weight="600">
-                <g filter="url(#v45e-glow)"><rect x="120" y="40" width="180" height="56" rx="13" fill="#1f1604" stroke="url(#v45e-grad)" stroke-width="2.5"/></g><text x="210" y="74" text-anchor="middle" fill="#fbbf24">1 · detectar</text>
-                <rect x="700" y="40" width="180" height="56" rx="13" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="790" y="74" text-anchor="middle" fill="#bfe6ff">2 · corrigir</text>
-                <rect x="700" y="138" width="180" height="56" rx="13" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="790" y="172" text-anchor="middle" fill="#bfe6ff">3 · prevenir</text>
-                <rect x="120" y="138" width="180" height="56" rx="13" fill="#0e1b26" stroke="#38bdf8" stroke-width="2"/><text x="210" y="166" text-anchor="middle" fill="#bfe6ff">4 · aprender</text>
-                <text x="210" y="184" text-anchor="middle" fill="#9ad6ff" font-size="11">→ revisar o sistema</text>
-              </g>
-              <g fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.6">
-                <path d="M300,68 L700,68" marker-end="url(#v45e-ah)"/>
-                <path d="M790,96 L790,138" marker-end="url(#v45e-ah)"/>
-                <path d="M700,166 L300,166" marker-end="url(#v45e-ah)"/>
-                <path d="M210,138 L210,96" marker-end="url(#v45e-ah)"/>
-              </g>
-              <text x="500" y="218" text-anchor="middle" fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5">cada volta deixa a detecção da próxima mais forte</text>
-            </svg>
-          </div>
-
-          <div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> detectar → corrigir → prevenir → aprender, e cada volta deixa o sistema mais forte que a anterior.</p></div>
-
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-          </div>
-        </section>
-
-        <!-- TÓPICO 6 -->
-        <section id="topico-6" data-inema-topic="modulo-4-5#topico-6" class="mb-16">
-          <div class="flex items-center justify-between gap-4 mb-6">
-            <div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🛠️ Revisar o sistema</h2></div>
-            <button type="button" data-inema-doubt-toggle aria-pressed="false" title="Marcar dúvida neste tópico" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
-          </div>
-
-          <div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
-            <p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma fábrica não inspeciona só os produtos que saem — inspeciona a <em>linha de montagem</em> que os produz. Se a linha está torta, todo produto sai torto. Revisar só o código é checar produtos; revisar o sistema é endireitar a linha.</p>
-          </div>
-
-          <p data-inema-block="m4-5-t6-p1" class="text-neutral-300 mb-4 leading-relaxed">A tese que fecha o módulo é a frase mais importante de Pocock aqui: <em>"revise não só o código — revise também o SISTEMA que produz o código."</em> Na era agêntica, quem escreve a maior parte do código é o agente. Então seu foco de revisão sobe um andar: menos "essa linha está certa?" e mais "o <strong>processo</strong> que gerou essa linha é confiável?". Os prompts, as skills, os crons, os gates de review — é esse encanamento que, afinado, faz o próximo bug nem nascer.</p>
-
-          <p data-inema-block="m4-5-t6-p2" class="text-neutral-300 mb-6 leading-relaxed">Isso também responde uma pergunta perigosa que aparece no próximo módulo (4.6): <em>"quem revisa a IA que diz que está tudo bem?"</em> Resposta: você, revisando o sistema. Por isso vale checar, de vez em quando, alguns PRs que o agente garantiu estarem ok — não por desconfiança paranoica, mas para <strong>melhorar o sistema com o tempo</strong>. Abaixo, o resumo prático em forma de checklist copiável — rode-o sempre que um bug escapar, para transformar o conserto em melhoria de sistema:</p>
-
-          <div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
-            <div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
-              <span class="text-xs text-amber-400 font-mono">revisar-o-sistema.txt</span>
-              <button type="button" onclick="copyBox(this)" class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors">copiar</button>
-            </div>
-            <pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Bug escapou? Antes de fechar a issue, COMPRE O CADEADO:
+0 6 * * * cd /caminho/do/repo &amp;&amp; DIRS=(auth payments uploads api db) &amp;&amp; TARGET=${DIRS[$(( $(date +\%d) \% ${#DIRS[@]} ))]} &amp;&amp; claude -p "Faça um SECURITY REVIEW so da pasta ./$TARGET. Liste cada falha (arquivo:linha), severidade (alta/media/baixa) e a correcao sugerida. Se nada grave, responda 'OK'. Saida em markdown." --model claude-haiku-4-5 --allowedTools "Read,Grep,Glob" &gt;&gt; ~/security-reviews/$(date +\%F)-$TARGET.md 2&gt;&amp;1</pre>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-5#q1">
+<p class="font-medium mb-4">Recuperação rápida: por que o cron de security review checa só uma fatia por dia?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Porque o modelo barato não consegue ler arquivos.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Porque fatiar mantém a tarefa pequena, barata e acionável — e em poucos dias cobre o repo inteiro, em rodízio.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Porque o GitHub proíbe revisar mais de uma pasta por dia.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> um vigia agendado que revisa uma fatia por dia cobre o prédio inteiro sem custar uma fortuna.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📡 Telemetria → issue → fix</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> o alarme de fumaça da sua casa não só apita — ele liga sozinho pros bombeiros, que já chegam sabendo o cômodo. Telemetria → issue → fix é montar esse encanamento: o erro em produção aciona uma cadeia que termina (quase) sozinha numa correção.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t3-p1">Aqui a auto-melhoria deixa de ser proativa (o cron) e vira <em>reativa, mas automatizada</em>. O exemplo de Pocock: um bug de <span class="termo" title="Dados que a aplicação reporta sobre como está rodando em produção: erros, lentidão, exceções.">telemetria</span> aparece numa ferramenta como o <span class="termo" title="Sentry: serviço que captura e agrupa erros que acontecem em produção.">Sentry</span>. Em vez de você ler, copiar e abrir um chamado na mão, o sistema <strong>cria uma issue automaticamente</strong> e a marca com um <em>label</em> (etiqueta) tipo <code class="text-amber-400">agent:explore</code>. Esse label dispara um agente — exatamente o padrão de fila do módulo 4.4.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t3-p2">O agente então <strong>retorna dado estruturado</strong>: dá pra corrigir já, ou precisa de um humano? Se for direto, ele implementa, abre o <span class="termo" title="Pull request: a proposta de mudança no código que alguém revisa antes de entrar.">PR</span>, e o fluxo segue para review — eventualmente com uma tag de <em>auto-merge</em> (entra sozinho) ou um ping pra você decidir. A frase que organiza tudo isso é de Pocock: <em>"empurre os checkpoints de human-in-the-loop o mais para perto possível do resultado final."</em> Ou seja: a máquina faz o caminho todo; você só entra perto da linha de chegada, onde sua atenção rende mais. O <strong>erro comum</strong> é deixar o pipeline fazer <em>auto-merge de tudo</em> — sem nenhum gate humano nas mudanças que mexem em comportamento, você troca trabalho manual por risco silencioso.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Esteira: telemetria do Sentry vira issue com label explore, que dispara o agente, que abre PR, que vai para review ou auto-merge" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<pattern height="32" id="v45c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v45c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v45c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v45c-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="52" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="30" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="105" y="98">telemetria</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="105" y="116">(Sentry)</text>
+<rect fill="#0e1b26" height="52" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="230" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="305" y="98">issue</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="305" y="116">label: explore</text>
+<g filter="url(#v45c-glow)"><rect fill="#1f1604" height="52" rx="12" stroke="#fbbf24" stroke-width="2.5" width="150" x="430" y="74"></rect></g><text fill="#fbbf24" text-anchor="middle" x="505" y="98">agente</text><text fill="#fcd34d" font-size="11" text-anchor="middle" x="505" y="116">dado estruturado</text>
+<rect fill="#0e1b26" height="52" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="630" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="705" y="104">PR / fix</text>
+<rect fill="#1f1604" height="46" rx="12" stroke="#fbbf24" stroke-width="2" width="150" x="830" y="40"></rect><text fill="#fbbf24" text-anchor="middle" x="905" y="68">auto-merge</text>
+<rect fill="#0e1b26" height="46" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="830" y="114"></rect><text fill="#bfe6ff" text-anchor="middle" x="905" y="142">pinga você</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#fbbf24" stroke-width="2">
+<path d="M180,100 L230,100" marker-end="url(#v45c-ah)"></path>
+<path d="M380,100 L430,100" marker-end="url(#v45c-ah)"></path>
+<path d="M580,100 L630,100" marker-end="url(#v45c-ah)"></path>
+<path d="M780,90 C805,80 810,70 830,65" marker-end="url(#v45c-ah)"></path>
+<path d="M780,110 C805,120 810,130 830,135" marker-end="url(#v45c-ah)"></path>
+</g>
+</svg>
+</div>
+<img alt="Ilustração: uma esteira de automação levando um sinal de erro de telemetria até uma correção, com um ponto de decisão humano perto do fim" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="assets/img/m4-5-2.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Exemplo resolvido: do erro no Sentry à correção</h3>
+<p class="text-neutral-300 text-sm mb-3">Cenário ponta a ponta — um <code>TypeError</code> intermitente no checkout:</p>
+<ol class="space-y-2 text-sm text-neutral-300 list-decimal pl-5">
+<li><strong class="text-blue-400">Telemetria:</strong> o Sentry agrupa 312 ocorrências de <code>Cannot read 'total' of undefined</code> em <code>checkout.ts</code>.</li>
+<li><strong class="text-blue-400">Issue automática:</strong> um webhook cria a issue <code>#812</code> com o stack trace e aplica o label <code>agent:explore</code>.</li>
+<li><strong class="text-blue-400">Agente explora:</strong> disparado pelo label, retorna estruturado — <em>causa: carrinho vazio não tratado; dificuldade: trivial; pode corrigir AFK: sim</em>.</li>
+<li><strong class="text-blue-400">Fix + PR:</strong> o agente adiciona o guard <code>cart?.total ?? 0</code> + um teste, abre o PR <code>#813</code> linkando a issue.</li>
+<li><strong class="text-blue-400">Checkpoint no fim:</strong> como mexe em comportamento, NÃO faz auto-merge — pinga você, que revisa em 30s e aprova.</li>
+</ol>
+<p class="text-neutral-300 text-sm mt-3">Você só apareceu no passo 5 — o checkpoint foi empurrado para perto do resultado final.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> o erro em produção aciona, sozinho, a cadeia issue→agente→fix; você só decide perto da linha de chegada.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🔒 A causa raiz do bug</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> roubaram sua bike. Você compra outra bike. Roubam de novo. Compra outra. A pergunta certa não é "qual bike comprar" — é <em>"por que ela fica roubável? Cadê o cadeado?"</em>. Corrigir o bug é comprar outra bike. Achar a causa raiz é instalar o cadeado.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t4-p1">Essa é a virada de chave do módulo, e Pocock resume numa imagem que gruda: <em>"se alguém vive roubando sua bike, talvez compre um cadeado."</em> Corrigir o bug que apareceu é tratar o sintoma. A pergunta que de verdade melhora o sistema é sobre a <span class="termo" title="O motivo de fundo do problema, não o sintoma visível.">causa raiz (root cause)</span>: <strong>por que esse bug existiu tanto tempo sem você notar?</strong> O que faltou no seu processo — um teste, uma revisão, um lint — para que ele passasse batido até virar incidente?</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t4-p2">Repare na diferença de nível. "Achei um bug de security e corrigi" para na bike. "Há falhas de security no meu código, então vou montar <strong>algo que roda e checa por mais no futuro</strong>" instala o cadeado — é literalmente o cron do tópico 2 nascendo de um incidente. Cada bug, em vez de só um conserto, vira uma pergunta: <em>que guarda-corpo do sistema deixou isso passar?</em> A resposta vira test suite, review automatizado ou refactor. O <strong>erro comum</strong> é parar feliz no fix: você fecha a issue, sente que resolveu — e o mesmo tipo de bug volta por outra porta, porque o cadeado nunca foi comprado.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dois caminhos: corrigir o bug repetidamente (comprar bikes) versus achar a causa raiz e instalar o cadeado (um sistema que previne)" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v45d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v45d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v45d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v45d-grid)" height="220" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="34">"roubaram a bike?"</text>
+<rect fill="#2a0e0e" height="140" rx="16" stroke="#b91c1c" stroke-width="2" width="430" x="40" y="56"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="64" y="84">😵 Tratar o sintoma</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" x="64" y="112">compra bike → roubam → compra bike…</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" x="64" y="138">corrige o bug → ele volta por outra porta</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5" x="64" y="170">o ciclo nunca para</text>
+<g filter="url(#v45d-glow)"><rect fill="#1f1604" height="140" rx="16" stroke="url(#v45d-grad)" stroke-width="2.5" width="430" x="530" y="56"></rect></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="554" y="84">🔒 Tratar a causa raiz</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" x="554" y="112">"por que existiu tanto tempo?"</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" x="554" y="138">instala o cadeado: teste + cron + review</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="12.5" x="554" y="170">o sistema fica mais forte</text>
+</svg>
+</div>
+<img alt="Ilustração: uma bicicleta presa por um cadeado robusto e brilhante, simbolizando tratar a causa raiz em vez do sintoma" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="assets/img/m4-5-3.png"/>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Indo mais fundo (opcional): os "5 porquês"</summary>
+<p class="text-sm text-neutral-300 mt-3">Uma técnica clássica pra chegar na causa raiz é perguntar "por quê?" cinco vezes. <em>Bug no checkout → por quê? Carrinho vazio não tratado → por quê? Ninguém testou esse caso → por quê? Não havia teste de carrinho vazio → por quê? A suíte não cobre estados de borda → por quê? Não temos um cron/checklist que cobra esses casos.</em> No quinto "porquê" você não está mais olhando o bug — está olhando o <strong>sistema que o deixou passar</strong>. É ali que se compra o cadeado.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> não compre outra bike — pergunte por que ela fica roubável e instale o cadeado.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">♻️ Loops de auto-melhoria</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma academia onde cada treino fica registrado, e o registro ajusta o próximo treino. Você não fica mais forte "de graça" — fica porque o <em>sistema de treino</em> aprende com cada sessão. Loops de auto-melhoria são isso aplicados ao seu código.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t5-p1">Juntando tudo: um <span class="termo" title="Setup recorrente que descobre, corrige e previne problemas, ficando melhor a cada ciclo.">sistema auto-melhorável</span> é feito de <em>vários laços</em> que se reforçam. Pocock nomeia três ingredientes concretos: <strong class="text-amber-400">test suites</strong> (que pegam regressões antes de chegarem ao usuário), <strong class="text-amber-400">human reviews</strong> (que dão insight no sistema, não só no código) e <strong class="text-amber-400">refactor</strong> (que reduz a chance de o próximo bug aparecer). Cada incidente alimenta esses laços: virou teste, virou checklist de review, virou uma parte mais limpa do código.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t5-p2">O detalhe crítico — e aqui ele cruza com o módulo 4.4 (Loops × Filas) — é que "auto-melhorável" <strong>não</strong> significa "deixa um loop infinito rodando sozinho e some". Significa montar gatilhos (cron, telemetria, label) que <em>colocam tarefas numa fila</em>, e laços de feedback que tornam cada passagem melhor que a anterior. Você continua sendo o rei: prioriza, revisa os pontos perigosos, ajusta os gatilhos. O <strong>erro comum</strong> é fantasiar um sistema 100% autônomo que se conserta para sempre sem supervisão — isso não existe; o que existe é um sistema que faz o trabalho repetitivo e te chama nos momentos que importam.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Ciclo de auto-melhoria: detectar leva a corrigir, que leva a prevenir, que leva a aprender, voltando a detectar melhor" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v45e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v45e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v45e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v45e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v45e-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<g filter="url(#v45e-glow)"><rect fill="#1f1604" height="56" rx="13" stroke="url(#v45e-grad)" stroke-width="2.5" width="180" x="120" y="40"></rect></g><text fill="#fbbf24" text-anchor="middle" x="210" y="74">1 · detectar</text>
+<rect fill="#0e1b26" height="56" rx="13" stroke="#38bdf8" stroke-width="2" width="180" x="700" y="40"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="74">2 · corrigir</text>
+<rect fill="#0e1b26" height="56" rx="13" stroke="#38bdf8" stroke-width="2" width="180" x="700" y="138"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="172">3 · prevenir</text>
+<rect fill="#0e1b26" height="56" rx="13" stroke="#38bdf8" stroke-width="2" width="180" x="120" y="138"></rect><text fill="#bfe6ff" text-anchor="middle" x="210" y="166">4 · aprender</text>
+<text fill="#9ad6ff" font-size="11" text-anchor="middle" x="210" y="184">→ revisar o sistema</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#fbbf24" stroke-width="2">
+<path d="M300,68 L700,68" marker-end="url(#v45e-ah)"></path>
+<path d="M790,96 L790,138" marker-end="url(#v45e-ah)"></path>
+<path d="M700,166 L300,166" marker-end="url(#v45e-ah)"></path>
+<path d="M210,138 L210,96" marker-end="url(#v45e-ah)"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="218">cada volta deixa a detecção da próxima mais forte</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> detectar → corrigir → prevenir → aprender, e cada volta deixa o sistema mais forte que a anterior.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🛠️ Revisar o sistema</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar dúvida neste tópico" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tenho dúvida</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine assim:</strong> uma fábrica não inspeciona só os produtos que saem — inspeciona a <em>linha de montagem</em> que os produz. Se a linha está torta, todo produto sai torto. Revisar só o código é checar produtos; revisar o sistema é endireitar a linha.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t6-p1">A tese que fecha o módulo é a frase mais importante de Pocock aqui: <em>"revise não só o código — revise também o SISTEMA que produz o código."</em> Na era agêntica, quem escreve a maior parte do código é o agente. Então seu foco de revisão sobe um andar: menos "essa linha está certa?" e mais "o <strong>processo</strong> que gerou essa linha é confiável?". Os prompts, as skills, os crons, os gates de review — é esse encanamento que, afinado, faz o próximo bug nem nascer.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t6-p2">Isso também responde uma pergunta perigosa que aparece no próximo módulo (4.6): <em>"quem revisa a IA que diz que está tudo bem?"</em> Resposta: você, revisando o sistema. Por isso vale checar, de vez em quando, alguns PRs que o agente garantiu estarem ok — não por desconfiança paranoica, mas para <strong>melhorar o sistema com o tempo</strong>. Abaixo, o resumo prático em forma de checklist copiável — rode-o sempre que um bug escapar, para transformar o conserto em melhoria de sistema:</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">revisar-o-sistema.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Bug escapou? Antes de fechar a issue, COMPRE O CADEADO:
 [ ] CAUSA RAIZ — por que esse bug existiu tanto tempo sem ninguém notar?
 [ ] TESTE — adicionei um teste que pegaria esse caso na próxima vez?
 [ ] DETECÇÃO — meu cron de security/review olharia essa parte? Se não, ajusto o rodízio.
 [ ] PROCESSO — que gate (review, lint, label) deixou isso passar? Reforço ele.
 [ ] SISTEMA — revisei o código OU o sistema que produz o código? (era pra ser os dois)
 Se você só corrigiu o bug, comprou outra bike. Instale o cadeado.</pre>
-          </div>
-
-          <div data-inema-check="modulo-4-5#q2" class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6">
-            <p class="font-medium mb-4">Recuperação rápida: o que significa "revisar o sistema que produz o código"?</p>
-            <div class="inema-check-options space-y-2">
-              <button type="button" data-inema-check-option="0" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Revisar linha por linha cada PR, sempre, na mão.</button>
-              <button type="button" data-inema-check-option="1" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Avaliar e afinar o processo (prompts, skills, crons, gates) que gera o código — não só o código em si.</button>
-              <button type="button" data-inema-check-option="2" class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm">Confiar que a IA já checou e nunca mais olhar.</button>
-            </div>
-            <div data-inema-check-feedback class="mt-4 text-sm" role="status" aria-live="polite"></div>
-          </div>
-
-          <div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> revise não só o código, mas a linha de montagem que o produz — é ali que o próximo bug morre antes de nascer.</p></div>
-
-          <div class="flex justify-start mt-6">
-            <button type="button" data-inema-read-toggle aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors"><span class="inema-read-icon" aria-hidden="true">○</span><span class="inema-read-label">Marcar como lido</span></button>
-          </div>
-        </section>
-
-        <!-- RESUMO -->
-        <section class="mb-12">
-          <div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
-            <h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumo do Módulo</h2>
-            <div class="space-y-4 mb-8">
-              <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Não é o modelo caro</strong><span class="text-neutral-400"> — bug profundo se acha com lugar certo + prompt/harness certo; modelo barato basta.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Cron diário rotativo</strong><span class="text-neutral-400"> — uma fatia do repo por dia cobre tudo, barato e acionável.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Telemetria → issue → fix</strong><span class="text-neutral-400"> — o erro em produção aciona a cadeia; o checkpoint humano fica perto do fim.</span></div></div>
-              <div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Compre o cadeado</strong><span class="text-neutral-400"> — trate a causa raiz, não o sintoma; e revise o SISTEMA que produz o código.</span></div></div>
-            </div>
-            <div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-amber-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">4.6 — Checkpoints &amp; review fluido: como tornar o review sem dor, empurrar o checkpoint pra direita e gravar vídeo+TTS do agente trabalhando.</p></div>
-            <div class="flex flex-col sm:flex-row gap-4"><a href="index.html" class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors">← Voltar para Trilha</a><a href="modulo-4-6.html" class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors">Próximo Módulo →</a></div>
-          </div>
-        </section>
-
-      </main>
-    </div>
-  </div>
-
-  <footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a href="https://inema.club" target="_blank" class="text-sky-400 hover:text-sky-300">INEMA.CLUB</a></p></div></footer>
-
-  <script>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-5#q2">
+<p class="font-medium mb-4">Recuperação rápida: o que significa "revisar o sistema que produz o código"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Revisar linha por linha cada PR, sempre, na mão.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Avaliar e afinar o processo (prompts, skills, crons, gates) que gera o código — não só o código em si.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Confiar que a IA já checou e nunca mais olhar.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">Em 1 frase:</strong> revise não só o código, mas a linha de montagem que o produz — é ali que o próximo bug morre antes de nascer.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como lido</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumo do Módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Não é o modelo caro</strong><span class="text-neutral-400"> — bug profundo se acha com lugar certo + prompt/harness certo; modelo barato basta.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Cron diário rotativo</strong><span class="text-neutral-400"> — uma fatia do repo por dia cobre tudo, barato e acionável.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Telemetria → issue → fix</strong><span class="text-neutral-400"> — o erro em produção aciona a cadeia; o checkpoint humano fica perto do fim.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Compre o cadeado</strong><span class="text-neutral-400"> — trate a causa raiz, não o sintoma; e revise o SISTEMA que produz o código.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-amber-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">4.6 — Checkpoints &amp; review fluido: como tornar o review sem dor, empurrar o checkpoint pra direita e gravar vídeo+TTS do agente trabalhando.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Voltar para Trilha</a><a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="modulo-4-6.html">Próximo Módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Engenharia Agêntica · o método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
     function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
     (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
     function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
@@ -585,8 +523,8 @@ Se você só corrigiu o bug, comprou outra bike. Instale o cadeado.</pre>
     document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
     function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
   </script>
-  <script src="../../assets/learn.js"></script>
-  <script>
+<script src="../../assets/learn.js"></script>
+<script>
     document.addEventListener('DOMContentLoaded', function () {
       if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
       if (window.INEMA && INEMA.registerCheck) {

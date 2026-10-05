@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>2.3 Conocimiento × Habilidad × Sabiduría | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'blue' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'blue');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/30 { background-color: rgba(37,99,235,0.10); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-emerald-400 { color: #047857; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha2/modulo-2-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha2/modulo-2-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha2/modulo-2-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Ruta 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.3 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.3 · MODO ENSEÑANZA</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧩 Conocimiento × Habilidad × Sabiduría</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Tres cosas distintas que solemos mezclar en una sola palabra: «saber». Pocock las separa <strong class="text-blue-400">conocimiento</strong> (entender mentalmente), <strong class="text-blue-400">habilidad</strong> (haberlo hecho muchas veces) y <strong class="text-blue-400">sabiduría</strong> (saber CUÁNDO hacerlo). Entender esta diferencia es lo que determina qué puedes empaquetar en una skill y qué solo se aprende viviendo el contexto real.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Core</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Teoría</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 2.3" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-3" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Conocimiento: entender</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. Habilidad: el músculo</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Sabiduría: cuándo hacerlo</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. La sabiduría necesita contexto</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Empaquetar los dos primeros</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Lo que no se puede delegar</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-blue-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-blue-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">Los términos nuevos de este módulo, en lenguaje sencillo. Los términos básicos (modelo, agente, skill, harness…) ya se definieron en la Trilha 1; aquí solo los usamos.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Conocimiento (knowledge)</strong> — el conocimiento <em>declarativo</em>: qué es algo, por qué existe y cómo funciona en teoría. Está en tu cabeza. Por ejemplo, saber qué es una prueba automatizada.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Habilidad (skill)</strong> — el conocimiento <em>hacer</em>: haber ejecutado algo muchas veces hasta hacerlo de forma automática. Es memoria muscular. Por ejemplo, escribir pruebas sin pensarlo demasiado.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Sabiduría (wisdom)</strong> — saber <em>cuando</em> e <em>si</em> hacer algo y cómo encaja en el mundo real. Es criterio. Por ejemplo: saber que ESTA prueba, ahora, no vale la pena.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Contexto real</strong> — la situación concreta (la empresa, el equipo, las restricciones, la historia) en la que se toma la decisión. La sabiduría nace de vivir ese contexto.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Empaquetar en una skill</strong> — transformar conocimiento + habilidad en un procedimiento reutilizable (una <em>skill</em>) que el agente ejecuta siempre igual, para que no tengas que repetirlo.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">DRY (Don't Repeat Yourself)</strong> — principio: no repitas lo mismo. Aquí aplicado al <em>humano</em>: si ya hiciste el mismo plan 100×, conviértelo en una skill en vez de empezar de nuevo.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">📘 Conocimiento: entender</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> tú leíste un libro entero sobre cómo andar en bicicleta: física del equilibrio, marchas, frenos. Tú <em>sabe</em> todo. Pero eso todavía no es saber andar. El conocimiento es tener el mapa en la cabeza; todavía no es haber pedaleado.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-3-t1-p1">Pocock divide "saber algo" en tres capas, y la primera es <span class="termo" title="El saber declarativo: qué es, por qué existe, cómo funciona en teoría.">conocimiento</span> (en inglés, <em>knowledge</em>). Es lo que él llama "lo fundamental, entenderlo en la cabeza": comprendes qué es algo, por qué existe y cómo funciona, al menos en teoría. Es la capa más fácil de adquirir: lees, miras, alguien te lo explica y listo, ya lo tienes en la cabeza.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t1-p2">¿Por qué importa esta separación para nuestro curso? Porque el conocimiento es justamente el tipo de cosa que la IA distribuye gratis y en segundos. Pídele al <span class="termo" title="La IA: un modelo de lenguaje como Claude/GPT.">modelo</span> "explícame qué es la inyección de dependencias" y recibes una clase. El <strong class="text-blue-400">error común</strong> de principiante es confundir este acceso fácil al conocimiento con la competencia real: leer sobre pruebas no te hace bueno para probar, igual que leer sobre natación no te enseña a nadar. El conocimiento es necesario, pero es solo el peldaño 1 de 3 y, por sí solo, es el más barato de los tres.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Escalera de tres peldaños: conocimiento en la base, habilidad en el medio, sabiduría en la cima brillante" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v23a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v23a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v23a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v23a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1622" height="56" rx="12" stroke="#38bdf8" stroke-width="2" width="300" x="60" y="170"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="210" y="198">1 · CONOCIMIENTO</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="210" y="216">entender — lo más barato</text>
+<rect fill="#0e1622" height="56" rx="12" stroke="#38bdf8" stroke-width="2" width="300" x="360" y="110"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="510" y="138">2 · HABILIDAD</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="510" y="156">hacer — exige repetición</text>
+<g filter="url(#v23a-glow)"><rect fill="#0e1f33" height="56" rx="12" stroke="url(#v23a-grad)" stroke-width="2.5" width="300" x="660" y="50"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="810" y="78">3 · SABIDURÍA</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="810" y="96">cuando: lo más costoso</text>
+<path d="M360,198 L360,166 M660,138 L660,106" fill="none" opacity="0.5" stroke="#60a5fa" stroke-width="2"></path>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Tres niveles que solemos llamar a todos «saber». Van de lo más barato a lo más caro.</p>
+</div>
+<img alt="Ilustración conceptual: una cabeza con un libro abierto y circuitos de luz, que representa el conocimiento en la mente" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-3-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Creer que «leí/vi sobre esto» = «soy bueno en esto». El conocimiento se adquiere rápido, pero no se convierte en competencia sin los otros dos escalones. La IA hace que el conocimiento sea aún más barato, lo que desplaza la diferencia hacia los escalones superiores.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> el conocimiento es entender algo en la mente — el nivel más fácil y lo que la IA ofrece gratis.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-blue-400">Profundiza (opcional): ¿por qué «saber» tiene tres nombres?</summary>
+<p class="text-sm text-neutral-300 mt-3">En el portugués de todos los días usamos una sola palabra —«saber»— para tres cosas que los filósofos separan desde hace siglos: saber-<em>que</em> (knowledge), saber<em>cómo</em> (skill) y saber-<em>cuándo/juzgar</em> (sabiduría). Mezclar las tres es el origen de mucha frustración con la IA: delegas pensando que puedes empaquetarlo todo, pero solo las dos primeras caben en una skill. La tercera es lo que queda, y por eso se convierte en tu diferencial.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">💪 Habilidad: el músculo</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> ahora pedaleaste cien veces. Ya no piensas en el equilibrio: el cuerpo lo hace solo. ¿Te caíste? Te levantas y sigues. Eso es habilidad: el conocimiento se volvió automático en el <em>hacer</em>, en la repetición.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-3-t2-p1">El segundo escalón es la <span class="termo" title="El saber hacer: haberlo ejecutado muchas veces hasta que se vuelva automático — memoria muscular.">habilidad</span> (en inglés, <em>skills</em>). En palabras de Pocock, es "haberlo hecho varias veces, <em>muscle memory</em>" (memoria muscular). No basta con entender: necesitas tener <strong>ejecutado</strong> la cosa repetidamente, mal, ajustada, repetida — hasta que el gesto se vuelva fluido. Es la diferencia entre saber la receta y cocinar bien el plato; entre leer sobre debugging y depurar un problema complicado a las dos de la mañana sin entrar en pánico.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t2-p2">Fíjate en una trampa de vocabulario: aquí "skill" significa tu habilidad humana para hacer algo. En la Trilha 3, la palabra <span class="termo" title="Aquí = habilidad humana; en la Trilha 3 = procedimiento que le das al agente.">skill</span> va a significar otra cosa: el procedimiento que empaquetas para el agente. No es una coincidencia: la skill-procedimiento es precisamente el intento de <em>congelar</em> tu habilidad en un archivo. El <strong class="text-blue-400">porqué</strong> de que esto conecte con todo el curso: hoy la IA es excelente ejecutando la parte «muscular» del trabajo; ya hizo ese tipo de tarea millones de veces durante su entrenamiento. El <strong class="text-blue-400">error común</strong> es pensar que, como la IA tiene la fuerza, tú no necesitas la tuya: sin tu habilidad para juzgar el resultado, ni siquiera puedes decir si la IA lo hizo bien.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El conocimiento se convierte en habilidad mediante muchas repeticiones, representadas con flechas circulares" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v23b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v23b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v23b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v23b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v23b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1622" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="200" x="60" y="80"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="160" y="116">conocimiento</text>
+<g fill="none" opacity="0.7" stroke="#60a5fa" stroke-width="2"><path d="M470,70 a90,40 0 1 1 0,80" marker-end="url(#v23b-ah)"></path></g>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="470" y="116">repetir · equivocarse · repetir</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="470" y="178">muchas ejecuciones</text>
+<g filter="url(#v23b-glow)"><rect fill="#0e1f33" height="60" rx="12" stroke="url(#v23b-grad)" stroke-width="2.5" width="220" x="700" y="80"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="810" y="108">HABILIDAD</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="810" y="128">memoria muscular</text>
+<path d="M260,110 L380,110" fill="none" marker-end="url(#v23b-ah)" opacity="0.6" stroke="#60a5fa" stroke-width="2"></path>
+<path d="M560,110 L700,110" fill="none" marker-end="url(#v23b-ah)" opacity="0.6" stroke="#60a5fa" stroke-width="2"></path>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-3#q1">
+<p class="font-medium mb-4">Recuperación rápida: qué diferencia <em>habilidad</em> de <em>conocimiento</em>?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Nada: son sinónimos; «saber» es solo una cosa.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">La habilidad consiste en haberlo hecho muchas veces (músculo); el conocimiento es solo entenderlo mentalmente.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">El conocimiento es el nivel más costoso y difícil de adquirir.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la habilidad es el conocimiento que se convierte en memoria muscular con la repetición: saber hacer, no solo saber.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🦉 Sabiduría: cuándo aplicarla</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> sabes andar muy bien en bicicleta (habilidad). Pero la sabiduría consiste en saber que, en ese camino de tierra mojado, de noche y con un niño en la parte de atrás, es mejor bajarse y empujar. No se trata de saber andar en bicicleta, sino de saber <em>cuando no</em> pedalear.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-3-t3-p1">El tercer escalón es el más sutil: la <span class="termo" title="Saber cuándo y si hacer algo, y cómo encaja en el mundo real: criterio.">sabiduría</span> (en inglés, <em>sabiduría</em>). Pocock la define como "saber <strong>CUÁNDO</strong> hacer, cómo encaja en el mundo real". No se trata de ejecutar — se trata de <em>juzgar</em>: ¿este es el momento? ¿Es el enfoque adecuado para ESTA situación? ¿Vale la pena el costo? Puedes tener todo el conocimiento y toda la habilidad y aun así tomar la decisión equivocada, porque la sabiduría es la capa que conecta la técnica con el contexto en el que se aplicará.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t3-p2">Aquí es donde la IA choca con un límite duro. El modelo tiene conocimiento (se entrenó con todo lo que ya se escribió) y habilidad (ya «hizo» el patrón millones de veces). Pero no <em>vivió</em> tu situación: no sabes que esa parte del código es frágil porque un cliente importante depende de ella, ni que el plazo se acorta por un motivo político, ni que ese atajo ya salió mal el año pasado. El <strong class="text-blue-400">porqué</strong> esto importa: la sabiduría es el escalón que más se resiste a la automatización y, por lo tanto, el que más te valoriza como humano en el loop. El <strong class="text-blue-400">error común</strong> es delegar el criterio ("la IA decide") en vez de delegar solo la ejecución.</p>
+<img alt="Ilustración: una brújula luminosa sobre un mapa de circuitos, símbolo del criterio para decidir cuándo actuar" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-3-2.png"/>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Los tres niveles responden a preguntas distintas: el conocimiento responde qué, la habilidad responde cómo y la sabiduría responde cuándo o si hacerlo; esta última es la bifurcación de decisión destacada" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v23c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v23c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v23c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v23c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v23c-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1622" height="58" rx="12" stroke="#38bdf8" stroke-width="2" width="240" x="40" y="40"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="160" y="66">📘 conocimiento</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="160" y="85">responde: ¿el QUÉ?</text>
+<rect fill="#0e1622" height="58" rx="12" stroke="#38bdf8" stroke-width="2" width="240" x="40" y="132"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="160" y="158">💪 habilidad</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="160" y="177">responde: ¿el CÓMO?</text>
+<path d="M280,69 L470,115" fill="none" marker-end="url(#v23c-ah)" opacity="0.6" stroke="#60a5fa" stroke-width="2"></path>
+<path d="M280,161 L470,115" fill="none" marker-end="url(#v23c-ah)" opacity="0.6" stroke="#60a5fa" stroke-width="2"></path>
+<g filter="url(#v23c-glow)"><rect fill="#0e1f33" height="74" rx="14" stroke="url(#v23c-grad)" stroke-width="2.5" width="270" x="480" y="78"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="615" y="108">🦉 SABIDURÍA</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="615" y="130">responde: ¿CUÁNDO / SI?</text>
+<path d="M750,98 L860,62" fill="none" marker-end="url(#v23c-ah)" stroke="#60a5fa" stroke-width="2.5"></path>
+<path d="M750,132 L860,168" fill="none" marker-end="url(#v23c-ah)" stroke="#60a5fa" stroke-width="2.5"></path>
+<rect fill="#0e1622" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="100" x="864" y="40"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="914" y="67">hacer</text>
+<rect fill="#0e1622" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="100" x="864" y="146"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="914" y="173">no hacer</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="615" y="206">la sabiduría está en la bifurcación: juzga el momento y decide el camino</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Cada nivel responde una pregunta diferente. Solo la sabiduría decide el camino: hacerlo o no.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-5"><h4 class="font-bold text-blue-400 mb-2">📘 Conocimiento</h4><p class="text-xs text-neutral-300">Sé <em>lo que</em> es. Pregunta: "¿qué es la caché?"</p></div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-5"><h4 class="font-bold text-blue-400 mb-2">💪 Habilidad</h4><p class="text-xs text-neutral-300">Sé <em>hacer</em>. Pregunta: «implementar caché aquí».</p></div>
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-5"><h4 class="font-bold text-blue-400 mb-2">🦉 Sabiduría</h4><p class="text-xs text-neutral-300">Sé <em>cuándo/si</em>. Pregunta: «¿conviene guardar en caché ahora o va a ocultar un bug?».</p></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la sabiduría consiste en saber <em>cuando</em> e <em>si</em> — el criterio que conecta la técnica con el mundo real.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🏢 La sabiduría necesita contexto</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> puedes leer todos los libros de medicina (conocimiento) y practicar suturas mil veces en un maniquí (habilidad). Pero saber dirigir una cirugía de verdad, en el caos de una emergencia y con ese paciente en particular, eso solo se adquiere <em>en el quirófano</em>. El lugar enseña lo que el libro no tiene.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-3-t4-p1">Aquí está la observación más contundente del módulo. Pocock dice que la sabiduría es «casi imposible sin haber hecho la cosa en el <span class="termo" title="La situación concreta —empresa, equipo, restricciones, historia— en la que se toma la decisión.">contexto exacto</span>". Y da un ejemplo que ayuda a fijar la idea: <em>"To be like someone at Anthropic you can gain the knowledge and skills, but you'd need to go to Anthropic to gain the wisdom."</em> — es decir, para ser como alguien de la <strong class="text-blue-400">Anthropic</strong>, puedes adquirir el conocimiento y las habilidades por tu cuenta, pero tendrías que <em>ir a Anthropic</em> para adquirir la sabiduría.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t4-p2">¿Por qué? Porque la sabiduría de ese lugar está en las decisiones reales que solo se toman allí: las restricciones internas, las conversaciones de pasillo, las compensaciones que nadie documenta, los errores que ya han salido caros. El conocimiento y la habilidad son <em>transferibles</em> — tú descargas, tú practicas. La sabiduría es <em>situada</em>: queda ligada al contexto que la generó. La consecuencia práctica para nuestro curso es directa: puedes empaquetar y delegar los dos primeros niveles, pero el tercero queda en manos de quien vive el contexto: tú. El <strong class="text-blue-400">error común</strong> es esperar que una skill o una IA cargue con la sabiduría de tu negocio; no estuvo allí.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El conocimiento y la habilidad atraviesan libremente un muro, pero la sabiduría queda atrapada dentro del contexto de Anthropic" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v23d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v23d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v23d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v23d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#v23d-grid)" height="240" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1f33" height="180" rx="18" stroke="#60a5fa" stroke-dasharray="7 6" stroke-width="2" width="370" x="600" y="30"></rect>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="785" y="58">contexto real (p. ej.: Anthropic)</text>
+<g filter="url(#v23d-glow)"><rect fill="#0e1f33" height="56" rx="12" stroke="url(#v23d-grad)" stroke-width="2.5" width="190" x="690" y="120"></rect></g>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="785" y="148">SABIDURÍA</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="785" y="166">queda atrapada aquí</text>
+<line stroke="#9ca3af" stroke-width="4" x1="560" x2="560" y1="20" y2="220"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="560" y="232">muro</text>
+<rect fill="#0e1622" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="220" x="40" y="55"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="150" y="82">conocimiento</text>
+<rect fill="#0e1622" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="220" x="40" y="120"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="150" y="147">habilidad</text>
+<path d="M260,77 L600,77" fill="none" marker-end="url(#v23d-ah)" opacity="0.7" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M260,142 L600,142" fill="none" marker-end="url(#v23d-ah)" opacity="0.7" stroke="#38bdf8" stroke-width="2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="430" y="195">atraviesan el muro libremente (transferibles)</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: los tres niveles en una decisión real</h3>
+<p class="text-neutral-300 text-sm mb-3">Situación: el equipo va a decidir si reescribe un módulo heredado de pagos. Mira cómo aparece cada nivel y dónde ayuda la IA o no:</p>
+<div class="space-y-3">
+<div class="bg-dark-800/60 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">📘 Conocimiento (la IA lo entrega)</p><p class="text-xs text-neutral-300">"¿Qué es el patrón strangler-fig para migrar sistemas heredados?" La IA lo explica en segundos. Gratis y transferible.</p></div>
+<div class="bg-dark-800/60 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">💪 Habilidad (la IA ejecuta)</p><p class="text-xs text-neutral-300">"Escribe el adaptador que envuelve el módulo antiguo y la suite de pruebas." La IA genera el código — ya lo hizo miles de veces.</p></div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-semibold text-sm mb-1">🦉 Sabiduría (solo tú la tienes)</p><p class="text-xs text-neutral-300">"¿DEBEMOS reescribir ahora?" Sabes que el cliente X depende de este flujo, que el último incidente ocurrió aquí y que hay una auditoría en 3 meses. La IA no estuvo en esas reuniones. La decisión es tuya.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> el conocimiento y la habilidad viajan; la sabiduría queda ligada al contexto que la generó.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">📦 Empaquetar los dos primeros</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un chef que escribe la receta exacta y los pasos de preparación en una tarjeta. Ahora cualquier cocinero del equipo reproduce el plato igual — sin el chef. Lo que NO cabe en la tarjeta es su paladar para saber cuándo el plato "está listo" para ese cliente.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-3-t5-p1">Llega la parte práctica. Pocock dice: puedes <span class="termo" title="Convertir conocimiento + habilidad en un procedimiento reutilizable (skill).">empaquetar los dos primeros</span> (knowledge + skills) en una skill reutilizable. Como el conocimiento y la habilidad se pueden transferir, caben en un archivo de instrucciones que el agente ejecuta siempre de la misma manera. Es el <span class="termo" title="Don't Repeat Yourself aplicado al humano: no vuelvas a hacer el mismo plan a mano.">DRY humano</span>: en sus palabras, <em>"I've made this plan 100 times → turn it into a skill, distribute to the team, everyone plans the same way, contributing back to that skill, raising the floor."</em> — hice este plan 100 veces, así que lo convierto en una skill, la distribuyo al equipo, todos planifican igual, todos contribuyen de vuelta y el nivel mínimo sube.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t5-p2">Fíjate en el efecto compuesto: al empaquetar, no solo ahorras tu tiempo, sino que elevas el <strong class="text-blue-400">piso</strong> de todo el equipo (el peor caso mejora) y crea un lugar único donde todos perfeccionan la habilidad. El <strong class="text-blue-400">error común</strong> es intentar empaquetar también el criterio: escribir en la skill "decide si vale la pena". No conviene: la skill carga el <em>cómo</em>, pero el <em>cuándo/si</em> sigue siendo una decisión tuya, caso por caso. Abajo, un esqueleto real de skill que empaqueta solo los dos primeros niveles — cópialo y adáptalo:</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">skills/plano-de-feature/SKILL.md</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">---
+name: plano-de-feature
+description: Meu jeito de planejar uma feature nova (já fiz isso 100x).
+---
+
+# CONHECIMENTO (o que precisa ser entendido)
+- O que é o produto, quem é o usuário, qual problema resolvemos.
+- Padrões do nosso codebase: camadas, nomes, onde mora cada coisa.
+
+# HABILIDADE (os passos, sempre nesta ordem)
+1. Mapear os arquivos afetados antes de tocar em qualquer um.
+2. Escrever os testes do caso feliz + 2 casos de borda PRIMEIRO.
+3. Implementar em fatias pequenas; rodar os testes a cada fatia.
+4. Abrir PR pequeno com um resumo do "porquê".
+
+# O QUE ESTA SKILL NAO DECIDE (fica com o humano = SABEDORIA)
+- SE esta feature deve ser construida agora.
+- Trade-offs de prazo/risco que dependem do contexto do negocio.
+- Quando "bom o bastante" e bom o bastante.</pre>
+</div>
+<img alt="Ilustración: conocimiento y habilidad sellados dentro de una caja o paquete luminoso, listo para compartir con el equipo" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-3-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> el conocimiento + la habilidad caben en una skill que eleva el nivel del equipo; la sabiduría, no.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-3#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎯 Lo que no se puede delegar</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> eres el director de orquesta. La orquesta (la IA) toca cada nota con perfección técnica: ese es su conocimiento y su capacidad. Pero elegir la música, sentir al público y decidir el ritmo de esa noche, eso no lo delega el director. Es lo que hace que la noche sea suya.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-3-t6-p1">Al cerrar el módulo, quédate con este principio operativo: <strong class="text-blue-400">delega la ejecución, reserva el criterio</strong>. El conocimiento y la habilidad (los dos primeros peldaños) los empaquetas en skills y se los entregas a la IA: se le dan muy bien. La sabiduría (el tercero) te la quedas tú, porque depende de vivir tu contexto, y es precisamente lo que te hace irreemplazable en el loop. Cada vez que vayas a delegar, separa mentalmente: «esto es el <em>cómo</em> (va a la skill) o el <em>cuándo/si</em> (¿se queda conmigo)?» Usa la siguiente lista de verificación para decidir en el momento; cópiala y pégala cuando vayas a diseñar una skill nueva:</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">checklist-delegar-ou-guardar.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de delegar uma tarefa a IA, classifique cada parte:
+
+[ ] E CONHECIMENTO? (entender o que/por que) -&gt; delegue: a IA explica.
+[ ] E HABILIDADE?   (executar um passo conhecido) -&gt; delegue: vira skill.
+[ ] E SABEDORIA?    (quando/se/vale a pena, dado o contexto) -&gt; GUARDE.
+
+Pergunta de ouro: "a IA esteve nas reunioes onde isso se decidiu?"
+- Nao esteve -&gt; e sabedoria -&gt; a decisao e SUA (a IA so executa o resultado).
+- Esteve (esta tudo no prompt/codebase) -&gt; pode delegar com seguranca.</pre>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El conocimiento y la habilidad fluyen hacia la IA; la sabiduría permanece con el humano al mando" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs><pattern height="32" id="v23f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v23f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v23f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker></defs>
+<rect fill="url(#v23f-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g filter="url(#v23f-glow)"><rect fill="#0e1f33" height="60" rx="14" stroke="#60a5fa" stroke-width="2.5" width="200" x="40" y="60"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="140" y="88">TÚ</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="140" y="108">guarda la sabiduría</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1622" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="220" x="400" y="35"></rect><text fill="#bfe6ff" text-anchor="middle" x="510" y="60">conocimiento →</text>
+<rect fill="#0e1622" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="220" x="400" y="105"></rect><text fill="#bfe6ff" text-anchor="middle" x="510" y="130">habilidades →</text>
+</g>
+<rect fill="#0e1622" height="60" rx="14" stroke="#38bdf8" stroke-width="2" width="200" x="760" y="60"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="860" y="88">IA (agente)</text><text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="860" y="108">ejecuta</text>
+<path d="M240,80 L400,55" fill="none" marker-end="url(#v23f-ah)" opacity="0.65" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M240,100 L400,125" fill="none" marker-end="url(#v23f-ah)" opacity="0.65" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M620,55 L760,80" fill="none" marker-end="url(#v23f-ah)" opacity="0.65" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M620,125 L760,100" fill="none" marker-end="url(#v23f-ah)" opacity="0.65" stroke="#38bdf8" stroke-width="2"></path>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-3#q2">
+<p class="font-medium mb-4">Recuperación rápida: de los tres niveles, ¿cuál NO se puede empaquetar en una skill?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">El conocimiento: es lo más difícil de escribir.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">La habilidad depende de la memoria muscular del cuerpo.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">La sabiduría depende de vivir el contexto real, así que le corresponde a la persona.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> delega el <em>cómo</em> a la IA; guarda el <em>cuándo/si</em> — es lo que no se puede delegar.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Conocimiento = entender</strong><span class="text-neutral-400"> — el escalón más barato; la IA lo hace gratis.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Habilidad = músculo</strong><span class="text-neutral-400"> — hecho muchas veces hasta que se vuelve automático; la IA lo ejecuta bien.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Sabiduría = cuándo/si</strong><span class="text-neutral-400"> — criterio situado; necesita el contexto real (p. ej., ir a Anthropic).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Empaqueta los 2 primeros</strong><span class="text-neutral-400"> — se convierten en skill (DRY humano, eleva el nivel mínimo del equipo); la sabiduría queda contigo.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">2.4 — Fundamentos de delegación: cómo dejar la ejecución en manos de la IA sin perder el control de lo difícil.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-4.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-2-3#q1', { answer: 1, explain: { 0: 'Não — o português junta tudo em "saber", mas são camadas distintas.', 1: 'Isso! Habilidade é o fazer repetido (músculo); conhecimento é só entender.', 2: 'Ao contrário: conhecimento é o degrau mais barato; a sabedoria é o mais caro.' } });
+        INEMA.registerCheck('modulo-2-3#q2', { answer: 2, explain: { 0: 'Conhecimento é justamente o mais fácil de escrever e transferir.', 1: 'Aqui "habilidade" é o passo-a-passo do trabalho — isso vira skill tranquilo.', 2: 'Exato! A sabedoria depende de viver o contexto, então fica com o humano.' } });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>5.6 Smooth Review + Where to Find It | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'teal' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'teal');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #2dd4bf; cursor: help; font-weight: 600; color: #5eead4; }
+    html:not(.dark) .termo { color: #0f766e; border-color: #0d9488; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13,148,136,0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13,148,136,0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13,148,136,0.18); }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha5/modulo-5-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha5/modulo-5-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha5/modulo-5-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-5-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha5/modulo-5-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-teal-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-teal-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-teal-400" href="index.html">Track 5</a><span>/</span>
+<span class="text-teal-400">Module 5.6 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MODULE 5.6 · LAST IN THE COURSE</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🎥 Smooth review + where to find it</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">The last piece of the puzzle: letting the <strong class="text-teal-400">faster human review</strong> — the AI records a video of itself walking through the change and narrates it with a voice—and where to find ready-made skills (<strong class="text-teal-400">mattpocock/skills</strong>, <strong class="text-teal-400">aihero.dev</strong>) to get started today. This is where the cycle closes.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~35</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Practical</div><div class="text-xs text-neutral-400">Level</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Wrap-up</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 5.6 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:5-6" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-teal-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-1">1. Video walkthrough + TTS</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-2">2. Optimize human review</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-3">3. mattpocock/skills</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-4">4. aihero.dev/skills</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-5">5. npx skills latest add</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-6">6. The First 2 Steps Today</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-teal-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-teal-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">This is the final module: here you bring together the review cycle and “where to find it.” These are the new terms for this topic:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Review</strong> — the moment when YOU look at what AI produced before accepting it. It’s the quality “toll” between the agent’s work and your product.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Smooth review</strong> — make this review <em>fast and painless</em>: instead of reading cold code, you watch a video of the change working, with narration.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Walkthrough</strong> — a “guided tour”: the AI navigates through the change (clicks the screen, opens the new page) and shows it in action, recording a video.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">TTS (Text-to-Speech)</strong> — "text to speech": the AI writes narration and a robot turns it into speech, narrated over the video.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">PR (Pull Request)</strong> — the change "bundle" the agent delivers on GitHub for you to approve. It's where the video and narration are attached.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">npx</strong> — a command that runs a package without installing it permanently. You just type it and it runs.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Newsletter</strong> — an email list (here, the one for <em>aihero.dev</em>) where Pocock publishes skills and news. It’s one of the "where to find it" places.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Procedure</strong> — a type of skill that YOU invoke (makes the agent behave in a certain way). Today's 2 steps cover only procedures, not abilities.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-5-6#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🎬 Video walkthrough + TTS</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A construction worker finishes a room and, instead of sending you a blueprint covered in scribbles, records a short video walking through the house: “Look, the outlet is here, I opened the window, the door closes properly” — narrating as they show you. In 40 seconds, you understand more than you would from reading 50 pages. That’s exactly what the AI does with every screen change.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-6-t1-p1">Pocock describes what he calls <span class="termo" title="Make review quick and painless, instead of reading raw code.">smooth review</span>: in <strong>any front-end change</strong>, the AI records a <span class="termo" title="Guided tour: the AI navigates the change and shows it in action.">video</span> itself <em>moving through the change</em> — it opens the new page, clicks the buttons, and shows the thing actually working. Based on this video, it calls a <span class="termo" title="Text-to-Speech: text becomes speech, narrating over the video.">TTS</span> (text-to-speech) and <strong>narrates</strong> what's happening. The result: the <span class="termo" title="Pull Request: the change package delivered on GitHub for you to approve.">PR</span> gets to you with a video of it working, with narration.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-6-t1-p2">The reason is straightforward: <strong>seeing is faster than reading</strong>. Instead of opening 12 code files and trying to imagine how they behave, you press play and <em>see</em> the change running, with someone explaining it to you. In his words: <em>"for any front-end change, the AI records a video of itself walking through the change, calls TTS, and narrates over it—so the PR has a video of the thing working."</em> And it is honest about the stage: <em>"we're scratching the surface"</em> (we’ve barely scratched the surface). The <strong>common mistake</strong> is thinking this is fluff: in practice, it’s what turns a 20-minute review into a 1-minute one.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Fluid review flow: the AI makes the change, records a video while navigating, generates TTS narration, and attaches everything to the PR" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v56a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v56a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v56a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v56a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v56a-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="62" rx="13" stroke="#38bdf8" stroke-width="2" width="180" x="40" y="90"></rect><text fill="#bfe6ff" font-size="14" font-weight="600" text-anchor="middle" x="130" y="118">AI makes the change</text><text fill="#9ad6ff" font-size="11.5" text-anchor="middle" x="130" y="138">(front end)</text>
+<rect fill="#0c1f1c" height="62" rx="13" stroke="#2dd4bf" stroke-width="2" width="180" x="270" y="90"></rect><text fill="#2dd4bf" font-size="14" font-weight="600" text-anchor="middle" x="360" y="118">records VIDEO</text><text fill="#9fe7d8" font-size="11.5" text-anchor="middle" x="360" y="138">moving across the screen</text>
+<rect fill="#0c1f1c" height="62" rx="13" stroke="#2dd4bf" stroke-width="2" width="180" x="500" y="90"></rect><text fill="#2dd4bf" font-size="14" font-weight="600" text-anchor="middle" x="590" y="118">TTS narrates</text><text fill="#9fe7d8" font-size="11.5" text-anchor="middle" x="590" y="138">voice-over</text>
+<g filter="url(#v56a-glow)"><rect fill="url(#v56a-grad)" height="70" rx="15" stroke="#14b8a6" stroke-width="2.5" width="220" x="730" y="86"></rect></g>
+<text fill="#062420" font-size="16" font-weight="700" text-anchor="middle" x="840" y="118">PR with video</text><text fill="#062420" font-size="11.5" text-anchor="middle" x="840" y="138">ready for you to see</text>
+<g fill="none" opacity="0.7" stroke="#2dd4bf" stroke-width="2"><line marker-end="url(#v56a-ah)" x1="220" x2="266" y1="121" y2="121"></line><line marker-end="url(#v56a-ah)" x1="450" x2="496" y1="121" y2="121"></line><line marker-end="url(#v56a-ah)" x1="680" x2="726" y1="121" y2="121"></line></g>
+</g>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="40">The PR doesn’t arrive “raw” — it comes with a video showing the change working</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">AI produces the visual evidence; you just watch and approve.</p>
+</div>
+<img alt="Conceptual illustration: a PR screen with a video player and an audio narration waveform beside the code" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-6-1.png"/>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> instead of reading the code, you watch a narrated video of the change working inside the PR itself.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-teal-400">Going deeper (optional): why video and not a screenshot?</summary>
+<p class="text-sm text-neutral-300 mt-3">A screenshot shows a static state; the behavior (the animation, what happens when you click, the error state) disappears. Video captures the <em>interaction</em> — and the TTS narration provides context (“now I’m submitting the empty form to show the validation”). It’s the difference between seeing a photo of a car and seeing the car in motion: only one proves it works.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-5-6#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⚡ Optimize human review</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A manager who gets 20 separate reports every morning will go crazy. But if the team puts everything into a one-page summary with the common points, they can decide quickly. The secret isn’t to work harder — it’s to make the review <em>cheaper</em> for the reviewer.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-6-t2-p1">Pocock’s motto here is clear: <em>"optimize for human review, make it faster"</em> (optimize the human review and make it faster). A smooth review is one approach; another is <strong>not review 20 small fixes one by one</strong>. Instead, it suggests generating a <strong class="text-teal-400">HTML in the style of the teach skill</strong> with the <em>common bug patterns</em> — a summary showing what breaks most often. That way, you review the <em>pattern</em>, not each item separately, and you also learn how to improve the system.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-6-t2-p2">There's an important point behind this: <em>"GitHub wasn't built for the agentic era"</em>. Review tools were designed for humans reviewing humans, at a human pace. When an agent opens dozens of PRs a day, that workflow gets stuck. That’s why it’s worth <strong>invest in what makes review fast</strong> — narrated video, pattern summaries, grouping. The <strong>common mistake</strong> is keeping the old ritual of reviewing everything line by line: you become the bottleneck in your own system.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: 20 PRs reviewed one by one on the left, slowly; a summary of patterns on the right, quickly" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v56b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v56b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v56b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v56b-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<text fill="#fca5a5" font-size="15" font-weight="600" text-anchor="middle" x="250" y="34">Before: 20 scattered reviews = slow</text>
+<g fill="#1f1414" stroke="#ef4444" stroke-width="1.5">
+<rect height="26" rx="6" width="60" x="70" y="58"></rect><rect height="26" rx="6" width="60" x="150" y="58"></rect><rect height="26" rx="6" width="60" x="230" y="58"></rect><rect height="26" rx="6" width="60" x="310" y="58"></rect>
+<rect height="26" rx="6" width="60" x="70" y="96"></rect><rect height="26" rx="6" width="60" x="150" y="96"></rect><rect height="26" rx="6" width="60" x="230" y="96"></rect><rect height="26" rx="6" width="60" x="310" y="96"></rect>
+<rect height="26" rx="6" width="60" x="70" y="134"></rect><rect height="26" rx="6" width="60" x="150" y="134"></rect><rect height="26" rx="6" width="60" x="230" y="134"></rect><rect height="26" rx="6" width="60" x="310" y="134"></rect>
+</g>
+<text fill="#9ca3af" font-size="12" text-anchor="middle" x="250" y="190">each box = 1 PR to review manually</text>
+<line stroke="#374151" stroke-dasharray="5 5" stroke-width="2" x1="470" x2="470" y1="40" y2="200"></line>
+<text fill="#5eead4" font-size="15" font-weight="600" text-anchor="middle" x="745" y="34">After: 1 summary of patterns = fast</text>
+<g filter="url(#v56b-glow)"><rect fill="#0c1f1c" height="100" rx="14" stroke="url(#v56b-grad)" stroke-width="2.5" width="290" x="600" y="62"></rect></g>
+<text fill="#2dd4bf" font-size="15" font-weight="700" text-anchor="middle" x="745" y="92">Patterns HTML</text>
+<text fill="#9fe7d8" font-size="12" text-anchor="middle" x="745" y="116">"the 3 most common bugs"</text>
+<text fill="#9fe7d8" font-size="12" text-anchor="middle" x="745" y="136">you review the pattern, not the item</text>
+<text fill="#9ca3af" font-size="12" text-anchor="middle" x="745" y="190">optimize the review, not the agent</text>
+</g>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: 18 null-check fixes become 1 review</h3>
+<p class="text-neutral-300 text-sm mb-3">Scenario: overnight, the agent opened 18 PRs fixing "null value" errors. Two ways to handle it:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Without optimization</p><p class="text-xs text-neutral-300">You open all 18 PRs, read each diff, and approve them one by one. ~2 hours, your attention fried, and you can't see the pattern behind them.</p></div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-lg p-4"><p class="text-teal-400 font-semibold text-sm mb-1">Optimized review</p><p class="text-xs text-neutral-300">The agent generates HTML: "all come from optional API fields with no defaults." You read 1 page, see the root cause, approve in a batch, and create 1 skill that prevents the entire class of bugs. ~10 min.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> don't review 20 small things — review their pattern, and optimize the review so it's fast.</p></div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-6#q1">
+<p class="font-medium mb-4">Quick retrieval: what is the goal of the "fluid review"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Switch to a more expensive model to make fewer mistakes.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Make human review faster — narrated video and summaries of patterns instead of reading everything raw.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Eliminate humans completely from all reviews.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-5-6#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📦 mattpocock/skills</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you don't need to invent a cake recipe from scratch — there's a free notebook of tested recipes, already prepared by someone who knows how to cook really well. Taking a ready-made recipe and adapting it to your oven is much smarter than starting with flour and eggs.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-6-t3-p1">The first place to look for "where to find it" is the public repository <strong class="text-teal-400">github.com/mattpocock/skills</strong> — Pocock's own skills notebook. That's where the skills he demonstrates in the video come from: the <em>teach skill</em>, a <em>grill-me</em>, the pipeline’s (grill-me → PRD → issues). Since they’re <span class="termo" title="Type of skill you invoke; makes the agent behave in a specific way.">procedures</span>, you install it, use it, and <strong>customizes</strong> — doesn't have to agree with everything; it adapts to your project.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-6-t3-p2">The reason to start with ready-made skills: they already carry <em>embedded knowledge</em> (teaching principles, adversarial questions, PRD format). You get months of trial and error for free. And because they work across multiple agents (Claude Code, Codex, etc.), you’re not locked into one tool—consistent with Trilha 1’s “agent-agnostic setup.” The <strong>common mistake</strong> is installing everything at once and <em>clog the context</em> (remember Track 1.6: each skill takes up part of the context window). Bring in only what you’ll use.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The mattpocock/skills repository as a shelf of ready-to-use skills: teach, grill-me, two-PRD, to-issues" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v56c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v56c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v56c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v56c-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g filter="url(#v56c-glow)"><rect fill="#0c1f1c" height="160" rx="18" stroke="url(#v56c-grad)" stroke-width="2" width="920" x="40" y="30"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="17" font-weight="700" x="66" y="62">github.com/mattpocock/skills</text>
+<text fill="#9fe7d8" font-family="Inter,sans-serif" font-size="12.5" x="66" y="84">shelf of ready-made procedures — install, use, customize</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g><rect fill="#0e1b26" height="62" rx="11" stroke="#38bdf8" stroke-width="2" width="200" x="66" y="104"></rect><text fill="#bfe6ff" text-anchor="middle" x="166" y="132">teach</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="166" y="152">creates a course on the spot</text></g>
+<g><rect fill="#0e1b26" height="62" rx="11" stroke="#38bdf8" stroke-width="2" width="200" x="286" y="104"></rect><text fill="#bfe6ff" text-anchor="middle" x="386" y="132">grill-me</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="386" y="152">interviews you before coding</text></g>
+<g><rect fill="#0e1b26" height="62" rx="11" stroke="#38bdf8" stroke-width="2" width="200" x="506" y="104"></rect><text fill="#bfe6ff" text-anchor="middle" x="606" y="132">two-PRD</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="606" y="152">becomes a product document</text></g>
+<g><rect fill="#0e1b26" height="62" rx="11" stroke="#38bdf8" stroke-width="2" width="200" x="726" y="104"></rect><text fill="#bfe6ff" text-anchor="middle" x="826" y="132">to-issues</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="826" y="152">breaks down into tasks</text></g>
+</g>
+</svg>
+</div>
+<img alt="Illustration: a futuristic shelf with labeled skill modules ready to download" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-6-2.png"/>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> github.com/mattpocock/skills is Pocock’s notebook of ready-made procedures—grab them, use them, and adapt them.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-5-6#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🌐 aihero.dev / aihero.dev/skills</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> besides the recipe book, the chef has a website and a weekly newsletter where they explain the techniques behind each dish and let you know when they invent a new one. Subscribers never fall behind. It’s the repository’s companion.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-6-t4-p1">The runner-up is the <strong class="text-teal-400">aihero.dev</strong> (and the section <strong class="text-teal-400">aihero.dev/skills</strong>) — Pocock’s content site, with a <span class="termo" title="Email list where Pocock shares skills and news.">newsletter</span>. While GitHub stores the <em>code</em> of skills, aihero.dev keeps the <em>context</em>: why each skill exists, how it was designed, and what’s new. That’s where updated skills and explanations appear—think of GitHub as the pantry and aihero.dev as the cookbook that teaches you how to cook.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-6-t4-p2">The reason to follow both: skills evolve quickly. The repository gives you the current version; the newsletter lets you know when something changes and <em>why</em>. Subscribing is the cheap way to keep your harness tuned without having to watch GitHub every day. The <strong>common mistake</strong> is copying a skill once and never looking at it again—you miss improvements and end up with an old version of something its author has already refined. Keeping up with the source is part of “building equity,” not “renting” (Track 1).</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Two complementary places: GitHub mattpocock slash skills for the code, and aihero.dev for context and a newsletter" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs>
+<lineargradient id="v56d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v56d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v56d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v56d-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="110" rx="16" stroke="#38bdf8" stroke-width="2" width="360" x="60" y="50"></rect>
+<text fill="#bfe6ff" font-size="16" font-weight="700" text-anchor="middle" x="240" y="86">mattpocock/skills</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="240" y="112">the skills' CODE</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="240" y="134">install with npx</text>
+<g filter="url(#v56d-glow)"><rect fill="#0c1f1c" height="110" rx="16" stroke="url(#v56d-grad)" stroke-width="2.5" width="360" x="580" y="50"></rect></g>
+<text fill="#2dd4bf" font-size="16" font-weight="700" text-anchor="middle" x="760" y="86">aihero.dev / skills</text>
+<text fill="#9fe7d8" font-size="12.5" text-anchor="middle" x="760" y="112">the CONTEXT + newsletter</text>
+<text fill="#9fe7d8" font-size="12.5" text-anchor="middle" x="760" y="134">why it exists, what changed</text>
+<path d="M420,105 L580,105" stroke="#9ca3af" stroke-dasharray="6 5" stroke-width="2"></path>
+<text fill="#9ca3af" font-size="12" text-anchor="middle" x="500" y="96">complement each other</text>
+</g>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> GitHub gives you the code; aihero.dev (and its newsletter) gives you the why and the updates.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-5-6#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">⌨️ npx skills latest add</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> installing a skill is like downloading an app from the store: you type a command, choose the one you want from a list, and that’s it — it’s ready to use. No need to build anything by hand.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-6-t5-p1">You can install it with a single command: <strong class="text-teal-400"><code>npx skills latest add</code></strong>. O <span class="termo" title="A command that runs a package without installing it permanently.">npx</span> download and run the installer right away; it shows you a <strong>list</strong> available skills and you <em>chooses</em> which one to add (for example, the teach skill). That’s exactly how Pocock installed the teach skill in the video. And best of all: <em>"works in Claude Code, Codex, etc."</em> — the same command, multiple agents.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-6-t5-p2">One behind-the-scenes detail Pocock shares: he runs <strong>Claude Code with Opus 4.8, medium effort</strong> (doesn’t use Fable), and <em>waits about 1 month</em> before adopting a new model — he did this with Opus 4.5. In other words: the command is stable and agnostic; the model choice is a separate, straightforward decision. The <strong>common mistake</strong> is adding dozens of skills "just in case": each one leaks its description into the context. Add one, use it for real, and only then add the next. Copy the command below:</p>
+<!-- COPYBOX OBRIGATÓRIO: comando + onde achar -->
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">instalar-skill-e-onde-achar.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># 1) INSTALAR uma skill (escolha na lista — ex.: a teach skill)
+#    funciona em Claude Code, Codex etc.
+npx skills latest add
+
+# 2) ONDE ACHAR skills prontas (o "caderno de receitas" do Pocock):
+#    - GitHub (o código):        https://github.com/mattpocock/skills
+#    - Site + contexto:          https://aihero.dev
+#    - Skills + newsletter:      https://aihero.dev/skills
+
+# Dica: adicione UMA skill, use de verdade, depois a próxima.
+# Setup do Matt: Claude Code + Opus 4.8 (medium effort); espera ~1 mês p/ adotar modelo novo.</pre>
+</div>
+<img alt="Illustration: a futuristic terminal showing the command npx skills latest add and a list of skills to choose from" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-6-3.png"/>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The npx skills latest add command opens a list of skills for you to choose from" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="v56e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v56e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v56e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v56e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v56e-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g filter="url(#v56e-glow)"><rect fill="#0c1f1c" height="60" rx="12" stroke="url(#v56e-grad)" stroke-width="2.5" width="320" x="50" y="70"></rect></g>
+<text fill="#2dd4bf" font-family="monospace" font-size="16" font-weight="700" text-anchor="middle" x="210" y="98">npx skills latest add</text>
+<text fill="#9fe7d8" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="210" y="118">you type this</text>
+<line marker-end="url(#v56e-ah)" opacity="0.7" stroke="#2dd4bf" stroke-width="2" x1="370" x2="470" y1="100" y2="100"></line>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#0e1b26" height="120" rx="13" stroke="#38bdf8" stroke-width="2" width="460" x="490" y="40"></rect>
+<text fill="#bfe6ff" font-weight="600" x="512" y="66">choose a skill from the list:</text>
+<text fill="#9ad6ff" x="520" y="92">› teach (create a course on the spot)</text>
+<text fill="#9ad6ff" x="520" y="114">  grill-me (interviews you)</text>
+<text fill="#9ad6ff" x="520" y="136">  two-PRD · to-issues · ...</text>
+</g>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> <code>npx skills latest add</code> opens a list, you choose the skill, and it works in Claude Code, Codex, and the like.</p></div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-6#q2">
+<p class="font-medium mb-4">Quick recall: how does Pocock install a skill (e.g., the teach skill)?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Copying files one by one from GitHub by hand.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Running <code>npx skills latest add</code> and choosing the skill from the list (works with several agents).</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Switching to the Fable model, which comes with everything built in.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-5-6#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🚀 The first 2 steps today</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> Before redecorating a house full of junk, you empty the room to see the space as it really is—and only then bring back, one piece at a time, what you actually need. Clean first, furnish later.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-6-t6-p1">Pocock’s conclusion is two steps to make <strong>today</strong>. Step 1 — the <span class="termo" title="Delete everything (skills, plugins, MCP, CLAUDE.md, agents.md) and observe the bare agent.">reset</span>: <em>delete everything</em> — every skill, plugin, MCP server, your CLAUDE.md, agents.md → go back to absolute zero and <strong>observe</strong> the agent. <em>"Everyone bloats up their context window with too much stuff"</em> (everyone crams the context window). In basic mode, you see what the agent actually does—and what's missing.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-6-t6-p2">Step 2 — <span class="termo" title="Bring back layers on top as customizable procedures.">re-assemble with procedures</span>: keep adding on top, and make sure they’re <strong>procedures</strong> (not abilities), installed in a way that lets you <em>customize and experiment</em>. Bring back only what you miss (e.g., superpowers’ brainstorming). Then it’s the usual cycle: find problems → find solutions → delegate the implementation to an agent <span class="termo" title="Away From Keyboard: the agent works on its own while you’re away from the keyboard.">AFK</span>. <em>"AFK is just incredible — takes a bit of setup, but then it goes crazy."</em> O <strong>common mistake</strong> is skipping the reset and piling on more: you never see what you actually need.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Two steps: 1 reset to zero and observe the pure agent; 2 add layers only with customizable procedures" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="v56f-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v56f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v56f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v56f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v56f-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="90" rx="15" stroke="#38bdf8" stroke-width="2" width="360" x="60" y="55"></rect>
+<text fill="#bfe6ff" font-size="16" font-weight="700" text-anchor="middle" x="240" y="90">STEP 1 · RESET</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="240" y="114">delete everything → absolute zero</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="240" y="132">observe the agent alone</text>
+<line marker-end="url(#v56f-ah)" opacity="0.8" stroke="#2dd4bf" stroke-width="2.5" x1="420" x2="575" y1="100" y2="100"></line>
+<g filter="url(#v56f-glow)"><rect fill="#0c1f1c" height="90" rx="15" stroke="url(#v56f-grad)" stroke-width="2.5" width="360" x="580" y="55"></rect></g>
+<text fill="#2dd4bf" font-size="16" font-weight="700" text-anchor="middle" x="760" y="90">STEP 2 · RE-ARM</text>
+<text fill="#9fe7d8" font-size="12.5" text-anchor="middle" x="760" y="114">only procedures, customizable</text>
+<text fill="#9fe7d8" font-size="12.5" text-anchor="middle" x="760" y="132">bring back only what's missing</text>
+</g>
+</svg>
+</div>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">os-2-passos-de-hoje.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">PASSO 1 — RESET (volte ao zero e observe):
+[ ] deletar TODAS as skills
+[ ] deletar plugins e MCP servers
+[ ] deletar CLAUDE.md e agents.md
+[ ] rodar uma tarefa real e OBSERVAR o agente puro (o que falta?)
+
+PASSO 2 — RECAMADAR (só o necessário, e procedures):
+[ ] trazer de volta só o que senti falta (ex.: brainstorming do superpowers)
+[ ] instalar como PROCEDURE customizável:  npx skills latest add
+[ ] achar problemas → achar soluções → delegar a implementação a um agente AFK</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> reset to zero and observe; then re-assemble only with customizable procedures — and delegate the rest to AFK.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO FINAL — CONCLUSÃO DO CURSO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">🏁 LAST MODULE — YOU’VE REACHED THE END</span>
+<h2 class="text-2xl font-bold mb-3 flex items-center"><span class="mr-3">🎉</span> Congratulations — you’ve completed HARNESS!</h2>
+<p class="text-neutral-300 mb-6 max-w-3xl">You’ve completed the 5 tracks of the Matt Pocock method: from the fundamentals (engine × chassis) to human skills, from AI skills to advanced techniques, all the way to ready-to-copy solutions. Now you have the vocabulary <em>e</em> the recipes. This final module closed the loop: making human review flow smoothly and knowing exactly where to look for skills to keep improving.</p>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Smooth review</strong><span class="text-neutral-400"> — the AI records a video walking through the change and narrates it with TTS; the PR arrives "ready to watch."</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Optimize human review</strong><span class="text-neutral-400"> — review patterns (HTML teach skill style), not 20 separate PRs. “GitHub wasn’t built for the agent era.”</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Where to find</strong><span class="text-neutral-400"> — github.com/mattpocock/skills (code) + aihero.dev / aihero.dev/skills (context + newsletter).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Install</strong><span class="text-neutral-400"> — <code>npx skills latest add</code> and choose from the list; it works in Claude Code, Codex, etc.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Today’s 2 steps</strong><span class="text-neutral-400"> — (1) reset to zero + observe; (2) rework only with customizable procedures and delegate to AFK.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-teal-400 mb-2">What now?</h3><p class="text-neutral-300">Do today’s 2 steps in your real project. Return to the solutions in Track 5 whenever you need to copy a recipe—they were made for that. Remember the core thesis: the secret isn’t in the model, it’s in the <strong class="text-teal-400">harness</strong> that you control. Enjoy! 🏎️</p></div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track 5</a>
+<a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="../../index.html">🏁 Complete the course →</a>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-5-6#q1', { answer: 1, explain: { 0: 'Não — o review fluido não é sobre o modelo; é sobre a revisão humana.', 1: 'Isso! Vídeo narrado + resumos de padrões deixam o review humano mais rápido.', 2: 'Não — o humano não some; ele continua revisando, só que mais rápido.' } });
+        INEMA.registerCheck('modulo-5-6#q2', { answer: 1, explain: { 0: 'Dá trabalho e não é como ele faz — existe um comando pronto.', 1: 'Exato! npx skills latest add abre a lista e funciona em vários agentes.', 2: 'Não — Pocock usa Claude Code com Opus 4.8, e a skill vem do comando npx.' } });
+      }
+    });
+  </script>
+</body>
+</html>

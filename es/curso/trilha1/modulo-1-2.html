@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>1.2 Bitter Lesson | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha1/modulo-1-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha1/modulo-1-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha1/modulo-1-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Ruta 1</a><span>/</span>
+<span class="text-emerald-400">Módulo 1.2 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MÓDULO 1.2 · MODO ENSEÑANZA</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">⏳ La Bitter Lesson</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">"No esperes al modelo." Hay una idea famosa: la <strong class="text-emerald-400">Lección amarga</strong> (Bitter Lesson), que dice que en IA, la fuerza bruta de cálculo vence cualquier truco humano. De ahí que mucha gente concluya: "entonces solo hay que esperar a que la IA mejore por sí sola". En este módulo entiendes la idea, ves dónde puede engañar y aprendes el equilibrio de Pocock: <strong class="text-emerald-400">mejorar tu harness ahora</strong> Y usar el mejor modelo. Cada término nuevo se explica en el momento.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Cero</div><div class="text-xs text-neutral-400">Prerequisito</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Teoría</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 1.2" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-2" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. Qué es Bitter Lesson</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. La tentación de esperar a la AGI</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. El cómputo vence a la optimización</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Por qué actuar ahora</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. El equilibrio de Pocock</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Aplicar sin caer en la trampa</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-emerald-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">En el módulo 1.1 fijaste el vocabulario básico (modelo, prompt, agente, skill, codebase, harness). Aquí entran los términos <strong>nuevos</strong> de este módulo. Fija estos antes de seguir:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Bitter Lesson (Lección amarga)</strong> — una idea famosa del investigador <em>Rich Sutton</em> (2019): en <em>machine learning</em>, incluir más <strong>compute</strong> (poder de cálculo) en un problema vence, a largo plazo, cualquier truco inteligente que los humanos inventen a mano. Es «amarga» porque hiere el orgullo de quienes quieren ser ingeniosos: gana la fuerza bruta.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Compute</strong> — capacidad de procesamiento: cuántos cálculos puede hacer la máquina (CPUs/GPUs, tiempo, datos). Cuando alguien dice «solo hay que agregar más compute», quiere decir «usa máquinas más grandes y más datos».</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">AGI</strong> — <em>Artificial General Intelligence</em> (Inteligencia Artificial General): una IA hipotética tan capaz como un humano (o más) en cualquier tarea. Hoy <strong>no existe</strong>; es una promesa del futuro. "Esperar a la AGI" = quedarse quieto esperando a que llegue esa IA mágica.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Aprendizaje automático (ML)</strong> — «aprendizaje automático»: el área de la IA en la que la computadora aprende patrones a partir de datos, en lugar de seguir reglas escritas a mano. Los modelos de lenguaje (LLMs) son ML.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Agent-agnostic</strong> — "agnóstico al agente": una configuración que no depende de UN modelo específico. Si el modelo cambia mañana, tu harness sigue funcionando. Lo opuesto a "atarlo todo a un solo modelo".</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Fundamentos</strong> — las bases que no cambian con las modas: organizar el código, redactar bien la solicitud, probar, documentar. Pocock las llama «lo que funciona desde hace 30-40 años».</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">⏳ Qué es la Bitter Lesson</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> dos equipos de ajedrez. El equipo A pasa años enseñando a mano reglas ingeniosas ("en esta posición, haz esto"). El equipo B simplemente enciende una computadora gigante que juega millones de partidas contra sí misma. Al principio gana el equipo A. Pero la computadora se vuelve más fuerte cada año y, con el tiempo, arrasa con todas las reglas humanas. <em>Esa</em> es la lección amarga.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t1-p1">En 2019, el investigador <span class="termo" title="Rich Sutton — pionero del aprendizaje por refuerzo; autor del ensayo The Bitter Lesson (2019).">Rich Sutton</span> escribió un breve ensayo llamado <strong class="text-emerald-400">"The Bitter Lesson"</strong> (la Lección Amarga). La tesis: a lo largo de décadas de <span class="termo" title="Aprendizaje automático: la computadora aprende patrones a partir de datos.">machine learning (ML)</span>, siempre que los investigadores intentaron integrar el «conocimiento humano inteligente» en el sistema, perdieron —a largo plazo— frente a enfoques sencillos que solo añadían más <span class="termo" title="Poder de procesamiento: cálculos, GPU, datos, tiempo.">compute</span> en el problema. Ajedrez, Go, reconocimiento de voz, visión: en todos, la fuerza bruta de cálculo superó las optimizaciones artesanales.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t1-p2">¿Por qué «amarga»? Porque es humillante para alguien inteligente. Nosotros <em>quiere</em> que la astucia humana prevalezca. Pero el motor detrás de la lección es simple e implacable: el cómputo <strong>crece muy rápido y se vuelve más barato</strong> año tras año. Sus optimizaciones manuales son fijas; el compute es una marea que no deja de subir. Como resume Pocock en el video, la lección es «<em>confía en que lo que hay debajo va a mejorar</em>" — el modelo se volverá más potente por sí solo, así que no vale tanto la pena adornarlo a mano. <strong>Error común:</strong> creer que la Lección Amarga es una ley mágica que se aplica a todo, siempre y sin límites. No lo es: habla de <em>una</em> dimensión (el cerebro del modelo). Guarda esta salvedad: el resto del módulo trata precisamente sobre dónde ella <em>no</em> se aplica.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Gráfico: a lo largo del tiempo, la línea de compute sube con fuerza y supera la línea de optimización humana, que se mantiene casi recta" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v12a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v12a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v12a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v12a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<line stroke="#9ca3af" stroke-width="2" x1="80" x2="940" y1="210" y2="210"></line>
+<line stroke="#9ca3af" stroke-width="2" x1="80" x2="80" y1="30" y2="210"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="238">tiempo →</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" transform="rotate(-90 40 120)" x="40" y="120">capacidad →</text>
+<path d="M80,200 C300,196 480,190 700,184 L940,178" fill="none" stroke="#38bdf8" stroke-width="3"></path>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="760" y="170">optimización humana (fija)</text>
+<g filter="url(#v12a-glow)"><path d="M80,205 C320,200 520,150 720,90 L940,45" fill="none" stroke="url(#v12a-grad)" stroke-width="4"></path></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="700" x="700" y="70">compute (crece y supera el límite)</text>
+<circle cx="620" cy="125" fill="#34d399" r="6"></circle>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12" text-anchor="end" x="610" y="115">cruce</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">La astucia humana es casi una línea recta. El compute es una curva ascendente, y tarde o temprano la supera.</p>
+</div>
+<img alt="Ilustración conceptual: una marea creciente de poder de cómputo que supera pequeños engranajes de optimización manual" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-2-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Leer The Bitter Lesson y concluir "por lo tanto, cualquier esfuerzo humano es un desperdicio". Eso es estar a medio camino de caer en la trampa. La lección se aplica a <em>entrenamiento del modelo</em> (lo que hacen OpenAI/Anthropic) — no en tu harness, que controlas y que <strong>no</strong> mejora por sí solo con más GPU.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> la Lección Amarga dice que, en el entrenamiento de IA, más capacidad de cómputo supera a la inteligencia humana — porque la capacidad de cómputo crece y la inteligencia, no.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-emerald-400">Profundiza (opcional): ¿quién es Rich Sutton y por qué importa?</summary>
+<p class="text-sm text-neutral-300 mt-3">Rich Sutton es uno de los padres del <em>reinforcement learning</em> (aprendizaje por refuerzo), la técnica que enseñó a las máquinas a vencer a los humanos en Go y en videojuegos. Vivió la lección en carne propia: vio cómo métodos artesanales brillantes eran reemplazados por modelos más grandes. Su ensayo casi se convirtió en un meme de la industria — todo inversor ya citó "Bitter Lesson" para justificar "solo hay que esperar a que el modelo mejore". Nuestro curso no niega la lección; muestra <em>los límites</em> de ella para quienes usan IA en el día a día.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🛋️ La tentación de esperar a la AGI</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> quieres hablar inglés. Alguien te dice: «no estudies; dentro de unos años tendrás un traductor perfecto en el oído, espéralo». Pasan los años y el traductor mágico nunca llega <em>tan</em> perfecto así, y sigues sin hablar inglés. Quien estudió un poco cada día ya está conversando.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t2-p1">De la Lección Amarga nace una tentación peligrosa: «si el modelo va a mejorar por sí solo, ¿para qué esforzarme? Basta con <strong>esperar a <span class="termo" title="Inteligencia Artificial General: IA hipotética tan capaz como un ser humano en todo. No existe hoy.">AGI</span></strong> llegar y resolver todo en mi lugar». Pocock es directo al respecto en el video: <em>"quedarse esperando a la AGI sin hacer nada fue una idea muy tonta."</em> La frase es contundente a propósito: él mismo confiesa que coqueteó con esa actitud y se dio cuenta de que estaba perdiendo tiempo.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t2-p2">El problema de la espera tiene tres capas. Primera: la AGI <strong>puede que no llegue cuando lo prometen</strong> — las promesas de IA se retrasan todo el tiempo. Segundo: aunque llegue un modelo mucho mejor, él <strong>no arregla tu codebase desordenado ni tu prompt vago</strong> — esas partes (el harness) siguen siendo tu responsabilidad. Tercera, y la más cruel: mientras esperas, tú <strong>no desarrolla ninguna habilidad</strong>. Quien actuó durante la espera llega al «futuro» con los fundamentos afilados; quien solo esperó, llega en cero. Esperar parece la opción inteligente (dejar que la máquina lo haga), pero es la que más cuesta.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dos personas en la línea de tiempo: la que esperó llega al futuro sin nada; la que actuó llega con habilidades acumuladas" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<pattern height="32" id="v12b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v12b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v12b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#9ca3af"></path></marker>
+</defs>
+<rect fill="url(#v12b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<line marker-end="url(#v12b-ah)" stroke="#9ca3af" stroke-width="2" x1="60" x2="900" y1="70" y2="70"></line>
+<line marker-end="url(#v12b-ah)" stroke="#9ca3af" stroke-width="2" x1="60" x2="900" y1="160" y2="160"></line>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="190" x="60" y="50"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="155" y="75">solo ESPERA a la AGI</text>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#9ca3af" stroke-width="2" width="190" x="730" y="50"></rect><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="825" y="75">llega en blanco</text>
+<rect fill="#0e2018" height="40" rx="9" stroke="#34d399" stroke-width="2" width="190" x="60" y="140"></rect><text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="155" y="165">AGE todos los días</text>
+<g filter="url(#v12b-glow)"><rect fill="#0e2018" height="40" rx="9" stroke="url(#v12a-grad)" stroke-width="2.5" width="190" x="730" y="140"></rect></g><text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="825" y="165">llega afilado</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="115">el mismo futuro, modelos iguales — lo que TÚ acumulaste en el camino es lo que cambia</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-2#q1">
+<p class="font-medium mb-4">Recuperación rápida: según Pocock, ¿cuál es el problema de "solo esperar a la AGI"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">La AGI ya llegó, así que esperar es redundante.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Puede que no llegue a tiempo, no arregla tu harness y tú no desarrollas ninguna habilidad mientras esperas.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Esperar es la estrategia más segura y económica.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> esperar a que la AGI "lo haga por ti" es, en palabras de Pocock, "una idea muy tonta" — la IA ya está aquí; el juego es ahora.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">⚡ El cómputo supera a la optimización (y el límite)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> echarle más compute al <em>modelo</em> es como ponerle un motor más potente al auto: mejora todo el auto de una vez. Pero el motor potente no estaciona solo, no elige el camino ni cambia una llanta. Hay partes del problema que <em>ninguno</em> compute lo resuelve: son las tuyas, fuera del motor.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t3-p1">Dónde está la Lección Amarga <strong>verdadera</strong>: en el cerebro del modelo. Entrenar un modelo más grande, con más datos y más GPUs, realmente ofrece mejoras que ningún ajuste manual puede alcanzar. Por eso David, en la entrevista, hace la pregunta obvia: <em>"¿por qué no ambas cosas? Cambiar el motor mejora todo al instante."</em> Él tiene razón: un modelo mejor <strong>sube toda la marea</strong>: cada tarea se vuelve un poco más fácil sin que muevas un dedo. Negarlo sería una tontería.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t3-p2">Dónde ella <strong>tiene límite</strong>: el compute mejora lo que está <em>dentro</em> del modelo. Él <strong>no</strong> mejora lo que está fuera: tu prompt impreciso, tu codebase laberíntico, la falta de una skill, los permisos incorrectos. Esas partes del harness no reciben GPU; solo mejoran cuando <strong>tú</strong> los mejora. Y hay un detalle que cambia todo, que Pocock usa todo el tiempo: un harness bien hecho hace que un modelo <strong>más barato</strong> entregar el mismo trabajo — <em>"ten un codebase más fácil de modificar y podrás usar un modelo menos inteligente para hacer el mismo trabajo"</em>. Es decir: mejorar el harness es la forma de <em>recopilar</em> el beneficio del compute sin pagar por el modelo más caro. Ambos lados se suman; no compiten.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Diagrama: el compute mejora el interior del modelo; el exterior (prompt, codebase, skills, permisos) solo mejora con la intervención humana" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v12c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v12c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v12c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v12c-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#0b1512" height="170" rx="20" stroke="#1f3b30" stroke-width="2" width="920" x="40" y="30"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" x="64" y="58">el problema completo</text>
+<g filter="url(#v12c-glow)"><rect fill="url(#v12c-grad)" height="90" rx="14" stroke="#10b981" stroke-width="2.5" width="360" x="560" y="80"></rect></g>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="740" y="115">DENTRO del modelo</text>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="740" y="138">↑ el cómputo lo resuelve (Bitter Lesson)</text>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="740" y="156">mejora por sí solo con el tiempo</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="200" x="80" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="180" y="102">prompt</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="200" x="80" y="122"></rect><text fill="#bfe6ff" text-anchor="middle" x="180" y="144">codebase + skills</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="200" x="300" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="400" y="102">permisos</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="200" x="300" y="122"></rect><text fill="#bfe6ff" text-anchor="middle" x="400" y="144">herramientas</text>
+</g>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="290" y="186">FUERA del modelo: solo TÚ puedes mejorar (el cómputo no interviene aquí)</text>
+</svg>
+</div>
+<img alt="Ilustración: un cerebro de IA luminoso que crece con energía, rodeado de engranajes externos que necesitan manos humanas para girar" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-2-2.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: el mismo bug, dos caminos</h3>
+<p class="text-neutral-300 text-sm mb-3">Pocock cuenta en el video que el modelo Fable encontró bugs de seguridad profundos que otros no detectaron. La tentación: "¿ves? solo hay que esperar a que el modelo sea más potente". Su respuesta es la Bitter Lesson aplicada con límites:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Camino «esperar al modelo»</p><p class="text-xs text-neutral-300">"Solo Fable encuentra estos bugs. Esperaré a que todos los modelos sean así." → Quedas atado a UN modelo caro y no cambias nada de tu lado.</p></div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-semibold text-sm mb-1">Camino «mejorar el harness»</p><p class="text-xs text-neutral-300">Pocock: <em>"encontrarías estos errores con modelos más baratos si buscaras en los lugares correctos y dieras el prompt/harness adecuado."</em> → Un cron diario de revisión de seguridad, con un modelo sencillo, que revisa una parte nueva del repo cada día. El mismo resultado, menor costo, y <strong>tu</strong>.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> el compute mejora el cerebro del modelo, pero todo lo que está FUERA de él (su harness) solo mejora con tus manos, y un buen harness permite que un modelo barato rinda como uno caro.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🏗️ Por qué actuar ahora</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un gimnasio. Esperar «el mejor equipo del mundo» para recién entonces entrenar es una excusa. Quien entra hoy y entrena con el equipo que tiene ya se está poniendo fuerte; cuando llegue el nuevo, lo aprovechará mucho mejor que quien se quedó esperando en la recepción.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t4-p1">La salida de la trampa tiene nombre: <strong class="text-emerald-400">fundamentos</strong>. Pocock insiste: <em>"las personas se enfocan en lo equivocado —el juguete nuevo y brillante— cuando deberían enfocarse en lo que ha funcionado durante 30-40 años."</em> Organizar el código, escribir una solicitud clara, escribir pruebas y documentar bien: nada de eso queda obsoleto cuando sale un modelo nuevo. Al contrario: cuanto mejor es el modelo, más aprovecha un harness bien cuidado. Los fundamentos son el <span class="termo" title="Algo cuyo valor crece con el tiempo, no disminuye: lo opuesto a una moda pasajera.">activo que se valoriza</span>; la moda del modelo de la semana es lo que se evapora.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t4-p2">Hay otro motivo práctico y poderoso para actuar ahora: el setup <span class="termo" title="Agnóstico al agente: no depende de un modelo específico; sobrevive al cambio de modelo.">agent-agnostic</span>. Si construyes tus prompts, skills y base de código de forma que <strong>no lo ata a un solo modelo</strong>, así que —cuando el modelo mejore— tu trabajo de hoy <em>sigue siendo válido</em> y hasta mejora. Es lo mejor de ambos mundos: obtienes la ventaja de Bitter Lesson (llega un modelo más potente) <strong>sin</strong> haber estado esperando sin hacer nada. Pocock termina con humildad: <em>"no soy un gurú/comentarista: estoy haciendo lo mejor que puedo con lo que tengo ahora."</em> Este es el espíritu: trabajar con lo que existe hoy, en vez de apostarlo todo a un mañana incierto.</p>
+<img alt="Ilustración: una persona que construye una estructura sólida sobre fundamentos firmes mientras otras esperan inmóviles bajo un reloj" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-2-3.png"/>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Actuar ahora (fundamentos)</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Mejorar la configuración un poco cada día.</li><li>• Aprender lo que durará 30-40 años.</li><li>• Mantener todo agent-agnostic.</li><li>• Usar el mejor modelo disponible <em>hoy</em>.</li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Esperar (la trampa)</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• "Dentro de poco la AGI lo resolverá."</li><li>• No tocar el codebase ni el prompt.</li><li>• Apostarlo todo a un único modelo futuro.</li><li>• Llegar al futuro sin ninguna habilidad.</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> actúa ahora sobre los fundamentos y mantén todo agnóstico del agente; así aprovecharás el mejor modelo del futuro sin haber desperdiciado el presente.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">⚖️ El equilibrio de Pocock</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un corredor que cambia de zapatillas nuevas cada semana buscando las "zapatillas perfectas" y nunca corre — frente a un corredor que entrena todos los días Y compra unas buenas zapatillas cuando las encuentra. El segundo gana el maratón. Pocock no es "anti-modelo"; es "buen modelo + entrenamiento constante".</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-2-t5-p1">Aquí está el corazón del módulo y el punto en que mucha gente malinterpreta a Pocock. Él <strong>no</strong> dice "ignora el modelo, solo modifica el harness". Dice que es <strong class="text-emerald-400">50/50</strong> (y no 90% modelo / 10% optimización, como piensa la mayoría). Cuando David provoca — "usa los dos: el mejor modelo Y el mejor harness" — Pocock termina estando de acuerdo: <em>"es 50/50; el problema es pensar primero por el modelo."</em> El orden importa. Si empiezas por el modelo, pierdes de vista los fundamentos: <em>"si me enfoco demasiado en optimizar para un modelo, pierdo de vista los fundamentos."</em></p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t5-p2">Fíjate en el matiz: Pocock admite que <strong>él mismo</strong> puede que estés cayendo en la Lección Amarga al gastar tanta energía en el harness en vez de confiar simplemente en que el modelo mejorará. No oculta ese riesgo, y esa honestidad es lo que hace que el equilibrio sea confiable. La síntesis práctica que se desprende de ahí: <strong>mejora tu harness ahora</strong> (tú tienes el control, es la mitad del juego) <strong>y usa el mejor modelo disponible</strong> (es la otra mitad, y la obtienes gratis como beneficio cuando cambias). David describe exactamente esa postura: mejora activamente la configuración todos los días <em>e</em> usa el modelo más potente que existe. No es «o», es «y». Caer en la trampa es tratarlo como un «o».</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Balanza equilibrada: el mejor modelo de un lado, el mejor harness del otro, ambos al 50 por ciento, con la regla de empezar por el harness" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs><lineargradient id="v12e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient><filter height="180%" id="v12e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><pattern height="32" id="v12e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern></defs>
+<rect fill="url(#v12e-grid)" height="200" width="1000" x="0" y="0"></rect>
+<line stroke="#9ca3af" stroke-width="3" x1="500" x2="500" y1="35" y2="150"></line><line stroke="#9ca3af" stroke-width="3" x1="250" x2="750" y1="70" y2="70"></line>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="200" x="150" y="78"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="250" y="103">mejor MODELO</text><text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="250" y="124">50% (usa lo que hay)</text>
+<g filter="url(#v12e-glow)"><rect fill="#0e2018" height="60" rx="12" stroke="url(#v12e-grad)" stroke-width="2.5" width="200" x="650" y="78"></rect></g><text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="750" y="103">mejor HARNESS</text><text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="750" y="124">50% (empieza por aquí)</text>
+<circle cx="500" cy="35" fill="#34d399" r="8"></circle>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="180">regla de oro: es «Y», no «O» — pero piensa primero en el harness</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> es 50/50: usa el mejor modelo Y mejora el harness; el error es pensar primero en el modelo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-2#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎯 Aplicar sin caer en la trampa</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> cada vez que pienses "voy a esperar a que el modelo nuevo resuelva esto", cambia la frase por una pregunta: "qué puedo ajustar de mi lado <em>hoy</em>?". Este simple reflejo ya te saca de la trampa de Bitter Lesson.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-2-t6-p1">Al cerrar el módulo de forma práctica: la Lección Amarga es real, pero como principio de <em>entrenamiento de IA</em> — no como excusa para quedarte quieto. Siempre que te tiente «esperar», pasa la decisión por el filtro de abajo. Convierte el miedo a «¿estoy cayendo en la Bitter Lesson?» en una comprobación objetiva. Copia y pega esto cuando te descubras esperando:</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">filtro-bitter-lesson.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Peguei-me "esperando o modelo melhorar"? Rode o filtro:
+[ ] É treino de modelo (interno)? -&gt; ok, isso melhora sozinho; nao e minha tarefa.
+[ ] E harness (prompt/skill/codebase/permissao)? -&gt; NAO espera; e comigo, agir HOJE.
+[ ] Meu setup esta agent-agnostic? -&gt; se sim, o ganho do modelo futuro ja esta garantido.
+[ ] Estou usando o MELHOR modelo disponivel agora? -&gt; use; e a outra metade (50/50).
+Regra: pense pelo HARNESS primeiro. E "E" (modelo + harness), nunca "so esperar".</pre>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Diagrama de flujo de decisión: la tentación de esperar pasa por una pregunta y se redirige a actuar en el harness ahora" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs><pattern height="32" id="v12f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><marker id="v12f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker></defs>
+<rect fill="url(#v12f-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="50" rx="12" stroke="#9ca3af" stroke-width="2" width="190" x="30" y="65"></rect><text fill="#cbd5e1" font-size="13" font-weight="600" text-anchor="middle" x="125" y="88">"esperaré</text><text fill="#cbd5e1" font-size="13" font-weight="600" text-anchor="middle" x="125" y="106">el modelo»</text>
+<path d="M220,90 L290,90" fill="none" marker-end="url(#v12f-ah)" stroke="#34d399" stroke-width="2"></path>
+<rect fill="#0e1b26" height="70" rx="12" stroke="#38bdf8" stroke-width="2" width="230" x="295" y="55"></rect><text fill="#bfe6ff" font-size="13" font-weight="600" text-anchor="middle" x="410" y="83">es harness o entrenamiento</text><text fill="#9ad6ff" font-size="12" text-anchor="middle" x="410" y="103">¿interno del modelo?</text>
+<path d="M525,90 L600,90" fill="none" marker-end="url(#v12f-ah)" stroke="#34d399" stroke-width="2"></path>
+<rect fill="#0e2018" height="42" rx="10" stroke="#34d399" stroke-width="2" width="360" x="605" y="40"></rect><text fill="#34d399" font-size="13" font-weight="600" text-anchor="middle" x="785" y="66">harness → ACTÚA AHORA (me toca a mí)</text>
+<rect fill="#0e2018" height="42" rx="10" stroke="#9ca3af" stroke-width="1.5" width="360" x="605" y="98"></rect><text fill="#9ca3af" font-size="13" text-anchor="middle" x="785" y="124">entrenamiento interno → ok, mejora solo</text>
+</g>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-2#q2">
+<p class="font-medium mb-4">Recuperación rápida: ¿cuál es el equilibrio que defiende Pocock?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Ignorar el modelo y modificar solo el harness.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Esperar al mejor modelo y empezar solo entonces.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">50/50: mejorar el harness ahora Y usar el mejor modelo — pensando primero desde el harness.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-emerald-400">Para profundizar (opcional): «compra el candado» — la Bitter Lesson aplicada</summary>
+<p class="text-sm text-neutral-300 mt-3">Pocock usa una analogía excelente: <em>"si alguien te roba la bicicleta, quizá deberías comprar un candado."</em> Dicho de otro modo: cuando el modelo encontró un error que no viste, la lección no es «espera a que el modelo se vuelva más inteligente», sino «construye un sistema que <strong>continúa</strong> encontrando estos bugs en el futuro" (p. ej., una revisión de seguridad diaria programada con un modelo sencillo). Eso es actuar sobre el harness en vez de esperar al compute; verás esto en detalle en la Ruta 4 (Sistemas que se mejoran a sí mismos).</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">En 1 frase:</strong> siempre que pienses "voy a esperar al modelo", pregúntate "¿qué puedo ajustar hoy en mi harness?" y actúa.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Bitter Lesson (Rich Sutton)</strong><span class="text-neutral-400"> — en el entrenamiento de IA, más cómputo supera la astucia humana, porque el cómputo crece y la astucia no.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">No esperes a la AGI</strong><span class="text-neutral-400"> — «esperar a la AGI sin hacer nada fue una idea muy tonta» (Pocock). Puede tardar y no arregla tu harness.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">El cómputo tiene un límite</strong><span class="text-neutral-400"> — mejora el cerebro del modelo, no tu prompt/codebase/skills. Esas solo las mejoras tú.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Equilibrio 50/50</strong><span class="text-neutral-400"> — mejora el harness AHORA Y usa el mejor modelo. Es «Y», no «o» — y piensa primero en el harness.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">1.3 — Configuración agnóstica al agente: cómo blindar tu harness para que sobreviva al cambio de modelo.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-3.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-1-2#q1', { answer: 1, explain: { 0: 'Não — a AGI ainda não existe; "esperar por ela" é justamente o problema.', 1: 'Isso! Pode atrasar, não conserta seu harness, e você não desenvolve habilidade nenhuma esperando.', 2: 'Ao contrário: esperar é o que mais custa — você chega ao futuro sem fundamentos.' } });
+        INEMA.registerCheck('modulo-1-2#q2', { answer: 2, explain: { 0: 'Não — Pocock valoriza o modelo; ele só quer que você não pense PELO modelo primeiro.', 1: 'Esperar é a armadilha — o jogo é agora.', 2: 'Exato: 50/50, harness agora + melhor modelo, pensando pelo harness primeiro.' } });
+      }
+    });
+  </script>
+</body>
+</html>

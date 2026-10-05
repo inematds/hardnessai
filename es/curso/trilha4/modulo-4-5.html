@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>4.5 Sistemas auto-mejorables | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'amber' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'amber');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #fbbf24; cursor: help; font-weight: 600; color: #fcd34d; }
+    html:not(.dark) .termo { color: #92400e; border-color: #b45309; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217,119,6,0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217,119,6,0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217,119,6,0.18); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha4/modulo-4-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha4/modulo-4-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha4/modulo-4-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha4/modulo-4-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-4-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Ruta 4</a><span>/</span>
+<span class="text-amber-400">Módulo 4.5 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MÓDULO 4.5 · "MODO ENSEÑANZA"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">♻️ Sistemas que se mejoran solos</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Encontrar bugs profundos no es magia de un modelo caro. Matt Pocock muestra cómo armar un sistema que <strong class="text-amber-400">se cuida solo</strong>: uno <em>cron</em> diario de security review que cada día revisa una parte nueva del código, telemetría que se convierte en issue y luego en fix y, sobre todo, la pregunta correcta: <em>"si siguen robándote la bici, compra un candado"</em>. Aquí aprendes a revisar no solo el código, sino también el <strong>sistema que produce el código</strong>.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">T1-T4</div><div class="text-xs text-neutral-400">Prerequisito</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Práctica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 4.5" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:4-5" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-1">1. No necesitas el modelo caro</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-2">2. Cron de revisión de seguridad</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-3">3. Telemetría → issue → fix</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-4">4. La causa raíz del bug</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-5">5. Bucles de auto-mejora</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-6">6. Revisar el sistema</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-amber-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">Esta ruta ya da por sentado el vocabulario básico (modelo, agente, skill, AFK, sandbox, cola). Aquí están los términos <strong>nuevos</strong> de este módulo —fija estos:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Sistema que se mejora a sí mismo</strong> — una configuración que, por sí sola y de forma recurrente, detecta problemas en tu código y te ayuda a corregirlos y a evitar que vuelvan a ocurrir. El código no se "repara solo"; es el <em>proceso</em> alrededor, que va mejorando.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Cron</strong> — un programador de tareas: «ejecuta tal comando todos los días a las 6 h». La «línea de crontab» es una línea de texto que describe <em>cuando</em> e <em>qué</em> ejecutar. Es el corazón de las tareas que ocurren sin que pulses nada.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Revisión de seguridad</strong> — revisión de seguridad: examinar el código en busca de fallas (contraseña expuesta, inyección, permisos incorrectos) <em>antes</em> que alguien abuse de ellas.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Telemetría</strong> — los datos que envía tu aplicación sobre cómo está funcionando (errores, lentitud, excepciones). Herramientas como <em>Sentry</em> recopilan eso en producción.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Issue</strong> — un «ticket» registrado (en GitHub, por ejemplo): una tarea o un bug anotado para que alguien —humano o agente— lo resuelva.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Causa raíz (root cause)</strong> — la causa de fondo del problema, no el síntoma. No «ocurrió el error X», sino «¿por qué existió tanto tiempo sin que nadie lo notara?».</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Test suite</strong> — el conjunto de pruebas automáticas del proyecto. Cada prueba verifica que una parte funcione; ejecutar la suite avisa cuando algo se rompe.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Rotativo</strong> — que cambia de objetivo en cada ejecución. Un cron rotativo de review revisa hoy una carpeta, mañana otra — y cubre todo el repo con el tiempo.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">💡 No necesitas el modelo caro</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un detective mediocre en un barrio bien iluminado encuentra más delitos que un detective genial con los ojos vendados en una habitación oscura. No es solo talento — es <em>estar en el lugar correcto, con la linterna adecuada</em>. Encontrar un bug profundo es igual: el lugar y la luz (el harness) pesan tanto como el "CI" del modelo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t1-p1">Existe un mito seductor: «si uso el modelo más inteligente (y más caro), encontrará esos bugs profundos que ningún otro encuentra». En la conversación, se contó que un modelo encontró <span class="termo" title="Bugs graves, ocultos en lo profundo del código, que las revisiones superficiales no detectan.">bugs profundos</span> y fallas de <span class="termo" title="Revisión de seguridad: examinar el código en busca de fallas explotables antes de que se conviertan en un incidente.">security</span> que otros modelos no habían visto. La reacción fácil es: "¿ves? hace falta el modelo de primera". Pocock discrepa de raíz. En sus palabras: <em>"podrías descubrir estos errores con modelos más baratos si buscaras en los lugares correctos y le dieras el prompt/harness adecuado"</em>. En otras palabras: lo que les faltaba a los «otros modelos» no era inteligencia, sino <strong>dirección</strong>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t1-p2">Esto conecta directamente con lo que viste en la Ruta 1 (Economía de tokens): un <strong class="text-amber-400">harness</strong> bueno, deja que un modelo «más tonto» haga el mismo trabajo. Aquí la idea es la misma aplicada a la <em>detección de defectos</em>. En vez de pagar caro por un modelo genio que se ejecuta una vez, montas un sistema que coloca un modelo sencillo en el lugar adecuado, repetidamente. El <strong>porqué</strong> importa: un modelo caro es un costo que crece con cada llamada; un sistema bien dirigido es un activo que rinde todos los días. El <strong>error común</strong> es confundir «encontró un bug difícil» con «siempre necesito el modelo difícil», cuando lo que de verdad encontró el bug fue <em>dónde</em> e <em>cómo</em> miraste.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: un modelo caro que mira a oscuras encuentra poco; un modelo barato con harness y linterna encuentra mucho" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v45a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v45a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v45a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v45a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#1f1604" height="170" rx="18" stroke="#6b7280" stroke-width="2" width="430" x="40" y="40"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="64" y="70">Modelo CARO, sin dirección</text>
+<rect fill="#0e1b26" height="62" rx="12" stroke="#38bdf8" stroke-width="2" width="120" x="120" y="92"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="180" y="128">$$$ genio</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" x="255" y="190">mira en la oscuridad → encuentra 1</text>
+<rect fill="#1f1604" height="170" rx="18" stroke="#fbbf24" stroke-width="2.5" width="430" x="530" y="40"></rect>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="554" y="70">Modelo BARATO + harness</text>
+<g filter="url(#v45a-glow)"><rect fill="url(#v45a-grad)" height="62" rx="12" stroke="#f59e0b" stroke-width="2.5" width="120" x="610" y="92"></rect></g>
+<text fill="#3a2606" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="670" y="122">$ sencillo</text>
+<text fill="#3a2606" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="670" y="142">+ linterna</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" x="745" y="190">lugar correcto → encuentra 5</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">El secreto no está en el cerebro del modelo — está en dónde apuntas la linterna (el harness).</p>
+</div>
+<img alt="Ilustración conceptual: una linterna que ilumina código oculto, mientras un modelo sencillo encuentra fallas que un modelo costoso no ve en la oscuridad" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-5-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Concluir que «necesito el modelo más caro para encontrar errores graves». Casi siempre el fallo estaba al alcance de un modelo barato; solo faltaba <em>señalar</em> él al lugar correcto, con el prompt correcto. Paga por el sistema, no por el cerebro.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> los bugs profundos se encuentran con el lugar adecuado + el prompt adecuado, no con el modelo más costoso.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Profundiza (opcional): ¿por qué el modelo barato basta aquí?</summary>
+<p class="text-sm text-neutral-300 mt-3">Encontrar un bug no exige razonar sobre todo el proyecto a la vez: exige mirar una parte pequeña y bien delimitada con una pregunta clara («¿esta función valida la entrada?»). Cuando reduces el alcance y das el prompt adecuado, el problema se vuelve lo bastante fácil para un modelo sencillo. Un modelo caro destaca en tareas grandes y ambiguas; revisar por partes es lo opuesto, así que ahorras sin perder calidad.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⏰ Cron de revisión de seguridad</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un guardia que hace la ronda del edificio. No revisa los 30 pisos cada noche: lo haría mal. Revisa <em>un piso por noche</em>, con calma, y en un mes cubrió el edificio entero varias veces. El cron de revisión de seguridad es ese vigilante.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t2-p1">La receta concreta de Pocock: ejecuta un <span class="termo" title="Programador que ejecuta un comando en horarios fijos, sin que nadie tenga que presionar nada.">cron</span> diario de <span class="termo" title="Revisión de seguridad automatizada del código.">security review</span> que, cada día, revisa <strong>una parte nueva del repositorio</strong>, usando un modelo relativamente sencillo. La palabra clave es <span class="termo" title="Que cambia de objetivo en cada ejecución y cubre todo el repo con el tiempo.">rotativo</span>: no intentas revisar todo el proyecto de una vez (es caro, superficial y desborda la ventana de contexto). Lo divides en partes. Hoy, la carpeta de autenticación; mañana, la de pagos; después, la de cargas. En unas semanas se habrá auditado todo el repo — y el ciclo vuelve a empezar, revisando lo que cambió.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t2-p2">Por qué <em>programado</em> y no «cuando me acuerde»? Porque la lección que Pocock extrae de un incidente es directa: <em>"¿qué aprendiste? Que hay problemas de seguridad en tu código: deberías tener algo que se ejecute y revise más cosas en el futuro."</em> La seguridad no puede depender de tu memoria en un día ajetreado. El <strong>porqué</strong> del modelo simple: la revisión por partes es una tarea pequeña y bien delimitada, justo donde basta con el modelo barato (tema 1). El <strong>error común</strong> es configurar un cron que revise todo el repo de una vez: sale caro, genera ruido y nadie lee el informe enorme. Pequeño, diario, rotativo y práctico.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Un reloj activa, todos los días, una revisión de una parte diferente del repositorio y cubre todo a lo largo de la semana" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v45b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v45b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v45b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v45b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v45b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g filter="url(#v45b-glow)"><circle cx="110" cy="110" fill="#1f1604" r="56" stroke="url(#v45b-grad)" stroke-width="3"></circle></g>
+<circle cx="110" cy="110" fill="none" r="56" stroke="#fbbf24" stroke-width="2"></circle>
+<line stroke="#fbbf24" stroke-width="3" x1="110" x2="110" y1="110" y2="72"></line>
+<line stroke="#fbbf24" stroke-width="3" x1="110" x2="138" y1="110" y2="120"></line>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="110" y="190">cron diario</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="180" x="280" y="30"></rect><text fill="#bfe6ff" text-anchor="middle" x="370" y="56">seg · /auth</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="180" x="280" y="88"></rect><text fill="#bfe6ff" text-anchor="middle" x="370" y="114">tener · /payments</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="180" x="280" y="146"></rect><text fill="#bfe6ff" text-anchor="middle" x="370" y="172">mié · /uploads</text>
+</g>
+<path d="M166,90 C220,60 240,51 280,51" fill="none" marker-end="url(#v45b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"></path>
+<path d="M166,110 C220,110 240,109 280,109" fill="none" marker-end="url(#v45b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"></path>
+<path d="M166,130 C220,160 240,167 280,167" fill="none" marker-end="url(#v45b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="1.8"></path>
+<rect fill="#1f1604" height="64" rx="14" stroke="#fbbf24" stroke-width="2.5" width="380" x="560" y="78"></rect>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="750" y="105">repo completo cubierto</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="750" y="126">una sección por día, el ciclo vuelve a empezar</text>
+<path d="M460,109 C500,109 520,109 560,109" fill="none" marker-end="url(#v45b-ah)" opacity="0.6" stroke="#fbbf24" stroke-width="2"></path>
+</svg>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t2-p3">Abajo, el <strong>artefacto copiable</strong>: una línea de <span class="termo" title="El archivo que enumera las tareas programadas: cada línea es una hora + un comando.">crontab</span> que activa, todos los días a las 6 de la mañana, un agente headless de revisión de seguridad dirigido a la "parte del día". Pégalo en tu crontab (<code class="text-amber-400">crontab -e</code>) y ajusta la ruta del repo:</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">crontab · security-review-diário</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># Edite com:  crontab -e
+# Roda TODO DIA às 06:00 — checa uma fatia rotativa do repo (dia-do-mês % nº de pastas).
+0 6 * * * cd /caminho/do/repo &amp;&amp; DIRS=(auth payments uploads api db) &amp;&amp; TARGET=${DIRS[$(( $(date +\%d) \% ${#DIRS[@]} ))]} &amp;&amp; claude -p "Faça um SECURITY REVIEW so da pasta ./$TARGET. Liste cada falha (arquivo:linha), severidade (alta/media/baixa) e a correcao sugerida. Se nada grave, responda 'OK'. Saida em markdown." --model claude-haiku-4-5 --allowedTools "Read,Grep,Glob" &gt;&gt; ~/security-reviews/$(date +\%F)-$TARGET.md 2&gt;&amp;1</pre>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-5#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿por qué el cron de security review revisa solo una parte por día?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Porque el modelo barato no puede leer archivos.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Porque dividir la tarea la mantiene pequeña, barata y accionable, y en pocos días cubre todo el repo, por turnos.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Porque GitHub prohíbe revisar más de una carpeta por día.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> un guardia programado que revisa una sección por día cubre todo el edificio sin costar una fortuna.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📡 Telemetría → issue → fix</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la alarma de humo de tu casa no solo suena: llama automáticamente a los bomberos, que ya llegan sabiendo en qué habitación está el problema. Telemetría → issue → fix es montar esa tubería: el error en producción activa una cadena que termina (casi) por sí sola en una corrección.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t3-p1">Aquí la automejora deja de ser proactiva (el cron) y se convierte en <em>reactiva, pero automatizada</em>. El ejemplo de Pocock: un bug de <span class="termo" title="Datos que la aplicación reporta sobre cómo funciona en producción: errores, lentitud, excepciones.">telemetría</span> aparece en una herramienta como <span class="termo" title="Sentry: servicio que captura y agrupa errores que ocurren en producción.">Sentry</span>. En vez de leer, copiar y abrir un ticket a mano, el sistema <strong>crea un issue automáticamente</strong> y la marca con un <em>label</em> (etiqueta) tipo <code class="text-amber-400">agent:explore</code>. Esa label activa un agente: exactamente el patrón de cola del módulo 4.4.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t3-p2">El agente entonces <strong>devuelve datos estructurados</strong>: ¿se puede corregir de inmediato o hace falta una persona? Si es algo directo, lo implementa y abre el <span class="termo" title="Pull request: la propuesta de cambio en el código que alguien revisa antes de incorporarla.">PR</span>, y el flujo sigue hacia la revisión, eventualmente con una etiqueta de <em>auto-merge</em> (entra por sí solo) o un ping para que tú decidas. La frase que organiza todo esto es de Pocock: <em>"acerca los puntos de control con participación humana lo más posible al resultado final."</em> Es decir: la máquina recorre todo el camino; tú solo intervienes cerca de la meta, donde tu atención rinde más. El <strong>error común</strong> es dejar que el pipeline haga <em>auto-merge de todo</em> — sin ninguna instancia de control humana en los cambios que afectan el comportamiento, cambias trabajo manual por riesgo silencioso.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Cinta transportadora: la telemetría de Sentry se convierte en un issue con la etiqueta explore, que activa al agente, que abre un PR, que pasa a revisión o auto-merge" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<pattern height="32" id="v45c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v45c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v45c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v45c-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="52" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="30" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="105" y="98">telemetría</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="105" y="116">(Sentry)</text>
+<rect fill="#0e1b26" height="52" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="230" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="305" y="98">issue</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="305" y="116">etiqueta: explorar</text>
+<g filter="url(#v45c-glow)"><rect fill="#1f1604" height="52" rx="12" stroke="#fbbf24" stroke-width="2.5" width="150" x="430" y="74"></rect></g><text fill="#fbbf24" text-anchor="middle" x="505" y="98">agente</text><text fill="#fcd34d" font-size="11" text-anchor="middle" x="505" y="116">dato estructurado</text>
+<rect fill="#0e1b26" height="52" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="630" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="705" y="104">PR / fix</text>
+<rect fill="#1f1604" height="46" rx="12" stroke="#fbbf24" stroke-width="2" width="150" x="830" y="40"></rect><text fill="#fbbf24" text-anchor="middle" x="905" y="68">auto-merge</text>
+<rect fill="#0e1b26" height="46" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="830" y="114"></rect><text fill="#bfe6ff" text-anchor="middle" x="905" y="142">te avisa</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#fbbf24" stroke-width="2">
+<path d="M180,100 L230,100" marker-end="url(#v45c-ah)"></path>
+<path d="M380,100 L430,100" marker-end="url(#v45c-ah)"></path>
+<path d="M580,100 L630,100" marker-end="url(#v45c-ah)"></path>
+<path d="M780,90 C805,80 810,70 830,65" marker-end="url(#v45c-ah)"></path>
+<path d="M780,110 C805,120 810,130 830,135" marker-end="url(#v45c-ah)"></path>
+</g>
+</svg>
+</div>
+<img alt="Ilustración: una cinta de automatización que lleva una señal de error de telemetría hasta una corrección, con un punto de decisión humana cerca del final" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-5-2.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: del error en Sentry a la corrección</h3>
+<p class="text-neutral-300 text-sm mb-3">Escenario de punta a punta: uno <code>TypeError</code> intermitente en el checkout:</p>
+<ol class="space-y-2 text-sm text-neutral-300 list-decimal pl-5">
+<li><strong class="text-blue-400">Telemetría:</strong> Sentry agrupa 312 ocurrencias de <code>Cannot read 'total' of undefined</code> en <code>checkout.ts</code>.</li>
+<li><strong class="text-blue-400">Issue automática:</strong> un webhook crea el issue <code>#812</code> con el stack trace y aplica la etiqueta <code>agent:explore</code>.</li>
+<li><strong class="text-blue-400">El agente explora:</strong> activado por la etiqueta, devuelve datos estructurados — <em>causa: carrito vacío sin gestionar; dificultad: trivial; ¿se puede corregir AFK?: sí</em>.</li>
+<li><strong class="text-blue-400">Fix + PR:</strong> el agente agrega el guard <code>cart?.total ?? 0</code> + una prueba, abre el PR <code>#813</code> enlazando el issue.</li>
+<li><strong class="text-blue-400">Checkpoint al final:</strong> si modifica el comportamiento, NO hace auto-merge: te avisa, tú lo revisas en 30s y lo apruebas.</li>
+</ol>
+<p class="text-neutral-300 text-sm mt-3">Solo apareciste en el paso 5: el checkpoint se desplazó para quedar cerca del resultado final.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> el error en producción activa por sí solo la cadena issue→agente→fix; tú solo decides cerca de la meta.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🔒 La causa raíz del bug</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> te robaron la bici. Compras otra bici. Te la vuelven a robar. Compras otra. La pregunta correcta no es «qué bici comprar» — es <em>"¿por qué se puede robar? ¿Dónde está el candado?"</em>. Corregir el bug es comprar otra bicicleta. Encontrar la causa raíz es ponerle el candado.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t4-p1">Este es el cambio de perspectiva del módulo, y Pocock lo resume con una imagen que se queda grabada: <em>"si alguien vive robándote la bici, quizá deberías comprar un candado."</em> Corregir el bug que apareció es tratar el síntoma. La pregunta que realmente mejora el sistema es sobre la <span class="termo" title="La causa de fondo del problema, no el síntoma visible.">causa raíz (root cause)</span>: <strong>¿por qué existió este bug tanto tiempo sin que te dieras cuenta?</strong> ¿Qué faltó en tu proceso — una prueba, una revisión, un lint — para que pasara inadvertido hasta convertirse en un incidente?</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t4-p2">Fíjate en la diferencia de nivel. "Encontré un bug de security y lo corregí" se queda en la bici. "Hay fallas de security en mi código, así que voy a armar <strong>algo que se ejecuta y comprueba más en el futuro</strong>" instala el candado — es literalmente el cron del tema 2 naciendo de un incidente. Cada bug, en vez de ser solo una reparación, se convierte en una pregunta: <em>qué baranda de protección del sistema dejó pasar esto?</em> La respuesta se convierte en una suite de pruebas, una revisión automatizada o una refactorización. El <strong>error común</strong> es conformarte feliz con el fix: cierras el issue, sientes que lo resolviste y el mismo tipo de bug vuelve por otra vía, porque nunca compraste el candado.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dos caminos: corregir el bug una y otra vez (comprar bicicletas) o encontrar la causa raíz e instalar el candado (un sistema que previene)" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v45d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v45d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v45d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v45d-grid)" height="220" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="34">"¿te robaron la bici?"</text>
+<rect fill="#2a0e0e" height="140" rx="16" stroke="#b91c1c" stroke-width="2" width="430" x="40" y="56"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="64" y="84">😵 Tratar el síntoma</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" x="64" y="112">compra una bici → se la roban → compra una bici…</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" x="64" y="138">corriges el bug → vuelve por otra vía</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12.5" x="64" y="170">el ciclo nunca se detiene</text>
+<g filter="url(#v45d-glow)"><rect fill="#1f1604" height="140" rx="16" stroke="url(#v45d-grad)" stroke-width="2.5" width="430" x="530" y="56"></rect></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="554" y="84">🔒 Corregir la causa raíz</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" x="554" y="112">"¿por qué existió durante tanto tiempo?"</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" x="554" y="138">instala el candado: prueba + cron + revisión</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="12.5" x="554" y="170">el sistema se vuelve más fuerte</text>
+</svg>
+</div>
+<img alt="Ilustración: una bicicleta asegurada con un candado robusto y brillante, símbolo de tratar la causa raíz en vez del síntoma" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-5-3.png"/>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Profundiza (opcional): los «5 porqués»</summary>
+<p class="text-sm text-neutral-300 mt-3">Una técnica clásica para llegar a la causa raíz es preguntar «¿por qué?» cinco veces. <em>Bug en el checkout → ¿por qué? No se contempló el carrito vacío → ¿por qué? Nadie probó este caso → ¿por qué? No había una prueba para el carrito vacío → ¿por qué? La suite no cubre los casos límite → ¿por qué? No tenemos un cron/checklist que exija estos casos.</em> En el quinto «porqué» ya no estás mirando el bug: estás mirando el <strong>sistema que lo dejó pasar</strong>. Es ahí donde se compra el candado.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> no compres otra bicicleta: pregunta por qué queda expuesta al robo e instala el candado.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">♻️ Bucles de autom mejora</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un gimnasio donde queda registrado cada entrenamiento y el registro ajusta el siguiente. No te haces más fuerte «gratis»: te haces más fuerte porque el <em>sistema de entrenamiento</em> aprende con cada sesión. Los ciclos de autom mejora son eso aplicado a tu código.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t5-p1">Al juntar todo: un <span class="termo" title="Configuración recurrente que detecta, corrige y previene problemas, y mejora con cada ciclo.">sistema automejorable</span> está hecho de <em>varios bucles</em> que se refuerzan. Pocock nombra tres ingredientes concretos: <strong class="text-amber-400">test suites</strong> (que detectan regresiones antes de que lleguen al usuario), <strong class="text-amber-400">revisiones humanas</strong> (que dan información útil sobre el sistema, no solo sobre el código) y <strong class="text-amber-400">refactor</strong> (que reducen la probabilidad de que aparezca el siguiente bug). Cada incidente alimenta estos ciclos: se convirtió en prueba, en checklist de revisión, en una parte más limpia del código.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t5-p2">El detalle crítico —y aquí se cruza con el módulo 4.4 (Loops × Filas)— es que «auto-mejorable» <strong>no</strong> significa "dejar un bucle infinito ejecutándose solo y desaparecer". Significa configurar activadores (cron, telemetría, etiqueta) que <em>ponen tareas en una cola</em>, y ciclos de feedback que hacen que cada pasada sea mejor que la anterior. Tú sigues al mando: priorizas, revisas los puntos peligrosos y ajustas los activadores. El <strong>error común</strong> es imaginar un sistema 100% autónomo que se arregla para siempre sin supervisión: eso no existe; lo que existe es un sistema que hace el trabajo repetitivo y te llama en los momentos que importan.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Ciclo de automejora: detectar lleva a corregir, lo que lleva a prevenir, lo que lleva a aprender, y se vuelve a detectar mejor" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v45e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v45e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v45e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v45e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v45e-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<g filter="url(#v45e-glow)"><rect fill="#1f1604" height="56" rx="13" stroke="url(#v45e-grad)" stroke-width="2.5" width="180" x="120" y="40"></rect></g><text fill="#fbbf24" text-anchor="middle" x="210" y="74">1 · detectar</text>
+<rect fill="#0e1b26" height="56" rx="13" stroke="#38bdf8" stroke-width="2" width="180" x="700" y="40"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="74">2 · corregir</text>
+<rect fill="#0e1b26" height="56" rx="13" stroke="#38bdf8" stroke-width="2" width="180" x="700" y="138"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="172">3 · prevenir</text>
+<rect fill="#0e1b26" height="56" rx="13" stroke="#38bdf8" stroke-width="2" width="180" x="120" y="138"></rect><text fill="#bfe6ff" text-anchor="middle" x="210" y="166">4 · aprender</text>
+<text fill="#9ad6ff" font-size="11" text-anchor="middle" x="210" y="184">→ revisar el sistema</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#fbbf24" stroke-width="2">
+<path d="M300,68 L700,68" marker-end="url(#v45e-ah)"></path>
+<path d="M790,96 L790,138" marker-end="url(#v45e-ah)"></path>
+<path d="M700,166 L300,166" marker-end="url(#v45e-ah)"></path>
+<path d="M210,138 L210,96" marker-end="url(#v45e-ah)"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="218">cada vuelta fortalece la detección de la siguiente</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> detectar → corregir → prevenir → aprender, y cada vuelta deja el sistema más fuerte que la anterior.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-4-5#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🛠️ Revisar el sistema</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> una fábrica no solo inspecciona los productos que salen, también inspecciona la <em>línea de montaje</em> que los produce. Si la línea está torcida, todo producto sale torcido. Revisar solo el código es revisar los productos; revisar el sistema es enderezar la línea.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-5-t6-p1">La tesis que cierra el módulo es la frase más importante de Pocock aquí: <em>"revisa no solo el código: revisa también el SISTEMA que produce el código."</em> En la era agéntica, quien escribe la mayor parte del código es el agente. Entonces tu enfoque de revisión sube un nivel: menos «¿esta línea está bien?» y más «¿el <strong>proceso</strong> que generó esta línea es confiable?". Los prompts, las skills, los crons, las gates de revisión: toda esta infraestructura, bien afinada, evita que nazca el próximo bug.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-5-t6-p2">Esto también responde una pregunta peligrosa que aparece en el próximo módulo (4.6): <em>"¿quién revisa a la IA que dice que todo está bien?"</em> Respuesta: tú, revisando el sistema. Por eso vale la pena comprobar, de vez en cuando, algunos PRs que el agente aseguró que están bien — no por desconfianza paranoica, sino para <strong>mejorar el sistema con el tiempo</strong>. A continuación, el resumen práctico en forma de checklist que puedes copiar: ejecútalo siempre que se escape un bug, para convertir la corrección en una mejora del sistema:</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">revisar-o-sistema.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Bug escapou? Antes de fechar a issue, COMPRE O CADEADO:
+[ ] CAUSA RAIZ — por que esse bug existiu tanto tempo sem ninguém notar?
+[ ] TESTE — adicionei um teste que pegaria esse caso na próxima vez?
+[ ] DETECÇÃO — meu cron de security/review olharia essa parte? Se não, ajusto o rodízio.
+[ ] PROCESSO — que gate (review, lint, label) deixou isso passar? Reforço ele.
+[ ] SISTEMA — revisei o código OU o sistema que produz o código? (era pra ser os dois)
+Se você só corrigiu o bug, comprou outra bike. Instale o cadeado.</pre>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-5#q2">
+<p class="font-medium mb-4">Recuperación rápida: ¿qué significa «revisar el sistema que produce el código»?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Revisar a mano cada PR línea por línea, siempre.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Evaluar y ajustar el proceso (prompts, skills, crons, gates) que genera el código, no solo el código en sí.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Confiar en que la IA ya lo comprobó y no volver a mirar.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">En 1 frase:</strong> revisa no solo el código, sino también la línea de montaje que lo produce — es ahí donde el próximo bug muere antes de nacer.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">No es el modelo caro</strong><span class="text-neutral-400"> — un bug profundo se encuentra con el lugar adecuado y el prompt/harness adecuado; basta con un modelo barato.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Cron diario rotativo</strong><span class="text-neutral-400"> — una porción del repo al día lo cubre todo, de forma económica y práctica.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Telemetría → issue → corrección</strong><span class="text-neutral-400"> — el error en producción activa la cadena; el punto de control humano queda cerca del final.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Compra el candado</strong><span class="text-neutral-400"> — aborda la causa raíz, no el síntoma; y revisa el SISTEMA que produce el código.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-amber-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">4.6 — Checkpoints &amp; review fluido: cómo hacer que el review sea sencillo, mover el checkpoint hacia la derecha y grabar un video+TTS del agente trabajando.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="modulo-4-6.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-4-5#q1', { answer: 1, explain: { 0: 'O modelo barato lê arquivos sim — a questão é o tamanho da tarefa, não a capacidade.', 1: 'Isso! Fatiar mantém barato e acionável, e o rodízio cobre o repo inteiro ao longo dos dias.', 2: 'Não existe regra dessas — fatiar é escolha de design, não imposição.' } });
+        INEMA.registerCheck('modulo-4-5#q2', { answer: 1, explain: { 0: 'Isso é revisar o código manualmente — o oposto de empurrar o checkpoint e melhorar o processo.', 1: 'Exato! Revisar o sistema = afinar prompts, skills, crons e gates que produzem o código.', 2: 'Esse é o erro do "quem revisa a IA que diz que está tudo bem?" — você precisa checar o sistema.' } });
+      }
+    });
+  </script>
+</body>
+</html>

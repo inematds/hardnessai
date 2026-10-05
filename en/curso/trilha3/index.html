@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>Track 3 · AI Skills (Skills) | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) .group:hover .group-hover\:text-purple-400 { color: #7c3aed; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha3/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha3/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha3/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-purple-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../../curso/trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../../curso/trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../../curso/trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../../curso/trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">TRACK 3</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧰 AI Skills</h1>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">Skills are how you package knowledge and processes for AI. This track breaks down a skill’s anatomy, the context cost each one incurs, and shows real patterns—Teach, grill-me, chaining—to turn what you know into a repeatable advantage.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<img alt="Illustration for track 3: AI Skills (Skills)" class="w-full h-auto rounded-xl mb-4" loading="lazy" src="../../../curso/trilha3/assets/img/hero.png"/>
+<svg aria-label="Diagram: a skill splits into procedure and ability, both feeding the agent" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="t3h-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="t3h-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t3h-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="t3h-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#t3h-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g filter="url(#t3h-glow)"><rect fill="#1a1230" height="76" rx="16" stroke="url(#t3h-grad)" stroke-width="2.5" width="210" x="40" y="70"></rect></g>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="18" font-weight="600" text-anchor="middle" x="145" y="103">SKILL</text>
+<text fill="#cbd5e1" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="145" y="124">frontmatter + body</text>
+<g fill="none" opacity="0.55" stroke="#c084fc" stroke-width="1.8">
+<path d="M250,95 C350,95 380,70 470,70" marker-end="url(#t3h-ah)"></path>
+<path d="M250,121 C350,121 380,150 470,150" marker-end="url(#t3h-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="180" x="470" y="55"></rect><text fill="#bfe6ff" text-anchor="middle" x="560" y="75">procedure (you invoke it)</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="180" x="470" y="135"></rect><text fill="#bfe6ff" text-anchor="middle" x="560" y="155">ability (the model invokes it)</text></g>
+</g>
+<g fill="none" opacity="0.5" stroke="#a855f7" stroke-width="1.8">
+<path d="M650,70 C740,70 760,108 800,108" marker-end="url(#t3h-ah)"></path>
+<path d="M650,150 C740,150 760,108 800,108" marker-end="url(#t3h-ah)"></path>
+</g>
+<rect fill="#1f2937" height="52" rx="12" stroke="#9ca3af" stroke-width="2" width="160" x="800" y="82"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="880" y="113">Agent</text>
+</svg>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-2 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Modules</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">36</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~3h</div><div class="text-xs text-neutral-400">Duration</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Inter</div><div class="text-xs text-neutral-400">Level</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Track 3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="trilha:3" role="progressbar">
+<span class="text-sm text-neutral-400">Track progress:</span>
+<span class="inema-meter-pct text-purple-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 36</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="conteudo">
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Learning path map</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-1">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🧬 Anatomy of a skill</h3>
+<p class="text-xs text-neutral-400">Procedure × Ability</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-2">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🫥 Skill context cost</h3>
+<p class="text-xs text-neutral-400">When to hide</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-3">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🎓 The Teach skill under the hood</h3>
+<p class="text-xs text-neutral-400">Skill with memory</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-4">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🌳 Teaching that sticks</h3>
+<p class="text-xs text-neutral-400">ZPD + recall</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-5">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🔬 Grill-me &amp; adversarial skills</h3>
+<p class="text-xs text-neutral-400">Interview me</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-purple-500/30 p-5 transition-all" href="#modulo-3-6">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold text-sm">3.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-purple-400 transition-colors">🔗 Chain skills + human DRY</h3>
+<p class="text-xs text-neutral-400">Thinking pipeline</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Detailed content</h2>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-1" data-inema-track="3" id="modulo-3-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🧬 Anatomy of a skill</h3>
+<p class="text-neutral-400 text-sm">Every skill has two doors: procedure (you invoke it) and ability (the model invokes it). Knowing which one to use changes everything.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">📦</span><div><span class="font-medium">What a skill is</span><span class="text-neutral-500 text-sm ml-2">- Packaged Knowledge</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A package of instructions and processes that teaches the agent to do something in a specific way.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the reusable unit: you write it once, and the agent repeats it correctly.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Skill = packaged knowledge + process.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">📝</span><div><span class="font-medium">Frontmatter and body</span><span class="text-neutral-500 text-sm ml-2">- Header + Instructions</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Frontmatter (name, description, flags) at the top; body with the actual instructions.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">The description is what the model sees to decide whether to invoke; the body is what it executes.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Description = trigger; body = execution.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🙋</span><div><span class="font-medium">Procedures (you invoke)</span><span class="text-neutral-500 text-sm ml-2">- Human-Initiated</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A skill that only runs when you explicitly call it — you decide when.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Procedures don't expose descriptions and keep you in control of the flow.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Procedure = human invocation, fixed process.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🤖</span><div><span class="font-medium">Abilities (the model invokes them)</span><span class="text-neutral-500 text-sm ml-2">- AI-Initiated</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A skill that the model itself decides to activate when it recognizes the situation in the description.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Abilities automate tasks, but require context — their descriptions are always loaded.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Ability = model invocation, autonomy.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🚪</span><div><span class="font-medium">The two doors</span><span class="text-neutral-500 text-sm ml-2">- Same body, different trigger</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The same skill can be exposed as a procedure or an ability—only the trigger changes.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Choosing the right door balances control, automation, and context cost.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Two doors to the same content.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧭</span><div><span class="font-medium">Which one to use when</span><span class="text-neutral-500 text-sm ml-2">- Practical Decision</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Simple rule: do you want to trigger it manually (procedure) or let the model recognize it (ability)?</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Keeps you from paying for context for automation you don’t even use.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Control → procedure; recognition → ability.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-1')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-1.html">View Full</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-2" data-inema-track="3" id="modulo-3-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🫥 Skill context cost</h3>
+<p class="text-neutral-400 text-sm">Each skill costs context through its description. Knowing when to hide a skill is harness hygiene.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">💧</span><div><span class="font-medium">The description leaks</span><span class="text-neutral-500 text-sm ml-2">- Always in context</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Every skill the model can invoke leaks its description into the context window, even when it's not used.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Context is finite; every loaded description takes up space and attention.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Description = fixed context overhead.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">💯</span><div><span class="font-medium">100 skills, 100 descriptions</span><span class="text-neutral-500 text-sm ml-2">- The cost adds up</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A hundred skills become a hundred descriptions competing for space in context.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Accumulating skills "just in case" degrades the performance of all of them.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">More skills = more noise in the context.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🫥</span><div><span class="font-medium">disable model invocation</span><span class="text-neutral-500 text-sm ml-2">- Hide the Skill</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">`disable model invocation: true` → the skill only runs when you call it, without leaking its description.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Lets you keep the skill available without paying its context cost.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Hidden procedure = zero cost when idle.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🧠</span><div><span class="font-medium">Knowledge in the human</span><span class="text-neutral-500 text-sm ml-2">- You are the index</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Knowing which skills you have and when to call them can live in you, not in the context.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">You become the living index of skills, freeing up the context window.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Human memory &gt; loaded description.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">✂️</span><div><span class="font-medium">Lean skills</span><span class="text-neutral-500 text-sm ml-2">- Short Beats Long</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Short, direct skills—minimal descriptions, focused content—cost less and trigger more reliably.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Too many instructions clog the context and confuse the model.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Less is more in the description and body.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🔍</span><div><span class="font-medium">Audit what leaks</span><span class="text-neutral-500 text-sm ml-2">- Hygiene routine</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Periodically review which skills are always loaded and cut the idle ones.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Auditing keeps the context clean and performance high.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Audit → hide → trim.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-2')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-2.html">View Full</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-3" data-inema-track="3" id="modulo-3-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🎓 The Teach skill under the hood</h3>
+<p class="text-neutral-400 text-sm">The Teach skill is stateful: it stores local state and remembers you between sessions. See how it works under the hood.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🔁</span><div><span class="font-medium">Stateful × stateless</span><span class="text-neutral-500 text-sm ml-2">- Remember or forget</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A stateless skill starts from scratch every time; a stateful one keeps state between sessions.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Teaching that sticks requires memory—without state, there’s no continuity.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">State = continuity between sessions.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">mission.md</span><span class="text-neutral-500 text-sm ml-2">- The learning objective</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A file that defines the learning mission: what you want to learn and why.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It gives the skill direction — every session knows where it's headed.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">mission.md = persistent learning target.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🗂️</span><div><span class="font-medium">Learning record</span><span class="text-neutral-500 text-sm ml-2">- What’s already been seen</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A record of what you’ve learned, gotten right, and gotten wrong over the course of the sessions.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Lets the skill adapt the pace and review what hasn't stuck.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Learning history guides the next step.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">📄</span><div><span class="font-medium">Lessons in HTML</span><span class="text-neutral-500 text-sm ml-2">- Generated material</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The skill generates lessons in HTML — navigable material tailored to you.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Concrete, revisitable content beats an ephemeral chat explanation.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Lesson as a durable artifact.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">💾</span><div><span class="font-medium">Local state that remembers</span><span class="text-neutral-500 text-sm ml-2">- Persistence on disk</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">State lives in local files—it doesn’t depend on the context window to remember.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Memory on disk survives resets and doesn’t use up context.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Disk = cheap, durable memory.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧱</span><div><span class="font-medium">Recreate the concept</span><span class="text-neutral-500 text-sm ml-2">- Reusable pattern</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The Teach skill pattern — mission + log + lessons + state — works for any skill with memory.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">You can recreate the concept for your own stateful skills.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Reusable skill recipe with state.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-3')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-3.html">View Full</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-4" data-inema-track="3" id="modulo-3-4">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🌳 Teaching that sticks</h3>
+<p class="text-neutral-400 text-sm">Teaching effectively requires science: the zone of proximal development, knowledge as a graph, and active recall.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🎚️</span><div><span class="font-medium">Zone of proximal development</span><span class="text-neutral-500 text-sm ml-2">- Neither easy nor impossible</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The space between what you already know and what you still can’t do on your own—where learning happens.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Teaching within the ZPD keeps you challenged without frustrating you.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">ZPD = calibrated difficulty.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🕸️</span><div><span class="font-medium">Knowledge as a graph</span><span class="text-neutral-500 text-sm ml-2">- Connected Concepts</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Knowledge is a network of concepts with prerequisites, not a linear list.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Mapping the graph reveals what to teach before what.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Nodes = concepts; edges = prerequisites.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">➡️</span><div><span class="font-medium">Linear path in the graph</span><span class="text-neutral-500 text-sm ml-2">- One track at a time</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The skill chooses a linear path through the graph: an order that respects prerequisites.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">A good sequence prevents gaps and overload.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Graph → teachable linear route.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">❓</span><div><span class="font-medium">Quizzes and recall</span><span class="text-neutral-500 text-sm ml-2">- Remember to reinforce</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Questions that force active recall—remembering takes effort, which is why it sticks.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Active recall leads to much better retention than rereading.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Testing yourself &gt; passively reviewing.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">⏰</span><div><span class="font-medium">Spaced repetition</span><span class="text-neutral-500 text-sm ml-2">- Spaced review</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Review at increasing intervals, just when you’d almost forget.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the most efficient method for long-term memory.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Spacing out reviews helps combat forgetting.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🎨</span><div><span class="font-medium">Customization</span><span class="text-neutral-500 text-sm ml-2">- Tailored Teaching</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The skill adjusts the pace, examples, and reviews to your individual history.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Adapted instruction improves retention more than generic content.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Adapt to the student &gt; one size fits all.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-4')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-4.html">View Full</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-5" data-inema-track="3" id="modulo-3-5">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🔬 Grill-me &amp; adversarial skills</h3>
+<p class="text-neutral-400 text-sm">The grill-me interviews you before coding—a short, powerful skill that replaces plan mode.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🔥</span><div><span class="font-medium">What grill-me does</span><span class="text-neutral-500 text-sm ml-2">- Interrogates you</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A game-changing skill: the agent interviews you, asking questions until it understands what you want.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Draws out the details you’re missing before the code comes out wrong.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">AI asks; you answer; understanding improves.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔄</span><div><span class="font-medium">Replace plan mode</span><span class="text-neutral-500 text-sm ml-2">- Better than planning alone</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Pocock uses grill-me instead of plan mode—an interview before any plan.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">A plan based on wrong assumptions is worse than no plan.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Interview &gt; plan in the dark.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">✂️</span><div><span class="font-medium">Short and powerful (4-5 sentences)</span><span class="text-neutral-500 text-sm ml-2">- Few words, big impact</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The grill-me fits in 4-5 sentences—it’s tiny, yet it transforms the workflow.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Prove that a good skill doesn't need to be long; it needs to be precise.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Power through focus, not size.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">Align before coding</span><span class="text-neutral-500 text-sm ml-2">- Fix It at the Source</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The interview aligns you and the AI on the goal before a single line is written.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Correcting understanding at the start costs minutes; at the end, it costs rework.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Aligning early is cheap.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🤝</span><div><span class="font-medium">Shared understanding</span><span class="text-neutral-500 text-sm ml-2">- Shared mental model</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The result of grill-me is a shared understanding of the problem between you and the agent.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">A shared understanding is what makes delegation work.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Same target image on both sides.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🛠️</span><div><span class="font-medium">Adapt for you</span><span class="text-neutral-500 text-sm ml-2">- Your version</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Because it’s so short, the grill-me is easy to adapt to your project and style.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">A skill you customize becomes part of your personal harness.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Small = easy to customize.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-5')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-5.html">View Full</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="3-6" data-inema-track="3" id="modulo-3-6">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-purple-400 font-bold">3.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🔗 Chain skills + human DRY</h3>
+<p class="text-neutral-400 text-sm">Chained skills become a thought pipeline—and anything you repeat 3 times should become a skill.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🔗</span><div><span class="font-medium">grill-me → PRD → issues</span><span class="text-neutral-500 text-sm ml-2">- From Brain to Backlog</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A pipeline: the grill-me extracts the vision, turns it into a PRD, which turns into actionable issues.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Each step delivers the next one ready — from idea to backlog without friction.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Interview → specification → tasks.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">⛓️</span><div><span class="font-medium">Procedures in sequence</span><span class="text-neutral-500 text-sm ml-2">- Output becomes input</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The output of one procedure feeds the next—skills fit together like links in a chain.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Chaining procedures creates reliable, repeatable workflows.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Procedures as links in a chain.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🎮</span><div><span class="font-medium">You in the driver's seat</span><span class="text-neutral-500 text-sm ml-2">- Human in the loop</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Between each procedure in the pipeline, you review and adjust before moving on.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">The human at the right points keeps the pipeline on track.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Human checkpoints between stages.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">♻️</span><div><span class="font-medium">Repeated it 3x? Make it a skill</span><span class="text-neutral-500 text-sm ml-2">- DRY for Humans</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">If you’ve given the same instructions 3 times, it’s time to package them into a skill.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">DRY (don't repeat yourself) applies to your own process, not just code.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Repetition = a missing skill signal.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">📤</span><div><span class="font-medium">Distribute to the team</span><span class="text-neutral-500 text-sm ml-2">- Shared Knowledge</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">A packaged skill can be shared so the whole team can use it the same way.</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Skills become the team’s executable institutional knowledge.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Skill = shareable process.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🌐</span><div><span class="font-medium">Contribute back</span><span class="text-neutral-500 text-sm ml-2">- Skills Community</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-purple-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Useful skills can be published and improved by the community (mattpocock/skills, aihero.dev).</p></div>
+<div><span class="text-purple-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">You benefit from other people's skills and share your own.</p></div>
+<div><span class="text-purple-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Open source of skills composes.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-3-6')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors" href="modulo-3-6.html">View Full</a>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 mt-10">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../../index.html">← Home</a>
+<a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="../trilha4/index.html">Track 4: Advanced Techniques →</a>
+</div>
+</main>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-1" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.1</span><span class="font-semibold">Anatomy of a skill</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-1.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-2" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.2</span><span class="font-semibold">Skill context cost</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-2.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-3" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.3</span><span class="font-semibold">Inside the Teach skill</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-3.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-4" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.4</span><span class="font-semibold">Teaching that sticks</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-4.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-5" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.5</span><span class="font-semibold">Grill-me &amp; adversarial skills</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-5.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-3-6" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-purple-400 font-bold">3.6</span><span class="font-semibold">Chain skills + human DRY</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-3-6.html"></iframe></div></div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
+    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&INEMA.init)INEMA.init();});</script>
+</body>
+</html>

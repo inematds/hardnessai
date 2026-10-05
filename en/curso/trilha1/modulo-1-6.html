@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>1.6 Scarce context window | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha1/modulo-1-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha1/modulo-1-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha1/modulo-1-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Track 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.6 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.6 · "TEACHING MODE"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🪟 Scarce context window</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">AI has a finite “working memory”—the <strong class="text-emerald-400">context window</strong>. Everything you stack in there (skills, instructions, files) takes up some of it. Here you learn Matt Pocock’s motto: <em>"each skill costs"</em> — and how to keep the context clean so AI can think better. Each new word is explained as it comes up.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Zero</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Theory</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 1.6 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-6" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. What leaks into the context</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. The cost of 100 skills</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. disable model invocation</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Instruction bloat</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. The radical reset (preview)</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Context Hygiene</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-emerald-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">Since this is the track for <strong>Fundamentals</strong>, here every term is explained in plain language. These are the new terms in this module:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Context window</strong> — the AI's "working memory": everything it can "see" at once (your request + the instructions + the files + the skill descriptions). It's <em>finite</em>: only has so much room. Think of a <strong>table</strong> — it can fit a limited number of roles on top of it.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Token</strong> — the "unit of text" the AI counts. More or less a piece of a word (about ~4 letters on average). The context window is measured in tokens; everything you put in it uses tokens.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Description (of a skill)</strong> — the short sentence at the top of the skill that says what it’s for. The model uses it to decide whether to use the skill—and that’s why it <em>leaks</em> for context even when the skill isn’t used.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Leak (in context)</strong> — taking up context window space without you intending to. The description of every installed skill “leaks” into it: it takes up space even if you never call that skill.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">disable model invocation</strong> — a key (<code>true</code>) that you enable in a skill to say "only I invoke this, not the model." When enabled, that skill’s description <strong>doesn't leak</strong> further into context.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Bloat</strong> — "bloat." Filling the context window with too much stuff (skills, MCP servers, a huge CLAUDE.md). The more bloat, the less room there is for the AI to reason.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">MCP server</strong> — a “plug-in” that gives the agent extra tools (access to a database, an API…). Useful, but each one also takes up context by describing its tools.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">CLAUDE.md / agents.md</strong> — the permanent instructions file you give the agent (project rules). It enters the context window <em>always</em> — so the larger it is, the more it costs.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🫥 What leaks into the context</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a worktable. Everything you plan to do today needs to fit on it. If you leave a menu from every restaurant in town scattered across the table—“to eventually choose where to have lunch”—there’s little room left for the real work. The context window is that table: finite, and every sheet takes up space.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-6-t1-p1">AI doesn’t “remember everything”—it can only look at a certain amount of text at a time. That space has a name: <span class="termo" title="The AI’s working memory—everything it sees at once. It’s finite.">context window</span> (context window). It is measured in <span class="termo" title="A unit of text the AI counts — ~part of a word, averaging 4 letters.">tokens</span>, and each thing that enters the window—your request, the conversation history, the open files—uses up a slice. The problem is that too much gets in <strong>without you noticing</strong>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-6-t1-p2">Pocock’s central example is the <span class="termo" title="Reusable procedures that you give the agent.">skills</span>. Every installed skill has a <span class="termo" title="The sentence at the top of the skill that says what it’s for.">description</span> — a sentence that says what it’s for. The model uses this sentence to decide whether to use the skill. But for <em>power</em> to decide, it needs <strong>see</strong> the description all the time. In other words, the description <span class="termo" title="Take up window space when you don’t want it to.">leaks</span> for context even when the skill is never used. In Matt’s words: <em>"every skill leaks its description into the context window."</em> A common beginner mistake is installing dozens of skills “because they might be useful”—and each one takes up its share of the table, whether it’s empty or not.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The context window is like a desk: leaked skill descriptions take up space; less is left for reasoning" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v16a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v16a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v16a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v16a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#0e2018" height="190" rx="20" stroke="#34d399" stroke-width="2" width="920" x="40" y="30"></rect>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="17" font-weight="600" x="64" y="60">CONTEXT WINDOW — the finite desk</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<g><rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="64" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="149" y="102">skill 1 description</text></g>
+<g><rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="248" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="333" y="102">skill 2 description</text></g>
+<g><rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="432" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="517" y="102">skill 3 description</text></g>
+<g><rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="64" y="124"></rect><text fill="#bfe6ff" text-anchor="middle" x="149" y="146">MCP server</text></g>
+<g><rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="248" y="124"></rect><text fill="#bfe6ff" text-anchor="middle" x="333" y="146">CLAUDE.md</text></g>
+<g><rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="432" y="124"></rect><text fill="#bfe6ff" text-anchor="middle" x="517" y="146">history</text></g>
+</g>
+<g filter="url(#v16a-glow)"><rect fill="url(#v16a-grad)" height="100" rx="16" stroke="#10b981" stroke-width="2.5" width="270" x="650" y="86"></rect></g>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="785" y="130">space to THINK</text>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="785" y="152">what remains shrinks</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="206">Each little blue box "leaks" and takes up desk space — even when unused.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The more things you stack up, the less room there is for AI to reason (the glowing box).</p>
+</div>
+<img alt="Conceptual illustration: a workspace window/desk crowded with glowing papers, leaving little free space in the center" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-6-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Install everything that looks cool "just in case." Every skill, plugin, and MCP server adds text the AI has to load all the time — even if you never use it. The context keeps growing, and reasoning gets worse.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> the context window is finite, and every installed skill leaks its description into it — taking up space even when it isn't used.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-emerald-400">Going deeper (optional): why don't "big windows" solve it?</summary>
+<p class="text-sm text-neutral-300 mt-3">New models have huge context windows (hundreds of thousands of tokens). But more space doesn’t mean better quality: the more crowded the context, the more the AI "gets lost" in the noise, and the slower and more expensive each step gets. The goal isn’t to fill the window—it’s to keep only what matters in it <em>now</em>.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">💸 The cost of 100 skills</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A kitchen with 100 recipes posted on the wall. Before cooking any dish, the cook has to <em>read the titles of the 100</em> to choose. If you only make rice, the other 99 just get in the way. Every recipe on the wall demands attention — even the one you never use.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-6-t2-p1">Pocock gives the number that becomes a rule of thumb: <strong class="text-emerald-400">"100 skills = 100 descriptions in context"</strong>. It’s not that each skill is expensive on its own—it’s that the <em>set</em> descriptions is loaded alongside it, every time, so the model knows what's available. You don't even notice ten skills. A hundred skills become a block of text the model has to reread at every step just to decide what to do.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-6-t2-p2">The reason is straightforward: the description exists so the model can <em>be able to invoke</em> the skill alone. If it’s there to be "auto-selected," it has to be visible. Add MCP servers (each one describes its tools), plus <span class="termo" title="File with permanent instructions that the agent always loads.">CLAUDE.md</span> and the conversation history, and the table fills up before you even ask for anything. The common mistake: treating “I installed it” as “it’s free.” It isn’t—you’re paying in context for something you might use once a month.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: 10 skills take up a small slice of context; 100 skills take up almost all of it, leaving little room for reasoning" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v16b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v16b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v16b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v16b-grid)" height="240" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="60" y="42">10 skills</text>
+<rect fill="#0e1b26" height="56" rx="10" stroke="#374151" stroke-width="1.5" width="880" x="60" y="52"></rect>
+<rect fill="#0e1b26" height="56" rx="10" stroke="#38bdf8" stroke-width="2" width="160" x="60" y="52"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="140" y="86">descriptions</text>
+<g filter="url(#v16b-glow)"><rect fill="url(#v16b-grad)" height="56" rx="10" stroke="#10b981" stroke-width="2" width="708" x="232" y="52"></rect></g>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="586" y="86">plenty of room to think</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="60" y="150">100 skills</text>
+<rect fill="#0e1b26" height="56" rx="10" stroke="#374151" stroke-width="1.5" width="880" x="60" y="160"></rect>
+<rect fill="#1a0e12" height="56" rx="10" stroke="#f87171" stroke-width="2" width="700" x="60" y="160"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="410" y="194">100 leaked descriptions</text>
+<g filter="url(#v16b-glow)"><rect fill="url(#v16b-grad)" height="56" rx="10" stroke="#10b981" stroke-width="2" width="168" x="772" y="160"></rect></g>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="12" font-weight="700" text-anchor="middle" x="856" y="194">little is left</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-6#q1">
+<p class="font-medium mb-4">Quick recall: why does "100 skills = 100 descriptions in the context"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because AI runs all 100 skills at the same time.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because each description needs to be visible so the model can choose the skill—so they all leak into the context, whether used or not.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because skills cost money to download.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> "installed" doesn't mean "free" — 100 skills load 100 descriptions onto the table every time the AI thinks.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🔒 disable model invocation</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> instead of sticking all 100 recipes on the kitchen wall, you keep most of them in a drawer. They’re still there, ready—but they only show up when <em>you</em> opens the drawer and asks for it. The wall stays clear; the view (the context) is yours again.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-6-t3-p1">There’s a switch for this: <span class="termo" title="Key that says 'only a human invokes this skill'. When enabled, the description doesn't leak.">disable model invocation</span>. Every skill can be one of two types. When the <strong>model</strong> can choose it on its own; the description has to stay visible (it leaks). When you turn on <code>disable model invocation: true</code>, you say: “this skill <strong>only me</strong> invoke it.” Practical result: that skill’s description <strong>doesn't leak</strong> further into context — it disappears from the wall and goes into the drawer.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-6-t3-p2">Pocock gives the example of the skill <em>"engineering zoom out"</em>: he marks it as disable model invocation, so the model never calls it on its own—only he, the human, calls it when he wants to. That fits his philosophy: he prefers <strong>procedures</strong> (that you invoke) a <strong>abilities</strong> (that the model invokes), because he wants to be “in the driver’s seat,” not delegate the thinking. In his words: <em>"I know my skills, I don't want to delegate my thinking."</em> The common mistake is the opposite: making everything auto-invocable “to be clever” and, as a result, filling the window with descriptions you could have hidden.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Two doors to a skill: model invocation exposes the description; disable model invocation hides the description and only the human can invoke it" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs><pattern height="32" id="v16c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v16c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v16c-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#1a0e12" height="140" rx="14" stroke="#f87171" stroke-width="2" width="380" x="60" y="40"></rect>
+<text fill="#fca5a5" font-size="15" font-weight="600" text-anchor="middle" x="250" y="72">model invocation: ON</text>
+<text fill="#fda4a4" font-size="12.5" text-anchor="middle" x="250" y="100">the model can choose on its own</text>
+<text fill="#fda4a4" font-size="12.5" text-anchor="middle" x="250" y="124">→ the description LEAKS into the context</text>
+<text fill="#fca5a5" font-size="12.5" font-style="italic" text-anchor="middle" x="250" y="156">wall full of recipes</text>
+<g filter="url(#v16c-glow)"><rect fill="#0e2018" height="140" rx="14" stroke="#34d399" stroke-width="2.5" width="380" x="560" y="40"></rect></g>
+<text fill="#34d399" font-size="15" font-weight="600" text-anchor="middle" x="750" y="72">disable model invocation: true</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="750" y="100">only the HUMAN invokes</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="750" y="124">→ the description DOESN’T leak</text>
+<text fill="#9fe7c8" font-size="12.5" font-style="italic" text-anchor="middle" x="750" y="156">stored away</text>
+</g>
+</svg>
+</div>
+<img alt="Illustration: two glowing doors—one open, letting text escape; the other closed with a lock, keeping the text safe" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-6-2.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: hiding a skill</h3>
+<p class="text-neutral-300 text-sm mb-3">You have a skill <em>"engineering zoom out"</em> that you only use when you want to zoom out from the details and look at the whole system. You don’t want AI to decide to use it on its own. Solution: turn on the switch at the top (frontmatter) of the skill.</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">SKILL.md (frontmatter)</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">---
+name: engineering-zoom-out
+description: Sair do detalhe e revisar a arquitetura do sistema.
+disable-model-invocation: true   # so EU invoco — a description NAO vaza
+---
+
+# Engineering zoom out
+1. Liste os modulos e suas responsabilidades.
+2. Aponte acoplamentos e dependencias circulares.
+3. Sugira 1 refator que reduz a complexidade do todo.</pre>
+</div>
+<p class="text-neutral-400 text-xs mt-3">Result: the skill remains available to <em>you</em> call; but the sentence from the <code>description</code> stopped taking up context at every step of the model.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> <code>disable model invocation: true</code> takes the description off the wall and puts the skill in a drawer — only you invoke it, and the context can breathe.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🎈 Instruction bloat</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> giving a new employee a 300-page manual on their first day, with rules for everything. They drown in the manual and forget today's task. A 1-page card with the 5 rules that matter works much better.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-6-t4-p1">Skills aren’t the only ones to blame. The <span class="termo" title="The permanent instructions file that the agent always loads.">CLAUDE.md</span> (or agents.md), the <span class="termo" title="Plugins that give the agent extra tools; each one describes its tools in context.">MCP servers</span> and the plugins also appear in the window. The <span class="termo" title="Bloat—filling the context with too much stuff.">bloat</span> is exactly this: too many instructions piled on top of each other. Pocock sums it up in a phrase that serves as a diagnosis: <em>"everyone bloats their context window with too much stuff."</em></p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-6-t4-p2">The reason it hurts: each <span class="termo" title="A unit of text the AI counts — ~4 letters.">token</span> of instruction is one less token for reasoning—and, worse, contradictory or irrelevant instructions <em>confuse</em> the model. A CLAUDE.md with 50 rules, 45 of which don’t apply to the current task, is noise. The common mistake is to “accumulate”: every time the AI makes a mistake, you add another rule. The manual grows, the results get worse, and you never remove anything. The right direction is the opposite—cut until it hurts and keep only what proves its value.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="An instruction balloon inflating and pushing out the reasoning space; cutting the bloat makes room again" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs><pattern height="32" id="v16d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v16d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v16d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker></defs>
+<rect fill="url(#v16d-grid)" height="210" width="1000" x="0" y="0"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="60" y="40">BLOAT</text>
+<circle cx="220" cy="120" fill="#1a0e12" r="78" stroke="#f87171" stroke-width="2.5"></circle>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="220" y="116">CLAUDE.md</text>
+<text fill="#fda4a4" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="220" y="136">+ 50 rules + MCP</text>
+<path d="M330,120 L470,120" fill="none" marker-end="url(#v16d-ah)" stroke="#34d399" stroke-width="2.5"></path>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="400" y="106">cut bloat</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" x="700" y="40">LEAN</text>
+<g filter="url(#v16d-glow)"><circle cx="760" cy="120" fill="#0e2018" r="44" stroke="#34d399" stroke-width="2.5"></circle></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="760" y="116">5 rules</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="760" y="135">that matter</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="760" y="185">+ room to think</text>
+</svg>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Lean context</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Only the skills you actually use.</li><li>• A short CLAUDE.md, with rules that always apply.</li><li>• Hide (in a drawer) what’s rarely used.</li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Bloated context</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Everything installed “just in case”.</li><li>• A new rule for every mistake, without ever removing any.</li><li>• MCP servers connected that you don’t even use.</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> bloat is too many instructions piled up—every manual token is one less token for reasoning.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">♻️ The radical reset (preview)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a garage cluttered with years of stuff. The best way to organize it isn’t to handle items one by one—it’s to <em>empty everything</em> in the backyard and only bring back what you actually use. You found out you didn't even need the rest.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-6-t5-p1">Pocock’s most radical recipe for slimming down is <strong class="text-emerald-400">two-step reset</strong> (you'll see it in full in Track 5). Step 1: <strong>delete everything</strong> — every skill, every plugin, every MCP server, your CLAUDE.md, agents.md → go back to “absolute zero” and <strong>observe</strong> the agent work in this basic mode. Its wording is direct: <em>"everyone bloats up their context window with too much stuff."</em> See what the AI does <em>without</em> nothing on top.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-6-t5-p2">Step 2: <strong>slowly layered back in</strong> — and that are <em>procedures</em> (you invoke), installed in a way that lets you customize and experiment. Bring only what you <strong>truly miss</strong> (e.g.: the superpowers brainstorming). The logic is like cleaning out a garage: after the reset, you don’t reinstall most of the skills you “thought were essential.” It’s the honest way to find out what was bloat. The common mistake is skipping step 1 — without clearing things out first, you never feel how cluttered it was.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The two-step reset: delete everything down to absolute zero, then add back only what’s needed" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs><pattern height="32" id="v16e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v16e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v16e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker></defs>
+<rect fill="url(#v16e-grid)" height="200" width="1000" x="0" y="0"></rect>
+<rect fill="#1a0e12" height="80" rx="14" stroke="#f87171" stroke-width="2" width="240" x="40" y="60"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="160" y="96">cluttered</text>
+<text fill="#fda4a4" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="160" y="118">skills + MCP + CLAUDE.md</text>
+<path d="M285,100 L375,100" fill="none" marker-end="url(#v16e-ah)" stroke="#34d399" stroke-width="2.5"></path>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="11.5" font-weight="600" text-anchor="middle" x="330" y="86">1 · delete</text>
+<g filter="url(#v16e-glow)"><rect fill="#0e2018" height="80" rx="14" stroke="#34d399" stroke-width="2.5" width="240" x="380" y="60"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="96">absolute zero</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="500" y="118">observe the agent</text>
+<path d="M625,100 L715,100" fill="none" marker-end="url(#v16e-ah)" stroke="#34d399" stroke-width="2.5"></path>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="11.5" font-weight="600" text-anchor="middle" x="670" y="86">2· recharge</text>
+<rect fill="#0e1b26" height="80" rx="14" stroke="#38bdf8" stroke-width="2" width="240" x="720" y="60"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="840" y="96">only what's missing</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="840" y="118">customizable procedures</text>
+</svg>
+</div>
+<img alt="Illustration: an emptied, clean garage, with a few glowing boxes being carefully brought back in" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-6-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> delete everything down to zero, observe the AI “bare,” and only add back what you truly miss.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-6#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🧼 Context hygiene</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> brushing your teeth. It’s not a one-time overhaul — it’s a small, steady habit that prevents a bigger problem. Context hygiene is the weekly maintenance that keeps the desk clean without needing a radical reset all the time.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-6-t6-p1">Wrapping up the module (and Track 1): the golden rule is <strong class="text-emerald-400">"each skill costs"</strong>. Treat the context window as a scarce resource that you actively manage. It’s not just about clearing it once — it’s a habit: audit what leaks in, tuck what’s rarely used away in a drawer with <code>disable model invocation</code>, cut the bloat from CLAUDE.md, and turn off MCP servers you don’t use. Below is the hygiene checklist—copy it and run it every week before starting a major task:</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">higiene-de-contexto.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">CHECKLIST — context window escasso ("cada skill cobra")
+[ ] SKILLS — quantas estao instaladas? Usei cada uma no ultimo mes?
+[ ] VAZAMENTO — quais descriptions estao vazando a toa? (some-as)
+[ ] GAVETA — as raras estao com `disable model invocation: true`?
+[ ] CLAUDE.md — toda regra ainda se aplica? Corte as que nao.
+[ ] MCP/PLUGINS — algum ligado que eu nao uso? Desligue.
+[ ] RADICAL — se ainda estiver inchado: delete tudo, observe, recame.
+Regra: cada item na janela e um item a menos de raciocinio.</pre>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Context hygiene cycle: audit, hide, cut, turn off — repeat" class="w-full h-auto" role="img" viewbox="0 0 1000 170">
+<defs><pattern height="32" id="v16f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v16f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v16f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker></defs>
+<rect fill="url(#v16f-grid)" height="170" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="50" rx="10" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="60"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="90">audit</text>
+<rect fill="#0e1b26" height="50" rx="10" stroke="#38bdf8" stroke-width="2" width="170" x="280" y="60"></rect><text fill="#bfe6ff" text-anchor="middle" x="365" y="90">hide</text>
+<rect fill="#0e1b26" height="50" rx="10" stroke="#38bdf8" stroke-width="2" width="170" x="520" y="60"></rect><text fill="#bfe6ff" text-anchor="middle" x="605" y="90">cut</text>
+</g>
+<g filter="url(#v16f-glow)"><rect fill="#0e2018" height="60" rx="12" stroke="#34d399" stroke-width="2.5" width="200" x="760" y="55"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="860" y="82">clean context</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="860" y="102">AI thinks better</text>
+<g fill="none" opacity="0.6" stroke="#34d399" stroke-width="2.2"><path d="M210,85 L280,85" marker-end="url(#v16f-ah)"></path><path d="M450,85 L520,85" marker-end="url(#v16f-ah)"></path><path d="M690,85 L760,85" marker-end="url(#v16f-ah)"></path></g>
+<path d="M860,115 C860,150 125,150 125,112" fill="none" marker-end="url(#v16f-ah)" opacity="0.4" stroke="#34d399" stroke-dasharray="5 5" stroke-width="1.6"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11.5" font-weight="400" text-anchor="middle" x="500" y="158">repeat it every week — it’s a habit, not a one-time overhaul</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-6#q2">
+<p class="font-medium mb-4">Quick retrieval: what is this module's motto about the context window?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">"The more skills, the better the AI."</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">"Every skill comes at a cost"—the context window is limited, so manage what goes into it.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">"A large window solves everything automatically."</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> context hygiene is the habit of keeping the window clean — every skill costs tokens, so only pay for what you use.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Context window is finite</strong><span class="text-neutral-400"> — the AI's "desk," measured in tokens; everything added takes up space.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Every skill leaks its description</strong><span class="text-neutral-400"> — 100 skills = 100 descriptions in context, whether used or not.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">disable model invocation</strong><span class="text-neutral-400"> — keep the skill tucked away: only you invoke it, and the description doesn't leak.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Cut the bloat and clean things up</strong><span class="text-neutral-400"> — at the limit, the radical reset: delete everything, observe, re-add only what's missing.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">You completed Track 1! Next track:</h3><p class="text-neutral-300">Track 2 — Human Skills: what <em>you</em> need to master to get the most out of the harness (AI has already taken over the tactical work; move up to the strategic level).</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="../trilha2/index.html">Track 2: Human Skills →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-1-6#q1', { answer: 1, explain: { 0: 'Não — a IA não executa todas; o custo é só a description de cada uma ficar visível.', 1: 'Isso! A description precisa ficar visível pra o modelo poder escolher — então todas vazam, usadas ou não.', 2: 'Não é custo de download; é custo de contexto (tokens ocupados toda vez).' } });
+        INEMA.registerCheck('modulo-1-6#q2', { answer: 1, explain: { 0: 'Ao contrário — mais skills incham o contexto e pioram o raciocínio.', 1: 'Exato. "Cada skill cobra": a janela é escassa, gerencie o que entra nela.', 2: 'Janela grande não vira qualidade; contexto inchado confunde o modelo.' } });
+      }
+    });
+  </script>
+</body>
+</html>

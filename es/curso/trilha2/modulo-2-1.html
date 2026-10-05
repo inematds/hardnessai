@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>2.1 Táctico × Estratégico | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'blue' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'blue');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-emerald-400 { color: #047857; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha2/modulo-2-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha2/modulo-2-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha2/modulo-2-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Ruta 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.1 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.1 · HABILIDADES HUMANAS</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">♟️ Táctico × Estratégico</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">La IA <strong class="text-blue-400">"se comió" la programación táctica</strong> — escribir código línea por línea ya no es donde está tu valor. Tu turno es subir un nivel: pensar como el <strong class="text-blue-400">general en la parte superior</strong> que gana la guerra, no la batalla. Basado en John Ousterhout, <em>"A Philosophy of Software Design"</em>. Cada término se explica en el momento.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Cero</div><div class="text-xs text-neutral-400">Prerequisito</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Teoría</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 2.1" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-1" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Ousterhout y los dos modos</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. Programación táctica</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Programación estratégica</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. Por qué la IA dominó lo táctico</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Subir de nivel</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. El general en la cima</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-blue-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-blue-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">La Trilha 1 ya estableció el vocabulario básico (modelo, prompt, agente, skill, harness). Aquí, en la <strong>Ruta 2 — Habilidades Humanas</strong> aquí entran los términos NUEVOS de este módulo. Fija estos antes de seguir:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Programación táctica</strong> — el trabajo del día a día, línea por línea: escribir código, modificar la sintaxis, encontrar errores, hacer <em>commits</em>. Ganar la <strong>batalla</strong> (la tarea de ahora).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Programación estratégica</strong> — pensar a largo plazo: cómo el codebase <em>debería</em> ser, qué decisiones aumentan la velocidad del equipo. Ganar la <strong>guerra</strong>, no solo la batalla.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Ousterhout</strong> — John Ousterhout, profesor de Stanford y autor del libro <em>"A Philosophy of Software Design"</em>, de dónde viene la distinción entre táctico y estratégico que usa Matt Pocock.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Sintaxis</strong> — las reglas «gramaticales» del lenguaje: punto y coma, paréntesis, nombre correcto de la función. Es el aspecto más mecánico del código.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Commit</strong> — un «guardado» de tu trabajo en el historial del proyecto (en Git), con un mensaje que indica qué cambió. Lo básico de lo táctico.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Delegar</strong> — asignarle una tarea a otra persona (o a la IA) para que la ejecute, mientras tú sigues al mando de las decisiones.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">📚 Ousterhout y los dos modos</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un ejército tiene dos tipos de personas. El <em>soldado</em> aprieta el gatillo en plena batalla — acción inmediata, sobre el terreno. El <em>general</em> se queda en la cima de la colina decidiendo dónde atacar, cómo posicionar todo para ganar la guerra. Programar tiene exactamente esos dos modos.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t1-p1">Antes de hablar de IA, necesitamos una regla de referencia. Matt Pocock la toma prestada de <span class="termo" title="John Ousterhout — profesor de Stanford, autor de 'A Philosophy of Software Design'.">John Ousterhout</span>, profesor de Stanford y autor de <em>"A Philosophy of Software Design"</em>. En el libro, separa el trabajo de programar en dos modos muy diferentes: <strong class="text-blue-400">programación táctica</strong> e <strong class="text-blue-400">programación estratégica</strong>. No son «niveles de habilidad», son <em>maneras de pensar</em> sobre lo que estás haciendo ahora.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t1-p2">La diferencia, en la imagen del propio Pocock: el <span class="termo" title="Trabajo del día a día, línea por línea: código, sintaxis, errores, commits.">táctico</span> es «ganar la batalla»: el día a día de escribir <span class="termo" title="Las reglas gramaticales del lenguaje: puntuación, paréntesis, nombres.">sintaxis</span>, encontrar bugs, hacer <span class="termo" title="Un guardado del trabajo en el historial de Git.">commits</span>. O <span class="termo" title="Pensamiento a largo plazo: cómo debería ser el codebase y qué estrategias aumentan la velocidad.">estratégico</span> es «ganar la guerra»: es el <em>general en la parte superior</em> pensando en cómo debe ser el codebase y qué estrategias aumentan la velocidad a largo plazo. El <strong>porqué</strong> de que esto se haya vuelto tema ahora: la IA cambió radicalmente quién hace cada modo. Un <strong>error común</strong> es tratar ambas cosas como si fueran lo mismo ("todo es programar"): requieren enfoques distintos.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dos modos: táctico (la batalla, en el campo) y estratégico (la guerra, el general en lo alto de la colina)" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v21a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v21a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v21a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v21a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="170" rx="16" stroke="#38bdf8" stroke-width="2" width="430" x="40" y="40"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="17" font-weight="700" x="64" y="72">TÁCTICO — ganar la batalla</text>
+<g fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13">
+<text x="64" y="104">• escribir código línea por línea</text>
+<text x="64" y="130">• ajustar la sintaxis</text>
+<text x="64" y="156">• encontrar bugs</text>
+<text x="64" y="182">• hacer commits</text>
+</g>
+<g filter="url(#v21a-glow)"><rect fill="#0e1622" height="170" rx="16" stroke="url(#v21a-grad)" stroke-width="2.5" width="430" x="530" y="40"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="17" font-weight="700" x="554" y="72">ESTRATÉGICO — ganar la guerra</text>
+<g fill="#9fc2f7" font-family="Inter,sans-serif" font-size="13">
+<text x="554" y="104">• cómo debe ser el codebase</text>
+<text x="554" y="130">• decisiones a largo plazo</text>
+<text x="554" y="156">• lo que aumenta la velocidad</text>
+<text x="554" y="182">• el general en la cima de la colina</text>
+</g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Dos modos de pensar, no dos niveles. La IA cambió quién hace cada lado.</p>
+</div>
+<img alt="Ilustración conceptual: a la izquierda, soldados en el campo de batalla (táctico); a la derecha, un general en la cima de una colina que observa el mapa (estratégico)" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-1-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Creer que «saber programar» = «escribir código rápido». Ese es solo el lado táctico. Quien solo entrena lo táctico es fácil de reemplazar: justamente el lado que la IA ya hace mejor que tú.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> táctico = ganar la batalla (el código de hoy); estratégico = ganar la guerra (el sistema del mañana).</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-blue-400">Profundiza (opcional): ¿por qué Ousterhout y no otro autor?</summary>
+<p class="text-sm text-neutral-300 mt-3">"A Philosophy of Software Design" es breve, práctico y se escribió mucho antes del auge de la IA — por eso separa lo táctico × lo estratégico como <em>principios de diseño</em>, no como una moda. A Pocock le gusta citarlo precisamente porque es un fundamento "que funciona desde hace 30-40 años" (la tesis de la Trilha 1): cuando te basas en el fundamento correcto, la llegada de la IA solo cambia <em>quien ejecuta</em>, no <em>lo que importa</em>.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⌨️ Programación táctica</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> es el albañil que coloca ladrillos uno por uno. Trabajo real, necesario y visible, pero no decide dónde va la casa ni cuántas habitaciones tendrá. Construye la pared que le encargaron.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t2-p1">A <span class="termo" title="Trabajo del día a día, línea por línea: escribir código, sintaxis, errores, commits.">programación táctica</span> es el trabajo que tú <em>ve</em> ocurriendo: abrir el editor y escribir las líneas, recordar dónde va el paréntesis, ejecutar el programa, ver que falla, buscar el bug, corregirlo y guardar con un <span class="termo" title="Guardado del trabajo en el historial de Git, con un mensaje sobre lo que cambió.">commit</span>. Es el «piso de fábrica» del software. Durante décadas, fue <em>aquí</em> que la mayoría de los programadores pasaba el 80% del tiempo, y aquí se medía "quién programa bien".</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t2-p2">Es un trabajo honesto e indispensable: sin lo táctico, nada funciona. Pero tiene una característica peligrosa: es <strong>mecánico y estandarizable</strong>. Casi todas las tareas tácticas ya fueron realizadas millones de veces por alguien: crear un endpoint, validar un formulario, escribir un bucle. Por eso <strong>porqué</strong> importa: todo lo que es repetible y está bien definido es exactamente el tipo de cosa que las máquinas aprenden a hacer. El <strong>error común</strong> es confundir «estoy ocupado escribiendo» con «estoy creando valor»: escribir mucho puede ocultar que tomas pocas decisiones.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El loop táctico: escribir, ejecutar, falló, encontrar el bug, corregir, commit y repetir" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<pattern height="32" id="v21b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v21b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#v21b-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="107">escribir</text>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="150" x="240" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="315" y="107">ejecutar</text>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="150" x="440" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="515" y="107">encontrar el bug</text>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="150" x="640" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="715" y="107">corregir</text>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="120" x="840" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="900" y="107">commit</text>
+</g>
+<g fill="none" opacity="0.7" stroke="#38bdf8" stroke-width="2">
+<path d="M190,102 L240,102" marker-end="url(#v21b-ah)"></path>
+<path d="M390,102 L440,102" marker-end="url(#v21b-ah)"></path>
+<path d="M590,102 L640,102" marker-end="url(#v21b-ah)"></path>
+<path d="M790,102 L840,102" marker-end="url(#v21b-ah)"></path>
+<path d="M900,124 C900,170 115,170 115,124" marker-end="url(#v21b-ah)"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="190">Un loop repetible y bien definido: exactamente lo que una máquina aprende rápido.</text>
+</svg>
+</div>
+<img alt="Ilustración: teclado y líneas de código que fluyen, como representación del trabajo táctico y mecánico del día a día" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-1-2.png"/>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-1#q1">
+<p class="font-medium mb-4">Recuperación rápida: cuál de estos es trabajo <strong>táctico</strong>?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Decidir cómo debe organizarse todo el codebase durante los próximos 2 años.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Corregir un bug de sintaxis y hacer el commit de la corrección.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Elegir qué funcionalidades entran en el producto.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> lo táctico es «colocar ladrillos» en el software: necesario, pero repetible y fácil de automatizar.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🗺️ Programación estratégica</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> el arquitecto de la casa. No coloca ni un ladrillo, pero decide dónde van los cimientos, cómo se conectan las habitaciones y por dónde pasan las tuberías. Una decisión equivocada suya cuesta 1000 ladrillos para hacer reparaciones después.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t3-p1">A <span class="termo" title="Pensamiento a largo plazo sobre el sistema: cómo debería ser el codebase y qué estrategias aumentan la velocidad.">programación estratégica</span> es lo opuesto a «está escribiendo». Es pensar <em>antes</em> e <em>alrededor</em> del código: cómo el <span class="termo" title="El conjunto de archivos del proyecto: el terreno donde trabajan el agente y el equipo.">codebase</span> debe estar estructurado, cuáles <span class="termo" title="El punto de contacto entre dos módulos — cómo se comunica una parte con la otra.">interfaces</span> conectan las partes, qué decisiones de hoy acelerarán (o frenarán) al equipo dentro de un año. En palabras de Pocock, es "ganar la guerra, no la batalla": el trabajo de <strong>general en la parte superior</strong>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t3-p2">Para Ousterhout, lo estratégico implica <strong>dibujar las partes difíciles antes</strong>, definir bien el alcance de cada tarea, pensar en las interfaces entre módulos, planificar pruebas y escenarios, y diseñar un codebase fácil de trabajar. El <strong>porqué</strong> de que esto sea poco común: puedes «entregar» sin hacer nada de esto; basta con enviar código táctico que funciona hoy. El precio llega después, en forma de <span class="termo" title="El costo acumulado de los atajos de diseño: código que se vuelve caro de cambiar.">deuda técnica</span>. O <strong>error común</strong> es posponer lo estratégico «para cuando tengas tiempo»: ese momento nunca llega y el codebase se deteriora.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Los cinco frentes del trabajo estratégico convergen en un codebase fácil de evolucionar" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v21c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v21c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v21c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v21c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v21c-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="220" x="30" y="18"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="38">dibujar las partes difíciles</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="220" x="30" y="58"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="78">definir bien el alcance de las tareas</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="220" x="30" y="98"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="118">interfaces entre módulos</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="220" x="30" y="138"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="158">pruebas y escenarios</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="220" x="30" y="178"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="198">documentación que apunta</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#60a5fa" stroke-width="1.8">
+<path d="M250,33 C480,33 540,100 660,108" marker-end="url(#v21c-ah)"></path>
+<path d="M250,73 C480,73 560,100 660,110" marker-end="url(#v21c-ah)"></path>
+<path d="M250,113 C480,113 560,110 660,112" marker-end="url(#v21c-ah)"></path>
+<path d="M250,153 C480,153 560,120 660,114" marker-end="url(#v21c-ah)"></path>
+<path d="M250,193 C480,193 540,120 660,116" marker-end="url(#v21c-ah)"></path>
+</g>
+<g filter="url(#v21c-glow)"><rect fill="#0e1622" height="68" rx="16" stroke="url(#v21c-grad)" stroke-width="2.5" width="310" x="660" y="78"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="815" y="108">codebase fácil de evolucionar</text>
+<text fill="#9fc2f7" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="815" y="130">= la guerra ganada</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: la misma feature, dos modos</h3>
+<p class="text-neutral-300 text-sm mb-3">Tarea: "agregar pagos con tarjeta". Mira la diferencia entre solo táctico y estratégico:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Solo táctico</p><p class="text-xs text-neutral-300">Llama a la API de pago directamente desde la pantalla del carrito, copia el código de validación de otro lugar, haz el commit. Funciona hoy. → Cuando lleguen Pix, boleto y suscripción, cada uno será otro parche pegado a la pantalla. Se convierte en un laberinto.</p></div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">Primero lo estratégico</p><p class="text-xs text-neutral-300">Diseña una <em>interfaz</em> "MedioDePagamento" con un contrato claro; tarjeta es la primera implementación; escribe pruebas del contrato. → Pix y boleto se incorporan implementando la misma interfaz. La IA ejecuta cada uno por su cuenta, siguiendo el modelo.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> lo estratégico es diseñar el terreno para que cada feature futura (tuya o de la IA) sea fácil de integrar.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🤖 Por qué la IA dominó lo táctico</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la caja registradora «se comió» la cuenta mental del cajero. Ya nadie contrata a alguien por sumar rápido. El valor migró a quienes deciden el precio, la vitrina y qué vender. La IA hizo eso con lo táctico.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-1-t4-p1">Aquí está la frase que da nombre al módulo. Matt Pocock es directo: <em>"AI has basically eaten tactical programming. It's gone."</em> — básicamente, la IA <strong>"se comió" la programación táctica</strong>, se acabó. No en el sentido de que lo táctico ya no exista, sino en el sentido de que <strong>ya no es donde está tu valor</strong>: la IA se encarga de lo táctico <em>mejor y más barato</em> que tú. ¿Recuerdas el tema 2? Lo táctico es repetible y está bien definido — y es exactamente en eso en lo que un <span class="termo" title="La inteligencia en sí: un modelo de lenguaje como Claude/GPT/Gemini.">modelo</span> de lenguaje brilla.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t4-p2">La consecuencia práctica es contundente: ahora tienes acceso a una <strong>"flota infinita de programadores tácticos"</strong> que trabajan 24h, no se cansan y cuestan centavos. Pero —y aquí está el punto— una flota solo vale lo que vale quien la dirige. El <strong>porqué</strong> de que esto te impulse a avanzar: si lo táctico se volvió barato y abundante, el cuello de botella pasó a ser el <strong>estratégico</strong>. O <strong>error común</strong> es seguir compitiendo en lo táctico («voy a escribir más rápido que la IA»): es una carrera que pierdes contra alguien que no duerme.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El trabajo táctico absorbido por la IA: una flota de agentes tácticos comandada por un único humano estratégico" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v21d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v21d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v21d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v21d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v21d-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g filter="url(#v21d-glow)"><rect fill="#0e1622" height="62" rx="14" stroke="url(#v21d-grad)" stroke-width="2.5" width="220" x="60" y="80"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="170" y="108">TÚ</text>
+<text fill="#9fc2f7" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="170" y="128">lo estratégico</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1b26" height="36" rx="9" stroke="#38bdf8" stroke-width="2" width="300" x="640" y="20"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="43">agente táctico · escribe código</text>
+<rect fill="#0e1b26" height="36" rx="9" stroke="#38bdf8" stroke-width="2" width="300" x="640" y="66"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="89">agente táctico · corrige bugs</text>
+<rect fill="#0e1b26" height="36" rx="9" stroke="#38bdf8" stroke-width="2" width="300" x="640" y="112"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="135">agente táctico · hace commits</text>
+<rect fill="#0e1b26" height="36" rx="9" stroke="#38bdf8" stroke-width="2" width="300" x="640" y="158"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="181">agente táctico · escribe pruebas</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#60a5fa" stroke-width="1.8">
+<path d="M280,100 C460,70 540,40 640,38" marker-end="url(#v21d-ah)"></path>
+<path d="M280,108 C460,100 560,84 640,84" marker-end="url(#v21d-ah)"></path>
+<path d="M280,116 C460,128 560,128 640,130" marker-end="url(#v21d-ah)"></path>
+<path d="M280,124 C460,158 540,174 640,176" marker-end="url(#v21d-ah)"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="455" y="210">Una flota infinita de tácticos — comandada por un único estratega.</text>
+</svg>
+</div>
+<img alt="Ilustración: una figura humana al mando que dirige una flota de agentes de IA mientras ejecutan tareas tácticas" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-1-3.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común</h3>
+<p class="text-neutral-300 text-sm">"Si la IA hace lo táctico, ya no necesito entender el código." Es un error: aún necesitas <em>leer</em> e <em>juzgar</em> el táctico para comandar la flota. Lo que cambia es que detenerse en lo táctico dejó de ser suficiente — no que haya dejado de importar.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la IA se encargó de lo táctico — así que todo tu valor migró a lo estratégico.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🧗 Subir de nivel</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> el mejor cocinero de la cocina se convierte en chef. Sigue sabiendo cortar y freír, pero ahora su valor está en el menú, la brigada y el estándar de cada plato. Quien solo se queda con el cuchillo nunca abre un restaurante.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t5-p1">Si lo táctico ya se absorbió, la jugada es <strong>subir de nivel</strong>: empezar a operar en el plano estratégico. Pocock deja claro que <em>"la programación estratégica no cambió con la IA"</em> — los fundamentos para diseñar bien un sistema siguen siendo los mismos de siempre. Lo que cambió fue <strong>para quien delegas lo táctico</strong>: antes les pasabas las tareas mecánicas a <span class="termo" title="Programador principiante/intermedio a quien se delegaba el trabajo táctico.">juniors y mid-levels</span>; ahora tú <span class="termo" title="Pasarle la tarea a otra persona para que la ejecute, manteniendo el control de las decisiones.">delega</span> para la IA. El <strong>porqué</strong> de que esto sea liberador: pasas menos tiempo escribiendo y más tiempo decidiendo, que es donde se forma el resultado real. El <strong>error común</strong> es «subir de nivel» solo en la tarjeta de presentación (convertirte en «líder») sin soltar nunca lo táctico en la práctica; así te conviertes en un cuello de botella que revisa cada línea. Subir de verdad es <em>confiar la ejecución</em> y enfocarte en el diseño.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Una escalera de tres peldaños: escribir código, revisar la IA, diseñar el sistema — subiendo de lo táctico a lo estratégico" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v21e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v21e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v21e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v21e-grid)" height="220" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="270" x="60" y="150"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="195" y="178">1 · escribir lo táctico (la IA ya lo hace)</text>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="270" x="360" y="100"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="495" y="128">2 · leer y evaluar la IA</text>
+<g filter="url(#v21e-glow)"><rect fill="#0e1622" height="48" rx="12" stroke="url(#v21e-grad)" stroke-width="2.5" width="280" x="660" y="46"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="800" y="76">3 · diseñar el sistema</text>
+<g fill="none" opacity="0.65" stroke="#60a5fa" stroke-linecap="round" stroke-width="2.4">
+<path d="M195,150 L195,128 L360,128"></path>
+<path d="M495,100 L495,82 L660,82"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="212">Subir de nivel es soltar el escalón de abajo, no acumular los tres.</text>
+</svg>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6"><h4 class="font-bold text-blue-400 mb-4">✓ Subir de nivel</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Diseñar interfaces y alcance antes de programar.</li><li>• Delegar lo táctico a la IA y revisar con criterio.</li><li>• Pasar el tiempo libre pensando en el sistema.</li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Quedarse atascado en lo táctico</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Competir con la IA en velocidad al escribir.</li><li>• Reescribir a mano lo que la IA ya entregó.</li><li>• Posponer el diseño "para cuando tenga tiempo".</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> lo estratégico no cambió: solo cambió el «junior» por la IA; ahora te toca convertirte en quien marca el rumbo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-1#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎖️ El general en la cima</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> el general no dispara el cañón: decide hacia dónde apunta. Si baja a disparar, nadie dirige el ejército. Tu lugar está en la cima de la colina, leyendo el mapa completo.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-1-t6-p1">Al cerrar el módulo: la metáfora del <strong class="text-blue-400">general en la parte superior</strong> es el resumen de todo. La IA es tu tropa táctica; tú eres el general estratégico. Para delegar bien a esta tropa —el tema de toda la Trilha 2—, Pocock presenta la lista de Ousterhout: <em>dibujar las partes difíciles primero, definir muy bien el alcance de las tareas, pensar en las interfaces entre módulos, pensar en pruebas y escenarios, y tener documentación suficiente para orientar a la IA hacia los lugares correctos</em>. Antes de «dejar que la IA programe», ejecuta la lista de verificación de abajo: es el resumen práctico de este módulo. Cópiala y pégala cuando delegues una tarea:</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">checklist-do-general.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de mandar a IA codar, pense como GENERAL (estratégico):
+[ ] PARTES DIFÍCEIS — qual é o pedaço arriscado? Desenhei ele na frente?
+[ ] ESCOPO — a tarefa está nítida e fechada, ou está vaga demais?
+[ ] INTERFACES — como este módulo conversa com os outros? Defini o contrato?
+[ ] TESTES — quais cenários provam que ficou certo (inclusive os de borda)?
+[ ] DOCUMENTAÇÃO — apontei a IA pros arquivos/padrões certos do projeto?
+Se respondeu tudo, o tático (a IA) é só execução. Você ganhou a guerra.</pre>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Pirámide de mando: el general estratégico en la cima, la flota táctica de IA en la base ejecutando" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="v21f-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v21f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v21f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v21f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v21f-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g filter="url(#v21f-glow)"><path d="M500,28 L590,96 L410,96 Z" fill="#0e1622" stroke="url(#v21f-grad)" stroke-width="2.5"></path></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="74">GENERAL</text>
+<text fill="#9fc2f7" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="118">tú · estratégico</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="120" y="148"></rect><text fill="#bfe6ff" text-anchor="middle" x="210" y="170">IA táctica</text>
+<rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="320" y="148"></rect><text fill="#bfe6ff" text-anchor="middle" x="410" y="170">IA táctica</text>
+<rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="520" y="148"></rect><text fill="#bfe6ff" text-anchor="middle" x="610" y="170">IA táctica</text>
+<rect fill="#0e1b26" height="34" rx="9" stroke="#38bdf8" stroke-width="2" width="180" x="720" y="148"></rect><text fill="#bfe6ff" text-anchor="middle" x="810" y="170">IA táctica</text>
+</g>
+<g fill="none" opacity="0.55" stroke="#60a5fa" stroke-width="1.8">
+<path d="M470,96 C360,120 250,130 210,146" marker-end="url(#v21f-ah)"></path>
+<path d="M490,96 C460,120 420,130 410,146" marker-end="url(#v21f-ah)"></path>
+<path d="M510,96 C540,120 580,130 610,146" marker-end="url(#v21f-ah)"></path>
+<path d="M530,96 C640,120 760,130 810,146" marker-end="url(#v21f-ah)"></path>
+</g>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-1#q2">
+<p class="font-medium mb-4">Recuperación rápida: ¿qué quiere decir Pocock con «la IA se comió lo táctico»?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">El trabajo táctico dejó de existir; nadie más escribe código.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">La IA hace el trabajo táctico mejor y más barato, así que tu valor migró a lo estratégico (el general).</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">La IA solo hace lo estratégico; lo táctico todavía es todo tuyo.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> tu lugar está en la cima de la colina: define la guerra y deja que la tropa táctica (la IA) gane las batallas.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Dos modos (Ousterhout)</strong><span class="text-neutral-400"> — táctico = ganar la batalla (el código de hoy); estratégico = ganar la guerra (el sistema).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">La IA se comió lo táctico</strong><span class="text-neutral-400"> — lo hace mejor y más barato; tienes una flota infinita de tácticos.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Sube de nivel</strong><span class="text-neutral-400"> — lo estratégico no cambió; solo se reemplazó al «júnior» por la IA. Pasa al diseño.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Sé el general en la cima</strong><span class="text-neutral-400"> — las partes difíciles, el alcance, las interfaces, las pruebas y la documentación. Después, delega.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">2.2 — Tus skills son el techo: por qué eres el multiplicador de la IA y cómo el sénior gana 10x.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-2.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-2-1#q1', { answer: 1, explain: { 0: 'Isso é estratégico — decisão de longo prazo sobre o sistema.', 1: 'Isso! Corrigir sintaxe e commitar é o dia-a-dia tático.', 2: 'Escolher features é decisão de produto/estratégica, não tática.' } });
+        INEMA.registerCheck('modulo-2-1#q2', { answer: 1, explain: { 0: 'Não — o tático ainda existe; só deixou de ser onde está o seu valor.', 1: 'Exato! A IA faz o tático barato e bem; você sobe pro estratégico.', 2: 'Ao contrário: a IA é forte no tático; o estratégico é o seu lado.' } });
+      }
+    });
+  </script>
+</body>
+</html>

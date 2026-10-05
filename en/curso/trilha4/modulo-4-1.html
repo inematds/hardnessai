@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>4.1 Human-in-the-loop × AFK | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'amber' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'amber');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #fbbf24; cursor: help; font-weight: 600; color: #fcd34d; }
+    html:not(.dark) .termo { color: #92400e; border-color: #d97706; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217,119,6,0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217,119,6,0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217,119,6,0.18); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha4/modulo-4-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha4/modulo-4-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha4/modulo-4-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-4-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha4/modulo-4-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Track 4</a><span>/</span>
+<span class="text-amber-400">Module 4.1 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MODULE 4.1 · "TEACHING MODE"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🕹️ Human-in-the-loop × AFK</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">There are two ways to work with an agent: <strong class="text-amber-400">alongside it</strong>, approving each step, or <strong class="text-amber-400">away from the keyboard</strong>, letting it go on its own. Matt Pocock says discovering the second approach was the moment he “really got into” programming with AI. Here you’ll understand both, when to use each, and how to become “two, three, four of you.”</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">T1-T3</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Practice</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 4.1 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:4-1" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-1">1. Human-in-the-loop</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-2">2. What AFK means</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-3">3. Unlocking AFK</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-4">4. When you get stuck in a loop</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-5">5. Permissions and friction</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-6">6. Two, Three, Four of You</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-amber-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">This is the learning path <strong>Advanced</strong>. You already know model, agent, skill, and harness (Track 1). Here are the new terms about <em>how you position yourself</em> in relation to the agent—memorize these:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Human-in-the-loop</strong> — "human in the loop": you stay <em>together</em> of the agent, inside the loop, approving or correcting each important step before it moves on. This is the mode for when you plan or work through something difficult together.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">AFK</strong> — <em>Away From Keyboard</em> ("away from the keyboard"). You start the agent on a well-defined task and <strong>comes out</strong>: it works on its own until it’s done, without asking you to approve every step.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Loop (cycle)</strong> — the agent's work cycle: it takes one step, you look, it takes the next. "Being in the loop" means taking part in that step-by-step cycle.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Permissions</strong> — what you authorize the agent to do on its own (edit files, run commands, install things) <em>without asking</em>. More permissions mean less friction, but more risk.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Friction</strong> — every time the agent stops and asks “can I do this?”. Each pause keeps you tied to the keyboard. AFK = reduce friction to almost zero.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Parallelize</strong> — run <em>several</em> agents at the same time, each on a task. That’s what turns into “two, three, four of you” working in parallel.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-4-1#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🤝 Human-in-the-loop</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you’re teaching someone to drive. At first, you sit in the passenger seat with your foot near the brake: at every turn, you check, comment, and correct. You are <em>inside</em> of the process, together, ready to step in. This is the "human in the loop" mode.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-1-t1-p1">When you use an AI agent to code, the most common approach—and the one every beginner tries first—is the <span class="termo" title="Human in the loop: you follow the agent step by step, approving each action before it proceeds.">human-in-the-loop</span> (human in the loop). You stay <strong>together</strong> of the agent: it proposes a change, you read it, approve or correct it; it runs a command, you confirm; it edits a file, you review it. You’re part of the <span class="termo" title="The agent’s work cycle—one step, you check, next step.">loop</span> of execution, in charge the whole time.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-1-t1-p2">This mode is <strong>right</strong> at many points—it’s not “wrong,” it’s one of the two gears. Pocock is clear about when it makes sense: <em>planning, complex implementations, and unscoped work</em> (that is, when it’s not yet clear exactly what to do). In those moments, you want to be there, giving direction, because the agent still doesn’t have what it needs to get it right on its own. The <strong class="text-amber-400">reason</strong> is simple: while the task is ambiguous, your presence in the loop is what keeps the agent from confidently building the wrong thing. The <strong>common mistake</strong> is the opposite: staying in the loop <em>for everything</em>, including well-defined, repetitive tasks—you become the bottleneck in your own work.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Human-in-the-loop cycle: agent proposes a step, human approves or corrects it, agent continues, repeating in a closed loop" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v41a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v41a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v41a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v41a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v41a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="64" rx="14" stroke="#38bdf8" stroke-width="2" width="220" x="80" y="95"></rect><text fill="#bfe6ff" font-size="15" font-weight="600" text-anchor="middle" x="190" y="123">AGENT</text><text fill="#9ad6ff" font-size="12" text-anchor="middle" x="190" y="144">suggests 1 step</text>
+<g filter="url(#v41a-glow)"><rect fill="#1f1604" height="64" rx="14" stroke="url(#v41a-grad)" stroke-width="2.5" width="220" x="700" y="95"></rect></g><text fill="#fbbf24" font-size="15" font-weight="700" text-anchor="middle" x="810" y="123">YOU</text><text fill="#fcd34d" font-size="12" text-anchor="middle" x="810" y="144">approves or corrects</text>
+<path d="M300,118 C460,90 540,90 700,118" fill="none" marker-end="url(#v41a-ah)" opacity="0.7" stroke="#fbbf24" stroke-width="2"></path>
+<path d="M700,140 C540,170 460,170 300,140" fill="none" marker-end="url(#v41a-ah)" opacity="0.7" stroke="#38bdf8" stroke-width="2"></path>
+<text fill="#fcd34d" font-size="13" text-anchor="middle" x="500" y="72">you in the loop, the whole time</text>
+<text fill="#9ca3af" font-size="12.5" text-anchor="middle" x="500" y="200">Good for: planning · complex tasks · work that hasn't been scoped yet</text>
+</g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">With a human in the loop, each step passes by you before the agent continues.</p>
+</div>
+<img alt="Conceptual illustration: a person beside an AI agent, reviewing every step of the work on a dashboard" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-1-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Think that human-in-the-loop is "the safe and only way" to work. It's necessary when things are uncertain — but if you never leave the loop, your speed is capped by how fast you click to approve. You never reap the agent's real advantage.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> human-in-the-loop is you in the passenger seat, approving every turn — essential when the road ahead is still unclear.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Going deeper (optional): why "loop"?</summary>
+<p class="text-sm text-neutral-300 mt-3">An agent works in <em>cycles</em>: it thinks, acts (edits a file, runs a test), observes the result, and repeats—that’s the agent’s “loop.” “Human in the loop” literally means inserting you into that cycle as one more check between “act” and “repeat.” “AFK” is the same loop running <em>without</em> this human step. The advanced question isn’t "loop or no loop," but "how much of you does the loop need?"</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-4-1#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🛰️ What AFK is</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> back to driving — the time comes when you get out of the car, give them the address, and let them go get the bread on their own. You don't follow every traffic light. You give them a task <em>clear</em> and go do something else. When you come back, the bread is on the table.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-1-t2-p1"><span class="termo" title="Away From Keyboard—away from the keyboard. You launch the agent on a defined task and step away; it works on its own until it’s done.">AFK</span> means <em>Away From Keyboard</em> — "away from keyboard." It's the opposite of human-in-the-loop: instead of approving each step, you <strong>launches the agent on a specific task and goes away</strong>. As Pocock describes it, AFK <em>"remove yourself from the equation"</em>: the agent takes the task and simply does it from start to finish without interrupting you.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-1-t2-p2">The condition for this to work is for the task to be <strong>well-scoped</strong> — defined well enough that it doesn’t need you in the middle. That’s why he says he doesn’t think so much about “running it as an infinite loop,” but rather about <em>"I just need the agent to pick up a specific task AFK and do it"</em>. O <strong class="text-amber-400">reason</strong> of AFK being so powerful: while the agent works without you, your time is free—for planning the next thing, reviewing something else, or launching <em>another</em> agent. The <strong>common mistake</strong> is trying to send a vague task AFK ("improve the app"): without scope, the agent wanders, and you only discover the damage when you get back. AFK isn’t magic — Pocock warns that <em>"takes a little work to set up, but then it goes a long way"</em>.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="AFK timeline: you launch the agent, step away from the keyboard and do something else, the agent works on its own, and when you return the task is done" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v41b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v41b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v41b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v41b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#v41b-grid)" height="240" width="1000" x="0" y="0"></rect>
+<line marker-end="url(#v41b-ah)" opacity="0.5" stroke="#38bdf8" stroke-width="2" x1="60" x2="940" y1="120" y2="120"></line>
+<g font-family="Inter,sans-serif">
+<g filter="url(#v41b-glow)"><rect fill="#1f1604" height="56" rx="12" stroke="url(#v41b-grad)" stroke-width="2.5" width="190" x="70" y="60"></rect></g><text fill="#fbbf24" font-size="14" font-weight="700" text-anchor="middle" x="165" y="84">1 · you trigger</text><text fill="#fcd34d" font-size="11.5" text-anchor="middle" x="165" y="103">well-scoped task</text>
+<rect fill="#0e1b26" height="56" rx="12" stroke="#38bdf8" stroke-width="2" width="190" x="300" y="60"></rect><text fill="#bfe6ff" font-size="14" font-weight="600" text-anchor="middle" x="395" y="84">2 · you leave</text><text fill="#9ad6ff" font-size="11.5" text-anchor="middle" x="395" y="103">does something else</text>
+<rect fill="#0e1b26" height="56" rx="12" stroke="#38bdf8" stroke-width="2" width="190" x="530" y="60"></rect><text fill="#bfe6ff" font-size="14" font-weight="600" text-anchor="middle" x="625" y="84">3 · agent works</text><text fill="#9ad6ff" font-size="11.5" text-anchor="middle" x="625" y="103">on its own, without pinging you</text>
+<g filter="url(#v41b-glow)"><rect fill="#1f1604" height="56" rx="12" stroke="url(#v41b-grad)" stroke-width="2.5" width="190" x="760" y="60"></rect></g><text fill="#fbbf24" font-size="14" font-weight="700" text-anchor="middle" x="855" y="84">4 · you come back</text><text fill="#fcd34d" font-size="11.5" text-anchor="middle" x="855" y="103">task ready</text>
+<circle cx="165" cy="160" fill="#fbbf24" r="6"></circle><circle cx="855" cy="160" fill="#fbbf24" r="6"></circle>
+<text fill="#9ca3af" font-size="13" text-anchor="middle" x="510" y="185">"AFK removes you from the equation"—you only touch the amber points.</text>
+</g>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-1#q1">
+<p class="font-medium mb-4">Quick recall: what does AFK mean in the context of agents?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Approve each step the agent takes before it proceeds.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Away From Keyboard: launch the agent on a defined task and step away, letting it work on its own.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Switch the AI model to a faster one.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> AFK = give it a clear task, step away from the keyboard, and come back to find it done.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-4-1#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🔓 Unblocking AFK</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> imagine hiring your first trusted employee. Before, everything went through you. Afterward, you delegate and discover you can run three projects at once. You didn’t get smarter — you <em>got past the bottleneck</em>. AFK is that moment.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-1-t3-p1">This is the module’s central sentence, straight from Pocock: <em>"the moment I discovered AFK was the moment I really got into AI programming."</em> Notice the force of this — he doesn't say "when I switched models" or "when I learned how to prompt." The <strong class="text-amber-400">unblocking</strong> didn't come from the engine (the model); it came from a change in the <strong>harness</strong> and in the way you work: getting yourself out of the way.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-1-t3-p2">Why does this unlock so much? Because while you’re human-in-the-loop, <strong>you are the speed limit</strong>. Every approval from you is a toll. No matter how fast the agent is, it moves at the speed of your clicks. The moment the agent starts handling scoped tasks on its own, that toll disappears — and, more importantly, <strong>sets you free</strong> to trigger <em>another</em> agent. This is where “two, three, four of you” comes from (topic 6). The <strong>common mistake</strong> is confusing getting unstuck with “buying a better model”: Pocock’s gains didn’t come from raw intelligence, but from <em>positioning</em> — it stopped being the bottleneck. Remember Track 1: the leap is in the chassis, not the engine.</p>
+<img alt="Illustration: a chain breaking, symbolizing getting unstuck—the person is no longer the bottleneck for the work" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-1-2.png"/>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: you as the bottleneck limiting a task’s throughput on the left; AFK unblocks it on the right, and several tasks flow in parallel" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs><pattern height="32" id="v41c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v41c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v41c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker></defs>
+<rect fill="url(#v41c-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<text fill="#9ca3af" font-size="13" text-anchor="middle" x="250" y="34">human-in-the-loop · you’re the bottleneck</text>
+<rect fill="#0e1b26" height="110" rx="10" stroke="#38bdf8" stroke-width="1.8" width="120" x="60" y="60"></rect><text fill="#bfe6ff" font-size="12" text-anchor="middle" x="120" y="120">tasks</text>
+<rect fill="#3b1d05" height="36" rx="8" stroke="#f87171" stroke-width="2" width="80" x="300" y="98"></rect><text fill="#fca5a5" font-size="12" font-weight="600" text-anchor="middle" x="340" y="121">YOU</text>
+<path d="M180,90 C240,90 270,112 300,114" fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M180,140 C240,140 270,120 300,118" fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M380,116 L440,116" fill="none" marker-end="url(#v41c-ah)" opacity="0.7" stroke="#f87171" stroke-width="1.6"></path>
+<text fill="#9ca3af" font-size="11.5" text-anchor="middle" x="250" y="200">everything narrows down to 1 approval at a time</text>
+<line stroke="#374151" stroke-dasharray="4 4" stroke-width="1.5" x1="500" x2="500" y1="40" y2="195"></line>
+<text fill="#fcd34d" font-size="13" text-anchor="middle" x="760" y="34">AFK · unlocked · in parallel</text>
+<g filter="url(#v41c-glow)"><rect fill="#1f1604" height="34" rx="8" stroke="#fbbf24" stroke-width="2" width="120" x="560" y="55"></rect></g><text fill="#fbbf24" font-size="11.5" font-weight="600" text-anchor="middle" x="620" y="77">agent A</text>
+<g filter="url(#v41c-glow)"><rect fill="#1f1604" height="34" rx="8" stroke="#fbbf24" stroke-width="2" width="120" x="560" y="100"></rect></g><text fill="#fbbf24" font-size="11.5" font-weight="600" text-anchor="middle" x="620" y="122">agent B</text>
+<g filter="url(#v41c-glow)"><rect fill="#1f1604" height="34" rx="8" stroke="#fbbf24" stroke-width="2" width="120" x="560" y="145"></rect></g><text fill="#fbbf24" font-size="11.5" font-weight="600" text-anchor="middle" x="620" y="167">agent C</text>
+<path d="M680,72 L860,72" fill="none" marker-end="url(#v41c-ah)" opacity="0.75" stroke="#fbbf24" stroke-width="1.8"></path>
+<path d="M680,117 L860,117" fill="none" marker-end="url(#v41c-ah)" opacity="0.75" stroke="#fbbf24" stroke-width="1.8"></path>
+<path d="M680,162 L860,162" fill="none" marker-end="url(#v41c-ah)" opacity="0.75" stroke="#fbbf24" stroke-width="1.8"></path>
+<rect fill="#1f1604" height="44" rx="10" stroke="#f59e0b" stroke-width="2.2" width="100" x="860" y="95"></rect><text fill="#fcd34d" font-size="12" font-weight="600" text-anchor="middle" x="910" y="121">ready</text>
+</g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The unlock isn't a better model—it's you no longer being the bottleneck.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> AFK frees you up because you stop being the speed limit on your own work.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-4-1#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🎚️ When it gets stuck in a loop</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a surgeon delegates the dressing and transport of the patient — but makes the main incision with their own hand. Knowing <em>what</em> delegating and knowing what to hold onto isn’t weakness: it’s what separates the professional from the amateur.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-1-t4-p1">AFK isn’t “handing everything over to AI forever.” It’s a <strong>gear</strong> that you bring in at the right time — and human-in-the-loop is the other one. Pocock’s rule is straightforward. You stay <strong>in the loop</strong> when the work is: <em>planning</em> (deciding what and why), <em>complex implementations</em> (where an early wrong decision contaminates everything) and <em>unscopeable work</em> (still poorly defined, where your direction is what gives it shape). You tell <strong>AFK</strong> when the task is already clear, well-scoped, and you can verify the result.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-1-t4-p2">O <strong class="text-amber-400">reason</strong> of this split is the same logic as delegating to a junior (Track 2): you design the hard parts and the interface, and delegate scoped execution. The strategic move—which you’ll revisit in "Checkpoints &amp; smooth review" (4.6)—is <em>"push the human-in-the-loop checkpoints closer and closer to the final output"</em>: instead of approving every little step, you approve only at the end, when it matters. The <strong>common mistake</strong> here, people take an all-or-nothing approach: either they stay glued to the loop for everything, or they leave things AFK before they’re properly scoped. The skill is knowing how to strike a balance.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Decision rule: vague and complex tasks stay in the loop with a human; scoped and verifiable tasks go AFK" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs><pattern height="32" id="v41d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern><lineargradient id="v41d-bar" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#3b82f6"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient><filter height="180%" id="v41d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v41d-grid)" height="220" width="1000" x="0" y="0"></rect>
+<rect fill="url(#v41d-bar)" height="22" opacity="0.85" rx="11" width="840" x="80" y="95"></rect>
+<g font-family="Inter,sans-serif">
+<text fill="#93c5fd" font-size="14" font-weight="700" text-anchor="middle" x="170" y="70">STAY IN THE LOOP</text>
+<text fill="#bfe6ff" font-size="12" text-anchor="middle" x="170" y="150">plan</text>
+<text fill="#bfe6ff" font-size="12" text-anchor="middle" x="170" y="170">complex implementation</text>
+<text fill="#bfe6ff" font-size="12" text-anchor="middle" x="170" y="190">unscopeable work</text>
+<g filter="url(#v41d-glow)"><text fill="#fbbf24" font-size="14" font-weight="700" text-anchor="middle" x="830" y="70">SEND AFK</text></g>
+<text fill="#fcd34d" font-size="12" text-anchor="middle" x="830" y="150">well-defined task</text>
+<text fill="#fcd34d" font-size="12" text-anchor="middle" x="830" y="170">verifiable result</text>
+<text fill="#fcd34d" font-size="12" text-anchor="middle" x="830" y="190">repeatable / scoped</text>
+<circle cx="500" cy="106" fill="#1f2937" r="9" stroke="#9ca3af" stroke-width="2"></circle>
+<text fill="#9ca3af" font-size="12.5" text-anchor="middle" x="500" y="40">the clearer the scope, the farther to the right (AFK)</text>
+</g>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: one feature, two gears</h3>
+<p class="text-neutral-300 text-sm mb-3">Real task: "add PDF report export to the app". See how Pocock would divide this between the two modes:</p>
+<ol class="space-y-3 text-sm text-neutral-300 list-decimal list-inside">
+<li><strong class="text-blue-400">In the loop (working alongside you):</strong> sit down with the agent and decide <em>what</em> which PDF to use, which library to choose, what the layout should look like, where it fits in the menu. Unscoped and design work—your direction shapes everything.</li>
+<li><strong class="text-amber-400">AFK (you step away):</strong> now the task is clear — “implement the Export PDF button using lib X, following the project’s auth pattern, with tests.” You kick it off and go to lunch.</li>
+<li><strong class="text-blue-400">Checkpoint at the end (loop, on exit):</strong> When you return, you review the PR—not every commit, just the result. Checkpoint pushed “closer to the final output.”</li>
+</ol>
+<p class="text-neutral-400 text-xs mt-3">Result: you spent your time only where your judgment mattered (decision + final review) and let the scoped execution run on its own.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> stay in the loop to decide and design; send it AFK to execute what’s already clear — and review only at the end.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-4-1#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🔐 Permissions and friction</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> giving someone the car keys. If they have to call you at every corner to ask "can I turn?", the trip doesn't move forward. But if you give them the keys to a car <em>in a closed parking lot</em>, you can let it run—the potential damage is small. Permissions and a safe environment go together.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-1-t5-p1">For an agent to work AFK, it can’t keep stopping at every step to ask for permission. Each of those pauses is <span class="termo" title="Every interruption where the agent stops and asks, 'Can I do this?' — each pause keeps you tied to the keyboard.">friction</span>, and friction keeps you at the keyboard—the opposite of AFK. The solution is to give <span class="termo" title="What you authorize the agent to do on its own — edit, run commands, install — without asking each time.">permissions</span> broader, so it can act on its own. But that's where a real danger lies.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-1-t5-p2">Pocock is explicit about the risk: an agent left running without an isolated environment can <em>"delete your home directory or exfiltrate your environment variables"</em> (leak your passwords and keys). That's why broad permissions are <strong>hand in hand with the sandbox</strong> (you'll see this in module 4.2): you let the agent <em>inside</em> an isolated environment (Docker/Podman or cloud sandboxes), where, even if something goes wrong, the damage stays contained. The <strong class="text-amber-400">reason</strong>: AFK requires <em>less friction</em> (more permissions), and less friction is safe only <em>with more isolation</em>. O <strong>common mistake</strong>, and dangerous, is doing only half the job: giving the agent full permission on your machine <strong>real</strong>, without a sandbox. Then you’ve traded friction for the risk of catastrophe.</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">checklist-antes-de-soltar-AFK.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de dar mais PERMISSAO e soltar o agente AFK, cheque:
+[ ] ESCOPO    -- a tarefa esta clara o bastante pra rodar sem mim?
+[ ] SANDBOX   -- o agente esta num ambiente isolado (Docker/Podman/nuvem)?
+[ ] SEGREDOS  -- minhas chaves e .env estao fora do alcance dele?
+[ ] VERIFICACAO -- existe teste/check que diz se ele acertou?
+[ ] SAIDA     -- o resultado sai como PR/branch (nao direto no main)?
+Se algum [ ] esta vazio, NAO solte na maquina real. Sandbox primeiro.</pre>
+</div>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison of three options: lots of friction, safe but slow; zero friction without a sandbox, frictionless but dangerous; the balance is broad permissions inside a sandbox" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs><pattern height="32" id="v41e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern><lineargradient id="v41e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient><filter height="180%" id="v41e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v41e-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="90" rx="14" stroke="#38bdf8" stroke-width="2" width="250" x="60" y="70"></rect><text fill="#bfe6ff" font-size="14" font-weight="600" text-anchor="middle" x="185" y="100">a lot of FRICTION</text><text fill="#9ad6ff" font-size="11.5" text-anchor="middle" x="185" y="123">ask for everything · safe</text><text fill="#9ad6ff" font-size="11.5" text-anchor="middle" x="185" y="142">but you stuck at the keyboard</text>
+<rect fill="#3b1d05" height="90" rx="14" stroke="#f87171" stroke-width="2" width="250" x="690" y="70"></rect><text fill="#fca5a5" font-size="14" font-weight="600" text-anchor="middle" x="815" y="100">zero friction, no sandbox</text><text fill="#fecaca" font-size="11.5" text-anchor="middle" x="815" y="123">free · fast</text><text fill="#fecaca" font-size="11.5" text-anchor="middle" x="815" y="142">can delete/leak everything</text>
+<g filter="url(#v41e-glow)"><rect fill="#1f1604" height="106" rx="16" stroke="url(#v41e-grad)" stroke-width="2.5" width="250" x="375" y="62"></rect></g><text fill="#fbbf24" font-size="15" font-weight="700" text-anchor="middle" x="500" y="98">THE BALANCE</text><text fill="#fcd34d" font-size="12" text-anchor="middle" x="500" y="122">broad permission</text><text fill="#fcd34d" font-size="12" text-anchor="middle" x="500" y="140">+ isolated sandbox</text><text fill="#fcd34d" font-size="12" text-anchor="middle" x="500" y="158">= safe AFK</text>
+<text fill="#9ca3af" font-size="12.5" text-anchor="middle" x="500" y="40">less friction is only safe with more isolation</text>
+</g>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> reduce friction by granting broad permissions — but only inside a sandbox, never loose on the actual machine.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-4-1#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">👥 Two, three, four of you</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A conductor doesn’t play the instruments — they conduct several at once. Each musician (agent) performs their part alone; the conductor (you) makes sure everything sounds together. It’s not one person doing everything; it’s one person <em>multiplied</em>.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-1-t6-p1">This is where AFK has its biggest impact. When you don’t need to stay in the loop for every agent, you can run <strong>several at the same time</strong> — is what Pocock calls having <em>"two, three, four, five of me"</em>. Each AFK agent picks up a scoped task and runs in <span class="termo" title="Run multiple agents simultaneously, each on a task, in isolated environments.">parallel</span>; you stop being one person doing one thing and become one person <em>orchestrating several</em>. That’s exactly why unblocking topic 3 matters so much: getting yourself out of the bottleneck is what <em>allows</em> the multiplication. As Pocock puts it, AFK <em>"it's simply incredible — takes a little work to set up, but then it goes a long way"</em>. The "setup" part is the sandbox and task queue — exactly what the next modules in this track break down (4.2 sandboxes, 4.3 GitHub Actions, 4.4 queues). You don't become the bottleneck for your agents; you become their conductor.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="You at the center, orchestrating four agents in parallel, each on a different task, like a conductor" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs><pattern height="32" id="v41f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern><lineargradient id="v41f-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient><filter height="180%" id="v41f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v41f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker></defs>
+<rect fill="url(#v41f-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g filter="url(#v41f-glow)"><rect fill="#1f1604" height="56" rx="14" stroke="url(#v41f-grad)" stroke-width="2.5" width="180" x="410" y="90"></rect></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="115">YOU</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="135">the conductor</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="44" rx="11" stroke="#38bdf8" stroke-width="2" width="170" x="60" y="30"></rect><text fill="#bfe6ff" text-anchor="middle" x="145" y="57">agent · feature</text>
+<rect fill="#0e1b26" height="44" rx="11" stroke="#38bdf8" stroke-width="2" width="170" x="60" y="160"></rect><text fill="#bfe6ff" text-anchor="middle" x="145" y="187">agent · bug fix</text>
+<rect fill="#0e1b26" height="44" rx="11" stroke="#38bdf8" stroke-width="2" width="170" x="770" y="30"></rect><text fill="#bfe6ff" text-anchor="middle" x="855" y="57">agent · tests</text>
+<rect fill="#0e1b26" height="44" rx="11" stroke="#38bdf8" stroke-width="2" width="170" x="770" y="160"></rect><text fill="#bfe6ff" text-anchor="middle" x="855" y="187">agent · refactor</text>
+</g>
+<g fill="none" opacity="0.7" stroke="#fbbf24" stroke-width="1.8">
+<path d="M410,108 C330,90 290,70 230,55" marker-end="url(#v41f-ah)"></path>
+<path d="M410,128 C330,150 290,170 230,182" marker-end="url(#v41f-ah)"></path>
+<path d="M590,108 C670,90 710,70 770,55" marker-end="url(#v41f-ah)"></path>
+<path d="M590,128 C670,150 710,170 770,182" marker-end="url(#v41f-ah)"></path>
+</g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">"Two, three, four of me"—you orchestrate several agents in parallel, each on its own task.</p>
+</div>
+<img alt="Illustration: one person multiplied like a conductor, surrounded by several AI agents working in parallel" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-1-3.png"/>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-1#q2">
+<p class="font-medium mb-4">Quick recall: what makes it possible to have "two, three, four of you"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Use a smarter, more expensive model.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Get out of the loop (AFK) so you’re not the bottleneck and can run several agents in parallel.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Approve every step of every agent, one at a time.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> getting out of the loop multiplies your impact—from one person doing one thing to a conductor directing several agents.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Human-in-the-loop</strong><span class="text-neutral-400"> — you work alongside it, approving each step. Good for planning, complex and unscoped work.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">AFK = Away From Keyboard</strong><span class="text-neutral-400"> — launches the scoped task and leaves; “removes you from the equation.”</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">The breakthrough</strong><span class="text-neutral-400"> — you stop being the bottleneck; that’s what made Pocock “really get into” programming with AI.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Permissions + sandbox</strong><span class="text-neutral-400"> — less friction is only safe with more isolation. Never let it run AFK on your real machine.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Two, three, four of you</strong><span class="text-neutral-400"> — outside the loop, you orchestrate several agents in parallel.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-amber-400 mb-2">Next module:</h3><p class="text-neutral-300">4.2 — Parallelize &amp; sandboxes: the “how” of safe AFK — Docker/Podman, Sand Castle, and running a fleet of isolated agents.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="modulo-4-2.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-4-1#q1', { answer: 1, explain: { 0: 'Isso é o human-in-the-loop — o oposto do AFK.', 1: 'Isso! AFK = Away From Keyboard: tarefa escopada disparada, você sai e o agente vai sozinho.', 2: 'Trocar o modelo é mexer no motor; AFK é uma forma de trabalhar (o harness).' } });
+        INEMA.registerCheck('modulo-4-1#q2', { answer: 1, explain: { 0: 'Modelo melhor ajuda, mas não é o que multiplica você — o gargalo continua sendo você no loop.', 1: 'Exato! Sair do loop te tira do gargalo e libera você pra reger vários agentes ao mesmo tempo.', 2: 'Aprovar tudo um a um é justamente o gargalo que impede a multiplicação.' } });
+      }
+    });
+  </script>
+</body>
+</html>

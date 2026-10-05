@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>4.3 GitHub Actions + agents (teaching mode) | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'amber' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'amber');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #fbbf24; cursor: help; font-weight: 600; color: #fcd34d; }
+    html:not(.dark) .termo { color: #92400e; border-color: #d97706; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217,119,6,0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217,119,6,0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217,119,6,0.18); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha4/modulo-4-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha4/modulo-4-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha4/modulo-4-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-4-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha4/modulo-4-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Track 4</a><span>/</span>
+<span class="text-amber-400">Module 4.3 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MODULE 4.3 · "TEACHING MODE"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">⚙️ GitHub Actions + agents</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">So far, the agent has worked on the <strong class="text-amber-400">your machine</strong>. In this module, it leaves your computer and starts running <strong class="text-amber-400">in the cloud</strong>, triggered by events in your repository. You’ll learn what a GitHub Action is, how a <em>review action</em> comment on a PR by itself, like a simple <strong>label</strong> turns on the agent, and why all of this "doesn't freeze your laptop." Each new word is explained as it comes up.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">T4.1-4.2</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Practice</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 4.3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:4-3" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-1">1. Agents in CI</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-2">2. The review action</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-3">3. Labels that trigger</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-4">4. PR as output</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-5">5. Without freezing your local machine</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-6">6. Build Your Own</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-amber-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">This module enters the world of GitHub. If "CI," "Action," and "PR" are new to you, learn these terms first — the rest of the module uses only them:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">CI (Continuous Integration)</strong> — from English <em>Continuous Integration</em>. It’s a robot in the cloud that runs automated checks (tests, build, lint) every time the code changes. Think of it as a “doorman” who checks each delivery before letting it through.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">GitHub Action</strong> — GitHub’s own CI tool. You write a file <code class="text-amber-400">.yml</code> inside <code class="text-amber-400">.github/workflows/</code> saying "when X happens, run these steps." It’s free and lives alongside your repository.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">PR (Pull Request)</strong> — a “proposed change.” Instead of editing the main code directly, you open a PR: a bundle of changes that can be reviewed, commented on, and approved before being merged (the <em>merge</em>).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Workflow / job / step</strong> — a <em>workflow</em> is the whole file; it has one or more <em>jobs</em> (tasks that run on a virtual machine); each job has <em>steps</em> (steps in order: download the code, run a command…).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Checkout</strong> — almost always the first step: download (clone) the repository’s code into the virtual machine so the following steps have files to work with.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Type check</strong> — "type check": a command that checks whether the code matches the declared types (e.g., <code class="text-amber-400">tsc</code> in TypeScript). Catches silly errors before running.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Label</strong> — a colored label you attach to an issue or PR (e.g., <code class="text-amber-400">bug</code>, <code class="text-amber-400">agent:explore</code>). Besides organizing, it can <em>trigger</em> automations.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Review agent</strong> — the agent running as a reviewer: it reads the PR diff and writes a comment ("looks good" or "watch out for X"), the way a colleague would review it.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">☁️ Agents in CI</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you have a great employee, but they only work when they're sitting at the <em>yours</em> table, using the <em>your</em> computer. Now imagine you give it its own room in the company office (the cloud), which turns on by itself every time an order arrives. It works there, and your desk stays free. That’s what CI does for the agent.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-3-t1-p1">In the previous modules, you ran the agent <strong>AFK</strong> (away from the keyboard) on your machine, inside a <span class="termo" title="Isolated environment where the agent runs without being able to damage the rest of the system.">sandbox</span>. The next level is to move the agent off your computer and put it in the <span class="termo" title="Continuous Integration — a robot in the cloud that runs automated checks with every code change.">CI (continuous integration)</span>. CI is simply a robot that lives alongside your repository and <strong>runs steps automatically</strong> when something happens — someone opens a PR, makes a <em>push</em>, or sticks on a label. On GitHub, this robot is called <span class="termo" title="GitHub’s CI tool: a .yml file describes triggers and steps to run in the cloud.">GitHub Action</span>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t1-p2">Matt Pocock’s insight is to bring the two together: <em>"Run agents using Sand Castle on GitHub Actions — unreasonably effective, parallelize as much as you want, not worried about local resources."</em> In other words: running agents in the GitHub cloud is extremely effective because you can <strong>parallelize as many as you want</strong> without worrying about your machine’s resources. The <span class="termo" title="Continuous Integration — the robot in the cloud.">CI</span> becomes the agent’s new home: it wakes up only when a <span class="termo" title="An event that triggers the Action: a PR opened, a push, a label added.">trigger</span> launches, does the task in a disposable virtual machine, and disappears. The <strong>reason</strong> of this being so powerful: you don’t have to rely on your laptop staying on, and the Action already has access to the project’s code, history, and credentials.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The agent leaves the local machine and starts running in GitHub’s cloud, triggered by a repository event" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v43a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v43a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v43a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v43a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v43a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="110" rx="16" stroke="#38bdf8" stroke-width="2" width="240" x="40" y="70"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="160" y="110">your machine</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="160" y="135">plan · review</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="160" y="155">(doesn’t get stuck)</text>
+<rect fill="#1f1604" height="94" rx="12" stroke="#fbbf24" stroke-width="2" width="120" x="380" y="78"></rect>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="440" y="120">event</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="440" y="140">PR · push · label</text>
+<path d="M280,125 L380,125" fill="none" marker-end="url(#v43a-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+<g filter="url(#v43a-glow)"><rect fill="#1f1604" height="130" rx="18" stroke="url(#v43a-grad)" stroke-width="2.5" width="360" x="600" y="60"></rect></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="780" y="96">CI — GitHub Actions (cloud)</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="780" y="124">disposable virtual machine</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="780" y="148">runs the agent · parallelizes · disappears</text>
+<path d="M500,125 L600,125" fill="none" marker-end="url(#v43a-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="225">The work moves from your desk to a room that runs itself.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The agent wakes up in the cloud only when an event fires—and your machine stays free.</p>
+</div>
+<img alt="Concept illustration: a robotic agent leaving a laptop and heading to a cloud server with GitHub gears" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-3-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Think that "CI" is a complicated paid tool that only big companies use. It's not: GitHub Actions is free in any repository, and a useful workflow fits in ~20 lines of YAML. The cost of entry is almost zero — the only hard part is the first file.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> running the agent in CI gives it a room in the cloud that starts up on its own — your machine stays free and you can parallelize as much as you like.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Going deeper (optional): why "Sand Castle" + Actions and not just Actions?</summary>
+<p class="text-sm text-neutral-300 mt-3">GitHub Action is the <em>trigger</em> and the machine; the <span class="termo" title="Matt Pocock’s tool that runs agents in isolated sandboxes.">Sand Castle</span> is what runs the agent <strong>with isolation</strong> inside it. Without a sandbox, an agent running loose could, in Matt’s words, “delete your home directory or exfiltrate env vars.” The Action provides the cloud infrastructure; the sandbox provides containment. Together, they mean safe AFK in the cloud.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🔍 The review action</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> every time someone submits a report, an experienced reviewer reads it right away and sticks on a note: "looks great" or "take a look at this paragraph." They never sleep, never forget, and do this for free on every report. The <em>review action</em> is this reviewer—only for code.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-3-t2-p1">The concrete example Matt gives is a <strong class="text-amber-400">agent review action</strong>: <em>"an agent review action that runs on a PR, does a checkout, type check, runs the review agent (a local prompt), and responds 'looks good'."</em> Breaking this into steps, the Action does four things, in order: (1) it fires when a <span class="termo" title="Pull Request — a proposed change that can be reviewed and approved before it’s merged.">PR</span> is open; (2) makes the <span class="termo" title="Download the repository code into the virtual machine.">checkout</span> of the code; (3) runs the <span class="termo" title="Type checking: verifies that the code matches the declared types.">type check</span> to catch obvious errors; and (4) calls the <span class="termo" title="The agent acting as a reviewer: it reads the diff and writes a comment.">review agent</span>, which reads the <span class="termo" title="The lines that changed in the PR (what was added/removed).">diff</span> and comments.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t2-p2">Notice one important thing: the review agent is <strong>"a local prompt"</strong> — in other words, the reviewer’s brain is just a prompt stored in the repository itself (an instruction like “review this diff for bugs, security, and clarity; respond in Portuguese”). This is pure <strong>harness</strong>: the Action is the chassis that takes this prompt to the cloud and runs it on every PR. The <strong>reason</strong> for this to be worth its weight in gold: you create a quality gate that runs in <em>every</em> PR, without relying on anyone to remember to review it. And the <strong>common mistake</strong> is asking this agent to <em>approve and merge on your own</em> — at first it only <strong>comment</strong>; you’re still the one who decides (we’ll come back to this in topic 6 and module 4.6).</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Review action flow: an open PR triggers checkout, type check, review agent, and finishes by commenting on the PR" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v43b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v43b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v43b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v43b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v43b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="32">on: pull_request</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="64" rx="12" stroke="#38bdf8" stroke-width="2" width="180" x="30" y="70"></rect><text fill="#bfe6ff" text-anchor="middle" x="120" y="98">1 · checkout</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="120" y="118">download the code</text>
+<rect fill="#0e1b26" height="64" rx="12" stroke="#38bdf8" stroke-width="2" width="180" x="250" y="70"></rect><text fill="#bfe6ff" text-anchor="middle" x="340" y="98">2 · type check</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="340" y="118">catches silly mistakes</text>
+<g filter="url(#v43b-glow)"><rect fill="#1f1604" height="80" rx="14" stroke="url(#v43b-grad)" stroke-width="2.5" width="200" x="470" y="62"></rect></g><text fill="#fbbf24" font-size="14" text-anchor="middle" x="570" y="96">3 · review agent</text><text fill="#fcd34d" font-size="11" text-anchor="middle" x="570" y="118">reads the diff (local prompt)</text>
+<rect fill="#0e2018" height="64" rx="12" stroke="#fbbf24" stroke-width="2" width="260" x="710" y="70"></rect><text fill="#fcd34d" text-anchor="middle" x="840" y="98">4 · comment on the PR</text><text fill="#fcd34d" font-size="11" text-anchor="middle" x="840" y="118">"looks good" / point out a risk</text>
+</g>
+<g fill="none" stroke="#fbbf24" stroke-width="2.2"><path d="M210,102 L250,102" marker-end="url(#v43b-ah)"></path><path d="M430,102 L470,102" marker-end="url(#v43b-ah)"></path><path d="M670,102 L710,102" marker-end="url(#v43b-ah)"></path></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="190">A reviewer that never sleeps, on every PR. Its brain is a prompt in your repo.</text>
+</svg>
+</div>
+<img alt="Illustration: a reviewer agent reading a pull request and writing an approval comment" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-3-2.png"/>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-3#q1">
+<p class="font-medium mb-4">Quick recall: in Matt's review action, what is the "review agent"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">A paid GitHub service that automatically approves PRs.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">The agent running a local prompt that reads the PR diff and writes a comment.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Another AI model that replaces Claude on the server.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> the review action is "checkout → type check → agent reads the diff → comments on the PR"—a reviewer who never sleeps.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🏷️ Labels that trigger</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> in a restaurant kitchen, the server doesn't shout the order—they stick a little slip on the ticket wheel. The cook sees "🟥 dessert" and gets started. The label is that little slip: you stick on a tag and the right agent starts working.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-3-t3-p1">Here's the trick: you don't need to "run a command" to start the agent. Just <strong>add a label</strong>. Matt shows this by looking at the issues in <span class="termo" title="Matt Pocock’s tool that runs agents in sandboxes.">Sand Castle</span>: after triage, it <em>"adds a label <code>agent:implement</code> and implements on GitHub Actions"</em>. The label is the trigger — the Action listens for the "label added" event and starts the corresponding agent. Three labels appear in his actual workflow (issue #795): <code class="text-amber-400">agent:explore</code> (will investigate and come back with data), <code class="text-amber-400">agent:in-progress</code> (is working) and <code class="text-amber-400">agent:implement</code> (tells it to actually implement it).</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t3-p2">Why use labels instead of commands? Because, in Matt’s words, <em>"all development is just a queue of tasks: PMs add to the queue, you complete them; multiple nodes pick off the queue."</em> All development is a <strong>queue</strong> tasks. The label is how the task enters the queue and says <em>what kind</em> work it needs. In his example, the bot <code class="text-amber-400">github-actions</code> still posts a comment <strong>"Triage"</strong> with a TL;DR and estimated difficulty—all triggered by the label change. The <strong>common mistake</strong> the trap is trying to use one giant loop to do everything; that "doesn't match how teams work." Labels separate the phases (explore → implement) and keep you in control of each step. This sets up module 4.4 ("Loops × Queues").</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="An issue gets labels in sequence: agent:explore triggers investigation, agent:in-progress signals work, agent:implement tells it to implement" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<pattern height="32" id="v43c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v43c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v43c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v43c-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="150" rx="14" stroke="#38bdf8" stroke-width="2" width="200" x="40" y="40"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="140" y="78">Issue #795</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="140" y="104">telemetry bug</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="140" y="140">you add the label →</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#1f1604" height="44" rx="9" stroke="#fbbf24" stroke-width="2" width="200" x="300" y="40"></rect><text fill="#fcd34d" text-anchor="middle" x="400" y="68">agent:explore</text>
+<rect fill="#1f1604" height="44" rx="9" stroke="#fbbf24" stroke-width="2" width="200" x="300" y="100"></rect><text fill="#fcd34d" text-anchor="middle" x="400" y="128">agent:in-progress</text>
+<g filter="url(#v43c-glow)"><rect fill="#1f1604" height="44" rx="9" stroke="#f59e0b" stroke-width="2.5" width="200" x="300" y="160"></rect></g><text fill="#fbbf24" text-anchor="middle" x="400" y="188">agent:implement</text>
+</g>
+<g fill="none" opacity="0.8" stroke="#fbbf24" stroke-width="2"><path d="M240,90 L300,62" marker-end="url(#v43c-ah)"></path><path d="M240,115 L300,122" marker-end="url(#v43c-ah)"></path><path d="M240,150 L300,182" marker-end="url(#v43c-ah)"></path></g>
+<rect fill="#0e2018" height="74" rx="14" stroke="#fbbf24" stroke-width="2" width="360" x="600" y="78"></rect>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="780" y="108">Action listens for "label" → triggers</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="780" y="132">the right agent for that phase</text>
+<path d="M500,122 L600,115" fill="none" marker-end="url(#v43c-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> add a label like <code>agent:explore</code> or <code>agent:implement</code> is the trigger—the label activates the right agent.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">📤 PR as output</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> An employee doesn’t publish anything directly to the company website. They hand you a <em>a draft in a folder</em> for you to review and approve. The PR is that folder: the agent never touches the main code on its own — it hands you a proposal.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-3-t4-p1">When the agent finishes a task in the cloud, the <strong>its output is a PR</strong> — not a direct commit to the <span class="termo" title="The project’s main line, usually called main or master.">main branch</span>. This is essential for two reasons. First, <strong>security</strong>: the new code goes in a <span class="termo" title="A parallel copy of the code where changes stay isolated until they’re approved.">branch</span> separate, so nothing gets into the product without going through a gate. Second, <strong>visibility</strong>: the PR brings the diff, review action comments, type check results, and discussion together in one place—it becomes the “package” you review.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t4-p2">This is where everything comes together: the agent <em>produces</em> the PR (topic 3 → label → implement), the review action <em>comment</em> in that same PR (topic 2), and you <strong>decides</strong> the merge. Matt describes the full automation cycle: <em>"telemetry bug (Sentry) → create issue → label explore → the agent returns structured data (can it be fixed now or does it need a human?) → implements → reviews → tags auto-merge or pings the human."</em> Notice the ending: either it marks it for <span class="termo" title="Automatically merge the PR when all checks pass.">auto-merge</span>, or it <strong>calls you</strong>. The key idea from module 4.6 already appears: <em>"push human-in-the-loop checkpoints further toward the final output"</em> — push the point where you step in further and further toward the end. The <strong>common mistake</strong> is letting the agent commit directly to main “to go faster”; you lose the review gate and observability all at once.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The agent triggered by a label produces a PR as its output—a package with a diff, type check, and the review action comment—and the human decides whether to auto-merge or review; nothing goes straight into main" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v43d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v43d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v43d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v43d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v43d-grid)" height="240" width="1000" x="0" y="0"></rect>
+<rect fill="#1f1604" height="64" rx="12" stroke="#fbbf24" stroke-width="2" width="170" x="36" y="86"></rect>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="121" y="114">label triggers</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="121" y="134">agent:implement</text>
+<path d="M206,118 L266,118" fill="none" marker-end="url(#v43d-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+<g filter="url(#v43d-glow)"><rect fill="#1f1604" height="152" rx="16" stroke="url(#v43d-grad)" stroke-width="2.5" width="300" x="266" y="44"></rect></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="416" y="74">PR — agent output</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="416" y="98">a reviewable package (isolated branch)</text>
+<g font-family="Inter,sans-serif" font-size="11.5">
+<rect fill="#0e1b26" height="30" rx="7" stroke="#38bdf8" stroke-width="1.6" width="118" x="288" y="116"></rect><text fill="#bfe6ff" text-anchor="middle" x="347" y="135">diff</text>
+<rect fill="#0e1b26" height="30" rx="7" stroke="#38bdf8" stroke-width="1.6" width="118" x="426" y="116"></rect><text fill="#bfe6ff" text-anchor="middle" x="485" y="135">type check</text>
+<rect fill="#0e2018" height="30" rx="7" stroke="#fbbf24" stroke-width="1.6" width="256" x="288" y="154"></rect><text fill="#fcd34d" text-anchor="middle" x="416" y="173">review action comment</text>
+</g>
+<path d="M566,118 L626,118" fill="none" marker-end="url(#v43d-ah)" stroke="#fbbf24" stroke-width="2.2"></path>
+<rect fill="#0e1b26" height="80" rx="14" stroke="#38bdf8" stroke-width="2" width="200" x="626" y="78"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="726" y="110">you decide</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="726" y="132">auto-merge or review</text>
+<path d="M826,108 L890,86" fill="none" marker-end="url(#v43d-ah)" opacity="0.85" stroke="#fbbf24" stroke-width="2"></path>
+<path d="M826,128 L890,150" fill="none" marker-end="url(#v43d-ah)" opacity="0.85" stroke="#fbbf24" stroke-width="2"></path>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="940" y="84">merge</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="940" y="154">adjustments</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="224">Nothing goes into main on its own: the output is always a proposal that passes through your gate.</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: from a Sentry bug to a ready PR</h3>
+<p class="text-neutral-300 text-sm mb-3">An error blows up in the <span class="termo" title="A tool that captures and reports errors that occur in the app in production.">Sentry</span> (monitoring). See the end-to-end path, all in the cloud:</p>
+<ol class="space-y-2 text-sm text-neutral-300 list-decimal list-inside">
+<li><strong>Issue created</strong> automatically from the Sentry error.</li>
+<li>You paste <code class="text-amber-400">agent:explore</code>. The agent investigates and comes back with <strong>structured data</strong>: “likely cause X; can you fix it on your own? yes/no.”</li>
+<li>It’s fixable → you paste <code class="text-amber-400">agent:implement</code>. The agent runs on GitHub Actions and opens a <strong>PR</strong> with the fix.</li>
+<li>A <strong>review action</strong> comment on the PR: type check passed, diff looks safe, "looks good".</li>
+<li>Outcome: either it marks <strong>auto-merge</strong> (trivial change), or <strong>pings you</strong> (needs a human eye).</li>
+</ol>
+<p class="text-neutral-400 text-xs mt-3">You only showed up to paste two labels and give the final approval. The rest ran in the cloud, and everything came together in a reviewable PR.</p>
+</div>
+<img alt="Illustration: a pull request as an organized package containing a diff, review comments, and checks, waiting for approval" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-3-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> the agent’s output is a PR—a reviewable proposal, never a direct commit to main.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🔋 Without freezing the local machine</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you have one oven at home and want to bake ten cakes. At home, you bake one at a time and the kitchen gets hot. If you rent ten ovens in an industrial kitchen, bake all ten at once — and your home stays cool. The cloud is the industrial kitchen.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t5-p1">This is the main practical reason to move agents to CI. Matt’s quote says it all: <em>"parallelize as much as you want, not worried about local resources."</em> Each Action runs in a <strong>your own virtual machine</strong> and disposable, provided by GitHub. You can have five PRs open at the same time, each with its own agent working in parallel, and your laptop doesn’t even heat up—it could even be turned off. This ties back to module 4.2 (“Parallelize &amp; sandboxes”): there, the parallel agents were competing for the <em>yours</em> CPU; here they run on separate machines in the cloud, so parallelization becomes practically <strong>unlimited</strong>. There’s a bonus of <strong>savings</strong> that connects to module 1.5: with a well-built harness (guard rails, type check, clear prompts), you can use a cheaper model to do the same work — fewer tokens “banging their head against the wall.” The <strong>common mistake</strong> is continuing to run everything locally “because it’s simpler” and freezing the whole machine whenever you launch two or three agents.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: on a local machine, agents compete for one CPU; in the cloud, each agent has its own virtual machine and they run in parallel" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v43e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v43e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v43e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v43e-grid)" height="230" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="235" y="30">LOCAL — one CPU being shared</text>
+<rect fill="#1a0e0e" height="150" rx="14" stroke="#b91c1c" stroke-width="2" width="330" x="70" y="50"></rect>
+<rect fill="#0e1b26" height="36" rx="8" stroke="#b91c1c" stroke-width="2" width="70" x="200" y="150"></rect><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="235" y="173">1 CPU</text>
+<g font-family="Inter,sans-serif" font-size="11"><circle cx="150" cy="95" fill="#0e1b26" r="18" stroke="#b91c1c" stroke-width="1.6"></circle><text fill="#fca5a5" text-anchor="middle" x="150" y="99">A1</text><circle cx="235" cy="85" fill="#0e1b26" r="18" stroke="#b91c1c" stroke-width="1.6"></circle><text fill="#fca5a5" text-anchor="middle" x="235" y="89">A2</text><circle cx="320" cy="95" fill="#0e1b26" r="18" stroke="#b91c1c" stroke-width="1.6"></circle><text fill="#fca5a5" text-anchor="middle" x="320" y="99">A3</text></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="765" y="30">CLOUD — one VM per agent</text>
+<g font-family="Inter,sans-serif" font-size="11">
+<g filter="url(#v43e-glow)"><rect fill="#1f1604" height="68" rx="10" stroke="url(#v43e-grad)" stroke-width="2.2" width="120" x="560" y="55"></rect></g><text fill="#fcd34d" text-anchor="middle" x="620" y="93">VM · A1</text>
+<g filter="url(#v43e-glow)"><rect fill="#1f1604" height="68" rx="10" stroke="url(#v43e-grad)" stroke-width="2.2" width="120" x="700" y="55"></rect></g><text fill="#fcd34d" text-anchor="middle" x="760" y="93">VM · A2</text>
+<g filter="url(#v43e-glow)"><rect fill="#1f1604" height="68" rx="10" stroke="url(#v43e-grad)" stroke-width="2.2" width="120" x="840" y="55"></rect></g><text fill="#fcd34d" text-anchor="middle" x="900" y="93">VM · A3</text>
+<rect fill="#0e2018" height="48" rx="10" stroke="#fbbf24" stroke-width="2" width="400" x="560" y="138"></rect><text fill="#fcd34d" font-size="13" text-anchor="middle" x="760" y="167">parallel and disposable · your laptop stays free</text>
+</g>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> in the cloud, each agent gets its own virtual machine—almost unlimited parallelization, and your machine stays free.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-4-3#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🛠️ Build your own</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> building your first Action is like putting a light switch on the wall: hard work once, magic forever. After that, just “press the button” (open a PR) and the light turns on by itself.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-3-t6-p1">Time to bring it all together in a real file. Create a file in <code class="text-amber-400">.github/workflows/agent-review.yml</code> in your repository. It does exactly what Matt describes: triggers <code class="text-amber-400">on: pull_request</code>, does the <strong>checkout</strong>, run the <strong>type check</strong>, call the <strong>review agent</strong> (with the local prompt) and <strong>comment on the PR</strong>. Read every line—it’s all commented:</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">.github/workflows/agent-review.yml</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># Roda um agente de review em todo Pull Request.
+name: Agent Review
+
+# GATILHO: toda vez que um PR e aberto ou recebe novos commits.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Permissoes minimas: ler o codigo, escrever comentarios no PR.
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest          # maquina virtual descartavel na nuvem
+    steps:
+      # 1) CHECKOUT - baixa o codigo do PR pra dentro da VM
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # historico completo, pra gerar o diff
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        run: npm ci
+
+      # 2) TYPE CHECK - pega erros de tipo antes de revisar
+      - name: Type check
+        run: npx tsc --noEmit
+
+      # 3) REVIEW AGENT - roda o agente com um PROMPT LOCAL
+      - name: Run review agent
+        id: review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          # gera o diff do PR contra a branch base
+          git diff origin/${{ github.base_ref }}...HEAD &gt; /tmp/pr.diff
+          # o "cerebro" do revisor e so um prompt versionado no repo
+          npx @anthropic-ai/claude-code -p \
+            "$(cat .github/prompts/review.md)
+
+            Diff a revisar:
+            $(cat /tmp/pr.diff)
+
+            Responda em portugues. Se estiver ok, diga 'looks good'.
+            Senao, aponte bugs, riscos de seguranca e melhorias." \
+            &gt; /tmp/review.md
+
+      # 4) COMENTA NO PR - publica o parecer do agente
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('/tmp/review.md', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: "Agent Review\n\n" + body
+            });</pre>
+</div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-3-t6-p2">That’s all. Notice that the reviewer’s “intelligence” lies in <code class="text-amber-400">.github/prompts/review.md</code> — a local prompt, just as Matt says. Changing the reviewer’s behavior means editing text, not messing with the plumbing. This same skeleton becomes the foundation for everything in the course: change the <strong>trigger</strong> (of <code>pull_request</code> for <code>schedule</code>) and it becomes the module 4.5 security review cron; change the label that triggers it and it becomes the implementation agent for topic 3. <strong>Start simple</strong>: only the review that comments. Don’t enable auto-merge for it right away—remember module 4.6, <em>"who reviews the AI that says it's fine?"</em>. First watch the agent work (the observability that review gives you); then, as you grow more confident, move the human checkpoint closer to the end.</p>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-3#q2">
+<p class="font-medium mb-4">In the YAML above, where does the review agent’s “brain” (its behavior) live?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">In the field <code>runs-on: ubuntu-latest</code>, which defines the model.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">In a local prompt versioned in the repo (<code>.github/prompts/review.md</code>), read at runtime.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Within the checkout step, which trains the agent.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Going deeper (optional): what is this <code>secrets.ANTHROPIC_API_KEY</code>?</summary>
+<p class="text-sm text-neutral-300 mt-3">A <span class="termo" title="A sensitive value (key, password) stored encrypted in GitHub, never in the code.">secret</span> is a sensitive value — here, the API key that authorizes the agent to call the model. You register it in <em>Settings → Secrets and variables → Actions</em> from the repository, and the Action injects it as an environment variable at runtime. Never paste keys directly into the YAML: the file stays in the repo history, and that’s exactly the kind of leak the review is there to catch.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> a ~40-line YAML + a local prompt already gives you a reviewer in the cloud; change the trigger and it becomes any other automation.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Agent in CI = AFK in the cloud</strong><span class="text-neutral-400"> — the agent leaves your machine and runs on GitHub Actions, triggered by events.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Review action</strong><span class="text-neutral-400"> — on PR → checkout → type check → review agent (local prompt) → comments on the PR.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Labels trigger</strong><span class="text-neutral-400"> — agent:explore / agent:implement activate the right agent; everything is a queue.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">PR is the output</strong><span class="text-neutral-400"> — a reviewable proposal, never a direct commit to main; you decide whether to merge.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Without freezing the machine</strong><span class="text-neutral-400"> — one VM per agent, almost unlimited parallelization, a freeform notebook.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-amber-400 mb-2">Next module:</h3><p class="text-neutral-300">4.4 — Loops × Queues: why Matt thinks “queue, not loop,” Huntley’s Ralph loop, and the medieval king analogy.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="modulo-4-4.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-4-3#q1', { answer: 1, explain: { 0: 'Não — não é serviço pago; é o agente rodando um prompt local seu.', 1: 'Isso! O review agent é o agente rodando um prompt local que lê o diff e comenta.', 2: 'Não — é o mesmo agente atuando como revisor, não um modelo substituto.' } });
+        INEMA.registerCheck('modulo-4-3#q2', { answer: 1, explain: { 0: 'Não — runs-on só define a máquina virtual, não o comportamento.', 1: 'Isso! O comportamento mora num prompt local versionado (.github/prompts/review.md).', 2: 'Não — checkout só baixa o código; não treina nem define o agente.' } });
+      }
+    });
+  </script>
+</body>
+</html>

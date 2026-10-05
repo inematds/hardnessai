@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>3.3 La Teach skill por dentro (modo de enseñanza) | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'purple' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'purple');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #c084fc; cursor: help; font-weight: 600; color: #d8b4fe; }
+    html:not(.dark) .termo { color: #6d28d9; border-color: #7c3aed; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha3/modulo-3-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha3/modulo-3-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha3/modulo-3-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha3/modulo-3-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-3-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-purple-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-purple-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-purple-400" href="index.html">Ruta 3</a><span>/</span>
+<span class="text-purple-400">Módulo 3.3 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MÓDULO 3.3 · MODO ENSEÑANZA</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🎓 La skill Teach por dentro</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Ya sabes qué es una <span class="text-purple-400 font-semibold">skill</span> y cuánto contexto cuesta. Ahora vamos a abrir la skill más especial del método Pocock: la <strong class="text-purple-400">Teach skill</strong> — un profesor de IA que <em>recuerda lo que ya hiciste</em>. Aquí entiendes la diferencia entre <strong class="text-purple-400">stateful y stateless</strong>, qué es el <code>mission.md</code>, o <em>registro de aprendizaje</em>, y por qué enseña con lecciones en HTML. Cada palabra nueva se explica en el momento.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">T3.1–3.2</div><div class="text-xs text-neutral-400">Prerequisito</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Estudio de caso</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 3.3" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:3-3" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-purple-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-1">1. Stateful × stateless</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-2">2. El mission.md</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-3">3. El learning record</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-4">4. Lecciones en HTML</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-5">5. Estado local que recuerda</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-6">6. Recrear el concepto</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-purple-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-purple-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">Este módulo introduce el vocabulario de <strong>skills con memoria</strong>. Fija estos términos: vuelven durante todo el módulo:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Estado (state)</strong> — cualquier información que el agente <em>guarda</em> entre una conversación y otra (archivos guardados en el disco). «Recordar» = tener estado.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Stateful</strong> — una skill que <strong>tiene</strong> estado: guarda archivos y, la próxima vez, lee lo que pasó antes. La Teach skill tiene estado.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Stateless</strong> — una skill <strong>sin</strong> memoria: hace la tarea y la olvida. Cada ejecución empieza desde cero (p. ej., la grill-me). Es la mayoría de las skills.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Workspace</strong> — la «carpeta de trabajo» donde la skill guarda su estado (el <code>mission.md</code>, el learning record, las lecciones). Es el cuaderno del estudiante.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">mission.md</strong> — el archivo que la Teach skill crea primero: quién eres, qué quieres construir, por qué importa y cómo se ve el éxito. El «norte» del aprendizaje.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Registro de aprendizaje</strong> — el registro vivo de tu progreso: punto de partida, decisiones, estimaciones y lecciones ya aprendidas. Es lo que hace que la skill recuerde.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-3-3#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🧠 Stateful × stateless</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> dos profesores. El primero te da una clase perfecta y, al día siguiente, no tiene idea de quién eres: empieza desde cero cada vez. El segundo tiene un <em>cuaderno</em> sobre ti: sabe lo que ya aprendiste, dónde te trabaste y qué sigue. El segundo profesor es <strong>stateful</strong>. Es lo que imita la Teach skill.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-3-t1-p1">La mayoría de las skills que viste hasta aquí es <span class="termo" title="Sin memoria: hace la tarea y la olvida. Cada ejecución empieza desde cero.">stateless</span> — sin memoria. La grill-me, por ejemplo: te entrevista, llega a un entendimiento y listo; la próxima vez empieza desde cero. Eso es excelente para tareas puntuales. Pero <strong class="text-purple-400">enseñar</strong> es diferente: nadie aprende desde cero en cada clase. Por eso la Teach skill es <span class="termo" title="Tiene memoria: guarda archivos y, la próxima vez, lee lo que pasó antes.">stateful</span> — ella guarda <span class="termo" title="Información que el agente guarda entre conversaciones y almacena en archivos en el disco.">estado</span> en un <span class="termo" title="La carpeta de trabajo donde la skill guarda mission.md, learning record y lecciones.">espacio de trabajo</span> (una carpeta de trabajo) para recordar lo que hiciste.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t1-p2">En palabras de Pocock, la skill Teach <em>"se ejecuta en un workspace — allí guarda el estado"</em>. Esta es la clave técnica del módulo: el «recordar» no es magia del modelo (el modelo olvida todo al final de cada conversación); es <strong>archivo guardado en el disco</strong>. La skill escribe lo que aprendió sobre ti y, en la próxima sesión <em>lee</em> estos archivos de vuelta. <strong>Error común:</strong> creer que el agente "recuerda" por sí solo. No: sin un estado guardado, no hay memoria. Lo especial que hace la skill Teach es convertir la memoria en <em>archivos</em> que sobreviven al reinicio de la conversación.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dos skills lado a lado: la stateless empieza desde cero en cada sesión; la stateful lee y escribe en un workspace que persiste entre sesiones" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v33a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v33a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v33a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v33a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="190" rx="18" stroke="#38bdf8" stroke-width="2" width="430" x="40" y="30"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="16" font-weight="600" x="64" y="60">STATELESS — olvida</text>
+<g font-family="Inter,sans-serif" font-size="12.5">
+<rect fill="#0e2030" height="46" rx="9" stroke="#38bdf8" stroke-width="1.6" width="110" x="64" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="119" y="108">sesión 1</text>
+<rect fill="#0e2030" height="46" rx="9" stroke="#38bdf8" stroke-width="1.6" width="110" x="200" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="255" y="108">sesión 2</text>
+<rect fill="#0e2030" height="46" rx="9" stroke="#38bdf8" stroke-width="1.6" width="110" x="336" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="391" y="108">sesión 3</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="255" y="170">cada una empieza desde cero: nada fluye hacia adelante</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="255" y="195">✕ sin cuaderno</text>
+<rect fill="#1a1230" height="190" rx="18" stroke="#c084fc" stroke-width="2" width="430" x="530" y="30"></rect>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="16" font-weight="600" x="554" y="60">STATEFUL — recuerda (Teach)</text>
+<g font-family="Inter,sans-serif" font-size="12.5">
+<rect fill="#241640" height="40" rx="9" stroke="#c084fc" stroke-width="1.6" width="100" x="554" y="80"></rect><text fill="#e9d5ff" text-anchor="middle" x="604" y="105">sesión 1</text>
+<rect fill="#241640" height="40" rx="9" stroke="#c084fc" stroke-width="1.6" width="100" x="690" y="80"></rect><text fill="#e9d5ff" text-anchor="middle" x="740" y="105">sesión 2</text>
+<rect fill="#241640" height="40" rx="9" stroke="#c084fc" stroke-width="1.6" width="100" x="826" y="80"></rect><text fill="#e9d5ff" text-anchor="middle" x="876" y="105">sesión 3</text>
+</g>
+<g filter="url(#v33a-glow)"><rect fill="url(#v33a-grad)" height="50" rx="12" stroke="#a855f7" stroke-width="2.5" width="240" x="640" y="150"></rect></g>
+<text fill="#1a0a2e" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="760" y="180">espacio de trabajo (cuaderno)</text>
+<g fill="none" opacity="0.7" stroke="#c084fc" stroke-width="1.8"><path d="M604,120 L700,150"></path><path d="M740,120 L760,150"></path><path d="M876,120 L820,150"></path></g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">A la izquierda, sesiones sueltas (sin estado). A la derecha, todas escriben y leen el mismo workspace — por eso la Teach skill lo recuerda.</p>
+</div>
+<img alt="Ilustración: un profesor robótico con un cuaderno luminoso que guarda recuerdos de clases anteriores" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-3-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Confundir el <em>contexto de la conversación</em> (que el modelo «recuerda» solo mientras la ventana está abierta) con <em>estado guardado</em>. Cuando reinicias la conversación, el contexto desaparece: solo lo que esté en <strong>archivo</strong> sobrevive. Stateful = archivo en disco, no memoria del modelo.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-purple-400">En 1 frase:</strong> stateless olvida en cada sesión; stateful guarda archivos y recuerda, y enseñar exige recordar.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-purple-400">Profundiza (opcional): ¿toda skill debería ser stateful?</summary>
+<p class="text-sm text-neutral-300 mt-3">No. El estado tiene un costo: la skill necesita una carpeta, reglas sobre dónde guardar las cosas y cuidado para no «recordar» algo equivocado. La mayoría de las skills son stateless a propósito: más simples y previsibles. El estado solo vale la pena cuando la tarea <em>continúa en el tiempo</em>: enseñar, acompañar un proyecto largo, llevar un diario de decisiones. Pocock contrasta la Teach (stateful) precisamente con skills como grill-me (stateless), que no necesitan estado local.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-3-3#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🎯 El mission.md</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un buen entrenador personal no pregunta "¿qué ejercicio quieres hacer?". Pregunta "<em>¿a dónde quieres llegar?</em>". Si dices "quiero correr un maratón", arma todo a partir de eso. El <code>mission.md</code> es esta conversación, escrita en un archivo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-3-t2-p1">Antes de enseñar cualquier cosa, la Teach skill hace algo contraintuitivo: <strong>no pregunta sobre el tema</strong>. Te pregunta por tu <span class="termo" title="Lo que quieres lograr — no el tema, sino el objetivo concreto.">misión</span>. Pocock describe la demo: un <span class="termo" title="Persona que crea software con IA sin dominar los fundamentos de programación.">vibe coder</span> quiere "llenar los vacíos". Su prompt es simple, en inglés claro, y habla de la <em>misión</em> (lo que quieres lograr), no del tema. En sus palabras: <em>"talking to a teacher; the agent is my teacher."</em> La skill entonces se alinea con lo que quieres y crea el <span class="termo" title="Archivo que registra quién eres, qué quieres construir, por qué importa y cómo se ve el éxito.">mission.md</span>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t2-p2">O <code>mission.md</code> tiene cuatro preguntas clave: <strong>quién eres tú</strong>, <strong>lo que quieres construir</strong>, <strong>por qué importa</strong> e <strong>cómo es el éxito</strong>. Pocock cita ejemplos de las preguntas que hace la skill: «¿qué estás construyendo?», «¿qué <em>ship better software</em> significa para ti?", "¿cuál es el proyecto concreto?". Detrás de esto hay una definición sólida de enseñanza: <em>"teaching = not getting info into your head but orienting you in the world"</em> — enseñar no es volcar información en tu cabeza, es <strong>orientarse en el mundo</strong>. Por eso la misión va antes que el contenido: sin saber adónde vas, cualquier clase es genérica.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t2-p3">Abajo está un <code>mission.md</code> de ejemplo, en el formato que la skill Teach produciría para ese mismo vibe coder. Fíjate en que es breve y concreto: es el «norte» que guiará todas las lecciones. <strong>Copia y adapta</strong> el tuyo:</p>
+<div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-purple-400 font-mono">mission.md</span>
+<button class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># Mission
+
+## Quem sou
+Monto apps com IA ha 6 meses (vibe coder). Sei pedir features,
+mas nao domino os fundamentos por baixo.
+
+## O que quero construir
+Um SaaS de agendamento pra barbearias. Ja tenho o front no ar,
+mas quebro o backend toda vez que mexo nele.
+
+## Por que importa
+Quero parar de depender 100% da IA e conseguir consertar meu
+proprio codigo quando ele quebra. "Ship better software" =
+entregar sem medo de quebrar o que ja funciona.
+
+## Como e o sucesso
+- Entendo git o bastante pra desfazer um erro com confianca
+- Sei ler uma mensagem de erro e achar a causa sozinho
+- Escrevo 1 teste que pega uma regressao antes do deploy
+
+## Ponto de partida (a skill preenche)
+- Maquina: macOS, git instalado, Node 20
+- Conhecido: HTML/CSS basico, prompts; Lacunas: git, debugging, testes</pre>
+</div>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Las cuatro preguntas de mission.md convergen en un archivo central: quién eres, qué construyes, por qué importa y cómo se ve el éxito" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs>
+<pattern height="32" id="v33b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v33b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v33b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#v33b-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="1.8" width="200" x="40" y="20"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="42">quién eres tú</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="1.8" width="200" x="40" y="64"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="86">lo que construye</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="1.8" width="200" x="40" y="108"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="130">por qué importa</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="1.8" width="200" x="40" y="152"></rect><text fill="#bfe6ff" text-anchor="middle" x="140" y="174">cómo es el éxito</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#c084fc" stroke-width="1.8"><path d="M240,37 C420,37 520,90 640,100" marker-end="url(#v33b-ah)"></path><path d="M240,81 C420,81 540,95 640,103" marker-end="url(#v33b-ah)"></path><path d="M240,125 C420,125 540,110 640,107" marker-end="url(#v33b-ah)"></path><path d="M240,169 C420,169 520,120 640,110" marker-end="url(#v33b-ah)"></path></g>
+<g filter="url(#v33b-glow)"><rect fill="#1a1230" height="66" rx="14" stroke="#c084fc" stroke-width="2.5" width="300" x="640" y="72"></rect></g>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="790" y="100">mission.md</text>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="790" y="122">el norte de todas las lecciones</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-3#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿por qué la Teach skill pregunta sobre la <strong>misión</strong> ¿antes del tema?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Porque el tema no importa, solo el nivel del estudiante.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Porque enseñar es orientarte en el mundo: sin saber adónde vas, la clase queda genérica.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Porque el modelo no puede enseñar temas técnicos directamente.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">En 1 frase:</strong> el mission.md captura adónde quieres llegar, porque enseñar es orientar, no volcar información.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-3-3#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📒 El registro de aprendizaje</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la cartilla de salud de un niño. Ningún médico memoriza a cada paciente — abre la cartilla y ve el historial: qué vacunas recibió, cuáles faltan, qué alergias tiene. La <em>registro de aprendizaje</em> es el cuaderno de tu aprendizaje.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-3-t3-p1">Si el <code>mission.md</code> é o <em>destino</em>, o <span class="termo" title="Registro vivo del progreso: misión, punto de partida, decisiones, estimaciones y lecciones aprendidas.">registro de aprendizaje</span> é o <em>diario del viaje</em>. Pocock enumera lo que guarda: la <strong>misión</strong>, o <strong>punto de partida</strong>, las <strong>decisiones</strong> tomadas y las <strong>estimaciones</strong> (cuánto falta, qué viene después). La skill lee este archivo al inicio de cada sesión para responder a la pregunta «¿dónde nos quedamos?». Sin él, la skill sería una stateless más — daría la misma clase introductoria para siempre.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t3-p2">¿Dónde empieza Teach skill, según la demo? Es <strong>personalizada</strong>: ya revisó la configuración de tu máquina (por ejemplo, si git está instalado) y usa esa información para decidir por dónde empezar. Para quien programa con vibe coding, empieza por <strong>git</strong> (el «botón de deshacer»), después <strong>leer errores</strong>, <strong>debugging</strong>, <strong>cómo se entrega el software</strong> e <strong>pruebas</strong>. Cada uno de esos pasos se convierte en una decisión registrada en el learning record. <strong>Por qué esto importa:</strong> el registro transforma a un profesor genérico en un profesor <em>tu</em> — que sabe que ya aprendiste git y que la próxima lección es debugging.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El learning record como una línea de tiempo: git completado, lectura de errores completada, debugging en curso, envío de software y pruebas pendientes" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<pattern height="32" id="v33c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v33c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+</defs>
+<rect fill="url(#v33c-grid)" height="200" width="1000" x="0" y="0"></rect>
+<line stroke="#6b21a8" stroke-width="3" x1="80" x2="920" y1="100" y2="100"></line>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle">
+<circle cx="130" cy="100" fill="#a855f7" r="16" stroke="#c084fc" stroke-width="2"></circle><text fill="#1a0a2e" x="130" y="105">✓</text><text fill="#d8b4fe" x="130" y="140">git</text>
+<circle cx="320" cy="100" fill="#a855f7" r="16" stroke="#c084fc" stroke-width="2"></circle><text fill="#1a0a2e" x="320" y="105">✓</text><text fill="#d8b4fe" x="320" y="140">leer errores</text>
+<g filter="url(#v33c-glow)"><circle cx="510" cy="100" fill="#1a1230" r="20" stroke="#c084fc" stroke-width="3"></circle></g><text fill="#c084fc" font-size="13" x="510" y="105">▶</text><text fill="#c084fc" x="510" y="146">debugging</text>
+<circle cx="700" cy="100" fill="#0e1b26" r="16" stroke="#38bdf8" stroke-width="2"></circle><text fill="#9ad6ff" x="700" y="140">shipping</text>
+<circle cx="890" cy="100" fill="#0e1b26" r="16" stroke="#38bdf8" stroke-width="2"></circle><text fill="#9ad6ff" x="890" y="140">pruebas</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="510" y="40">registro de aprendizaje = "dónde nos quedamos" guardado en el disco</text>
+</svg>
+</div>
+<img alt="Ilustración: una línea de tiempo de aprendizaje con hitos completados que brillan e hitos futuros apagados" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-3-2.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: la 2.ª sesión del vibe coder</h3>
+<p class="text-neutral-300 text-sm mb-3">Observa cómo el estado guardado lo cambia todo entre la sesión de ayer y la de hoy:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Sin learning record (stateless)</p><p class="text-xs text-neutral-300">Hoy: "¡Hola! ¿Vamos a aprender programación? ¿Ya usas git?" → repite la introducción de ayer. Vuelves a ver la misma clase y pierdes tiempo.</p></div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4"><p class="text-purple-400 font-semibold text-sm mb-1">Con learning record (stateful)</p><p class="text-xs text-neutral-300">Hoy: la skill lee el registro → "Ayer terminaste <em>git</em> e <em>leer errores</em>. Hoy abordamos <em>debugging</em> en tu SaaS de barbería." → continúa desde donde lo dejaste.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">En 1 frase:</strong> el learning record es la libreta que responde «¿dónde nos quedamos?»: es lo que hace que la skill sea <em>tu</em>.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-3-3#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🖥️ Lecciones en HTML</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la diferencia entre recibir una receta garabateada en un papel y abrir un libro de cocina ilustrado, con fotos y pasos numerados. El contenido puede ser el mismo — pero el segundo te enseña mucho mejor. La Teach skill elige el «libro ilustrado».</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-3-t4-p1">La Teach skill no vuelca la clase en el <span class="termo" title="La ventana negra donde escribes comandos; texto plano, sin imágenes.">terminal</span>. Crea un <strong>guía de referencia rápida</strong> (una "guía de referencia") y la <strong>primera lección en HTML</strong>, que <em>abre en el navegador</em>. ¿Por qué? Porque, en palabras de Pocock, el HTML es <em>"más completo que la terminal"</em> — admite títulos, imágenes, colores y bloques de código resaltados. Es la misma lógica que hace que <em>este</em> el curso usa HTML en vez de un archivo de texto: lees mejor, recuerdas mejor.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t4-p2">Y hay un segundo ingrediente: la lección es <strong>personalizada</strong>. La skill ya revisó la configuración de tu máquina; por eso no te dice "instala git" si git ya está instalado. Dentro de las lecciones hay <span class="termo" title="Preguntas cortas para que respondas; obligan a recuperar la memoria.">quizzes</span> e <strong>ejercicios reales en la terminal</strong>. Sobre los cuestionarios, Pocock es enfático: <em>"quizzes are unreasonably effective"</em> — ellos aumentan la <span class="termo" title="Cuánto tiempo queda registrada una información y qué tan fácil es recordarla después.">storage strength</span> (fuerza de almacenamiento). En vez de solo leer, te ves obligado a <em>recuperar</em> lo que aprendiste — y recuperar es lo que fija el aprendizaje. <strong>Error común:</strong> creer que basta con "volver a leer"; la retención real viene de que te pongan a prueba. Verás la teoría detrás de esto en el módulo 3.4.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: lección en la terminal sin formato a la izquierda frente a lección en HTML enriquecido en el navegador, con título, imagen, código y cuestionario, a la derecha" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v33d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v33d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v33d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v33d-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#0a0a0a" height="170" rx="14" stroke="#38bdf8" stroke-width="2" width="380" x="40" y="30"></rect>
+<text fill="#9ad6ff" font-family="monospace" font-size="13" x="60" y="58">$ terminal — texto sin formato</text>
+<g fill="#7dd3fc" font-family="monospace" font-size="12"><text x="60" y="90">&gt; git es un sistema de control</text><text x="60" y="110">&gt; de versión. escribe git init</text><text x="60" y="130">&gt; ...</text></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="230" y="180">simple, pero pobre</text>
+<g filter="url(#v33d-glow)"><rect fill="#1a1230" height="186" rx="14" stroke="url(#v33d-grad)" stroke-width="2.5" width="420" x="540" y="22"></rect></g>
+<rect fill="#c084fc" height="20" rx="5" width="180" x="560" y="40"></rect><text fill="#1a0a2e" font-family="Inter,sans-serif" font-size="12" font-weight="700" text-anchor="middle" x="650" y="55">Lección 1: git</text>
+<rect fill="#241640" height="40" rx="6" stroke="#a855f7" stroke-width="1.4" width="380" x="560" y="70"></rect><text fill="#e9d5ff" font-family="Inter,sans-serif" font-size="12" x="575" y="95">imagen + explicación detallada</text>
+<rect fill="#0a0a0a" height="30" rx="6" stroke="#38bdf8" stroke-width="1.4" width="380" x="560" y="118"></rect><text fill="#7dd3fc" font-family="monospace" font-size="11" x="575" y="138">git init  ← ejercicio real</text>
+<rect fill="#241640" height="34" rx="6" stroke="#c084fc" stroke-width="1.4" width="380" x="560" y="156"></rect><text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="12" x="575" y="178">❓ quiz: ¿qué hace git init?</text>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="750" y="222">HTML en el navegador = más riqueza y más fácil de recordar</text>
+</svg>
+</div>
+<img alt="Ilustración: una lección interactiva en HTML abierta en el navegador, con código, imágenes y un cuestionario brillante" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-3-3.png"/>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-purple-400">Profundiza (opcional): ¿por qué los quizzes funcionan tan bien?</summary>
+<p class="text-sm text-neutral-300 mt-3">Es el llamado <em>testing effect</em> (efecto de la prueba): el acto de <strong>recuperar</strong> una información de la memoria la fortalece mucho más que simplemente repasarla. Releer da la ilusión de que sabes; ponerte a prueba revela lagunas y, al mismo tiempo, graba la respuesta con más fuerza. Por eso la skill Teach intercala un quiz en cada lección, y por eso este curso tiene los botones de «recuperación rápida» al final de los temas. Más sobre la teoría (ZDP, recall, spaced repetition) en el módulo 3.4.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">En 1 frase:</strong> lecciones en HTML (más completas que la terminal) + cuestionarios que fuerzan la recuperación = clases que realmente se te quedan.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-3-3#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">💾 Estado local que recuerda</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un juego que guarda tu progreso en un «save file». Cierras el juego, vuelves semanas después, cargas la partida y estás exactamente donde te quedaste. El workspace de Teach skill es ese save file.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-3-t5-p1">Al juntar todo: el <strong>estado local</strong> de la Teach skill vive en un workspace y se compone de tres piezas que ya conoces: el <code>mission.md</code> (el destino), el <strong>registro de aprendizaje</strong> (el diario) y los <strong>lecciones en HTML</strong> ya generadas. Pocock resume el ciclo: la skill te indica que <strong>leer la fuente primaria</strong> (en el caso de git, el <em>Libro de Pro Git</em>), te invita a <strong>hacer preguntas</strong> e a <strong>crear la próxima lección</strong>. Cada una de estas acciones actualiza el estado: el save file crece en cada sesión.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t5-p2">Aquí está la definición que cierra el módulo, directamente de Pocock: <em>"skill con estado (recuerda lo que hiciste) × sin estado (no necesita estado local)."</em> La Teach skill es el caso poco común en el que vale la pena cargar estado, porque el <strong>el aprendizaje es continuo</strong> — no cabe en una sesión. Un detalle de implementación importante: cómo la skill es <em>agnóstica del agente</em>, este estado en archivos hace que funcione en Claude Code, Codex y similares (lo instalas con <code>npx skills latest add</code> y elige la teach skill — lo veremos en el módulo 3.6). El estado vive en <em>tu</em> disco, no atado a una herramienta.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El workspace como archivo de guardado que contiene mission.md, el registro de aprendizaje y lecciones en HTML, y alimenta un ciclo de leer la fuente, hacer preguntas y crear la siguiente lección" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v33e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v33e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v33e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v33e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#v33e-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g filter="url(#v33e-glow)"><rect fill="#1a1230" height="130" rx="16" stroke="url(#v33e-grad)" stroke-width="2.5" width="300" x="40" y="45"></rect></g>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="190" y="72">espacio de trabajo (archivo de guardado)</text>
+<g font-family="Inter,sans-serif" font-size="12">
+<rect fill="#241640" height="24" rx="6" stroke="#a855f7" stroke-width="1.2" width="256" x="62" y="86"></rect><text fill="#e9d5ff" x="74" y="103">mission.md — el destino</text>
+<rect fill="#241640" height="24" rx="6" stroke="#a855f7" stroke-width="1.2" width="256" x="62" y="116"></rect><text fill="#e9d5ff" x="74" y="133">registro de aprendizaje — el diario</text>
+<rect fill="#241640" height="24" rx="6" stroke="#a855f7" stroke-width="1.2" width="256" x="62" y="146"></rect><text fill="#e9d5ff" x="74" y="163">lecciones .html — ya generadas</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="36" rx="9" stroke="#38bdf8" stroke-width="1.8" width="300" x="640" y="40"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="63">leer fuente primaria</text>
+<rect fill="#0e1b26" height="36" rx="9" stroke="#38bdf8" stroke-width="1.8" width="300" x="640" y="92"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="115">hacer preguntas</text>
+<rect fill="#0e1b26" height="36" rx="9" stroke="#38bdf8" stroke-width="1.8" width="300" x="640" y="144"></rect><text fill="#bfe6ff" text-anchor="middle" x="790" y="167">crear la próxima lección</text>
+</g>
+<g fill="none" opacity="0.65" stroke="#c084fc" stroke-width="1.8"><path d="M340,90 C480,70 540,60 640,58" marker-end="url(#v33e-ah)"></path><path d="M340,128 C480,120 540,112 640,110" marker-end="url(#v33e-ah)"></path><path d="M640,162 C520,180 420,170 340,150" marker-end="url(#v33e-ah)"></path></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="490" y="205">el ciclo actualiza el archivo de guardado en cada sesión</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">En 1 frase:</strong> mission + record + lecciones forman un archivo de guardado en tu disco — eso es lo que hace que la skill Teach tenga estado y sea portátil.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-3-3#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🛠️ Recrear el concepto</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> no necesitas comprar la fábrica de bicicletas para tener una bicicleta: aprendes cómo se arma y montas la tuya. El concepto de Teach skill es lo bastante simple para que tú <em>recrear</em> una versión de ti.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-3-t6-p1">Para cerrar: Teach skill no es magia, sino un patrón. Pocock cuenta que aprendió a resolver el cubo mágico con ella y lo resuelve de memoria; lo llama <em>"extremely effective"</em>. Pero lo que la hace buena no es el modelo: es el <strong>patrón de skill stateful</strong>. Y puedes reutilizar este patrón para cualquier aprendizaje continuo: un <em>espacio de trabajo</em> + <code>mission.md</code> (destino) + learning record (diario) + lecciones detalladas con quiz. Por cierto, Pocock da un consejo directo en esa línea: al corregir errores repetidos, <em>pídele al agente que genere un HTML «tipo teach skill»</em> con los patrones de tus errores. El concepto se puede trasladar. Usa el esqueleto de abajo para armar tu versión:</p>
+<div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-purple-400 font-mono">teach-skill-minima.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Voce e meu professor. Trabalhe num workspace e SALVE estado lah.
+
+1) ALINHE A MISSAO (nao o assunto). Pergunte uma de cada vez:
+   - quem sou eu? o que quero construir? por que importa?
+   - como e o sucesso? -&gt; escreva ./workspace/mission.md
+
+2) CHEQUE MEU SETUP (git instalado? linguagem? SO) e registre.
+
+3) MANTENHA UM LEARNING RECORD em ./workspace/record.md:
+   missao, ponto de partida, decisoes, o que vem depois.
+
+4) ENSINE EM LICOES HTML (abrem no navegador, mais ricas que terminal):
+   - personalizadas pro meu setup
+   - com exercicios reais no terminal
+   - 1 quiz por licao (recall &gt; releitura)
+   - aponte a FONTE PRIMARIA pra eu ler
+
+5) AO FIM: convide perguntas + crie a proxima licao + atualize o record.
+Regra: voce ESQUECE entre sessoes; so o que estiver em arquivo sobrevive.</pre>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-3#q2">
+<p class="font-medium mb-4">Recuperación rápida: qué hace que la Teach skill <strong>stateful</strong>, en la práctica?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">El modelo es lo bastante grande como para recordarlo todo por sí solo.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Guarda mission.md, learning record y lecciones en un workspace en el disco, y vuelve a leerlos.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Mantiene abierta la ventana de contexto para siempre.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">En 1 frase:</strong> la Teach skill es un patrón (workspace + misión + record + lecciones) que puedes recrear para cualquier aprendizaje continuo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Stateful × stateless</strong><span class="text-neutral-400"> — la Teach skill recuerda porque guarda el estado en archivos; la mayoría de las skills lo olvida.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">mission.md</strong><span class="text-neutral-400"> — quién eres, qué construyes, por qué importa, cómo se ve el éxito. Enseñar = orientar, no volcar información.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Registro de aprendizaje</strong><span class="text-neutral-400"> — la libreta de progreso que responde «¿dónde nos quedamos?».</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Lecciones en HTML + cuestionarios</strong><span class="text-neutral-400"> — más ricas que la terminal; recall fija mucho más que releer.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Estado local portátil</strong><span class="text-neutral-400"> — el archivo de guardado está en tu disco y funciona con cualquier agente.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-purple-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">3.4 — Enseñanza que se retiene: la teoría detrás de la Teach skill (zona de desarrollo próximo, conocimiento como grafo, recall y spaced repetition).</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="modulo-3-4.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-3-3#q1', { answer: 1, explain: { 0: 'O assunto importa — mas a missão vem primeiro porque define o rumo.', 1: 'Isso! Ensinar é orientar no mundo: a missão dá direção a todas as lições.', 2: 'O modelo ensina técnico sim; a missão só garante que a aula seja sua.' } });
+        INEMA.registerCheck('modulo-3-3#q2', { answer: 1, explain: { 0: 'O modelo esquece ao fim da conversa — não é ele que lembra.', 1: 'Exato! Estado salvo em arquivos no workspace é o que faz a skill lembrar.', 2: 'Contexto não fica aberto pra sempre; sem arquivo, a memória some no reset.' } });
+      }
+    });
+  </script>
+</body>
+</html>

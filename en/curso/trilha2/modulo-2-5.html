@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>2.5 Communication &amp; dictation | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'blue' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'blue');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha2/modulo-2-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha2/modulo-2-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha2/modulo-2-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Track 2</a><span>/</span>
+<span class="text-blue-400">Module 2.5 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MODULE 2.5 · TEACHING MODE</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🎙️ Communication &amp; dictation</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">The most underrated skill for working with AI isn’t programming—it’s <strong class="text-blue-400">communicate</strong>. You no longer type the code: you <em>says</em> the intent, and the agent writes. Someone who masters dictation and clarity is, in Matt Pocock's words, <em>"so much faster"</em>. Here you understand why and how to train this way of speaking. Each new term is explained as it comes up.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Zero</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Practice</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 2.5 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-5" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Articulate the vision</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. Dictation as speed</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Brain → tokens → brain</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. The communication skill</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Dictation tools</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Train the conversation</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-blue-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-blue-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">This learning path is about <strong>human skills</strong> that multiply AI. The new topic here is <em>voice communication</em>. Learn these terms—they appear throughout the module:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Dictation</strong> — speak aloud and have the computer transcribe it to text in real time. Instead of typing the prompt, you <em>says</em> the prompt.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Whisper / Whisper Flow</strong> — Whisper is OpenAI's speech recognition model; Whisper Flow is the app Matt uses to dictate into any text field on the computer.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Token</strong> — the little "piece" of text that AI processes (roughly a syllable/word). Here we use it as a metaphor: every idea that comes out of your brain as a word is a token.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Put the vision into words</strong> — put into clear words what you want built (the intent, the “why”), not just a series of disconnected commands.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Overpowered</strong> — slang for “extremely powerful,” an outsized advantage. Pocock says communicating well is “ridiculously overpowered” today.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Bandwidth</strong> — how much information passes through a channel in a given amount of time. Speaking has more bandwidth than typing: more ideas per minute.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🗣️ Articulate the vision</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you have a perfect house in your head, with every room in its place. The bricklayer is fast and skilled — but can only build what you can <em>describe</em>. If you just say “build a house,” anything could come out. If you describe each room, you get your house. The AI is the bricklayer; your words are the blueprint.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-5-t1-p1">In the previous track, you saw that AI "ate" the work <span class="termo" title="Execution work: writing code line by line.">tactical</span> (writing the code) and that its value shifted to the side <span class="termo" title="Direction work: deciding what and why.">strategic</span> (deciding what and why). But deciding isn't enough — you need to <strong>transmit</strong> the decision. And here's the key insight from this module: how you communicate your intent to the agent has become the skill that most separates those who take off from those who get stuck. Pocock calls this, plainly, communication <span class="termo" title="Too powerful; a disproportionate advantage.">overpowered</span> — "ridiculously overpowered in the world of development."</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-5-t1-p2"><span class="termo" title="Put the intention and reasoning behind what you want into clear words.">Put the vision into words</span> is different from giving an order. “Do the login” is a vague order. “I want an email and password login that reuses our authentication pattern, with friendly error messages and test coverage” is a <em>verbalized vision</em>: includes what, why, and the done criteria. The agent is only as good as how clearly you express yourself. The <strong>reason</strong> of this is simple: AI can’t read your mind—it only has the words you gave it. The clearer the vision in your words, the less AI has to guess—and guessing is exactly where it goes wrong.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A vision in your head becomes clear instructions, which lead the agent to build the right thing; vague instructions lead to the wrong build" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v25a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v25a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v25a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v25a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v25a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<g filter="url(#v25a-glow)"><rect fill="url(#v25a-grad)" height="70" rx="16" stroke="#3b82f6" stroke-width="2.5" width="200" x="40" y="90"></rect></g>
+<text fill="#06162b" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="140" y="122">VISION</text>
+<text fill="#06162b" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="140" y="143">in your head</text>
+<rect fill="#0e1622" height="60" rx="12" stroke="#60a5fa" stroke-width="2" width="220" x="400" y="40"></rect><text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="510" y="68">clear explanation (vision)</text><text fill="#9ec5fe" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="510" y="87">what + why + done</text>
+<rect fill="#1a0e0e" height="60" rx="12" stroke="#ef4444" stroke-width="2" width="220" x="400" y="150"></rect><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="510" y="178">vague order</text><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="510" y="197">"log in"</text>
+<rect fill="#0e1f16" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="200" x="770" y="40"></rect><text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="870" y="68">right build</text><text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="870" y="87">your home</text>
+<rect fill="#1a0e0e" height="60" rx="12" stroke="#ef4444" stroke-width="2" width="200" x="770" y="150"></rect><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="870" y="178">wrong build</text><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="870" y="197">anything</text>
+<g fill="none" opacity="0.7" stroke-width="2"><path d="M240,115 L400,75" marker-end="url(#v25a-ah)" stroke="#60a5fa"></path><path d="M240,140 L400,178" marker-end="url(#v25a-ah)" stroke="#ef4444"></path><path d="M620,70 L770,70" marker-end="url(#v25a-ah)" stroke="#38bdf8"></path><path d="M620,180 L770,180" marker-end="url(#v25a-ah)" stroke="#ef4444"></path></g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The same vision can become the right house or just anything—it depends on how clearly you express yourself.</p>
+</div>
+<img alt="Conceptual illustration: a person speaks, and the speech transforms into a glowing construction blueprint that the agent follows" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-5-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Think that "short prompt = good prompt." Too short becomes a vague instruction, and AI fills in the gaps by guessing. Articulating the vision is the opposite of being telegraphic: it's being <em>clear</em> about intent and the definition of done — even if it's just a paragraph.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> the agent builds exactly what you can put into words — so the clarity of what you say is the limit of the result.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-blue-400">Going deeper (optional): why does "verbalizing" also help you think?</summary>
+<p class="text-sm text-neutral-300 mt-3">There’s a known effect called <em>"rubber duck debugging"</em>: explaining a problem out loud (even to a rubber duck) often makes the solution appear. Talking through your vision with the agent has the same benefit—as you speak, you find gaps in your own plan before the AI even tries. Speech isn’t just output; it’s also a reasoning tool.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⚡ Dictated as speed</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> sending a text message takes 30 seconds; a voice recording with the same idea takes 8. Speaking is a multi-lane highway; typing is a one-way street. People who dictate take the highway.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-5-t2-p1">The average person types ~40 words per minute and speaks ~130. That’s more than <strong>3× faster</strong>. When your work stopped being typing code and became <em>describe intent</em> for the agent, this speed difference translates directly into a productivity difference. That’s why Pocock is emphatic: <em>"Anyone who's not doing dictation is just so much slower."</em> It’s not motivational exaggeration — it’s the math of <span class="termo" title="How much information passes through a channel in a given amount of time.">bandwidth</span>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-5-t2-p2"><span class="termo" title="Speaking and having the computer transcribe it to text in real time.">Dictation</span> is exactly this: you speak and the computer transcribes your prompt in real time, in any text field. Instead of typing three paragraphs of context, you speak three paragraphs in a third of the time—and still share details you’d never have the patience to type. The <strong>reason</strong> is important: the bottleneck in working with AI is no longer how quickly AI can write (it’s instant); the bottleneck has become <em>you being able to express what you want</em>. Dictating breaks this bottleneck.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Speed comparison: typing 40 words per minute versus speaking 130 words per minute" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs><pattern height="32" id="v25b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><lineargradient id="v25b-grad" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient><filter height="180%" id="v25b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v25b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="14" x="40" y="55">⌨️ type</text>
+<rect fill="#0e1622" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="220" x="180" y="38"></rect><text fill="#9ec5fe" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="290" y="61">~40 words/min</text>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="14" font-weight="600" x="40" y="135">🎙️ speak</text>
+<g filter="url(#v25b-glow)"><rect fill="url(#v25b-grad)" height="34" rx="8" stroke="#3b82f6" stroke-width="2.5" width="715" x="180" y="118"></rect></g><text fill="#06162b" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="537" y="141">~130 words/min — 3× faster</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="195">Same idea, one-third the time. You’re no longer the bottleneck.</text>
+</svg>
+</div>
+<img alt="Illustration: sound waves from speech turning into lines of text flowing quickly to a screen" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-5-2.png"/>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-5#q1">
+<p class="font-medium mb-4">Quick recall: why does Pocock say that people who don't use dictation are "so much slower"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because AI writes code more slowly when you type.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because speaking has ~3× more bandwidth than typing, and right now you’re the bottleneck in expressing your intent.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because the keyboard breaks and the microphone doesn’t.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> the AI is already instant; dictating removes <em>you</em> in the critical path by tripling how much you can say per minute.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🔁 Brain → tokens → brain</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> working with AI is a two-way conversation with a water hose. You send ideas out (a stream flowing outward) and receive answers (a stream flowing inward). If the hose is thin (typing), it drips. If it's thick (speaking + listening/reading quickly), it gushes.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-5-t3-p1">Pocock has a phrase that sums up the whole game: what matters is <em>"how fast you can output tokens from your brain and input them back into your brain."</em> In other words: the speed at which you can <strong>remove</strong> ideas from your head in the form of <span class="termo" title="The pieces of text/words that go in and out—here, each idea expressed in words.">tokens</span> (words) and then <strong>return</strong> to your mind the answers the AI produced. Working with an agent is this cycle in motion: brain → tokens → agent → tokens → brain, repeatedly.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-5-t3-p2">The two sides of the cycle have different bottlenecks. On the <strong>output</strong>, the limit is how quickly you can speak—and that’s where dictation helps (3× more words per minute). On the <strong>input</strong>, the limit is how quickly you read and absorb the response—and that’s where speed reading, well-formatted diffs, and even listening to a summary come in. The <strong>reason</strong> to think about both sides: there’s no point in speaking quickly if you spend 10 minutes reading each response. The goal is to widen the pipe <em>in both directions</em>.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Brain-to-agent token cycle and back: the brain emits tokens to the agent, which returns tokens to the brain" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v25c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v25c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v25c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v25c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v25c-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g filter="url(#v25c-glow)"><rect fill="url(#v25c-grad)" height="80" rx="18" stroke="#3b82f6" stroke-width="2.5" width="220" x="60" y="80"></rect></g>
+<text fill="#06162b" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="170" y="116">🧠 BRAIN</text>
+<text fill="#06162b" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="170" y="138">you</text>
+<rect fill="#0e1622" height="80" rx="18" stroke="#60a5fa" stroke-width="2" width="220" x="720" y="80"></rect>
+<text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="830" y="116">🤖 AGENT</text>
+<text fill="#9ec5fe" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="830" y="138">the AI</text>
+<g fill="none" opacity="0.85" stroke-width="2.4"><path d="M280,100 C450,55 560,55 720,100" marker-end="url(#v25c-ah)" stroke="#60a5fa"></path><path d="M720,150 C560,195 450,195 280,150" marker-end="url(#v25c-ah)" stroke="#38bdf8"></path></g>
+<text fill="#9ec5fe" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="500" y="58">output: tokens (speak → dictation 3×)</text>
+<text fill="#7dd3fc" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="500" y="210">input: tokens (read/listen to the response)</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Working with an agent is this loop in motion. Widen the pipe in both directions.</p>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: the same bug, two channels</h3>
+<p class="text-neutral-300 text-sm mb-3">You need to explain a pagination bug to the agent. Same bug, two ways to close the loop:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Thin hose (typing)</p><p class="text-xs text-neutral-300">You type "fix the pagination" in 5s, without context (you get tired of typing). The AI guesses, gets it wrong, and you slowly reread everything. A long loop, with lots of back and forth.</p></div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">Thick hose (dictating)</p><p class="text-xs text-neutral-300">In 20s, you <em>says</em>: “pagination repeats the last item when you change pages; I think the offset starts at 1 instead of 0; check the list component and run test X.” The AI gets it right on the first try; you read the diff and close the loop.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> your AI productivity = the speed of the brain → tokens → brain loop; dictation speeds up half of the output.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">💬 The communication skill</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> two managers with the same team. One explains the task in a way everyone understands the first time; the other rambles and has to redo everything three times. Same team, opposite results. The difference is purely <em>communication</em>.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-5-t4-p1">Here's the central thesis, and it's provocative: communicating well is "<strong>ridiculously overpowered</strong>" in the world of software development—in Pocock’s words. For decades, “communication” was treated as a soft skill, secondary to technical talent. With agents, it became a <em>out-of-the-box hard skill</em>: it’s the channel through which all your strategy gets carried out. If you’re clear, the agent gets it right; if you’re unclear, no model in the world can save you.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-5-t4-p2">The good news: communication is a <span class="termo" title="Something that improves with deliberate practice, like a muscle.">skill</span>, not a gift—you can train and improve it. And it has three practical muscles: (1) <strong>sharpness</strong> — say what, why, and the completion criteria; (2) <strong>structure</strong> — order your thinking (context → objective → constraints) instead of dumping everything together; (3) <strong>brevity without losing meaning</strong> — cut what doesn’t change the decision; keep what does. The <strong>common mistake</strong> is confusing “being technical” with “being clear”: dense jargon impresses people, but confuses the agent just as much as it would confuse a junior.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Three communication muscles: clarity, structure, and concision without loss" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs><pattern height="32" id="v25d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v25d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v25d-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<g filter="url(#v25d-glow)"><rect fill="#0e1622" height="100" rx="14" stroke="#60a5fa" stroke-width="2.5" width="260" x="60" y="50"></rect></g>
+<text fill="#60a5fa" font-size="16" font-weight="600" text-anchor="middle" x="190" y="92">1 · clarity</text>
+<text fill="#9ec5fe" font-size="12" text-anchor="middle" x="190" y="118">what · why · done</text>
+<rect fill="#0e1622" height="100" rx="14" stroke="#38bdf8" stroke-width="2" width="260" x="370" y="50"></rect>
+<text fill="#7dd3fc" font-size="16" font-weight="600" text-anchor="middle" x="500" y="92">2 · structure</text>
+<text fill="#9ad6ff" font-size="12" text-anchor="middle" x="500" y="118">context → objective → limit</text>
+<rect fill="#0e1622" height="100" rx="14" stroke="#38bdf8" stroke-width="2" width="260" x="680" y="50"></rect>
+<text fill="#7dd3fc" font-size="16" font-weight="600" text-anchor="middle" x="810" y="92">3 · concision</text>
+<text fill="#9ad6ff" font-size="12" text-anchor="middle" x="810" y="118">cut what doesn't help you decide</text>
+</g>
+</svg>
+</div>
+<img alt="Illustration: a human manager directing a team of AI agents with clear, glowing instructions" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-5-3.png"/>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6"><h4 class="font-bold text-blue-400 mb-4">✓ Overpowered communication</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• State the goal and why, not just the instruction.</li><li>• Structure: context, then request, then limits.</li><li>• Cut the extras; keep what drives decisions.</li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Communication that stalls</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• A vague instruction without context (“do this”).</li><li>• Dense jargon that sounds technical but confuses people.</li><li>• Everything dumped together, with no order.</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> communicating well has become a hard skill — it’s the channel through which all your strategy reaches the agent, and you can train it.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🛠️ Dictation tools</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a magic button that, while you hold it and speak, turns your voice into text anywhere on the screen — in the agent chat, the editor, the search field. That's what a dictation app does.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-5-t5-p1">The tool Pocock uses is <span class="termo" title="Dictation app that transcribes your speech in any text field, based on Whisper.">Whisper Flow</span>. The name comes from <span class="termo" title="OpenAI speech recognition model, highly accurate.">Whisper</span>, OpenAI’s speech recognition model—extremely good at transcription, including accents and technical terms. “Flow” is the app that plugs this engine into your whole system: you trigger a shortcut, speak, and the text appears wherever your cursor is. Whether it’s the Claude Code terminal, an email field, or the editor—it works anywhere.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-5-t5-p2">There are alternatives (the operating system’s own built-in dictation, or other apps based on Whisper), but the point isn’t the brand — it’s <em>adopt the habit</em>. O <strong>reason</strong> a dedicated tool instead of native dictation: the good ones have low latency, automatic punctuation, formatting, and work globally (in any app), which makes the difference between “use it once in a while” and “use it all day.” The <strong>common mistake</strong> is installing it, trying it once, finding it strange, and giving up—the learning curve takes a few days; after that, there’s no going back.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A microphone activates a Whisper engine that inserts transcribed text into any application: terminal, editor, and email" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs><pattern height="32" id="v25e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><lineargradient id="v25e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient><filter height="180%" id="v25e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v25e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker></defs>
+<rect fill="url(#v25e-grid)" height="220" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1622" height="60" rx="12" stroke="#60a5fa" stroke-width="2" width="150" x="40" y="80"></rect><text fill="#bfdbfe" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="115" y="116">🎙️ your voice</text>
+<g filter="url(#v25e-glow)"><rect fill="url(#v25e-grad)" height="64" rx="14" stroke="#3b82f6" stroke-width="2.5" width="220" x="290" y="78"></rect></g><text fill="#06162b" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="400" y="106">Whisper Flow</text><text fill="#06162b" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="400" y="126">transcription engine</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1622" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="260" x="700" y="30"></rect><text fill="#9ad6ff" text-anchor="middle" x="830" y="55">terminal (Claude Code)</text>
+<rect fill="#0e1622" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="260" x="700" y="90"></rect><text fill="#9ad6ff" text-anchor="middle" x="830" y="115">code editor</text>
+<rect fill="#0e1622" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="260" x="700" y="150"></rect><text fill="#9ad6ff" text-anchor="middle" x="830" y="175">email / search</text>
+</g>
+<path d="M190,110 L290,110" fill="none" marker-end="url(#v25e-ah)" stroke="#60a5fa" stroke-width="2.2"></path>
+<g fill="none" opacity="0.6" stroke="#34d399" stroke-width="1.8"><path d="M510,100 C600,100 620,50 700,50" marker-end="url(#v25e-ah)"></path><path d="M510,110 C600,110 620,110 700,110" marker-end="url(#v25e-ah)"></path><path d="M510,120 C600,120 620,170 700,170" marker-end="url(#v25e-ah)"></path></g>
+</svg>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-blue-400">Going deeper (optional): why do punctuation and technical context matter so much?</summary>
+<p class="text-sm text-neutral-300 mt-3">Weak dictation transcribes “use the list view component” as “use the list. view component” or gets variable names wrong. When you send a technical prompt to the agent, these errors clutter the instruction and the AI misinterprets it. Good engines (like Whisper) handle jargon well and add punctuation automatically — so recognition quality is no small detail: it protects the clarity of what you say all the way to the agent.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> Whisper Flow (or similar) turns your voice into text in any app—the important thing isn’t the brand, but adopting the habit.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-5#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎯 Practice speaking</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> no one becomes fluent in a language by reading about grammar—they get fluent by speaking every day, even if they make mistakes at first. Dictation is the same: it feels strange for the first few days, then becomes automatic after a week.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-5-t6-p1">Wrapping up the module: overpowered communication doesn’t come out of nowhere—it’s a built habit. At first, talking to the computer feels strange (everyone goes through this), and you’ll want to go back to the keyboard. Stick with it for a week. The goal isn’t to speak eloquently; it’s to speak <strong>structured and clear</strong> automatically, the way you'd explain it to a capable junior. Below is a mental checklist—a "human skill" to follow until the habit comes naturally. Copy and paste it onto a sticky note next to your screen:</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">treinar-a-fala.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">TREINO DE COMUNICAÇÃO OVERPOWERED — 1 semana
+
+1. INSTALE um app de dictation (ex.: Whisper Flow) e defina um atalho global.
+2. REGRA: por 1 semana, todo prompt longo é DITADO, não digitado. Sem exceção.
+3. ESTRUTURA ao falar (sempre nesta ordem):
+   - CONTEXTO: onde estamos / o que já existe.
+   - OBJETIVO: o que quero alcançar (a VISÃO, não só a ordem).
+   - PORQUÊ: por que isso importa.
+   - LIMITES: restrições, padrão a seguir, o que NÃO fazer.
+   - PRONTO: como sei que terminou (teste / critério).
+4. REVISE a transcrição 1x antes de enviar (pega erro de reconhecimento).
+5. LOOP: feche o ciclo lendo o diff/resposta rápido; não releia tudo devagar.
+
+Meta: falar nitido e estruturado vira automatico. Ai voce esta "so much faster".</pre>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Training timeline: day 1 feels strange, day 3 feels easier, day 7 feels automatic and faster" class="w-full h-auto" role="img" viewbox="0 0 1000 170">
+<defs><pattern height="32" id="v25f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v25f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v25f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker></defs>
+<rect fill="url(#v25f-grid)" height="170" width="1000" x="0" y="0"></rect>
+<line marker-end="url(#v25f-ah)" opacity="0.5" stroke="#3b82f6" stroke-width="2.5" x1="60" x2="900" y1="85" y2="85"></line>
+<g font-family="Inter,sans-serif">
+<circle cx="160" cy="85" fill="#0e1622" r="10" stroke="#ef4444" stroke-width="2.5"></circle><text fill="#fca5a5" font-size="14" font-weight="600" text-anchor="middle" x="160" y="55">Day 1</text><text fill="#9ca3af" font-size="12" text-anchor="middle" x="160" y="120">strange</text>
+<circle cx="480" cy="85" fill="#0e1622" r="10" stroke="#38bdf8" stroke-width="2.5"></circle><text fill="#7dd3fc" font-size="14" font-weight="600" text-anchor="middle" x="480" y="55">Day 3</text><text fill="#9ca3af" font-size="12" text-anchor="middle" x="480" y="120">lighter</text>
+<g filter="url(#v25f-glow)"><circle cx="800" cy="85" fill="#60a5fa" r="12" stroke="#3b82f6" stroke-width="2.5"></circle></g><text fill="#60a5fa" font-size="14" font-weight="700" text-anchor="middle" x="800" y="55">Day 7</text><text fill="#9ec5fe" font-size="12" text-anchor="middle" x="800" y="120">automatic—"so much faster"</text>
+</g>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-5#q2">
+<p class="font-medium mb-4">Quick recall: what's the most faithful way to describe Pocock's thesis about communication?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">It’s a secondary soft skill; what really matters is technical talent.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Communicating well is "ridiculously overpowered" — it has become the channel through which your strategy reaches the agent, and you can train it.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">You're either born good at speaking or you're not; you can't practice it.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">In one sentence:</strong> dictate for a week with a fixed structure; the strange becomes automatic, and you become "so much faster".</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Put the vision into words</strong><span class="text-neutral-400"> — the agent builds only what you can describe (what + why + done).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Dictation is speed</strong><span class="text-neutral-400"> — speaking has ~3× the bandwidth of typing; “anyone who doesn't dictate is so much slower.”</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Brain → tokens → brain</strong><span class="text-neutral-400"> — the work is this loop; widen the pipe in both directions.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Communication is overpowered</strong><span class="text-neutral-400"> — it became a hard skill; use Whisper Flow and practice speaking for a week.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Next module:</h3><p class="text-neutral-300">2.6 — You’re in control of the product: AI is weak at original ideas; the vision and features are yours.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-6.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-2-5#q1', { answer: 1, explain: { 0: 'A IA escreve instantâneo — a velocidade dela não depende do seu teclado.', 1: 'Isso! Falar tem ~3× a bandwidth; hoje o gargalo é você colocar a intenção pra fora.', 2: 'Não é sobre hardware — é sobre quanto você consegue dizer por minuto.' } });
+        INEMA.registerCheck('modulo-2-5#q2', { answer: 1, explain: { 0: 'Pocock vira essa ideia do avesso: comunicação deixou de ser secundária.', 1: 'Exato — "ridiculously overpowered"; é o canal da sua estratégia e dá pra treinar.', 2: 'É habilidade, não dom: você treina a fala como um músculo.' } });
+      }
+    });
+  </script>
+</body>
+</html>

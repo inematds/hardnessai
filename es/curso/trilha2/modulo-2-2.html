@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>2.2 Tus skills son el techo | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'blue' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'blue');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha2/modulo-2-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha2/modulo-2-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha2/modulo-2-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Ruta 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.2 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.2 · MODO ENSEÑANZA</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">📈 Tus habilidades son el límite</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">"Tus habilidades son el límite de lo que la IA puede hacer." Tus habilidades son el <strong class="text-blue-400">techo</strong> de lo que la IA puede alcanzar. Si eres bueno, la IA recibe contexto rico y produce mucho; si eres débil, no supera tu límite. Aquí entiendes por qué <strong class="text-blue-400">eres el multiplicador</strong> — y cómo ampliar ese límite. Cada término se explica en el momento.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Core</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Teoría</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 2.2" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-2" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. El efecto multiplicador</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. Por qué el sénior obtiene 10x</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Por qué el júnior gana poco</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. Una skill superficial limita a la IA</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Mejorar tus habilidades</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Cómo ampliar el límite</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-blue-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-blue-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">La Trilha 1 ya definió el vocabulario básico (modelo, prompt, agente, skill, codebase, harness). Aquí están los términos <strong>nuevos</strong> de este módulo —fíjalos:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Multiplicador</strong> — algo que <em>amplifica</em> lo que ya existe. Tus skills multiplican la IA: 0,5 se convierte en medio resultado; 10, en diez veces más. La IA no suma; multiplica lo que aportas.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Techo (ceiling)</strong> — o <em>límite máximo</em> de calidad que produce el trabajo. Pocock: el límite es TU habilidad. La IA llega hasta ahí, pero no lo supera.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Senior</strong> — desarrollador con experiencia, que ya ha visto muchos casos, conoce patrones, sabe qué es «bueno» en una base de código y por qué. Es quien puede <em>supervisar</em>.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Junior</strong> — desarrollador principiante, con poca experiencia. Tiene energía, pero aún no sabe distinguir un buen resultado de uno malo sin ayuda.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Contexto</strong> — toda la información que le das a la IA antes de que actúe: qué construir, cómo, con qué estándares y qué evitar. Cuanto más completa, mejor el resultado.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Supervisar</strong> — revisar lo que hizo la IA y decir «esto está bien / esto no». Solo puede supervisar quien tiene los conocimientos para juzgar.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Upskill</strong> — invertir en <em>aumentar tu propia habilidad</em>. En el mundo de la IA, «ser bueno con la IA» = «ser bueno en tu dominio».</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Dominio</strong> — el área en la que trabajas (back-end, diseño, datos, legal…). Ahí está tu techo: subir tu nivel en el dominio eleva el techo de la IA.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">✖️ El efecto multiplicador</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> una lupa bajo el sol. La lupa no crea fuego por sí sola: <em>amplifica</em> la luz que ya llega. Apunta a la nada y no pasa nada; apunta a un foco bien definido y quema la hoja. La IA es la lupa. La luz es tu habilidad. Multiplica lo que aportas — no lo inventa de cero.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-2-t1-p1">La frase central de Matt Pocock sobre este tema es directa: <em>"My skills are a multiplier for AI."</em> — mis habilidades son un <span class="termo" title="Algo que amplifica lo que ya existe; la IA multiplica tu habilidad, no se suma a ella.">multiplicador</span> de la IA. Fíjate en la palabra elegida: no es "suma", es <strong class="text-blue-400">multiplicación</strong>. Cuando sumas, incluso un cero de tu lado deja intacto el resultado de la IA. Cuando multiplicas, si tu factor es bajo, todo el resultado se reduce. Por eso dos personas que usan <em>igual</em> los modelos producen trabajos de calidades completamente diferentes.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t1-p2">El mecanismo es el <span class="termo" title="Toda la información que le das a la IA antes de que actúe: qué construir, cómo y con qué estándares.">contexto</span>. En sus palabras: si tú <span class="termo" title="Mirar lo que hizo la IA y juzgar si está bien, según tus conocimientos.">supervisa</span> un codebase y sabe cómo funcionan las cosas <em>deben</em> construirse —y se lo dices a la IA—, entonces "la IA tiene un contexto mucho más rico". Deja de adivinar y empieza a seguir tu patrón. Quien no sabe qué es un buen resultado no puede describirlo; por lo tanto, la IA recibe una solicitud pobre y devuelve algo pobre. El multiplicador, entonces, tiene menos que ver con "escribir más" y más con <strong>tener algo que decir</strong>. <strong>Error común:</strong> creer que la IA "compensa" lo que no sabes. Amplifica lo que sabes, incluso tu falta de claridad.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Tu habilidad entra como un factor; la IA multiplica ese factor. Una habilidad baja genera un resultado bajo; una habilidad alta genera un resultado alto" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v22a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v22a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v22a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v22a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="16" font-weight="600" text-anchor="middle" x="500" y="34">salida = tu habilidad × IA</text>
+<!-- linha de cima: habilidade baixa -->
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="120" x="40" y="60"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="100" y="85">tú 0,5</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="20" text-anchor="middle" x="185" y="86">×</text>
+<g filter="url(#v22a-glow)"><rect fill="url(#v22a-grad)" height="40" rx="9" stroke="#3b82f6" stroke-width="2" width="100" x="210" y="60"></rect></g><text fill="#06203a" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="260" y="85">IA</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="20" text-anchor="middle" x="340" y="86">=</text>
+<rect fill="#1a0e0e" height="32" rx="7" stroke="#ef4444" stroke-width="2" width="120" x="380" y="64"></rect><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="440" y="86">salida débil</text>
+<!-- linha de baixo: habilidade alta -->
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="120" x="40" y="150"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="100" y="175">tú 10</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="20" text-anchor="middle" x="185" y="176">×</text>
+<g filter="url(#v22a-glow)"><rect fill="url(#v22a-grad)" height="40" rx="9" stroke="#3b82f6" stroke-width="2" width="100" x="210" y="150"></rect></g><text fill="#06203a" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="260" y="175">IA</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="20" text-anchor="middle" x="340" y="176">=</text>
+<rect fill="#0e2a1c" height="48" rx="9" stroke="#34d399" stroke-width="2.5" width="220" x="380" y="146"></rect><text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="490" y="175">salida mucho mayor</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="760" y="125">La IA es la misma en ambos.</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="760" y="148">Lo que cambia es TU factor.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">La misma IA, distintos factores. Como es una multiplicación, tu lado define el tamaño del resultado.</p>
+</div>
+<img alt="Ilustración conceptual: una lupa que amplifica una luz azul brillante en un único punto focal" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-2-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Pensar «la IA es tan buena que mi habilidad ya no importa». Es al revés: como la IA multiplica, tu habilidad importa <em>más</em> de lo que antes: es el factor que define el resultado.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la IA multiplica tu habilidad — así que tu factor determina el tamaño del resultado.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-blue-400">Profundiza (opcional): ¿por qué «multiplicador» y no «asistente»?</summary>
+<p class="text-sm text-neutral-300 mt-3">"Asistente" sugiere que la IA hace parte del trabajo por ti, sumándose a tu producción. Pero si fuera una suma, alguien sin ninguna habilidad obtendría todo el beneficio de la IA — y eso no es lo que se observa en la práctica. "Multiplicador" describe mejor lo que vemos: el beneficio de cada persona es proporcional a lo que ya aporta. Por eso Pocock lo relaciona directamente con el siguiente punto — el sénior, con un factor alto, se dispara.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🚀 Por qué el sénior gana 10x</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> dale una orquesta de clase mundial a un director experimentado y a un principiante. El principiante ni siquiera sabe qué pedir; el director logra una sinfonía. La orquesta es la misma: quien sabe dirigir es quien determina el resultado.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-2-t2-p1">Pocock es categórico: <em>"AI makes senior developers 10x better."</em> — la IA convierte a los devs en <span class="termo" title="Dev experimentado, que conoce los patrones y sabe juzgar qué es un buen resultado.">seniors</span> 10 veces mejores. ¿Por qué diez y no dos? Porque el sénior tiene tres cosas que al multiplicador le encantan: él <strong>sabe qué pedir</strong> (describe la tarea con patrones claros), él <strong>sabe leer lo que vuelve</strong> (ve al instante si la IA rompió algo) y él <strong>tiene experiencia con casos</strong> (ya se equivocó antes, así que previene errores que un principiante ni siquiera ve). Cada una de estas cosas alimenta el contexto, y un contexto rico es justamente lo que hace que la IA rinda.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t2-p2">Esto tiene una consecuencia de mercado que señala sin rodeos: <em>no tiene tanto sentido contratar un ejército de desarrolladores junior</em>, porque ahora «un senior con IA hace el trabajo de muchos». La idea no es menospreciar a nadie: es mostrar dónde está la palanca. El senior no es 10 veces más rápido al escribir; es 10 veces mejor para <strong>delegar y supervisar</strong>. La IA se convirtió en esa "flota infinita de programadores tácticos" del módulo anterior, y quien comanda la flota con mano firme obtiene todo el multiplicador. <strong>Error común:</strong> medir el beneficio de la IA por las líneas escritas. El beneficio del sénior se ve en el <em>criterio</em> — en lo que acepta, rechaza y corrige.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="La capacidad del sénior crece 10x con IA; la del júnior crece solo un poco" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v22b-grad" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#3b82f6"></stop><stop offset="1" stop-color="#60a5fa"></stop></lineargradient>
+<filter height="180%" id="v22b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v22b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v22b-grid)" height="240" width="1000" x="0" y="0"></rect>
+<line stroke="#9ca3af" stroke-width="2" x1="80" x2="940" y1="200" y2="200"></line>
+<!-- júnior sem IA -->
+<rect fill="#0e1b26" height="30" rx="4" stroke="#38bdf8" stroke-width="2" width="70" x="150" y="170"></rect>
+<!-- júnior com IA -->
+<rect fill="#0e1b26" height="50" rx="4" stroke="#60a5fa" stroke-width="2" width="70" x="240" y="150"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="230" y="222">junior: +empujoncito</text>
+<!-- sênior sem IA -->
+<rect fill="#0e1b26" height="40" rx="4" stroke="#38bdf8" stroke-width="2" width="70" x="560" y="160"></rect>
+<!-- sênior com IA -->
+<g filter="url(#v22b-glow)"><rect fill="url(#v22b-grad)" height="160" rx="6" stroke="#60a5fa" stroke-width="2.5" width="70" x="650" y="40"></rect></g>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="685" y="32">10×</text>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="645" y="222">senior: impulso gigante</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="190" y="150">sin · con IA</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="600" y="148">sin · con IA</text>
+</svg>
+</div>
+<img alt="Ilustración: un director experimentado frente a una orquesta luminosa, que logra una gran interpretación" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-2-2.png"/>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-2#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿por qué la IA hace que un senior sea «10x mejor»?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Porque el senior escribe mucho más rápido que el junior.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Porque sabe pedir, leer lo que recibe y tiene experiencia, así que aporta mucho contexto y supervisa bien.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Porque usa un modelo de IA mejor que el del junior.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> el sénior avanza 10x porque sabe pedir, sabe juzgar y tiene experiencia — no porque escriba rápido.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🌱 Por qué el junior gana poco</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> dale una cámara profesional a un fotógrafo y a alguien que nunca ha tomado fotos. El primero hace una portada de revista; el segundo mejora un poco, pero aún corta cabezas y desenfoca todo. La cámara es la misma: le falta el ojo entrenado para usarla.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-2-t3-p1">Si el senior rinde 10x, el <span class="termo" title="Developer principiante, con poca experiencia y aún sin criterio afinado para juzgar los resultados.">junior</span> gana — en palabras de Pocock — apenas "un pequeño empujón". No es que la IA sea inútil para él: es que solo puede multiplicar el factor que existe, y el factor del junior todavía es pequeño. No sabe describir el patrón correcto (así que el contexto es pobre), no se da cuenta cuando la IA rompió algo (así que acepta el error sin verlo) y no tiene casos anteriores para prever dificultades. El resultado mejora, pero poco — y a veces empeora, porque ahora produce código malo <em>más rápido</em>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t3-p2">Aquí hay una trampa peligrosa: la IA puede darle al junior la <strong>sensación</strong> de competencia sin tener la competencia. El código compila, la pantalla se abre: parece listo. Pero sin criterio para evaluarlo, no sabe qué hay de frágil debajo. Por eso Pocock insiste en que la salida para el junior no es «depender más de la IA», sino <strong>subir tu propio factor</strong>: aprender fundamentos, adquirir experiencia y desarrollar el criterio. La buena noticia (y él se asegura de decirlo): el entusiasmo y la mentalidad experimental cuentan mucho; un junior entusiasmado que aprende rápido prospera. <strong>Error común:</strong> usar la IA como muleta para <em>nunca</em> aprender el fundamento. Eso congela el factor bajo para siempre.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El mismo impulso de IA aplicado a un factor bajo genera una ganancia pequeña; aplicado a un factor alto genera una ganancia grande" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs><pattern height="32" id="v22c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v22c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v22c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker></defs>
+<rect fill="url(#v22c-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<!-- júnior -->
+<rect fill="#0e1b26" height="40" rx="6" stroke="#38bdf8" stroke-width="2" width="60" x="60" y="120"></rect><text fill="#9ca3af" font-size="13" text-anchor="middle" x="90" y="180">junior</text>
+<path d="M130,135 L250,135" fill="none" marker-end="url(#v22c-ah)" stroke="#60a5fa" stroke-width="2.5"></path>
+<text fill="#93c5fd" font-size="11" text-anchor="middle" x="190" y="125">+ IA</text>
+<rect fill="#0e1b26" height="48" rx="6" stroke="#60a5fa" stroke-width="2" width="70" x="260" y="112"></rect><text fill="#9ca3af" font-size="12" text-anchor="middle" x="295" y="180">+poco</text>
+<!-- sênior -->
+<rect fill="#0e1b26" height="40" rx="6" stroke="#38bdf8" stroke-width="2" width="60" x="560" y="120"></rect><text fill="#9ca3af" font-size="13" text-anchor="middle" x="590" y="180">senior</text>
+<path d="M630,135 L750,135" fill="none" marker-end="url(#v22c-ah)" stroke="#60a5fa" stroke-width="2.5"></path>
+<text fill="#93c5fd" font-size="11" text-anchor="middle" x="690" y="125">+ IA</text>
+<g filter="url(#v22c-glow)"><rect fill="#0e2a44" height="120" rx="8" stroke="#60a5fa" stroke-width="2.5" width="100" x="760" y="40"></rect></g><text fill="#93c5fd" font-size="12" text-anchor="middle" x="810" y="180">+mucho</text>
+<text fill="#9ca3af" font-size="13" text-anchor="middle" x="500" y="35">La misma «+ IA». Distintos factores, distintas ganancias.</text>
+</g>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: misma tarea, dos factores</h3>
+<p class="text-neutral-300 text-sm mb-3">La misma petición a la misma IA: «agrega caché a esta API». Mira qué efecto tiene el factor de cada uno:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Junior (factor bajo)</p><p class="text-xs text-neutral-300">Pide «pon un caché ahí». La IA elige cualquier caché en memoria. Ve que funciona y lo acepta. En producción, con varios servidores, el caché queda inconsistente: un bug que <em>no tenía experiencia</em> para prever.</p></div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-semibold text-sm mb-1">Senior (factor alto)</p><p class="text-xs text-neutral-300">Pide «caché distribuida (Redis), TTL de 60s, invalida al escribir y cúbrelo con una prueba». La IA entrega exactamente eso. Lo lee, comprueba la invalidación y lo aprueba. La misma IA: un contexto más completo lo cambió todo.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la IA solo multiplica el factor que existe — factor bajo, ganancia pequeña (y riesgo de producir errores más rápido).</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🪟 Una skill poco desarrollada limita la IA</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un techo bajo en una habitación. Por más alto que salte alguien, se golpea la cabeza con el techo. La IA es quien salta. Tu techo es la altura de la habitación. Techo bajo = se golpea y se detiene, por muy «potente» que sea.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-2-t4-p1">Aquí está la frase que da nombre al módulo, citada literalmente: <em>"Tus habilidades son el límite de lo que la IA puede hacer. Si tus habilidades son limitadas, la IA no puede ir más allá."</em> — tus habilidades son el <span class="termo" title="El límite máximo de calidad que puede alcanzar el trabajo; Pocock dice que ese límite es tu habilidad.">techo</span> de lo que la IA puede hacer; si tus skills son bajas, la IA no va más allá. Observa la diferencia con respecto al multiplicador: el multiplicador habla de <em>tamaño</em> del resultado; el límite habla de <strong>límite de calidad</strong>. La IA puede producir mucho, pero no puede producir <em>mejor de lo que sabes reconocer como bueno</em>. Llega al límite de tu habilidad y se detiene ahí.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t4-p2">¿Por qué ocurre esto? Porque juzgar la calidad exige criterio, y el criterio viene de tu experiencia. Si no sabes distinguir una arquitectura sólida de una frágil, la IA puede ofrecerte ambas y tú aprobar la equivocada: el límite de tu percepción se convirtió en el límite del producto. Es un efecto silencioso y peligroso: <strong>aplana</strong> la IA hacia abajo sin que te des cuenta, porque todo «parece» funcionar. Por eso Pocock conecta todo en una sola conclusión práctica: <em>"ser bueno con la IA = ser bueno en tu área"</em>. Subir el límite no es un truco de prompt; es elevarte tú. <strong>Error común:</strong> buscar «el prompt mágico» para sacar una calidad por encima de tu límite. No existe: el prompt no inventa criterios que no tienes.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="La IA intenta subir, pero alcanza un límite; cuando ese límite sube, la IA puede subir más" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs><lineargradient id="v22d-grad" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#3b82f6"></stop><stop offset="1" stop-color="#60a5fa"></stop></lineargradient><filter height="180%" id="v22d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><pattern height="32" id="v22d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><marker id="v22d-ah" markerheight="9" markerwidth="9" orient="auto" refx="4.5" refy="6.5"><path d="M0,8 L4.5,0 L9,8 L4.5,6 Z" fill="#34d399"></path></marker></defs>
+<rect fill="url(#v22d-grid)" height="230" width="1000" x="0" y="0"></rect>
+<!-- esquerda: teto baixo -->
+<rect fill="#7f1d1d" height="14" rx="4" stroke="#ef4444" stroke-width="2" width="320" x="60" y="80"></rect><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="220" y="72">techo bajo (tu skill)</text>
+<g filter="url(#v22d-glow)"><rect fill="url(#v22d-grad)" height="80" rx="6" width="60" x="190" y="96"></rect></g><text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="220" y="200">La IA golpea y se detiene</text>
+<!-- direita: teto alto -->
+<rect fill="#064e3b" height="14" rx="4" stroke="#34d399" stroke-width="2" width="320" x="620" y="36"></rect><text fill="#6ee7b7" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="780" y="28">techo alto (tú lo subiste)</text>
+<g filter="url(#v22d-glow)"><rect fill="url(#v22d-grad)" height="124" rx="6" width="60" x="750" y="52"></rect></g><text fill="#93c5fd" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="780" y="200">La IA avanza más</text>
+<path d="M500,150 L500,70" fill="none" marker-end="url(#v22d-ah)" stroke="#34d399" stroke-width="2.5"></path><text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="170">mejorarte</text>
+</svg>
+</div>
+<img alt="Ilustración: una figura que salta contra un techo luminoso que limita hasta dónde puede llegar" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-2-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la IA no supera el límite de tu habilidad — así que volverte bueno con IA es volverte bueno en tu campo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🏋️ Desarrolla tus habilidades</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> dos inversionistas. Uno gasta todos sus ingresos en gadgets nuevos (el "modelo de la semana"); el otro invierte en un índice que genera interés compuesto (la propia habilidad). En 5 años, el segundo está en otro nivel. Mejorar tus habilidades es interés compuesto.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-2-t5-p1">Si tú eres el límite, la palanca obvia es el <span class="termo" title="Invertir en desarrollar tu propia habilidad; en el mundo de la IA, equivale a volverte bueno en tu área.">upskill</span> — invertir en ti, no solo en la herramienta. Es el contraste directo con el «<span class="termo" title="Quien crea apps con IA sin dominar los fundamentos y cambia de herramienta con cada moda.">vibe coder</span>" de la Ruta 1, que persigue el modelo nuevo cada semana y nunca eleva su propio techo. Pocock une los dos extremos: cómo la IA multiplica y el techo es tu skill, <strong>cada punto que avanzas en habilidad rinde el doble</strong> — una vez en tu trabajo directo y otra en cuánto puede sacar la IA de ti. Es la inversión con el mejor retorno disponible hoy.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t5-p2">En la práctica, esto reorganiza dónde gastas energía. En vez de «¿cuál es el modelo más nuevo?», la pregunta pasa a ser «¿qué fundamento de mi <span class="termo" title="El área en la que trabajas: donde realmente está tu límite.">dominio</span> ¿todavía no domino?». Se trata de aprender a reconocer una buena arquitectura, entender por qué una prueba detecta el bug y saber nombrar el patrón correcto. Estas son habilidades que <em>no vencen</em> cuando cambia el modelo, a diferencia de los trucos vinculados a una herramienta específica. Y hay un extra que cierra el ciclo del curso: en las siguientes rutas aprenderás a <strong>empaquetar</strong> parte de tu habilidad dentro de skills reutilizables, para que la IA aplique tu criterio incluso cuando no estás mirando. <strong>Error común:</strong> confundir "aprender prompts" con mejorar tus habilidades. El prompt es la superficie; el límite lo pone el conocimiento de fondo.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dos curvas en el tiempo: invertir en la herramienta se mantiene plano; invertir en ti crece de forma compuesta" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs><lineargradient id="v22e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient><filter height="180%" id="v22e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><pattern height="32" id="v22e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern></defs>
+<rect fill="url(#v22e-grid)" height="220" width="1000" x="0" y="0"></rect>
+<line stroke="#9ca3af" stroke-width="2" x1="80" x2="940" y1="180" y2="180"></line><line stroke="#9ca3af" stroke-width="2" x1="80" x2="80" y1="180" y2="30"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="510" y="208">tiempo</text>
+<path d="M80,150 C300,148 600,150 920,146" fill="none" stroke="#64748b" stroke-dasharray="6 5" stroke-width="3"></path>
+<text fill="#94a3b8" font-family="Inter,sans-serif" font-size="13" x="800" y="135">solo la herramienta (plan)</text>
+<g filter="url(#v22e-glow)"><path d="M80,160 C350,150 600,110 920,40" fill="none" stroke="url(#v22e-grad)" stroke-width="4"></path></g>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="14" font-weight="600" x="660" y="70">upskill en ti (compuesto)</text>
+<circle cx="920" cy="40" fill="#60a5fa" r="6"></circle>
+</svg>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6"><h4 class="font-bold text-blue-400 mb-4">✓ Desarrolla tus habilidades</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Entender por qué un patrón es bueno.</li><li>• Leer código crítico y detectar fragilidad.</li><li>• Fundamentos del dominio que no caducan.</li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Solo la herramienta</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Perseguir el modelo o la app de la semana.</li><li>• Coleccionar prompts mágicos.</li><li>• Límite fijado en el mismo lugar.</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> mejorarte rinde el doble — en tu trabajo y en lo que la IA extrae de ti.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-2#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎯 Cómo aumentar el límite</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un plan de entrenamiento en el gimnasio. No te vuelves fuerte mirando videos de musculación: te vuelves fuerte haciendo la rutina, cada semana, con más peso. Elevar el techo es una rutina, no una revelación aislada.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-2-t6-p1">Para cerrar: cada vez que pienses «¿cómo hago que la IA rinda más?», tradúcelo como «<strong class="text-blue-400">¿cómo subo mi límite?</strong>". A continuación hay un plan sencillo, fiel a lo que predica Pocock — no es un truco de prompt, sino un hábito que eleva tu habilidad (y, con ella, lo que la IA puede extraer). Cópialo, pégalo en tus notas y revísalo cada semana:</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">crescer-o-teto.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">PLANO PRA SUBIR O TETO (revisar toda semana)
+[ ] SUPERVISIONAR — sempre leia o que a IA gerou e julgue: bom? por quê?
+[ ] PERGUNTAR "POR QUÊ" — quando aprovar, saiba explicar o motivo (se não sabe, estude).
+[ ] FUNDAMENTO DA SEMANA — escolha 1 conceito do seu domínio e domine de verdade.
+[ ] REPERTÓRIO — anote cada bug que a IA causou; vire critério pra próxima vez.
+[ ] DAR CONTEXTO RICO — descreva padrão, restrições e testes ANTES de pedir.
+[ ] NÃO USAR DE MULETA — se aceitou sem entender, é dívida: volte e entenda.
+Regra de ouro: ficar bom com IA = ficar bom no seu domínio.</pre>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Ciclo: estudiar los fundamentos, supervisar, convertirlos en experiencia, aportar contexto enriquecido; el límite sube en cada vuelta" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs><pattern height="32" id="v22f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><marker id="v22f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker><filter height="180%" id="v22f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v22f-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="50" rx="10" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="65"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="95">1 · estudiar</text>
+<rect fill="#0e1b26" height="50" rx="10" stroke="#38bdf8" stroke-width="2" width="170" x="280" y="65"></rect><text fill="#bfe6ff" text-anchor="middle" x="365" y="95">2 · supervisar</text>
+<rect fill="#0e1b26" height="50" rx="10" stroke="#38bdf8" stroke-width="2" width="170" x="520" y="65"></rect><text fill="#bfe6ff" text-anchor="middle" x="605" y="95">3 · convertir en repertorio</text>
+<g filter="url(#v22f-glow)"><rect fill="#0e2a44" height="64" rx="12" stroke="#60a5fa" stroke-width="2.5" width="200" x="760" y="58"></rect></g><text fill="#93c5fd" font-size="14" text-anchor="middle" x="860" y="86">techo más alto</text><text fill="#9fc7ff" font-size="11" text-anchor="middle" x="860" y="106">= la IA rinde más</text>
+</g>
+<g fill="none" stroke="#60a5fa" stroke-width="2.2"><path d="M210,90 L278,90" marker-end="url(#v22f-ah)"></path><path d="M450,90 L518,90" marker-end="url(#v22f-ah)"></path><path d="M690,90 L758,90" marker-end="url(#v22f-ah)"></path></g>
+<path d="M860,122 C860,160 125,160 125,117" fill="none" marker-end="url(#v22f-ah)" opacity="0.6" stroke="#60a5fa" stroke-dasharray="5 5" stroke-width="2"></path>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-2#q2">
+<p class="font-medium mb-4">Recuperación rápida: ¿cuál es la forma correcta de "hacer que la IA rinda más"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Encontrar el prompt mágico definitivo.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Cambiar al modelo más nuevo en cuanto salga.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Elevar tu límite: estudiar los fundamentos del dominio y supervisar con criterio.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> "hacer que la IA rinda más" = elevar tu límite — con hábitos, no con trucos.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Eres el multiplicador</strong><span class="text-neutral-400"> — la IA multiplica tu habilidad; tu factor determina el tamaño del resultado.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Senior 10x, junior poco</strong><span class="text-neutral-400"> — el mismo impulso rinde mucho con un factor alto y poco con uno bajo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Tus skills son el límite</strong><span class="text-neutral-400"> — la IA no supera el límite de tu habilidad; una skill la reduce.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Upskill es la palanca</strong><span class="text-neutral-400"> — ser bueno con la IA = ser bueno en tu dominio; elevar el nivel mínimo es un hábito.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">2.3 — Conocimiento × Habilidad × Sabiduría: los tres pilares de tu skill y qué puedes (y qué no puedes) delegar.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-3.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-2-2#q1', { answer: 1, explain: { 0: 'Velocidade de digitação não é o ponto — o sênior ganha no julgamento.', 1: 'Isso! Saber pedir, ler o que volta e ter repertório gera contexto rico e boa supervisão.', 2: 'O modelo costuma ser o mesmo; a diferença está na habilidade humana.' } });
+        INEMA.registerCheck('modulo-2-2#q2', { answer: 2, explain: { 0: 'Não existe prompt mágico que invente critério que você não tem.', 1: 'Trocar de modelo não sobe o seu teto — ele continua o mesmo.', 2: 'Exato! O teto é você; subir o domínio sobe o que a IA consegue extrair.' } });
+      }
+    });
+  </script>
+</body>
+</html>

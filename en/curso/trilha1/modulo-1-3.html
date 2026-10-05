@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>1.3 Agent-agnostic setup | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha1/modulo-1-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha1/modulo-1-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha1/modulo-1-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Track 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.3 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.3 · "TEACHING MODE"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧭 Agent-agnostic setup</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">A new model comes out every week. If you tie everything to one, you're stuck with it: every release forces you to redo the setup. Here you learn how to build a harness <strong class="text-emerald-400">agnostic</strong> — built on 30–40 years of fundamentals—so you can swap engines without rebuilding the car. Every new word is explained as it comes up.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">1.1+1.2</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Practice</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 1.3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-3" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. Stay agnostic</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. The cost of optimizing for just one</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Fundamentals that don’t expire</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. The vibe coder who switches every week</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. Harden your setup</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Agnosticism Checklist</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-emerald-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">The terms that come up again (model, prompt, agent, skill, harness, codebase) were defined in module 1.1. Here are the <strong>new</strong> from this module:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Agent-agnostic (agnostic)</strong> — your setup isn't “tied” to any specific model. If you switch from Claude to GPT (or to a newer one), everything keeps working. “Agnostic” = doesn't take sides with a brand.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Optimize (over-optimize)</strong> — adjust something until it’s perfect for <em>a</em> situation. The danger is "overfitting": tuning so much for one model that it breaks with any other.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Fundamentals</strong> — software principles that have held for 30–40 years (version control, writing tests, organizing files). They don’t change when a new model comes out.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Vibe coder</strong> — people who build apps “by feel,” jumping from tool to tool with every new hype cycle without learning what’s underneath.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Lock-in (dependency)</strong> — when you’re “locked in” to a provider: switching is so painful that you don’t switch, even when you should.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Setup</strong> — your work setup: which AI tool you use, with which skills, in which environment. It’s the “assembled car” from module 1.1.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🧭 Stay agent-agnostic</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you buy a drill that only accepts bits from <em>a</em> mark. As long as that mark exists and is good, great. The day a better drill bit comes along (or yours disappears from the market), your entire drill becomes trash. Now imagine a drill with a universal chuck: swap the bit, keep the drill. An agnostic setup is the universal drill.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-3-t1-p1">In module 1.2, we concluded: it’s not worth <em>wait idly</em> the AI improve. But in module 1.1 we saw that <span class="termo" title="The intelligence itself—a language model like Claude/GPT/Gemini.">model</span> all the time. How do you act now without becoming dependent on a model that will be outdated in three months? Matt Pocock’s answer is to keep your <span class="termo" title="Your work setup: AI tool + skills + environment.">setup</span> <span class="termo" title="Not tied to any specific model — switch models without rebuilding everything.">agent-agnostic</span> (agent-agnostic).</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t1-p2">Agnostic means: your <span class="termo" title="Everything you build around the model: prompts, skills, environment, codebase.">harness</span> — your prompts, your skills, the way your <span class="termo" title="Your project files—the code.">codebase</span> is organized— <strong>doesn't depend</strong> which AI is inside. In his words: <em>"keep the harness agent-agnostic and apply good fundamentals → it keeps working with the next model."</em> The consequence is powerful: when a better model comes out, you just swap the engine. The car (which you spent time tuning) is still valuable. It’s the opposite of rebuilding everything with every release—and that’s why Pocock says he isn’t a “pundit” (a guesser), he’s just <em>"doing the best with what I have right now."</em></p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A universal socket: the harness stays fixed and any model (Claude, GPT, Gemini, or the next one) plugs into the same connection" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v13a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v13a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v13a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v13a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<g filter="url(#v13a-glow)"><rect fill="#0e2018" height="100" rx="18" stroke="#34d399" stroke-width="2.5" width="280" x="360" y="80"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="500" y="120">YOUR HARNESS</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="146">universal fit · stays fixed</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g><rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="40"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="65">Claude</text></g>
+<g><rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="100"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="125">GPT</text></g>
+<g><rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="160"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="185">Gemini</text></g>
+<g><rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="150" x="810" y="100"></rect><text fill="#bfe6ff" text-anchor="middle" x="885" y="125">the next one</text></g>
+</g>
+<g fill="none" opacity="0.6" stroke="#34d399" stroke-width="2"><path d="M190,60 C280,60 300,110 360,118"></path><path d="M190,120 L360,128"></path><path d="M190,180 C280,180 300,140 360,138"></path><path d="M810,120 L640,128"></path></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="228">Switch models at the plug-in point; the harness stays the same.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Universal fit: any model plugs into the same harness. Swapping the engine doesn’t take the car apart.</p>
+</div>
+<img alt="Conceptual illustration: a glowing universal socket/connector accepting different AI model plugs" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-3-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Confuse "agnostic" with "not using the best model." It's the opposite: you <em>uses</em> the best of today—just don’t build anything that <em>only</em> work with it. Using the best engine and having a universal fit aren’t opposites; they’re two halves of the same plan.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> agnostic = universal fit — switch models without rebuilding the harness.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⛓️ The cost of optimizing for just one</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a piece of clothing tailored to one person’s body. It fits them perfectly. But no one else can wear it—and if that person gains 2 kilos, it no longer fits. Over-optimizing for a model is like sewing clothes so tight that any change tears them.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-3-t2-p1"><span class="termo" title="Tweak something until it's perfect for a single situation.">Optimize</span> is good—but there’s a hidden poison in the word <strong>over</strong>optimize. Pocock himself admits the risk, with a line worth remembering: <em>"If I over-optimize around a model... I lose focus on the fundamentals"</em> (if I optimize too much around one model, I lose sight of the fundamentals). When you tailor every prompt, skill, and trick to a model's specific quirks, you create a <span class="termo" title="Being locked into a vendor—switching hurts so much that you don’t switch.">lock-in</span>: switching becomes so painful that you simply stop switching, even when you should.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t2-p2">The cost shows up in three ways. <strong>(1) Rework:</strong> a new model comes out, and your “magic” prompts that relied on a quirk of the previous one stop working—you redo everything. <strong>(2) Blindness:</strong> you get so caught up in a model’s tricks that you don’t notice when another, cheaper one could already do the same thing. <strong>(3) Fragility:</strong> your setup becomes a house of cards tuned to a single engine. Pocock strikes a balance (the famous 50/50 from module 1.1): smart effort goes into the harness, but the harness can’t be <em>paired</em> with the engine. Optimize the car, not its dependence on the engine.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: a harness tied to a single model breaks when the model changes; a harness with slack keeps working" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<filter height="180%" id="v13b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v13b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v13b-grid)" height="230" width="1000" x="0" y="0"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="250" y="36">OVER-OPTIMIZED</text>
+<rect fill="#1f0f10" height="120" rx="10" stroke="#f87171" stroke-width="2" width="120" x="120" y="56"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="180" y="120">harness</text>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="180" y="138">tightly coupled to the model</text>
+<path d="M250,90 L300,90 L300,150 L250,150" fill="none" stroke="#f87171" stroke-width="2.5"></path>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="34" text-anchor="middle" x="345" y="134">✕</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="250" y="206">model changes → breaks</text>
+<line stroke="#374151" stroke-dasharray="4 4" stroke-width="1.5" x1="500" x2="500" y1="40" y2="190"></line>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="760" y="36">AGNOSTIC</text>
+<g filter="url(#v13b-glow)"><rect fill="#0e2018" height="120" rx="10" stroke="#34d399" stroke-width="2.5" width="120" x="630" y="56"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="690" y="120">harness</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="690" y="138">with a good fit</text>
+<rect fill="#0e1b26" height="32" rx="8" stroke="#38bdf8" stroke-width="2" width="100" x="790" y="80"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="840" y="101">model A</text>
+<rect fill="#0e1b26" height="32" rx="8" stroke="#38bdf8" stroke-width="2" width="100" x="790" y="124"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="840" y="145">model B</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="760" y="206">model changes → keeps working</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-3#q1">
+<p class="font-medium mb-4">Quick retrieval: what is the danger of <em>over</em>optimize for a single model?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">None — the more optimized, the better, always.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">You create lock-in: the setup breaks when the model changes, and you lose focus on the fundamentals.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">The model gets slower because of the optimization.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> over-optimizing for one engine is like tailored clothing: perfect today, trash in the next release.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🏛️ Fundamentals that don’t expire</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> fashion changes every season, but knowing how to sew never goes out of style. Those who only buy the latest clothes are at the mercy of the store. Those who know how to sew can dress for any season. Software fundamentals are "knowing how to sew."</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-3-t3-p1">This is the most important sentence in the entire method, and Pocock repeats it: <em>"People are focused on the wrong thing — the big shiny new thing — when in fact just focus on the stuff that's been working for 30-40 years."</em> In other words: people look at the shiny new toy, when what matters is focusing on what <span class="termo" title="The software principles that have worked for 30–40 years.">has worked for 30-40 years</span>. These are the <span class="termo" title="Software principles that don’t change when a new model comes out.">fundamentals</span> — and by definition, they’re agnostic: no AI model can make them obsolete.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t3-p2">Which ones? <strong>Version with git</strong> (your project’s “undo button”), <strong>write tests</strong> (automated proof that the code works), <strong>organize the files well</strong>, <strong>document enough</strong>, <strong>scope tasks clearly</strong>. Notice: none of this has to do with “which AI.” These are engineering principles that applied before AI and will apply afterward. And here’s the key: when your codebase follows these fundamentals, <em>any</em> the model works better with it — including the cheaper ones (you’ll see this clearly in module 1.5). Fundamentals aren’t “the old way”; they’re the foundation that makes the new way work.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A solid foundation column supporting models that come and go at the top" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v13c-grad" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v13c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v13c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v13c-grid)" height="240" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="34">models come and go</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1b26" height="34" opacity="0.55" rx="8" stroke="#38bdf8" stroke-width="2" width="120" x="170" y="48"></rect><text fill="#9ad6ff" text-anchor="middle" x="230" y="70">2024 model</text>
+<rect fill="#0e1b26" height="34" opacity="0.85" rx="8" stroke="#38bdf8" stroke-width="2" width="120" x="440" y="48"></rect><text fill="#bfe6ff" text-anchor="middle" x="500" y="70">2026 model</text>
+<rect fill="#0e1b26" height="34" opacity="0.4" rx="8" stroke="#38bdf8" stroke-width="2" width="120" x="710" y="48"></rect><text fill="#9ad6ff" text-anchor="middle" x="770" y="70">the next one…</text>
+</g>
+<g filter="url(#v13c-glow)"><rect fill="url(#v13c-grad)" height="46" rx="10" stroke="#10b981" stroke-width="2" width="760" x="120" y="110"></rect></g>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="139">FUNDAMENTALS — 30-40 years · they don’t expire</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e2018" height="40" rx="9" stroke="#34d399" stroke-width="1.6" width="135" x="130" y="174"></rect><text fill="#9fe7c8" text-anchor="middle" x="197" y="199">git / version</text>
+<rect fill="#0e2018" height="40" rx="9" stroke="#34d399" stroke-width="1.6" width="135" x="285" y="174"></rect><text fill="#9fe7c8" text-anchor="middle" x="352" y="199">tests</text>
+<rect fill="#0e2018" height="40" rx="9" stroke="#34d399" stroke-width="1.6" width="135" x="440" y="174"></rect><text fill="#9fe7c8" text-anchor="middle" x="507" y="199">organization</text>
+<rect fill="#0e2018" height="40" rx="9" stroke="#34d399" stroke-width="1.6" width="135" x="595" y="174"></rect><text fill="#9fe7c8" text-anchor="middle" x="662" y="199">documentation</text>
+<rect fill="#0e2018" height="40" rx="9" stroke="#34d399" stroke-width="1.6" width="135" x="750" y="174"></rect><text fill="#9fe7c8" text-anchor="middle" x="817" y="199">clear scope</text>
+</g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Models come and go; the foundation of fundamentals remains. Build on it.</p>
+</div>
+<img alt="Illustration: a solid foundation or pillar supporting structures that change above it" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-3-2.png"/>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-emerald-400">Going deeper (optional): why "30-40 years" and not "forever"?</summary>
+<p class="text-sm text-neutral-300 mt-3">Pocock uses "30-40 years" because that is roughly how old the practices that became standard in software engineering are: modern version control, automated testing, and modular design. It's not that they're eternal—it's that they have retained their value through dozens of "next big things" (the web, mobile, cloud). A practice that has stood up to all that will probably stand up to the next AI wave too. It's a probability bet, not an act of faith.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> fashion (the model) changes every season; knowing how to sew (the fundamentals) never goes out of style.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🌀 The vibe coder who switches every week</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> someone who switches gyms every week looking for the “best treadmill on the market,” but never finishes a workout. New equipment all the time, never any muscle. The treadmill isn’t the problem — the lack of consistency is.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-3-t4-p1">Pocock gives a concrete example of the anti-pattern: the <span class="termo" title="People who build apps by feel, jumping from tool to tool with every hype cycle, without learning the fundamentals.">vibe coder</span> that <em>"switch tools every week (replit → lovable → …) and never learn any principles."</em> Every week, a new app or model comes out, and people switch: a new dashboard, new shortcuts, a new promise. The problem isn't curiosity — it's that each switch <strong>resets the learning</strong>. Anyone who never spends enough time with a tool never gets beneath its surface.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t4-p2">Here’s the subtle point Pocock makes a point of emphasizing: <em>"the difference is in APPROACH, not in belief in AI."</em> He <strong>no</strong> is saying “don’t use AI” or “AI is hype.” Both he and the vibe coder believe in AI—the difference is the <em>way</em>. The vibe coder optimizes for novelty (the tool of the moment); the Pocock method optimizes for fundamentals (the skill that lasts). It’s exactly the trap from module 1.2 seen from another angle: instead of waiting around for the model to improve, the vibe coder chases every new model—and both extremes lead to the same result: never building anything that lasts.</p>
+<img alt="Illustration: a developer surrounded by tool logos switching chaotically without finishing anything" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-3-3.png"/>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Vibe coder (optimizes for novelty)</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Switch tools with every new hype cycle.</li><li>• Relearn the interface and forget everything else.</li><li>• Never get beyond the surface of anything.</li><li>• The setup turns into a patchwork.</li></ul></div>
+<div class="bg-emerald-900/20 rounded-xl border border-emerald-500/30 p-6"><h4 class="font-bold text-emerald-400 mb-4">✓ Pocock method (optimizes for fundamentals)</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Use today’s best model without committing to it.</li><li>• Invest in git, tests, and organization.</li><li>• Go deeper — the skill compounds.</li><li>• An agnostic setup that survives a switch.</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> the vibe coder switches tools every week and never learns anything—the difference is in the approach, not in faith in AI.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🛡️ Harden your setup</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A professional kitchen. The recipes (skills) are on cards; the ingredients (codebase) are organized; the stoves (models) can be switched without redoing the menu. You improve the kitchen a little every day, but use the best stove available.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-3-t5-p1">“Hardening” doesn’t mean stopping your growth—it’s the opposite. Pocock and David Ondrej agree on one practical point: <strong>actively improve the setup every day</strong> (Ondrej mentions things like VPS, Tailscale, etc.) <strong>And use the best model</strong>. Both things together. The secret is to <em>where</em> you invest that effort in the parts that last (well-written Skills, an organized codebase, fundamentals) — not in tricks tied to an engine that’s going away. You pull every lever in module 1.1, but focus on the ones that are model-agnostic.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t5-p2">There’s even a prudence warning built into the method: Pocock <em>waits about one month</em> before adopting a new model in the production workflow (that’s what he did with Opus 4.5). It’s not fear of novelty — it’s giving yourself time to find out whether the new engine really fits without surprises. A hardened setup means you adopt the best, but at your own pace, without every release becoming an emergency.</p>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: launching a new model</h3>
+<p class="text-neutral-300 text-sm mb-3">Scenario: "Model X 2.0" comes out, and everyone gets excited. Two developers react:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Fragile setup (tightly coupled)</p><p class="text-xs text-neutral-300">Drop everything and migrate immediately. The old prompts depended on quirks of the old model → they break. Spend 3 days rewriting skills. Find out later that half the gains were hype.</p></div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-semibold text-sm mb-1">Hardened setup (agnostic)</p><p class="text-xs text-neutral-300">Change only the model line in the config. Run the <strong>existing tests</strong> to compare. Wait ~1 month of real use. Skills and codebase don’t change — the fit is universal. Migration: 5 minutes.</p></div>
+</div>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Layers of the hardened setup: swappable model on top, skills and codebase fixed below, protected by a shield" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs><pattern height="32" id="v13e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v13e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v13e-grid)" height="200" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-dasharray="6 4" stroke-width="2" width="360" x="320" y="24"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="51">MODEL — replaceable (1 line in config)</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="22" text-anchor="middle" x="500" y="92">▼</text>
+<g filter="url(#v13e-glow)"><rect fill="#0e2018" height="74" rx="14" stroke="#34d399" stroke-width="2.5" width="720" x="140" y="106"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="134">🛡️ HARDENED BASE — stays fixed</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<text fill="#9fe7c8" text-anchor="middle" x="290" y="162">skills</text>
+<text fill="#9fe7c8" text-anchor="middle" x="430" y="162">codebase</text>
+<text fill="#9fe7c8" text-anchor="middle" x="580" y="162">fundamentals</text>
+<text fill="#9fe7c8" text-anchor="middle" x="720" y="162">tests</text>
+</g>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> hardening means improving the whole setup every day and using the best model, but only for the parts that stick around.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-3#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">✅ Agnosticism checklist</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> Before doing any decorating, the builder checks the foundation. This checklist is your “foundation inspection”—run it before spending time optimizing model tricks.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-3-t6-p1">Wrapping up: whenever you’re going to adopt a new tool, prompt, or trick, do <strong class="text-emerald-400">a filtering question</strong> — "will this still hold if I switch models tomorrow?" If the answer is no, you're building dependency, not an asset. The checklist below is the module's practical summary. Copy it, paste it at the top of your project, and run it before every setup decision:</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">checklist-agnostico.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">VISTORIA DE AGNOSTICISMO — rode antes de cada decisão de setup
+Pergunta de filtro: "isto continua valendo se eu trocar o modelo amanhã?"
+
+[ ] MODELO trocável? Mudar de IA é editar 1 linha de config — ou refazer tudo?
+[ ] SKILLS portáteis? Funcionam em Claude Code, Codex etc. — ou só num app?
+[ ] FUNDAMENTOS no lugar? git + testes + organização + docs + escopo claro.
+[ ] PROMPTS sem manha? Pedidos claros em inglês/português simples,
+    não truques que dependem de um modelo específico.
+[ ] CODEBASE organizado? Qualquer modelo (até o barato) navega fácil.
+[ ] RITMO próprio? Adota modelo novo quando comprovado (~1 mês), não no hype.
+
+3+ "não" = seu setup está casado com um motor. Blinde antes de otimizar.</pre>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Filter funnel: tools and tricks pass through the model-agnostic question; only what survives a model swap becomes part of the setup" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs><pattern height="32" id="v13f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><marker id="v13f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker><filter height="180%" id="v13f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v13f-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="160" x="30" y="30"></rect><text fill="#bfe6ff" text-anchor="middle" x="110" y="50">new tool</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="160" x="30" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="110" y="94">prompt / trick</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="160" x="30" y="118"></rect><text fill="#bfe6ff" text-anchor="middle" x="110" y="138">skill</text>
+</g>
+<g fill="none" opacity="0.55" stroke="#34d399" stroke-width="1.8"><path d="M190,45 C330,45 360,85 430,88" marker-end="url(#v13f-ah)"></path><path d="M190,89 L430,89" marker-end="url(#v13f-ah)"></path><path d="M190,133 C330,133 360,92 430,92" marker-end="url(#v13f-ah)"></path></g>
+<g filter="url(#v13f-glow)"><rect fill="#0e2018" height="64" rx="12" stroke="#34d399" stroke-width="2.5" width="220" x="430" y="58"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="540" y="84">FILTER: I swap the</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="540" y="104">model and move on?</text>
+<path d="M650,90 L770,90" fill="none" marker-end="url(#v13f-ah)" opacity="0.7" stroke="#34d399" stroke-width="1.8"></path>
+<rect fill="#0e2018" height="56" rx="12" stroke="#34d399" stroke-width="2" width="190" x="780" y="62"></rect><text fill="#34d399" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="875" y="88">hardened setup</text><text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="875" y="107">only what survives gets in</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-3#q2">
+<p class="font-medium mb-4">Quick retrieval: what is the agnostic checklist's "filter question"?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">"Is this the most expensive and powerful model available?"</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">"Will this still hold if I switch models tomorrow?"</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">"Is everyone caught up in the hype already using this tool?"</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> before adopting anything, ask “will it survive a model switch?” — only what passes makes it into the setup.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Agnostic = universal fit</strong><span class="text-neutral-400"> — your harness isn't tied to any model; swap the engine, keep the car.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Over-optimizing is costly</strong><span class="text-neutral-400"> — lock-in, rework, and blind spots; “I lose focus on the fundamentals.”</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Fundamentals don’t expire</strong><span class="text-neutral-400"> — git, tests, organization, docs, scope: what has worked for 30–40 years.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Don’t be the vibe coder</strong><span class="text-neutral-400"> — switching tools every week is an approach, not faith in AI.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Harden and filter</strong><span class="text-neutral-400"> — use the best model at your own pace; ask, “will it survive the switch?”</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Next module:</h3><p class="text-neutral-300">1.4 — DX × AX: design the codebase so the agent can work well (Agent Experience).</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-4.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-1-3#q1', { answer: 1, explain: { 0: 'Não — otimização sem freio cria dependência; existe o "over".', 1: 'Isso! Over-otimizar cria lock-in: quebra na troca e tira o foco dos fundamentos.', 2: 'A otimização do harness não deixa o modelo lento; o risco é a dependência.' } });
+        INEMA.registerCheck('modulo-1-3#q2', { answer: 1, explain: { 0: 'Não — o filtro não é sobre potência/custo do modelo.', 1: 'Exato! Se não sobrevive à troca de modelo, é dependência, não patrimônio.', 2: 'Seguir o hype é justamente o anti-padrão do vibe coder.' } });
+      }
+    });
+  </script>
+</body>
+</html>

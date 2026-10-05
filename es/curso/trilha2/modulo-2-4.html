@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>2.4 Fundamentos de delegación | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'blue' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'blue');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha2/modulo-2-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha2/modulo-2-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha2/modulo-2-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Ruta 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.4 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.4 · MODO ENSEÑANZA</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">📦 Fundamentos de la delegación</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">Delegar a la IA es el mismo arte que delegar a un <strong class="text-blue-400">programador júnior</strong>. Pocock dice: el pensamiento estratégico no cambió; solo cambiamos «delegar a los júnior» por «delegar a la IA». Aquí aprenderás las 5 palancas de quienes delegan bien: <strong class="text-blue-400">dibujar las partes difíciles</strong>, alcance claro, interfaces entre módulos, pruebas/escenarios y documentación suficiente. Cada término se explica en el momento.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Core</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Práctica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 2.4" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-4" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. Diseñar las partes difíciles</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. Alcance claro</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Interfaces entre módulos</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. Pruebas y escenarios</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Documentación suficiente</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Delegar como a un junior</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-blue-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-blue-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">Estos son los términos NUEVOS de este módulo. Como ya viste el vocabulario básico (modelo, agente, prompt, skill, codebase) en la Ruta 1, aquí nos enfocamos en el vocabulario de <strong>delegación</strong>:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Delegar</strong> — asignarle una tarea a otra persona para que la ejecute (un junior, un colega o la IA), en lugar de hacerla tú mismo. Quien delega define el <em>qué</em> e o <em>cómo</em>; quien lo recibe lo ejecuta.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Junior</strong> — programador principiante: rápido y entusiasta, pero necesita instrucciones claras y no ve el «todo» por sí solo. La IA se comporta exactamente como un júnior muy veloz.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Alcance</strong> — los límites de la tarea: qué incluye y qué NO incluye. «Definir bien el alcance» = delimitar una tarea con el tamaño y el formato adecuados.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Módulo</strong> — una parte del sistema con una sola responsabilidad (p. ej., "el módulo de inicio de sesión"). Los sistemas grandes están hechos de varios módulos.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Interfaz</strong> — el «contrato» entre dos módulos: cómo uno llama al otro (qué datos entran y qué datos salen). Es el punto de conexión.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Prueba</strong> — un pequeño código que verifica por sí solo si otro código hace lo que debería. Se ejecuta y dice "aprobado" o "fallido".</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Caso (edge case)</strong> — una situación poco común que puede romper el código (campo vacío, número negativo, se cayó internet). Pensar en ellas es la mitad del diseño.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Estratégico</strong> — pensamiento a largo plazo (cómo debe ser el sistema, cómo dividir el trabajo), opuesto a lo táctico (escribir la sintaxis). Delegar bien es una habilidad estratégica.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🧩 Diseñar las partes difíciles</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un arquitecto contrata albañiles rápidos y fuertes. Pero no les dice "construyan una casa" y desaparece — él <em>dibuja el plano</em> primero, resolviendo los cimientos y la estructura difícil sobre el papel. Los albañiles levantan las paredes. Con la IA es igual: tú diseñas las partes difíciles; la IA construye el resto.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-4-t1-p1">Pocock hace una afirmación que lo destraba todo: <em>"la programación estratégica no cambió con la IA: solo cambiamos delegar en juniors por delegar en la IA."</em> Es decir, <span class="termo" title="Entregarle una tarea a otra persona para que la ejecute en vez de hacerla tú mismo.">delegar</span> siempre fue la habilidad del programador sénior, y sigue igual. Lo único que cambió fue <em>para quién</em> tú delegas. Y la primera regla para delegar bien es: <strong class="text-blue-400">dibuja las partes difíciles primero</strong> — tú, como persona, antes de soltar la tarea.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t1-p2">¿Por qué? Porque la IA, como un <span class="termo" title="Programador principiante: rápido y entusiasmado, pero necesita instrucciones claras.">junior</span>, es excelente ejecutando una decisión ya tomada y pésima para <em>tomar</em> la decisión difícil por sí sola. Las «partes difíciles» son las decisiones de arquitectura: cómo estructurar los datos, qué enfoque usar, dónde están los riesgos. Si te saltas esto y dices «resuelve el problema X», la IA inventará cualquier solución — quizá plausible en la superficie, pero frágil. La <strong>error común</strong> aquí es confundir velocidad con delegación: pasarle un problema mal pensado a la IA y creer que «ella va a pensar por mí». No va a pensar <em>estratégicamente</em> por ti: ese es justamente el trabajo que te quedó por hacer.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="El humano diseña las partes difíciles (plano/arquitectura) y la IA ejecuta las fáciles (construcción)" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v24a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v24a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v24a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v24a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v24a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<g filter="url(#v24a-glow)"><rect fill="#0e1622" height="160" rx="18" stroke="url(#v24a-grad)" stroke-width="2.5" width="340" x="40" y="45"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="210" y="80">TÚ (humano)</text>
+<text fill="#bcd6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="210" y="108">dibuja las PARTES DIFÍCILES</text>
+<text fill="#9fc2f0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="210" y="138">arquitectura · riesgos · decisiones</text>
+<text fill="#9fc2f0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="210" y="178">"el plano de la casa"</text>
+<path d="M380,125 L620,125" fill="none" marker-end="url(#v24a-ah)" stroke="#60a5fa" stroke-width="2.2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="112">delega</text>
+<rect fill="#0e1b26" height="160" rx="18" stroke="#38bdf8" stroke-width="2" width="340" x="620" y="45"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="790" y="80">IA (el junior veloz)</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="790" y="108">ejecuta las PARTES FÁCILES</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="790" y="138">escribir código · repetición</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="790" y="178">"levantar las paredes"</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">La decisión difícil queda en tus manos; la ejecución repetitiva va para la IA. Invertir eso es el error n.º 1.</p>
+</div>
+<img alt="Ilustración conceptual: un arquitecto dibujando un plano mientras los constructores trabajan al fondo" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-4-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Pedirle a la IA que "decida la arquitectura" de un sistema importante. Va a proponer algo, pero la elección estratégica es lo que más te puede costar si sale mal. Decide tú; deja que la IA implemente la decisión.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> tú diseñas las partes difíciles; la IA ejecuta las fáciles, nunca al revés.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-blue-400">Profundiza (opcional): ¿por qué «AI eats tactical, not strategic»?</summary>
+<p class="text-sm text-neutral-300 mt-3">Pocock dice que <em>"AI has basically eaten tactical programming"</em> — las tareas del día a día de escribir sintaxis, la IA las hace mejor y más barato. Pero lo estratégico (cómo debe ser el sistema, cómo dividir las tareas) sigue siendo humano. Diseñar las partes difíciles es pura estrategia: es exactamente el trabajo que la IA <em>no</em> comió, y por eso es donde más vale tu hora.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">✂️ Alcance claro</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> pedirle a un pasante «organiza la oficina» es vago: puede pasarse el día entero haciendo algo equivocado. Pedirle «etiqueta y archiva estas 30 carpetas en orden alfabético antes de las 17 h» tiene <em>alcance</em>. El segundo pedido siempre sale mejor, con IA o con personas.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-4-t2-p1">La segunda palanca de Pocock es <strong class="text-blue-400">definir muy bien el alcance de las tareas</strong>. <span class="termo" title="Los límites de la tarea: qué incluye y qué NO incluye.">Alcance</span> es el recorte: lo que incluye la tarea, lo que excluye y cuál es su tamaño. Una tarea con un alcance claro tiene un comienzo, un desarrollo y un final definidos: la IA sabe exactamente cuándo terminó y no se «va por las ramas» hacia áreas que no pediste.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t2-p2">¿Por qué esto importa tanto con la IA? Porque un junior rápido con un alcance impreciso es peligroso: hace <em>mucha</em> algo, rápido, y buena parte fuera de objetivo. Las tareas demasiado grandes también agotan la memoria de trabajo de la IA (el <span class="termo" title="La ventana de contexto: cuánto puede «recordar» la IA de una vez. Lo vimos en la Ruta 1.">context window</span>) y pierde el hilo. La regla práctica: divide las tareas en partes pequeñas y verificables, con un criterio explícito de "listo". El <strong>error común</strong> es el pedido cajón de sastre («refactoriza todo el sistema»): sin alcance ni criterio de éxito, la IA entrega un montón de cambios que ni siquiera puedes revisar.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: tarea vaga y enorme frente a tarea de alcance claro y pequeño" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v24b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v24b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v24b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v24b-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#1a0e12" height="150" rx="16" stroke="#ef4444" stroke-dasharray="7 6" stroke-width="2" width="420" x="40" y="40"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="250" y="72">ALCANCE VAGO</text>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="250" y="100">"refactoriza todo el sistema"</text>
+<text fill="#d6a0a0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="250" y="128">sin límite · sin criterio de finalización</text>
+<text fill="#d6a0a0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="250" y="160">→ cambia demasiado, es imposible revisarlo</text>
+<g filter="url(#v24b-glow)"><rect fill="#0e1622" height="120" rx="16" stroke="url(#v24b-grad)" stroke-width="2.5" width="420" x="540" y="55"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="750" y="87">ALCANCE CLARO</text>
+<text fill="#bcd6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="750" y="115">"extrae la validación del correo electrónico"</text>
+<text fill="#bcd6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="750" y="135">para una función, con pruebas»</text>
+<text fill="#9fc2f0" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="750" y="160">→ pequeño · verificable · con un resultado claro</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-4#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿cuál de estas solicitudes tiene un alcance claro?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">"Mejora la app."</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">"Agrega un botón 'olvidé mi contraseña' en la pantalla de inicio de sesión, que envíe un correo electrónico, con una prueba que cubra el caso de un correo inexistente."</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">"Haz que todo quede bien."</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> tarea pequeña, con límites y criterio de «lista» = la IA acierta; pedido tipo cajón de sastre = la IA se pierde.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🔌 Interfaces entre módulos</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un tomacorriente y un enchufe. No importa quién fabricó la plancha o quién instaló el cableado de la casa: si ambos respetan el estándar del tomacorriente, encajan. La <em>interfaz</em> es el enchufe: el contrato que permite que dos partes desarrolladas por separado funcionen juntas.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-4-t3-p1">Tercera palanca: <strong class="text-blue-400">pensar en las interfaces entre módulos</strong>. Un <span class="termo" title="Una parte del sistema con una sola responsabilidad.">módulo</span> es una parte del sistema con una sola responsabilidad (el módulo de pagos, el de correo electrónico, el de inicio de sesión). La <span class="termo" title="El contrato entre dos módulos: qué datos entran y qué datos salen.">interfaz</span> es el contrato entre ellos: cómo uno llama al otro, qué recibe y qué devuelve.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t3-p2">Esto es lo que hace que la delegación <em>escalable</em>. Si defines la interfaz primero, puedes asignar cada módulo a una «instancia» diferente de la IA (o a distintos desarrolladores júnior) y trabajan en paralelo sin estorbarse, porque cada una solo necesita respetar el contrato, no conocer los detalles internos de la otra. Es el mismo principio que permite a una fábrica ensamblar piezas por separado que luego encajan. El <strong>error común</strong>: dejar las interfaces implícitas. Entonces la IA del módulo A «supone» un formato, la del módulo B supone otro y, al juntarlos, nada encaja: el famoso «funcionaba en mi parte».</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dos módulos conectados por una interfaz central que define el contrato de datos entre ellos" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v24c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v24c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v24c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v24c-grid)" height="220" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="100" rx="16" stroke="#38bdf8" stroke-width="2" width="270" x="50" y="60"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="185" y="100">Módulo A</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="185" y="126">"inicio de sesión"</text>
+<rect fill="#0e1b26" height="100" rx="16" stroke="#38bdf8" stroke-width="2" width="270" x="680" y="60"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="815" y="100">Módulo B</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="815" y="126">"correo electrónico"</text>
+<g filter="url(#v24c-glow)"><rect fill="#0e1622" height="84" rx="14" stroke="url(#v24c-grad)" stroke-width="2.5" width="230" x="385" y="68"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="500" y="100">INTERFAZ</text>
+<text fill="#bcd6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="124">enviar(email, asunto) → ok</text>
+<line stroke="#60a5fa" stroke-width="2.4" x1="320" x2="385" y1="110" y2="110"></line>
+<line stroke="#60a5fa" stroke-width="2.4" x1="615" x2="680" y1="110" y2="110"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="190">Una vez definida la toma, cada módulo puede hacerlo una IA diferente, en paralelo.</text>
+</svg>
+</div>
+<img alt="Ilustración: piezas modulares que encajan mediante conectores luminosos estandarizados" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-4-2.png"/>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> define el «contrato» (interfaz) entre las partes y la IA puede construir cada parte por su cuenta, en paralelo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🧪 Pruebas y escenarios</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> tú le das al junior una lista de verificación antes de que entregue: "¿lo probaste con el nombre en blanco? ¿con edad negativa? ¿si se cae Internet?". Esa lista es lo que separa "parece funcionar" de "realmente funciona". La IA necesita la misma lista.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-4-t4-p1">Cuarta palanca: <strong class="text-blue-400">pensar en pruebas y escenarios</strong>. Un <span class="termo" title="Código que verifica por sí solo si otro código hace lo que debería.">prueba</span> es un pequeño código que se ejecuta y dice "pasó" o "falló". Los <span class="termo" title="Situaciones fuera de lo común que pueden romper el código: campo vacío, número negativo, se cayó internet.">escenarios (casos límite)</span> son las situaciones fuera de lo común que suelen romperlo todo. Pensar en esos escenarios <em>a la hora de delegar</em> es la mitad del diseño, porque ahí está la mayoría de los bugs.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t4-p2">Las pruebas tienen un papel especial cuando delegas en la IA: son el <strong>barrera automática de calidad</strong>. Si entregas la tarea junto con pruebas (o le pides a la IA que escriba primero las pruebas), la propia IA puede ejecutarlas y saber si acertó, sin depender de que revises cada línea. Así se cierra el ciclo: la IA ejecuta, prueba, corrige y repite. El <strong>error común</strong> es delegar solo el «camino feliz» y olvidarse de los escenarios malos; la IA, como alguien júnior, entregará felizmente algo que solo funciona en el caso ideal y falla al primer campo vacío de un usuario real.</p>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: delegando una función de registro</h3>
+<p class="text-neutral-300 text-sm mb-3">Tarea: "crear la función que registra a un usuario". Mira la diferencia entre delegar con y sin escenarios:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Sin escenarios</p><p class="text-xs text-neutral-300">"Crea el registro de usuario." → La IA guarda el nombre y el correo electrónico. Funciona en la demo. En producción: acepta correos duplicados, acepta campos vacíos, falla con caracteres acentuados. Bugs desde el día 1.</p></div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">Con escenarios + pruebas</p><p class="text-xs text-neutral-300">"Crea el registro. Cubre: correo duplicado (rechazar), campo vacío (error claro), nombre con acento (aceptar). Escribe las pruebas para estos 3 casos." → La IA implementa, ejecuta las pruebas y se ajusta sola. Entrega sólida.</p></div>
+</div>
+<p class="text-neutral-300 text-sm mt-3">La única diferencia fue <em>tú</em> haber pensado en los escenarios al delegar. La IA hizo el trabajo pesado.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> entrega los escenarios y las pruebas junto con la tarea: se convierten en la puerta de calidad que la IA usa por sí sola.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🗺️ Documentación suficiente</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un mapa del tesoro no describe cada grano de arena: marca dónde cavar. La documentación suficiente es el mapa: señala a la IA los lugares correctos del proyecto, sin convertirse en una novela que nadie lee.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-4-t5-p1">Quinta palanca: <strong class="text-blue-400">documentación suficiente</strong>. Pocock es preciso con la palabra: no es documentación <em>exhaustiva</em>, es documentación <em>suficiente</em> "para guiar a IA hacia los lugares correctos". La diferencia es enorme: nadie mantiene demasiada documentación (y se vuelve obsoleta, y miente); muy poca documentación hace que la IA tenga que adivinar. El punto justo es lo mínimo necesario para orientarla.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t5-p2">En la práctica, esto casi siempre se convierte en un archivo de contexto en la raíz del proyecto (lo verás a fondo en la Trilha 3, con las <span class="termo" title="Procedimientos reutilizables guardados para que la IA los siga siempre de la misma manera. Tema de la Trilha 3.">skills</span>). Describe la arquitectura a grandes rasgos, dónde está cada cosa y los patrones del proyecto. Es como dejarle notas al nuevo: "los componentes están en /src/ui, las pruebas van junto al archivo, siempre ejecuta el lint antes de hacer commit". El <strong>error común</strong> es tratar la documentación como un favor para "otra persona", cuando, con IA, es una palanca de productividad <em>tu</em>: cada nota bien ubicada ahorra diez idas y vueltas.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Gráfico en U: documentar poco y documentar demasiado son malos; el punto suficiente en el medio es el ideal" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs>
+<lineargradient id="v24e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v24e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v24e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v24e-grid)" height="210" width="1000" x="0" y="0"></rect>
+<path d="M80,60 Q300,200 500,150 Q700,200 920,60" fill="none" opacity="0.5" stroke="#9ca3af" stroke-width="2"></path>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="160" y="50">de menos</text>
+<text fill="#d6a0a0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="160" y="68">La IA adivina</text>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="840" y="50">demasiado</text>
+<text fill="#d6a0a0" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="840" y="68">se pudre y miente</text>
+<g filter="url(#v24e-glow)"><circle cx="500" cy="150" fill="url(#v24e-grad)" r="16"></circle></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="120">SUFICIENTE</text>
+<text fill="#bcd6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="190">dirige la IA a los lugares correctos</text>
+</svg>
+</div>
+<img alt="Ilustración: un mapa luminoso que marca puntos clave de un proyecto, en vez de abarcarlo todo" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-4-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> no documentes todo — documenta lo suficiente para guiar a la IA a los lugares correctos.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-4#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🧑‍🎓 Delegar como a un junior</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un gerente con experiencia sabe exactamente cómo asignarle una tarea al pasante: contexto, límites, qué verificar, dónde encontrar las cosas. Cuando usa IA, ese mismo gerente solo aprovecha el instinto que ya tiene. A quien nunca ha delegado en personas le cuesta delegar en una máquina.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-4-t6-p1">La gran idea de Pocock es unirlo todo en una frase: <strong class="text-blue-400">delegar en la IA es delegar en un junior</strong>. No es una metáfora bonita: es literal. La IA tiene el perfil de un <span class="termo" title="Principiante: rápido, entusiasta, sin visión global, necesita instrucciones claras.">junior</span> excelente: rapidísima, incansable, entusiasta, pero sin la visión estratégica del conjunto. Pocock incluso señala que <em>"AI makes senior developers 10x better"</em> justamente porque el senior ya tiene el hábito de delegar: le señala algo a la IA, ella lo hace y el multiplicador es enorme.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-4-t6-p2">La consecuencia práctica es liberadora: no necesitas aprender un «arte secreto de los prompts». Necesitas convertirte en un buen gerente. Las cinco palancas de este módulo son exactamente lo que hace un buen gerente al asignar una tarea: diseña lo difícil, delimita el alcance, define las interfaces, pide los escenarios y deja el mapa. El <strong>error común</strong> final es tratar a la IA como un oráculo ("lo sabe todo") en vez de como un junior ("ejecuta lo que yo sepa delegar"). Quien la trata como un oráculo se frustra; quien la trata como junior se multiplica. Usa la lista de verificación de abajo cada vez antes de asignar una tarea:</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">checklist-de-delegacao.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de delegar uma tarefa pra IA (= pra um júnior veloz), responda:
+[ ] DIFÍCIL  — eu já decidi a arquitetura / a parte difícil? (não deixe pra IA)
+[ ] ESCOPO   — a tarefa é pequena, com limites e um "pronto" claro?
+[ ] INTERFACE— o contrato com os outros módulos está definido?
+[ ] TESTES   — listei os cenários ruins (vazio, duplicado, erro) e pedi testes?
+[ ] DOC      — apontei a IA pros lugares certos do projeto (mapa, não romance)?
+Se um item está em branco, é AÍ que a IA vai errar. Preencha antes de soltar.</pre>
+</div>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Las cinco palancas de delegación convergen en una entrega de calidad de una IA júnior" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs>
+<pattern height="32" id="v24f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v24f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v24f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v24f-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1b26" height="26" rx="7" stroke="#38bdf8" stroke-width="2" width="150" x="36" y="14"></rect><text fill="#bfe6ff" text-anchor="middle" x="111" y="32">1 · difícil</text>
+<rect fill="#0e1b26" height="26" rx="7" stroke="#38bdf8" stroke-width="2" width="150" x="36" y="48"></rect><text fill="#bfe6ff" text-anchor="middle" x="111" y="66">2 · alcance</text>
+<rect fill="#0e1b26" height="26" rx="7" stroke="#38bdf8" stroke-width="2" width="150" x="36" y="82"></rect><text fill="#bfe6ff" text-anchor="middle" x="111" y="100">3 · interfaz</text>
+<rect fill="#0e1b26" height="26" rx="7" stroke="#38bdf8" stroke-width="2" width="150" x="36" y="116"></rect><text fill="#bfe6ff" text-anchor="middle" x="111" y="134">4 · pruebas</text>
+<rect fill="#0e1b26" height="22" rx="7" stroke="#38bdf8" stroke-width="2" width="150" x="36" y="150"></rect><text fill="#bfe6ff" text-anchor="middle" x="111" y="166">5 · doc</text>
+</g>
+<g fill="none" opacity="0.55" stroke="#60a5fa" stroke-width="1.8"><path d="M186,27 C400,27 520,90 640,90" marker-end="url(#v24f-ah)"></path><path d="M186,61 C400,61 540,90 640,90" marker-end="url(#v24f-ah)"></path><path d="M186,95 C400,95 540,90 640,90" marker-end="url(#v24f-ah)"></path><path d="M186,129 C400,129 540,90 640,90" marker-end="url(#v24f-ah)"></path><path d="M186,161 C400,161 520,90 640,90" marker-end="url(#v24f-ah)"></path></g>
+<g filter="url(#v24f-glow)"><rect fill="#0e1622" height="64" rx="14" stroke="#60a5fa" stroke-width="2.5" width="320" x="640" y="58"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="800" y="86">La IA junior entrega buenos resultados</text>
+<text fill="#bcd6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="800" y="108">solo te conviertes en un buen gerente</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-4#q2">
+<p class="font-medium mb-4">Recuperación rápida: según Pocock, ¿qué cambió en el pensamiento estratégico con la llegada de la IA?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Todo cambió: ahora la IA piensa estratégicamente por ti.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Nada en esencia: solo cambiamos «delegar a los juniors» por «delegar a la IA»; las habilidades para delegar siguen siendo las mismas.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Delegar dejó de importar; ahora basta con un buen prompt.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> no te conviertas en un "maestro de prompts" — conviértete en un buen gerente; la IA es tu desarrollador junior más rápido.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Diseña las partes difíciles</strong><span class="text-neutral-400"> — la decisión de arquitectura es tuya; la ejecución es de la IA.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Alcance definido</strong><span class="text-neutral-400"> — tarea pequeña, con límites y criterio de «listo».</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Interfaces entre módulos</strong><span class="text-neutral-400"> — define el contrato y la IA construye cada parte en paralelo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Pruebas y escenarios</strong><span class="text-neutral-400"> — entrega los edge cases; las pruebas se convierten en el control de calidad.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Documentación suficiente</strong><span class="text-neutral-400"> — el mapa que dirige la IA a los lugares adecuados, no una novela.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Delegación a la IA = delegar a un junior</strong><span class="text-neutral-400"> — sé un buen gerente, no un maestro de prompts.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">2.5 — Comunicación y dictado: por qué hablar es "overpowered" y cómo dictar duplica tu velocidad con IA.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="modulo-2-5.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-2-4#q1', { answer: 1, explain: { 0: '"Melhore o app" não tem limite nem critério de pronto — escopo frouxo.', 1: 'Isso! Recorte claro, com o que entra, o cenário a cobrir e o critério de pronto.', 2: '"Tudo ficar bom" é o pedido-balde clássico, sem escopo nenhum.' } });
+        INEMA.registerCheck('modulo-2-4#q2', { answer: 1, explain: { 0: 'A IA executa, não pensa estrategicamente por você — esse trabalho continua seu.', 1: 'Exato — Pocock diz que só trocamos delegar a juniores por delegar à IA; o resto é igual.', 2: 'Delegar virou MAIS importante, não menos — é a habilidade central agora.' } });
+      }
+    });
+  </script>
+</body>
+</html>

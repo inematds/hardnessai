@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>Ruta 5 · Soluciones listas para copiar | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13,148,136,0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13,148,136,0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13,148,136,0.18); }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) .group:hover .group-hover\:text-teal-400 { color: #0d9488; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha5/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha5/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha5/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha5/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-teal-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../../curso/trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../../curso/trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../../curso/trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../../curso/trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">RUTA 5</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">📋 Soluciones listas para copiar</h1>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">Basta de teoría: aquí te llevas artefactos listos para copiar y pegar hoy. Prompts, skills y configs listos: el reset de 2 pasos, el grill-me, el pipeline hasta las issues, la configuración AFK de Matt, la Action de revisión y dónde encontrar todo eso gratis.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<img alt="Ilustración de la ruta 5: Soluciones listas para copiar" class="w-full h-auto rounded-xl mb-4" loading="lazy" src="../../../curso/trilha5/assets/img/hero.png"/>
+<svg aria-label="Diagrama: prompts y skills listos copiados directamente en tu setup, generando resultados" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="t5h-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="t5h-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t5h-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="t5h-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#t5h-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="34"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="54">grill-me</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="94">configuración AFK</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="114"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="134">acción de revisión</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="154"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="174">cron security</text></g>
+</g>
+<g fill="none" opacity="0.5" stroke="#2dd4bf" stroke-width="1.8">
+<path d="M190,49 C320,49 360,108 470,108" marker-end="url(#t5h-ah)"></path>
+<path d="M190,89 C320,89 360,108 470,108" marker-end="url(#t5h-ah)"></path>
+<path d="M190,129 C320,129 360,108 470,108" marker-end="url(#t5h-ah)"></path>
+<path d="M190,169 C320,169 360,108 470,108" marker-end="url(#t5h-ah)"></path>
+</g>
+<g filter="url(#t5h-glow)"><rect fill="#0c1f1c" height="76" rx="16" stroke="url(#t5h-grad)" stroke-width="2.5" width="210" x="470" y="70"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="18" font-weight="600" text-anchor="middle" x="575" y="103">PEGAR</text>
+<text fill="#cbd5e1" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="575" y="124">artefactos listos en tu setup</text>
+<path d="M680,108 L800,108" fill="none" marker-end="url(#t5h-ah)" stroke="#2dd4bf" stroke-width="2"></path>
+<rect fill="#1f2937" height="52" rx="12" stroke="#9ca3af" stroke-width="2" width="160" x="800" y="82"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="880" y="113">Resultado</text>
+</svg>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-2 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Módulos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">36</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~3h</div><div class="text-xs text-neutral-400">Duración</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Práctico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso de la ruta 5" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="trilha:5" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso de la ruta:</span>
+<span class="inema-meter-pct text-teal-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 36</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="conteudo">
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Mapa de la ruta</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-1">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">🧹 El reinicio en 2 pasos</h3>
+<p class="text-xs text-neutral-400">Vuelve a cero</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-2">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">🔍 grill-me + 10 decisiones</h3>
+<p class="text-xs text-neutral-400">Alinea antes de programar</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-3">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">🔗 Pipeline grill-me → PRD → issues</h3>
+<p class="text-xs text-neutral-400">Del brain al backlog</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-4">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">🛰️ Setup AFK completo</h3>
+<p class="text-xs text-neutral-400">Cómo trabaja Matt</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-5">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">🤖 Action de review + cron de security</h3>
+<p class="text-xs text-neutral-400">Automatización que se cuida sola</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-teal-500/30 p-5 transition-all" href="#modulo-5-6">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold text-sm">5.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-teal-400 transition-colors">🎥 Revisión fluida + dónde encontrarlo</h3>
+<p class="text-xs text-neutral-400">Cierra el ciclo</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Contenido detallado</h2>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-1" data-inema-track="5" id="modulo-5-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🧹 El reinicio en 2 pasos</h3>
+<p class="text-neutral-400 text-sm">Vuelve a cero: elimina todo, observa al agente puro y vuelve a agregar solo lo que falta.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">❓</span><div><span class="font-medium">Por qué reiniciar</span><span class="text-neutral-500 text-sm ml-2">- Limpiar los residuos</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Volver la configuración al blank slate para ver qué importa realmente.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Las configuraciones acumulan bloat; el reinicio revela qué queda.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Estado cero; eliminar la acumulación.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🗑️</span><div><span class="font-medium">Borrar todo</span><span class="text-neutral-500 text-sm ml-2">- Paso 1</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Quitar skills, instrucciones y configuraciones hasta que solo quede el agente en bruto.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el paso que da valor para simplificar de verdad.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Borrado total; respaldo antes.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">👀</span><div><span class="font-medium">Observar al agente sin más</span><span class="text-neutral-500 text-sm ml-2">- Baseline</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Ejecutar tareas con el agente sin ningún harness y ver dónde tropieza.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Solo así sabes qué necesitas agregar realmente.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Baseline sin procesar; observa las brechas.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🧱</span><div><span class="font-medium">Recopilar con procedures</span><span class="text-neutral-500 text-sm ml-2">- Paso 2</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Volver a agregar solo procedures y skills que resuelvan brechas reales.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cada pieza vuelve con una justificación, no por costumbre.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Capas intencionales; una a la vez.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">Traer de vuelta solo lo que falta</span><span class="text-neutral-500 text-sm ml-2">- Lo mínimo necesario</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Resistir la tentación de volver a ponerlo todo; reintroducir solo lo estrictamente útil.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Mantén el contexto ligero y el rendimiento alto.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Mínimo viable de harness.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧪</span><div><span class="font-medium">Personalizar para experimentar</span><span class="text-neutral-500 text-sm ml-2">- Iterar con seguridad</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Usar el reset como sandbox para probar una configuración nueva.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Permite experimentar sin miedo a romper la configuración principal.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Reset como laboratorio; iteración rápida.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-1')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-1.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-2" data-inema-track="5" id="modulo-5-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🔍 grill-me + 10 decisiones</h3>
+<p class="text-neutral-400 text-sm">Alinea antes de programar: la skill grill-me y el prompt de las 10 decisiones, listos para copiar y pegar.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">📝</span><div><span class="font-medium">La skill grill-me (texto)</span><span class="text-neutral-500 text-sm ml-2">- Copia y pega</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El texto completo de la skill grill-me, listo para guardar en tu setup.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el artefacto más reutilizable de todo el curso.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Skill breve (4-5 frases); entrevista adversarial.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔟</span><div><span class="font-medium">El prompt de las 10 decisiones</span><span class="text-neutral-500 text-sm ml-2">- Enfócate en lo que importa</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un prompt que hace que el agente enumere las 10 decisiones más importantes del trabajo.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Centra la entrevista en lo que realmente mueve el resultado.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Top-10 decisiones; priorización explícita.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">"Entrevístame hasta llegar al 98 %"</span><span class="text-neutral-500 text-sm ml-2">- Shared understanding</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Pedirle al agente que te entreviste hasta alcanzar ~98% de comprensión.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Crea una comprensión compartida antes de escribir una línea de código.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Meta de confianza; primero hay que alinearse.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">⏰</span><div><span class="font-medium">Cuándo usar</span><span class="text-neutral-500 text-sm ml-2">- El disparador correcto</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Activar la grill-me al comienzo de cualquier tarea ambigua o grande.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Reemplaza el plan mode y evita rehacer el trabajo.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Antes de programar; tareas ambiguas.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🔧</span><div><span class="font-medium">Adaptar a tu proyecto</span><span class="text-neutral-500 text-sm ml-2">- Personaliza</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Adaptar la skill al dominio, al tono y a las restricciones de tu proyecto.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Una sesión de preguntas personalizada te pregunta qué es lo que más te importa.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Templating; contexto del dominio.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">⚠️</span><div><span class="font-medium">Errores comunes</span><span class="text-neutral-500 text-sm ml-2">- Trampas</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Skill demasiado larga, preguntas vagas o saltarse la entrevista por apuro.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Evita que grill-me se convierta en otro ritual sin efecto.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Breve y específica; no te saltes la alineación.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-2')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-2.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-3" data-inema-track="5" id="modulo-5-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🔗 Pipeline grill-me → PRD → issues</h3>
+<p class="text-neutral-400 text-sm">Del brain al backlog: encadena tres skills y sal con issues listas para delegar.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🗺️</span><div><span class="font-medium">Descripción general</span><span class="text-neutral-500 text-sm ml-2">- Todo el pipeline</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Tres procedimientos en secuencia: grill-me → two-PRD → to-issues.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Convierte una conversación en un backlog accionable sin que tengas que teclear.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Pipeline de pensamiento; brain → backlog.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔍</span><div><span class="font-medium">grill-me</span><span class="text-neutral-500 text-sm ml-2">- Etapa 1</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La entrevista adversarial que extrae la visión completa de tu cabeza.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es la entrada del pipeline: entra basura, sale basura.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Entrada del pipeline; primero, alinearse.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">📄</span><div><span class="font-medium">two-PRD</span><span class="text-neutral-500 text-sm ml-2">- Etapa 2</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La skill que convierte la entrevista en un PRD estructurado.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El PRD es el puente entre la visión y las tareas.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">PRD como artefacto intermedio.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🎫</span><div><span class="font-medium">to-issues</span><span class="text-neutral-500 text-sm ml-2">- Etapa 3</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La skill que divide el PRD en issues listas para delegar.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Sale un backlog que los agentes (o las personas) pueden tomar directamente.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Salida del pipeline; tareas que se pueden delegar.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">⛓️</span><div><span class="font-medium">Encadenamiento</span><span class="text-neutral-500 text-sm ml-2">- Procedures en secuencia</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cómo la salida de una skill alimenta la entrada de la siguiente.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el corazón del DRY humano: encadena en vez de repetir.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Composición de procedures; salida → entrada.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧍</span><div><span class="font-medium">Dónde queda el humano</span><span class="text-neutral-500 text-sm ml-2">- Tú al volante</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Los puntos de control en los que apruebas entre una etapa y otra.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Diriges el pipeline; el agente hace el trabajo pesado.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Checkpoints humanos; tú al volante.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-3')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-3.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-4" data-inema-track="5" id="modulo-5-4">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🛰️ Setup AFK completo</h3>
+<p class="text-neutral-400 text-sm">Cómo trabaja Matt: Claude Code + Opus, AFK mediante sandbox y commits recuperados.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🧰</span><div><span class="font-medium">Claude Code + Opus 4.8 medium</span><span class="text-neutral-500 text-sm ml-2">- La base de Matt</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La combinación de herramienta y modelo que Matt usa en su día a día.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Un punto de partida concreto, no una configuración teórica.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Claude Code; Opus 4.8 con esfuerzo medio.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🛰️</span><div><span class="font-medium">AFK mediante sandbox</span><span class="text-neutral-500 text-sm ml-2">- Salir del loop</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Ejecutar el agente lejos del teclado, aislado en una sandbox.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es lo que desbloquea el trabajo en paralelo sin que tengas que supervisar.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">AFK; aislamiento mediante sandbox.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🏰</span><div><span class="font-medium">Configuración de Sand Castle</span><span class="text-neutral-500 text-sm ml-2">- La herramienta</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cómo configurar Sand Castle para los sandboxes de agentes.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es un camino listo para usar, no un rompecabezas de Docker.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Sand Castle; sandbox listo para usar.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🚦</span><div><span class="font-medium">Paralelizar con seguridad</span><span class="text-neutral-500 text-sm ml-2">- Flota aislada</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Ejecutar varios agentes al mismo tiempo, cada uno en su sandbox.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Multiplica la producción sin multiplicar el riesgo.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Flota en paralelo; aislamiento por instancia.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">⤵️</span><div><span class="font-medium">Traer los commits de vuelta</span><span class="text-neutral-500 text-sm ml-2">- Traer el trabajo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cómo recuperar los commits generados por los agentes en el sandbox.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el paso que cierra el ciclo entre AFK y tu repositorio.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Traer los commits de vuelta; integrarlos de nuevo.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🌱</span><div><span class="font-medium">Tu configuración mínima</span><span class="text-neutral-500 text-sm ml-2">- Empieza poco a poco</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La versión simplificada de la configuración AFK para que la uses hoy.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Te saca de la parálisis: empieza con lo mínimo y crece.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">MVP de AFK; evoluciona de forma incremental.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-4')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-4.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-5" data-inema-track="5" id="modulo-5-5">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🤖 Action de review + cron de security</h3>
+<p class="text-neutral-400 text-sm">Automatización que se cuida sola: una Action que revisa PRs y un cron que hace una revisión de seguridad por su cuenta.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🦴</span><div><span class="font-medium">Estructura de la Action</span><span class="text-neutral-500 text-sm ml-2">- El YAML base</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La estructura mínima de un workflow de GitHub Actions que invoca a un agente.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el punto de partida que puedes copiar para la automatización en la nube.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Workflow YAML; triggers y jobs.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔁</span><div><span class="font-medium">checkout → verificación de tipos → revisión</span><span class="text-neutral-500 text-sm ml-2">- Los pasos</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La secuencia de pasos: buscar el código, verificar los tipos y revisar.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Filtra los errores obvios antes de gastar al agente en la revisión.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Pipeline de pasos; type check como gate.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">💬</span><div><span class="font-medium">Comentar en el PR</span><span class="text-neutral-500 text-sm ml-2">- La salida visible</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Haz que el agente publique el resultado de la revisión como comentario en el pull request.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La retroalimentación aparece donde el equipo ya trabaja.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Comentario en el PR; feedback en contexto.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🕒</span><div><span class="font-medium">Cron diario rotativo</span><span class="text-neutral-500 text-sm ml-2">- Security por sí solo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un cron que ejecuta una revisión de seguridad todos los días y recorre partes del código.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el sistema que se mejora a sí mismo y se mantiene sin que tengas que recordarlo.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Programación cron; rotación del alcance.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🗂️</span><div><span class="font-medium">Estructurar los datos de explore</span><span class="text-neutral-500 text-sm ml-2">- Telemetría → issue</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Recopilar lo que encuentra el agente y convertirlo en issues estructuradas.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cierra el ciclo telemetría → issue → fix.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Datos estructurados; un hallazgo se convierte en tarea.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🔀</span><div><span class="font-medium">Auto-merge con cautela</span><span class="text-neutral-500 text-sm ml-2">- Sin perder el control</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Cuándo dejar que la Action se fusione sola y cuándo exigir aprobación humana.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El auto-merge sin criterio es como darle las llaves del auto a alguien júnior.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Gates de auto-merge; cautela por defecto.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-5')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-5.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="5-6" data-inema-track="5" id="modulo-5-6">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-teal-400 font-bold">5.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🎥 Revisión fluida + dónde encontrarlo</h3>
+<p class="text-neutral-400 text-sm">Cierra el ciclo: revisión con video + TTS y repositorios donde encontrar skills listas.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🎥</span><div><span class="font-medium">Video walkthrough + TTS</span><span class="text-neutral-500 text-sm ml-2">- Revisión narrada</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El agente graba un walkthrough de los cambios con narración por TTS.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Revisas escuchando, en vez de leer diffs línea por línea.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Walkthrough en video; revisión por audio.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">⚡</span><div><span class="font-medium">Optimizar la revisión humana</span><span class="text-neutral-500 text-sm ml-2">- Menos dolor</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Técnicas para que tu review rinda más con menos esfuerzo.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">El review es el cuello de botella; optimizarlo acelera todo.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Review conciso; enfoque en lo que importa.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">📦</span><div><span class="font-medium">mattpocock/skills</span><span class="text-neutral-500 text-sm ml-2">- El repo de Matt</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El repositorio donde Matt publica sus skills listas.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es la fuente de las skills citadas en todo el curso.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Repo de skills; punto de partida copiable.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🌐</span><div><span class="font-medium">aihero.dev/skills</span><span class="text-neutral-500 text-sm ml-2">- La vitrina</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El sitio donde puedes explorar y descubrir skills disponibles.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Facilita encontrar la skill correcta sin tener que buscar minuciosamente en GitHub.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Catálogo de skills; descubrimiento fácil.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">⌨️</span><div><span class="font-medium">npx skills latest add</span><span class="text-neutral-500 text-sm ml-2">- Instalar en el momento</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El comando para agregar una skill a tu configuración en segundos.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el camino más rápido de «vi la skill» a «la estoy usando».</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">CLI npx; instalación inmediata.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🚀</span><div><span class="font-medium">Los 2 primeros pasos de hoy</span><span class="text-neutral-500 text-sm ml-2">- Actúa ahora</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-teal-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Las dos acciones concretas para empezar a aplicar el método hoy mismo.</p></div>
+<div><span class="text-teal-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cierra el curso con acción, no con más teoría.</p></div>
+<div><span class="text-teal-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Primeros pasos; del saber al hacer.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-5-6')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-teal-600 hover:bg-teal-500 text-white rounded-lg transition-colors" href="modulo-5-6.html">Ver completo</a>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 mt-10">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../trilha4/index.html">← Ruta 4</a>
+<a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="../../index.html">Completar el curso → Inicio</a>
+</div>
+</main>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-1" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.1</span><span class="font-semibold">El reset de 2 pasos</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-1.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-2" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.2</span><span class="font-semibold">grill-me + 10 decisiones</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-2.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-3" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.3</span><span class="font-semibold">Pipeline grill-me → PRD → issues</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-3.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-4" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.4</span><span class="font-semibold">Configuración AFK completa</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-4.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-5" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.5</span><span class="font-semibold">Action de revisión + cron de seguridad</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-5.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-5-6" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-teal-400 font-bold">5.6</span><span class="font-semibold">Review fluido + dónde encontrarlo</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-5-6.html"></iframe></div></div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
+    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&INEMA.init)INEMA.init();});</script>
+</body>
+</html>

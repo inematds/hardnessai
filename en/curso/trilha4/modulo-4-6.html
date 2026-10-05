@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>4.6 Checkpoints &amp; smooth review | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'amber' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'amber');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #fbbf24; cursor: help; font-weight: 600; color: #fcd34d; }
+    html:not(.dark) .termo { color: #92400e; border-color: #d97706; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-amber-400 { color: #b45309; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217,119,6,0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217,119,6,0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217,119,6,0.18); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #b45309; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha4/modulo-4-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha4/modulo-4-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha4/modulo-4-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-4-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha4/modulo-4-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-amber-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-amber-400" href="index.html">Track 4</a><span>/</span>
+<span class="text-amber-400">Module 4.6 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">MODULE 4.6 · TEACHING MODE</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🎬 Checkpoints &amp; smooth review</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">You delegated to AI (all of Track 4). Now: how do you <strong class="text-amber-400">reviews</strong> without becoming a bottleneck? Let’s see what the review actually gives you, how to carefully get the human out of the way (and who reviews the agent that says "everything looks good"), and the trick that makes review enjoyable — the agent records a <strong class="text-amber-400">video of itself</strong> and narrates. Each term is explained as it comes up.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">T4</div><div class="text-xs text-neutral-400">Advanced</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">End</div><div class="text-xs text-neutral-400">From the track</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 4.6 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:4-6" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-1">1. What the review gives you</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-2">2. Push the checkpoint to the right</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-3">3. When to remove the human</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-4">4. Who reviews the agent</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-5">5. Video Walkthrough + TTS</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10" href="#topico-6">6. Faster Reviews with AI</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-amber-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-amber-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">Here, you review the work the agent did on its own (AFK, GitHub Actions, queues). These are the new terms in this module—learn them:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Review</strong> — the moment when <em>you</em> look at what the agent produced and approve, adjust, or reject it. It's the "quality control" before the change enters the project.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Checkpoint</strong> — a stopping point where the work waits <em>human approval</em> to continue. Each checkpoint gives you confidence, but also turns you into a bottleneck.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">PR (Pull Request)</strong> — the "bundle of changes" the agent opens on GitHub to propose code changes. It's where you review before accepting (doing the <em>merge</em>).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Merge</strong> — merge the PR change into the main code. “Auto-merge” means the change goes in by itself, without you pressing the button.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Observability</strong> — your ability to <em>see inside</em> how the system (and the agent) is working. Without it, you delegate blindly.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">TTS (Text-to-Speech)</strong> — "text to speech": software that reads text aloud. The agent uses it to <em>narrate</em> A video of the change itself.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">Walkthrough</strong> — a “guided walkthrough”: a short video in which the agent <em>moves through the change</em> showing that it works.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-amber-400">AFK</strong> — <em>Away From Keyboard</em> ("away from the keyboard"): the agent works on its own while you're away. The review is how you reconnect with that work.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-4-6#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🔍 What the review gives you</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you’re a newspaper editor. Reading the reporter's copy before publication isn't just about "catching errors" — it's also about helping you <em>understand</em> how that reporter thinks, where they tend to stumble, and how to improve the next assignment. The review has two functions, not one.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-6-t1-p1">When the agent works alone—in <span class="termo" title="Away From Keyboard: the agent works while you’re away from the keyboard.">AFK</span>, in <span class="termo" title="Pull Request: the package of changes the agent proposes on GitHub.">PRs</span>, in task queues—one question remains: what is the <span class="termo" title="The moment you look at what the agent produced and approve or reject it.">review</span>? Matt Pocock gives a two-part answer. The first function is obvious: the review is a <strong class="text-amber-400">gate for dangerous things</strong> — leaked secrets, security holes, changes that could, for example, expose Claude Code’s own source code. Here, the review is a protective barrier, and it matters.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-6-t1-p2">But there’s a second function almost everyone misses—and Pocock insists on it: the review gives you <strong class="text-amber-400">insight in your own system</strong>. When you watch the agent work, you discover how your <span class="termo" title="Everything involving the model: prompts, skills, environment, and codebase.">harness</span> (the plumbing that produces the code) behaves in practice. It’s <span class="termo" title="Your ability to see inside how the system is working.">observability</span>: you improve the harness over time, and to do that you need to <em>see</em> what's happening. In his words: <em>"we're reviewing not just the code, but the system that produces the code."</em> O <strong>common mistake</strong> is treating review only as bug hunting and, anxious to move faster, cutting everything — you save time and go blind. Without observability, you delegate blindly and never tune the engine that produces everything.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Review has two outcomes: a gate that blocks what’s dangerous and an observability window that gives you insight into the system" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v46a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="v46a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v46a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v46a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<g filter="url(#v46a-glow)"><rect fill="url(#v46a-grad)" height="62" rx="14" stroke="#f59e0b" stroke-width="2.5" width="240" x="380" y="95"></rect></g>
+<text fill="#1f1604" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="500" y="124">REVIEW</text>
+<text fill="#1f1604" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="144">you look at what the agent did</text>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="130" rx="14" stroke="#38bdf8" stroke-width="2" width="250" x="60" y="60"></rect>
+<text fill="#bfe6ff" font-size="15" font-weight="600" text-anchor="middle" x="185" y="95">1 · GATE</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="185" y="122">blocks the dangerous stuff</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="185" y="142">security · secrets</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="185" y="162">leak source code</text>
+<rect fill="#1f1604" height="130" rx="14" stroke="#fbbf24" stroke-width="2" width="250" x="690" y="60"></rect>
+<text fill="#fbbf24" font-size="15" font-weight="600" text-anchor="middle" x="815" y="95">2 · WINDOW</text>
+<text fill="#fcd34d" font-size="12.5" text-anchor="middle" x="815" y="122">insight in the system</text>
+<text fill="#fcd34d" font-size="12.5" text-anchor="middle" x="815" y="142">observability</text>
+<text fill="#fcd34d" font-size="12.5" text-anchor="middle" x="815" y="162">you improve the harness</text>
+</g>
+<path d="M380,126 L310,126" fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M620,126 L690,126" fill="none" opacity="0.6" stroke="#fbbf24" stroke-width="2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="225">Don’t cut the review just to save time: you’d miss the window.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Review isn’t just bug hunting: it’s also your window into understanding and fine-tuning the system that produces the code.</p>
+</div>
+<img alt="Conceptual illustration: a futuristic review dashboard with a security gate on one side and an observability window on the other" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-6-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Trying to “automate everything” and turn off review on day 1. You may gain speed—but you become blind to your own system and don’t know how to improve it. Start by reviewing a lot; gradually remove checkpoints as you gain confidence.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> the review is a gate (it blocks dangerous things) and a window (it shows you the system)—don't throw the window away.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Going deeper (optional): why "leak Claude Code's source code"?</summary>
+<p class="text-sm text-neutral-300 mt-3">When the agent runs inside your environment, it has access to sensitive files—API keys, production secrets, and, in some setups, parts of the harness itself. A poorly reviewed PR could accidentally paste a secret into a public file or open a vulnerability. That’s why the security gate is the checkpoint you cut <em>last</em>: the cost of a mistake here is too high.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-4-6#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">➡️ Push the checkpoint to the right</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A factory conveyor belt. Before, an inspector stopped EVERY part to check it. Expensive and slow. The solution wasn’t to remove the inspector — it was to <em>move it to the end of the conveyor</em>, where it checks the finished product. The piece flows; control happens as close to the output as possible.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-6-t2-p1">Imagine the timeline of a task: telemetry detects a bug → it becomes a <span class="termo" title="Work item recorded in GitHub.">issue</span> → the agent investigates → proposes the fix → opens the PR → gets into the code (<span class="termo" title="Merge the change into the main codebase.">merge</span>). At each of these arrows, you <em>could</em> add a <span class="termo" title="Stopping point where the work waits for human approval.">checkpoint</span> human. Pocock’s question is: <strong>where</strong> does it deliver more? The answer is the key phrase of the learning path: <em>"push human-in-the-loop checkpoints further toward the final output"</em> — push the human approval points <strong class="text-amber-400">farther and farther to the right</strong>, toward the final output.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-6-t2-p2">Why? Because a checkpoint in the <em>start</em> holds up everything else: nothing moves without you. The later the checkpoint, the more work the AI has already done on its own by the time it reaches you — and the more each minute of yours is worth. The <span class="termo" title="The slowest point in a process, which holds everything else back.">bottleneck</span> stops being you. The <strong>common mistake</strong> is the opposite: people who review every micro-step (every command, every file) and, without realizing it, rebuild the manual work they wanted to delegate. Remember the queue from module 4.4: you’re the king who prioritizes and approves the result—not the soldier checking every move.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Timeline of a task with the human checkpoint pushed from left to right, close to the final output" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<pattern height="32" id="v46b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v46b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v46b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v46b-grid)" height="220" width="1000" x="0" y="0"></rect>
+<line marker-end="url(#v46b-ah)" opacity="0.55" stroke="#fbbf24" stroke-width="2.5" x1="60" x2="940" y1="95" y2="95"></line>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle">
+<circle cx="120" cy="95" fill="#0e1b26" r="9" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" x="120" y="72">bug</text>
+<circle cx="300" cy="95" fill="#0e1b26" r="9" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" x="300" y="72">issue</text>
+<circle cx="480" cy="95" fill="#0e1b26" r="9" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" x="480" y="72">fix</text>
+<circle cx="660" cy="95" fill="#0e1b26" r="9" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" x="660" y="72">PR</text>
+<circle cx="840" cy="95" fill="#0e1b26" r="9" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" x="840" y="72">merge</text>
+</g>
+<g font-family="Inter,sans-serif" text-anchor="middle">
+<rect fill="#3a0d0d" height="40" rx="9" stroke="#ef4444" stroke-width="2" width="96" x="252" y="135"></rect><text fill="#fca5a5" font-size="12" x="300" y="160">✗ too early</text>
+<g filter="url(#v46b-glow)"><rect fill="#1f1604" height="40" rx="9" stroke="#fbbf24" stroke-width="2.5" width="140" x="772" y="135"></rect></g><text fill="#fbbf24" font-size="12" font-weight="600" x="842" y="160">✓ checkpoint here</text>
+</g>
+<path d="M348,155 C520,185 680,185 772,158" fill="none" marker-end="url(#v46b-ah)" opacity="0.7" stroke="#fbbf24" stroke-dasharray="5 4" stroke-width="2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="208">The farther to the right the checkpoint, the more the AI can do on its own and the less you become the bottleneck.</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-6#q1">
+<p class="font-medium mb-4">Quick recall: "push the checkpoint to the right" means…</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Review every agent step as early as possible, at the start of the task.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Move the human approval point closer to the final output, letting AI get ahead first.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Remove every review step from the process.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> move your checkpoints to the right (near the output) so you’re no longer the bottleneck—while still approving the result.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-4-6#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">✂️ When to remove the human</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> changing the coffee brand in the company break room doesn't need to go through the CEO. Changing the layoff policy does. The secret is matching the approval level to the size of the risk — not checking everything the same way.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-6-t3-p1">The goal, Pocock says, is to <strong class="text-amber-400">remove checkpoints wherever possible — carefully</strong>. Not every change deserves the same scrutiny. His example is clear: a PR that’s just a <span class="termo" title="Reorganize the code internally without changing what the user sees.">refactoring</span> internal — reorganizes the code, but <em>doesn't change the behavior</em> visible — a natural candidate for having the checkpoint removed. The AI itself can evaluate and say: <em>"this doesn't need human review; it's just internal cleanup."</em></p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-6-t3-p2">The practical rule is to classify by <strong>blast radius</strong>. Low risk (a refactor that doesn’t change behavior, a text tweak, a safe dependency update) → a good candidate for <span class="termo" title="The change goes in automatically, without you pressing the button.">auto-merge</span>. High risk (anything that touches security, user data, money, or changes behavior the customer can see) → keep the human involved. The <strong>common mistake</strong> is binary: either review everything (a bottleneck) or nothing (dangerous). The way forward is <em>gradient</em>: start by reviewing a lot, then loosen the rules for low-risk items as you gain confidence in the system. This connects to module 4.5 (telemetry → issue → fix → auto-merge tag or ping the human): the “auto-merge or human” decision is exactly this risk judgment.</p>
+<img alt="Illustration: two PR conveyor belts, one low-risk belt going straight to automatic merge and another high-risk belt stopping at a human checkpoint" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-6-2.png"/>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-amber-900/20 rounded-xl border border-amber-500/30 p-6"><h4 class="font-bold text-amber-400 mb-4">✓ Let it run (auto-merge)</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Internal refactor (doesn’t change behavior).</li><li>• Text edits, formatting, comments.</li><li>• Dependency bump tested by CI.</li><li>• Change covered by passing tests.</li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Keep the human involved</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Security, authentication, permissions.</li><li>• User data or payments.</li><li>• Visible behavior change.</li><li>• Anything irreversible.</li></ul></div>
+</div>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A triager classifies each PR by risk: low-risk ones go straight to auto-merge, high-risk ones go to a human checkpoint that approves near the final output" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v46c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<pattern height="32" id="v46c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v46c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v46c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v46c-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" text-anchor="middle">
+<rect fill="#0e1b26" height="56" rx="13" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="92"></rect>
+<text fill="#bfe6ff" font-size="13" font-weight="600" x="115" y="116">Agent PR</text>
+<text fill="#9ad6ff" font-size="11.5" x="115" y="134">(coming from AFK)</text>
+<g filter="url(#v46c-glow)"><rect fill="url(#v46c-grad)" height="68" rx="14" stroke="#f59e0b" stroke-width="2.5" width="150" x="270" y="86"></rect></g>
+<text fill="#1f1604" font-size="14" font-weight="700" x="345" y="114">classifies</text>
+<text fill="#1f1604" font-size="12" x="345" y="134">by risk</text>
+<rect fill="#0e2018" height="62" rx="13" stroke="#34d399" stroke-width="2" width="300" x="640" y="40"></rect>
+<text fill="#6ee7b7" font-size="13.5" font-weight="600" x="790" y="66">LOW RISK → auto-merge</text>
+<text fill="#9bead0" font-size="11.5" x="790" y="86">refactor that doesn't change behavior</text>
+<rect fill="#1f1604" height="68" rx="13" stroke="#fbbf24" stroke-width="2.5" width="300" x="640" y="138"></rect>
+<text fill="#fbbf24" font-size="13.5" font-weight="700" x="790" y="164">HIGH RISK → human checkpoint</text>
+<text fill="#fcd34d" font-size="11.5" x="790" y="184">security · data · $ · behavior</text>
+<text fill="#fcd34d" font-size="11" x="790" y="200">approved closer to the final output →</text>
+</g>
+<g fill="none" opacity="0.7" stroke-width="2">
+<path d="M190,118 L270,120" marker-end="url(#v46c-ah)" stroke="#38bdf8"></path>
+<path d="M420,108 C520,96 560,80 640,72" marker-end="url(#v46c-ah)" stroke="#34d399"></path>
+<path d="M420,132 C520,144 560,160 640,168" marker-end="url(#v46c-ah)" stroke="#fbbf24"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="230">A gradient, not an on/off switch: let low-risk tasks through, hold back high-risk ones — and move the checkpoint to the right.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Match the approval level to the radius of impact: low risk flows on its own, high risk reaches a human down the line.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> remove the checkpoint where risk is low (refactoring without changing behavior); keep it where risk is high.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-4-6#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🛡️ Who reviews the agent</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A student who grades their own test and says, “I got a 10.” Maybe they did. But you can’t trust them blindly — you need to sample a few tests to calibrate whether their “10” matches a “real 10.”</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-6-t4-p1">Here's the paradox Pocock raises in a sharp phrase: <em>"who reviews the AI that says it's fine?"</em> — who reviews the AI that says everything is fine? If you let the AI itself decide that a PR “doesn’t need review,” you’ve created a judge that judges its own work. You can’t trust that blindly. The solution isn’t to turn off self-evaluation—it’s to <strong class="text-amber-400">audit a sample</strong>. You still need to check <em>some</em> of the PRs the agent declared okay, and keep improving that judgment over time.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-6-t4-p2">It’s the same idea from topic 1, now in action: <em>"we're reviewing not just the code, but the SYSTEM that produces the code."</em> You're not just checking that specific PR—you're calibrating the <strong>judgment system</strong> of the agent. Every time you catch an "it’s fine" that actually wasn’t, you adjust the skill, prompt, or auto-merge rule to get it right next time. The <strong>common mistake</strong> is the leap of faith: giving <span class="termo" title="The change goes in automatically, with no human approval.">auto-merge</span> total without ever sampling. Without sampling, you can't know whether the agent is calibrated — you only find out after a serious error has slipped through.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A batch of PRs marked okay by the AI; a sample is pulled for human auditing, which feeds back into and calibrates the system" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<pattern height="32" id="v46d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v46d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v46d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v46d-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<text fill="#9ad6ff" font-size="13" font-weight="600" x="60" y="40">PRs that the AI said “looks good”</text>
+<g fill="#0e1b26" stroke="#38bdf8" stroke-width="1.8">
+<rect height="34" rx="7" width="56" x="60" y="55"></rect><rect height="34" rx="7" width="56" x="124" y="55"></rect><rect height="34" rx="7" width="56" x="188" y="55"></rect>
+<rect height="34" rx="7" width="56" x="60" y="97"></rect><rect height="34" rx="7" width="56" x="188" y="97"></rect>
+<rect height="34" rx="7" width="56" x="60" y="139"></rect><rect height="34" rx="7" width="56" x="124" y="139"></rect><rect height="34" rx="7" width="56" x="188" y="139"></rect>
+</g>
+<g filter="url(#v46d-glow)"><rect fill="#1f1604" height="34" rx="7" stroke="#fbbf24" stroke-width="2.5" width="56" x="124" y="97"></rect></g>
+<text fill="#fbbf24" font-size="12" font-weight="700" text-anchor="middle" x="152" y="119">?</text>
+<path d="M180,114 C320,114 360,114 470,114" fill="none" marker-end="url(#v46d-ah)" opacity="0.7" stroke="#fbbf24" stroke-width="2"></path>
+<rect fill="#1f1604" height="58" rx="13" stroke="#fbbf24" stroke-width="2" width="220" x="480" y="86"></rect>
+<text fill="#fbbf24" font-size="14" font-weight="600" text-anchor="middle" x="590" y="111">human audit</text>
+<text fill="#fcd34d" font-size="11.5" text-anchor="middle" x="590" y="131">sample some PRs</text>
+<path d="M700,114 C780,114 820,114 880,114" fill="none" marker-end="url(#v46d-ah)" opacity="0.7" stroke="#fbbf24" stroke-width="2"></path>
+<rect fill="#0e2018" height="46" rx="11" stroke="#fbbf24" stroke-width="2" width="200" x="760" y="160"></rect>
+<text fill="#fcd34d" font-size="12.5" font-weight="600" text-anchor="middle" x="860" y="188">calibrates the system</text>
+<path d="M860,160 C860,120 760,100 700,110" fill="none" marker-end="url(#v46d-ah)" opacity="0.55" stroke="#34d399" stroke-dasharray="5 4" stroke-width="1.8"></path>
+</g>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> the AI may say "looks good," but you still sample some of these PRs — to review the system, not just the code.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-4-6#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🎥 Video walkthrough + TTS</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> instead of getting an architecture blueprint full of numbers to decipher, you get a 40-second video: someone walks through the rooms of the house and narrates, “here’s the kitchen; notice that the sink has moved.” In seconds, you understand—without reading anything.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-6-t5-p1">This is Pocock’s favorite trick for making review <em>enjoyable</em>, and it applies to any change to <span class="termo" title="The visual part of the application, what the user sees on screen.">front end</span>. The idea: instead of handing you a PR with 30 changed files for you to read line by line, the AI itself records a <span class="termo" title="A guided video walkthrough of the change in action.">video walkthrough</span> — it <strong class="text-amber-400">moves through the change</strong> using the actual application (clicks the buttons, navigates the new screens, shows the before and after). Then it calls a <span class="termo" title="Text-to-Speech: software that reads text aloud.">TTS</span> e <strong>narrates over it</strong>, explaining what changed. The PR now has a video of it working attached.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-6-t5-p2">Why is this so powerful? Because your brain processes a narrated video much faster than a <span class="termo" title="The list of added and removed lines shown in the PR.">diff</span> of code. You check the <em>behavior</em> (does it work? does it look good? is it what I asked for?) in seconds, instead of inferring its behavior from the code. Pocock sums up the spirit of all this: <em>"optimize for human review, make it faster — we're scratching the surface."</em> Optimize for human review and make it faster—we’re only scratching the surface of what’s possible. The <strong>common mistake</strong> is thinking this is fluff: in practice, it’s what keeps you able to approve many PRs a day without burning out.</p>
+<img alt="Illustration: a Pull Request with an attached video player showing the agent navigating the interface and narrating the change" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha4/assets/img/m4-6-3.png"/>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="AI makes the change, records a screen video, generates TTS narration, and attaches the narrated video to the Pull Request" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v46e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<pattern height="32" id="v46e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v46e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v46e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#v46e-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle">
+<rect fill="#0e1b26" height="46" rx="11" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="92"></rect><text fill="#bfe6ff" x="115" y="113">1 · run the</text><text fill="#bfe6ff" x="115" y="130">change</text>
+<rect fill="#0e1b26" height="46" rx="11" stroke="#38bdf8" stroke-width="2" width="150" x="250" y="92"></rect><text fill="#bfe6ff" x="325" y="113">2 · records the</text><text fill="#bfe6ff" x="325" y="130">screen video</text>
+<rect fill="#0e1b26" height="46" rx="11" stroke="#38bdf8" stroke-width="2" width="150" x="460" y="92"></rect><text fill="#bfe6ff" x="535" y="113">3 · TTS narrates</text><text fill="#bfe6ff" x="535" y="130">on top</text>
+<g filter="url(#v46e-glow)"><rect fill="url(#v46e-grad)" height="74" rx="14" stroke="#f59e0b" stroke-width="2.5" width="250" x="700" y="78"></rect></g>
+<text fill="#1f1604" font-size="15" font-weight="700" x="825" y="108">PR with video</text>
+<text fill="#1f1604" font-size="12" x="825" y="130">narrated, working</text>
+</g>
+<g fill="none" marker-end="url(#v46e-ah)" opacity="0.65" stroke="#fbbf24" stroke-width="2">
+<path d="M190,115 L250,115"></path><path d="M400,115 L460,115"></path><path d="M610,115 L700,115"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="200">You watch 40s and approve—instead of reading 30 files of diffs.</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: the same PR, two reviews</h3>
+<p class="text-neutral-300 text-sm mb-3">Task delivered by AI in AFK mode: "redesign the checkout screen (front end)". Same change, two ways to review it:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Review without video</p><p class="text-xs text-neutral-300">You open the PR, see "27 files changed," read the CSS and JSX diff, trying to <em>imagine</em> what the screen looked like. 25 minutes later, you still aren’t sure whether the payment button works. It’s exhausting, and you approve on a hunch.</p></div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-400 font-semibold text-sm mb-1">Review with walkthrough + TTS</p><p class="text-xs text-neutral-300">The PR has a 45s video: the AI fills the cart, opens the new checkout, clicks “pay,” and narrates, “the button is now fixed to the bottom of the screen on mobile.” You can see that it works and approve it with confidence — in less than 1 minute.</p></div>
+</div>
+<p class="text-neutral-300 text-xs">Result: the same AI work, but your review time plummeted and confidence rose—because you evaluated <strong>behavior</strong>, not code.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> the AI records a video of itself using the change and narrates it with TTS — you review behavior in seconds, not code in minutes.</p></div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-amber-400">Going deeper (optional): how does the agent record this video in practice?</summary>
+<p class="text-sm text-neutral-300 mt-3">Usually through a browser automation tool (such as Playwright) that the agent controls: it starts the application, opens a "headless" browser, runs a scripted series of clicks through the affected screens, and records the screen as a video. In parallel, it generates a narration script based on what changed in the PR and passes that text through TTS to produce the audio track. Finally, it combines the video and audio (e.g., with ffmpeg) and attaches them to the PR. Pocock calls this "fluid review" and says we’re only "scratching the surface" — there’s much more you can do.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-4-6#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">⚡ Faster review with AI</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> instead of the teacher grading 20 identical tests one by one, they read them all and write <em>a</em> handout: "these were the 3 most common mistakes — study this." You improve the whole class at once, and yourself as a teacher.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m4-6-t6-p1">The last piece is optimizing the human review itself — because, as Pocock says, <em>"GitHub wasn't built for the agentic era"</em>. The tool was designed for a few large PRs from humans, not dozens of small PRs from agents. The smart move: instead of reviewing <strong>20 small fixes</strong> One at a time, ask the AI to generate a <strong class="text-amber-400">"teach skill"-style HTML</strong> (remember track 3?) that distills the <em>common patterns</em> of those bugs—what repeated, what the root cause was, what to learn. You review the summary, not the 20 pages.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m4-6-t6-p2">Notice what this does: the goal is <em>"optimize so you can improve yourself and the system"</em>. You don’t just approve faster — you learn the pattern behind the errors and adjust the harness so they don’t happen again. That closes the loop on Topic 1: review the system, not just the code. The <strong>common mistake</strong> is treating review as a mindless, repetitive task; here it becomes a tool for continuous improvement. Use the diagnosis below to decide how to speed up your review for any batch of PRs — copy and paste it when the backlog fills up:</p>
+<div class="copybox bg-dark-900 border border-amber-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-amber-400 font-mono">review-fluido.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">REVIEW FLUIDO — como acelerar o review dos PRs do agente
+
+1) CLASSIFIQUE por risco antes de abrir o diff:
+   [ ] baixo risco (refactor sem mudar comportamento, texto, dep) -&gt; auto-merge
+   [ ] alto risco (seguranca, dados, $, comportamento visivel) -&gt; humano
+
+2) EMPURRE o checkpoint pra direita:
+   [ ] o humano aprova perto da SAIDA, nao em cada micro-passo
+
+3) PECA o walkthrough em qualquer mudanca de front-end:
+   "Grave um video navegando pela mudanca e narre com TTS o que mudou;
+    anexe ao PR." -&gt; reviso comportamento em segundos, nao diff em minutos
+
+4) AGREGUE lotes em vez de revisar 1 a 1:
+   "Em vez de 20 fixes soltos, gere um HTML tipo teach skill com os
+    padroes comuns desses bugs (causa raiz + o que aprender)."
+
+5) AUDITE a auto-avaliacao da IA:
+   [ ] amostre alguns PRs que a IA disse "ta ok"  (quem revisa a IA?)
+   [ ] ajuste skill/prompt/regra de merge -&gt; revise o SISTEMA, nao so o codigo</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-amber-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-amber-400">In one sentence:</strong> use AI to aggregate and narrate what needs reviewing—that way you approve faster and also improve the system that produces the code.</p></div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-4-6#q2">
+<p class="font-medium mb-4">Quick recall: to review 20 small fixes from the agent without burning out, Pocock suggests…</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Open and read all 20 full diffs, one by one, on GitHub.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Ask for an HTML "teach skill" that distills common bug patterns, then review the summary.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Auto-merge all 20 without looking at any of them.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 hover:bg-amber-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-amber-900/40 via-dark-800 to-dark-800 rounded-xl border border-amber-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Review = gate + window</strong><span class="text-neutral-400"> — blocks the dangerous stuff AND gives you system observability. Don’t cut the window just for speed.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Move the checkpoint to the right</strong><span class="text-neutral-400"> — approve near the final output so you stop being the bottleneck.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Remove the human where the risk is low</strong><span class="text-neutral-400"> — refactor without changing behavior → auto-merge; security/data/$ → human.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Who reviews the agent?</strong><span class="text-neutral-400"> — sample a few PRs the AI said were “okay”; calibrate the system, not just the code.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-amber-400 mt-1">✓</span><div><strong class="text-white">Walkthrough + TTS</strong><span class="text-neutral-400"> — the AI records a video of the change and narrates it; you review the behavior in seconds.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-amber-400 mb-2">You completed Track 4!</h3><p class="text-neutral-300">Next stop: Track 5 — Ready-to-Copy Solutions. Everything you saw (grill-me, AFK setup, Actions, crons, smooth review) becomes a ready-made recipe you can paste into your project today.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="../trilha5/index.html">Go to Track 5 →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-4-6#q1', { answer: 1, explain: { 0: 'Isso é o oposto — revisar cedo demais te transforma no gargalo.', 1: 'Isso! Empurrar pra direita = aprovar perto da saída, deixando a IA adiantar.', 2: 'Não — o objetivo é mover o checkpoint, não eliminar o review por completo.' } });
+        INEMA.registerCheck('modulo-4-6#q2', { answer: 1, explain: { 0: 'Lento e cansativo — é justamente o que Pocock quer evitar.', 1: 'Isso! Agregar num HTML tipo teach skill destila os padrões e acelera o review.', 2: 'Perigoso — auto-merge cego sem amostrar é o erro do tópico 4 (quem revisa a IA?).' } });
+      }
+    });
+  </script>
+</body>
+</html>

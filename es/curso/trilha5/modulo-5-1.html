@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>5.1 El reinicio en 2 pasos | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'teal' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'teal');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #2dd4bf; cursor: help; font-weight: 600; color: #5eead4; }
+    html:not(.dark) .termo { color: #0f766e; border-color: #0d9488; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13,148,136,0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13,148,136,0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13,148,136,0.18); }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha5/modulo-5-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha5/modulo-5-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha5/modulo-5-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha5/modulo-5-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-5-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-teal-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-teal-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-teal-400" href="index.html">Ruta 5</a><span>/</span>
+<span class="text-teal-400">Módulo 5.1 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MÓDULO 5.1 · SOLUCIONES LISTAS PARA COPIAR</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧹 El reinicio en 2 pasos</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">El consejo final de Matt Pocock, en un formato listo para ejecutar. Tu agente de IA está <strong class="text-teal-400">sobrecargado</strong> de skills, plugins e instrucciones que ni siquiera usas. La solución es radical y liberadora: <strong class="text-teal-400">borra todo</strong>, vuelve al punto de partida, observa al agente sin nada añadido y solo después recupera lo que realmente hace falta. Los comandos reales están aquí, listos para copiar.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~35</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">2</div><div class="text-xs text-neutral-400">Pasos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Práctica</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 5.1" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:5-1" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-teal-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-1">1. Por qué restablecer</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-2">2. Eliminar todo (paso 1)</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-3">3. Observar al agente sin intervención</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-4">4. Reencuadrar con procedures</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-5">5. Traer solo lo que falta</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-6">6. Personalizar para experimentar</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-teal-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-teal-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">La Trilha 1 ya definió el vocabulario básico (modelo, prompt, agente, skill, harness). Aquí, en la Trilha 5, «Soluciones», definimos los términos NUEVOS que aparecen en el reset:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Punto de partida en blanco (estado cero)</strong> — el agente sin NINGUNA configuración adicional: cero skills, cero plugins, cero memoria tuya. Es la IA «de fábrica», tal como viene.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Context bloat (inflación del contexto)</strong> — cuando acumulas tantas skills/instrucciones que la IA gasta su «memoria de trabajo» en cosas que ni siquiera usas. «Everyone bloats up their context window.»</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">CLAUDE.md / AGENTS.md</strong> — archivos de texto donde escribes instrucciones permanentes para el agente (reglas del proyecto, tu estilo). Se cargan en TODAS las conversaciones; por eso pesan.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Servidor MCP</strong> — un «enchufe» externo (Model Context Protocol) que le da herramientas adicionales al agente (leer una base de datos, llamar a una API). Cada uno agrega descripciones al contexto.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Plugin</strong> — un paquete que instala varias skills/comandos de una vez. Es práctico, pero suele traer muchas cosas juntas.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Procedure × Ability</strong> — <em>procedure</em> = tú lo invocas cuando quieres (un comando que llamas). <em>Ability</em> = el modelo decide usarlo por sí solo. Los procedimientos no se filtran al contexto sin que lo pidas; las abilities siempre cuestan espacio de descripción.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Volver a poner capas (re-layer)</strong> — volver a acumular configuración, pero con intención y capa por capa, incorporando solo lo que demostró hacer falta.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">npx skills latest add</strong> — el comando que descarga e instala una skill específica (de un repositorio como el de Matt) en tu máquina, bajo tu control.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🧹 Por qué reiniciar</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> tu auto tiene 40 accesorios colgando: un GPS antiguo, tres soportes para celular, calcomanías, alfombras apiladas. Ni siquiera usas la mitad. El auto se vuelve más pesado y olvidas para qué sirve cada cosa. La solución no es "comprar un accesorio mejor": es <em>vaciar el auto</em> y solo volver a poner lo que realmente usas.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-1-t1-p1">Al cerrar la conversación, Matt Pocock da un consejo que parece contraintuitivo para quienes están acostumbrados a <em>acumular</em> herramientas: <em>"everyone bloats up their context window with too much stuff."</em> Casi todo el mundo satura el <span class="termo" title="La memoria de trabajo del modelo: el texto que puede «ver» de una vez.">context window</span> con demasiadas cosas: decenas de <span class="termo" title="Procedimientos reutilizables instalados en el agente.">skills</span>, <span class="termo" title="Paquetes que instalan varias skills de una vez.">plugins</span>, <span class="termo" title="Plugins externos (Model Context Protocol) que proporcionan herramientas al agente.">Servidores MCP</span> y archivos de instrucciones que nunca abre. El resultado es <span class="termo" title="Cuando la IA consume la memoria de trabajo con una configuración que no usas.">context bloat</span>: el agente se vuelve más lento, más caro y, paradójicamente, <strong>menos inteligente</strong>, porque parte de su atención se pierde administrando lo que apilaste.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t1-p2">La razón es directa: cada skill incluye una <em>descripción</em> que ocupa espacio en el contexto, incluso cuando no la usas en esa tarea (viste esto en el módulo 3.2, "Costo de contexto de la skill"). Si sumas decenas de ellas, la IA empieza cada conversación ya cargada de ruido. El <strong class="text-teal-400">reset de 2 pasos</strong> resuelve esto desde la raíz: en vez de intentar afinar un desorden que creció sin intención, vuelves a cero y reconstruyes con propósito. El <strong>error común</strong> aquí es creer que «más skills = mejor agente» — es al revés: una skill que no usas es un peso muerto que ocupa espacio en tu contexto cada vez.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: a la izquierda, un contexto sobrecargado con muchas skills; a la derecha, un contexto limpio después del reinicio" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v51a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v51a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v51a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v51a-ah" markerheight="10" markerwidth="10" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v51a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<rect fill="#1a0e0e" height="190" rx="18" stroke="#ef4444" stroke-width="2" width="420" x="40" y="30"></rect>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="16" font-weight="600" x="64" y="58">ANTES — inflado</text>
+<g fill="#fecaca" font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="64" y="74"></rect><text text-anchor="middle" x="107" y="91">skill</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="160" y="74"></rect><text text-anchor="middle" x="203" y="91">plugin</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="256" y="74"></rect><text text-anchor="middle" x="299" y="91">MCP</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="352" y="74"></rect><text text-anchor="middle" x="395" y="91">CLAUDE.md</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="64" y="110"></rect><text text-anchor="middle" x="107" y="127">skill</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="160" y="110"></rect><text text-anchor="middle" x="203" y="127">skill</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="256" y="110"></rect><text text-anchor="middle" x="299" y="127">agents.md</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="352" y="110"></rect><text text-anchor="middle" x="395" y="127">plugin</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="64" y="146"></rect><text text-anchor="middle" x="107" y="163">MCP</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="86" x="160" y="146"></rect><text text-anchor="middle" x="203" y="163">skill</text>
+<rect fill="#2a1414" height="26" rx="6" stroke="#ef4444" stroke-width="1.3" width="182" x="256" y="146"></rect><text text-anchor="middle" x="347" y="163">...y 30 más</text>
+</g>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="250" y="200">contexto lleno = lento, costoso, confuso</text>
+<path d="M470,125 L530,125" fill="none" marker-end="url(#v51a-ah)" stroke="#2dd4bf" stroke-width="3"></path>
+<rect fill="#0c1f1c" height="190" rx="18" stroke="#2dd4bf" stroke-width="2" width="420" x="540" y="30"></rect>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="16" font-weight="600" x="564" y="58">DESPUÉS — blank slate</text>
+<g filter="url(#v51a-glow)"><rect fill="url(#v51a-grad)" height="62" rx="14" stroke="#14b8a6" stroke-width="2.5" width="220" x="640" y="100"></rect></g>
+<text fill="#06241f" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="750" y="130">AGENTE PURO</text>
+<text fill="#06241f" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="750" y="150">cero accesorios</text>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="750" y="200">contexto limpio = rápido y claro</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">El reset cambia un contexto abarrotado (rojo) por un agente puro (teal) — y solo entonces reconstruyes con intención.</p>
+</div>
+<img alt="Ilustración conceptual: un espacio de trabajo lleno de herramientas que se limpia hasta quedar ordenado" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-1-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Tratar las skills como trofeos («¡instalé 50!»). Cada una que no usas es un peso que se suma a cada conversación. La señal de madurez no es cuántas tienes, sino cuán pocas y bien elegidas son.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> todo el mundo infla el contexto con demasiadas cosas: restablecerlo a cero es el camino más rápido para tener un agente más inteligente.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🗑️ Eliminar todo (paso 1)</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> antes de reorganizar un armario, sacas TODO y lo dejas vacío. Solo cuando está vacío puedes ver el tamaño real del espacio y decidir, pieza por pieza, qué merece volver.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-1-t2-p1">El paso 1 es literal y radical. En palabras de Pocock: <em>"delete everything — every skill, plugin, MCP server, your CLAUDE.md, agents.md — go back to absolute zero."</em> Borra <strong>cada</strong> skill, <strong>todo</strong> plugin, <strong>todo</strong> Tu servidor MCP <span class="termo" title="Archivo de instrucciones permanentes del proyecto/usuario, que se carga en cada conversación.">CLAUDE.md</span> y su <span class="termo" title="Equivalente a CLAUDE.md para agentes agnósticos.">AGENTS.md</span>. Vuelve al cero absoluto. No es «deshabilitar» ni «limpiar un poco»: es vaciar. La idea es poder ver después al agente sin ninguna de tus capas encima.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t2-p2">Antes de ejecutar, haz <strong>respaldo</strong> (el reset solo es reversible si guardaste los archivos). Por eso el copybox de abajo primero <em>move</em> todo a una carpeta de seguridad en vez de borrarlo definitivamente — así vuelves a cero sin perder nada. En <span class="termo" title="La herramienta de línea de comandos que ejecuta el agente Claude en tu computadora.">Claude Code</span>, las configuraciones viven en <code class="text-teal-300">~/.claude/</code> (skills, plugins, tu <code class="text-teal-300">CLAUDE.md</code>) y los servidores MCP quedan declarados en un archivo de configuración. Con solo mover esas carpetas, el agente queda en un estado inicial limpio.</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">reset-passo-1-blank-slate.sh</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># PASSO 1 — Deletar tudo e voltar ao ZERO absoluto.
+# (move pra um backup datado em vez de apagar — reversível)
+STAMP=$(date +%Y%m%d-%H%M%S)
+BACKUP="$HOME/.claude-backup-$STAMP"
+mkdir -p "$BACKUP"
+
+# 1) skills, plugins e o seu CLAUDE.md global
+mv ~/.claude/skills      "$BACKUP/skills"      2&gt;/dev/null
+mv ~/.claude/plugins     "$BACKUP/plugins"     2&gt;/dev/null
+mv ~/.claude/CLAUDE.md   "$BACKUP/CLAUDE.md"   2&gt;/dev/null
+
+# 2) CLAUDE.md / AGENTS.md do projeto atual
+mv ./CLAUDE.md  "$BACKUP/project-CLAUDE.md"  2&gt;/dev/null
+mv ./AGENTS.md  "$BACKUP/project-AGENTS.md"  2&gt;/dev/null
+
+# 3) remover TODOS os MCP servers (lista e apaga um a um)
+for s in $(claude mcp list 2&gt;/dev/null | awk '{print $1}'); do
+  claude mcp remove "$s" 2&gt;/dev/null
+done
+
+echo "Blank slate pronto. Backup em: $BACKUP"
+echo "Agora abra o agente e OBSERVE-o no modo puro."</pre>
+</div>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Paso 1 del reinicio: las skills, plugins, MCP, CLAUDE.md y AGENTS.md se mueven a una copia de seguridad con fecha, dejando al agente en blank slate (cero absoluto)" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v51b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v51b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v51b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v51b-ah" markerheight="10" markerwidth="10" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v51b-grid)" height="250" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="170" y="40">lo que estaba en ~/.claude/</text>
+<g fill="#bfe6ff" font-family="Inter,sans-serif" font-size="11.5" font-weight="600">
+<rect fill="#0e1b26" height="28" rx="7" stroke="#38bdf8" stroke-width="1.6" width="220" x="60" y="58"></rect><text text-anchor="middle" x="170" y="76">skills</text>
+<rect fill="#0e1b26" height="28" rx="7" stroke="#38bdf8" stroke-width="1.6" width="220" x="60" y="92"></rect><text text-anchor="middle" x="170" y="110">plugins</text>
+<rect fill="#0e1b26" height="28" rx="7" stroke="#38bdf8" stroke-width="1.6" width="220" x="60" y="126"></rect><text text-anchor="middle" x="170" y="144">Servidores MCP</text>
+<rect fill="#0e1b26" height="28" rx="7" stroke="#38bdf8" stroke-width="1.6" width="220" x="60" y="160"></rect><text text-anchor="middle" x="170" y="178">CLAUDE.md</text>
+<rect fill="#0e1b26" height="28" rx="7" stroke="#38bdf8" stroke-width="1.6" width="220" x="60" y="194"></rect><text text-anchor="middle" x="170" y="212">AGENTS.md</text>
+</g>
+<path d="M290,140 L380,140" fill="none" marker-end="url(#v51b-ah)" stroke="#2dd4bf" stroke-width="3"></path>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="335" y="128">mv</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="10.5" text-anchor="middle" x="335" y="160">(mueve, no borra)</text>
+<rect fill="#0c1f1c" height="168" rx="14" stroke="#14b8a6" stroke-dasharray="6 5" stroke-width="2" width="250" x="400" y="56"></rect>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="525" y="86">COPIA DE SEGURIDAD fechada</text>
+<text fill="#9befdf" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="525" y="108">.claude-backup-AAAAMMDD</text>
+<text fill="#9befdf" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="525" y="150">red de seguridad:</text>
+<text fill="#9befdf" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="525" y="170">reversible en cualquier momento</text>
+<path d="M660,140 L740,140" fill="none" marker-end="url(#v51b-ah)" stroke="#2dd4bf" stroke-width="3"></path>
+<g filter="url(#v51b-glow)"><rect fill="url(#v51b-grad)" height="108" rx="16" stroke="#14b8a6" stroke-width="2.5" width="200" x="760" y="86"></rect></g>
+<text fill="#06241f" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="860" y="130">PUNTO DE PARTIDA EN BLANCO</text>
+<text fill="#06241f" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="860" y="152">cero absoluto</text>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="860" y="220">el agente "de fábrica"</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Paso 1: todo sale de <code>~/.claude/</code> a un backup con fecha (reversible), y el agente queda en cero absoluto.</p>
+</div>
+<img alt="Ilustración: un terminal que borra las capas de configuración de un agente y lo deja limpio" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-1-2.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: el reset de João</h3>
+<p class="text-neutral-300 text-sm mb-3">João tenía 28 skills instaladas, 4 servidores MCP y un CLAUDE.md de 600 líneas acumulado durante meses. El agente estaba lento y a veces "olvidaba" el pedido a mitad de camino.</p>
+<ol class="list-decimal list-inside text-xs text-neutral-300 space-y-1">
+<li>Se ejecutó el script de arriba → todo fue a <code class="text-blue-300">~/.claude-backup-20260619-201500</code>.</li>
+<li>Se abrió el agente: el contexto inicial pasó de ~40k tokens de configuración a prácticamente cero.</li>
+<li>Pidió una tarea sencilla y observó al agente <em>puro</em> resolviendo (siguiente tema).</li>
+<li>Resultado: respuestas más rápidas y directas — y se dio cuenta de que solo echaba de menos 3 skills, no 28.</li>
+</ol>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-teal-400">Profundiza (opcional): ¿por qué mover y no borrar?</summary>
+<p class="text-sm text-neutral-300 mt-3">Mover (<code>mv</code> a un backup) produce el mismo efecto de «volver a cero»: el agente ya no ve nada, pero conserva una red de seguridad. Si en el paso 2 descubres que echabas de menos una skill específica, está intacta en el backup y puedes restaurarla en segundos. Borrar definitivamente (<code>rm -rf</code>) solo tiene sentido después de que ya reconstruiste todo y tienes la certeza de que no quieres nada más de lo anterior.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> vacía a propósito: mueve skills, plugins, MCP, CLAUDE.md y agents.md a un respaldo y vuelve al punto cero absoluto.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">👀 Observar al agente sin filtros</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> antes de darle muletas a alguien, observas cómo camina por su cuenta. Tal vez ya camine bien y las muletas solo le estorben. Solo lo descubres después de observarlo sin ayuda.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-1-t3-p1">Con el blank slate listo, llega la parte que casi todos se saltan: <strong>parar y observar</strong>. Pocock es explícito: después de borrar, <em>"observa al agente"</em>: mira qué hace el agente en el modo básico. Dale tareas reales de tu día a día y <strong>mira</strong> cómo se las arregla sin ninguna de tus capas. El objetivo no es juzgar rápido; es descubrir, con honestidad, de qué es capaz por sí solo.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t3-p2">¿Por qué esto importa tanto? Porque los modelos de hoy son <strong>mucho</strong> más capaces que cuando instalaste la mitad de tus skills. Varias de ellas existen para «arreglar» comportamientos que el modelo actual ya resuelve por sí solo, así que solo están añadiendo ruido. Al observar al agente puro, generas una <strong>lista honesta de brechas</strong>: «aquí se trabó», «aquí inventó un patrón que no quiero», «aquí estuvo perfecto». Esta lista es lo que guiará el paso 2. El <strong>error común</strong> es hacer reset y, alarmado, volver a poner todo como estaba durante la primera media hora: nunca llegas a ver al agente por sí solo y pierdes todo el aprendizaje.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Ciclo de observación: darle una tarea al agente sin asistencia, observar, anotar la brecha" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<pattern height="32" id="v51c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v51c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v51c-ah" markerheight="10" markerwidth="10" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v51c-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="70" rx="14" stroke="#38bdf8" stroke-width="2" width="220" x="50" y="80"></rect>
+<text fill="#bfe6ff" font-size="15" font-weight="600" text-anchor="middle" x="160" y="110">1 · dar una tarea real</text>
+<text fill="#9ad6ff" font-size="12" text-anchor="middle" x="160" y="132">al agente PURO</text>
+<g filter="url(#v51c-glow)"><rect fill="#0c1f1c" height="70" rx="14" stroke="#2dd4bf" stroke-width="2.5" width="220" x="390" y="80"></rect></g>
+<text fill="#5eead4" font-size="15" font-weight="600" text-anchor="middle" x="500" y="110">2 · observar</text>
+<text fill="#9befdf" font-size="12" text-anchor="middle" x="500" y="132">sin interrumpir</text>
+<rect fill="#0e1b26" height="70" rx="14" stroke="#38bdf8" stroke-width="2" width="220" x="730" y="80"></rect>
+<text fill="#bfe6ff" font-size="15" font-weight="600" text-anchor="middle" x="840" y="110">3 · anotar la brecha</text>
+<text fill="#9ad6ff" font-size="12" text-anchor="middle" x="840" y="132">"¿qué faltó?"</text>
+<path d="M270,115 L385,115" fill="none" marker-end="url(#v51c-ah)" stroke="#2dd4bf" stroke-width="2.2"></path>
+<path d="M610,115 L725,115" fill="none" marker-end="url(#v51c-ah)" stroke="#2dd4bf" stroke-width="2.2"></path>
+<text fill="#9ca3af" font-size="12.5" text-anchor="middle" x="500" y="200">La laguna anotada se convierte en la lista de lo que hay que recopilar en el paso 2.</text>
+</g>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-1#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿cuál es el objetivo de observar al agente puro justo después del reset?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Demostrar que el agente es inútil sin skills, para justificar reinstalar todo.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Descubrir qué puede hacer ya por su cuenta y generar una lista honesta de brechas reales.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Acelerar para volver a incluir todas las skills antiguas lo antes posible.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> mira cómo trabaja el agente por sí solo; ya hace más de lo que imaginas, y lo que falta se convierte en tu lista.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🧱 Reencaminar con procedures</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> al reorganizar el armario vacío, no vuelves a meter todo de golpe. Pones estantes (estructura) y guardas una pieza a la vez, preguntándote «¿uso esto todas las semanas?». Lo que entra, entra etiquetado y con su lugar.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-1-t4-p1">El paso 2 es reconstruir — pero con una regla. Pocock especifica: al recuperar cosas, prefiere <strong class="text-teal-400">procedimientos</strong>, no <strong>abilities</strong>. Recuerda la distinción (módulo 3.1): una <span class="termo" title="Comando que TÚ invocas cuando quieres; no consume contexto por sí solo.">procedure</span> es algo que invocas a propósito (como un comando <code class="text-teal-300">/grill-me</code>); mientras que una <span class="termo" title="Capacidad que el modelo decide usar por sí solo; su descripción siempre ocupa contexto.">ability</span> es algo que el modelo decide invocar por su cuenta y, por eso, su descripción <em>siempre</em> carga en el contexto. Procedures son «a demanda»: pesan solo cuando las activas. Es exactamente lo opuesto a la sobrecarga que motivó el reinicio.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t4-p2">Pocock añade un detalle importante: instálalo de manera que puedas <strong>personalizar y experimentar</strong>. No es solo «reinstalar desde el mismo lugar»: es traer cada pieza sabiendo por qué existe y poder modificarla. El <strong>porqué</strong>: así mantienes el control del harness (el tema de todo el curso) en vez de depender de un paquete opaco. El <strong>error común</strong> aquí es, con prisa, instalar un <span class="termo" title="Paquete que instala un montón de skills/abilities de una vez.">plugin</span> gigante que vuelca 30 abilities: acabas de recrear el bloat que habías eliminado. Capa por capa, procedure por procedure.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Procedure pesa en el contexto solo cuando se invoca; ability pesa siempre" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v51d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v51d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v51d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v51d-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g filter="url(#v51d-glow)"><rect fill="#0c1f1c" height="160" rx="16" stroke="url(#v51d-grad)" stroke-width="2.5" width="400" x="60" y="40"></rect></g>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="260" y="72">PROCEDURE ✓ preferible</text>
+<text fill="#9befdf" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="260" y="104">tú invocas: /grill-me</text>
+<text fill="#9befdf" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="260" y="132">costo de contexto solo al usarla</text>
+<text fill="#5eead4" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="260" y="170">peso en reposo: ~0</text>
+<rect fill="#1a1410" height="160" rx="16" stroke="#f59e0b" stroke-width="2" width="400" x="540" y="40"></rect>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="740" y="72">ABILITY ⚠ cuidado</text>
+<text fill="#fde68a" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="740" y="104">el modelo decide usar</text>
+<text fill="#fde68a" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="740" y="132">descripción siempre carga</text>
+<text fill="#fcd34d" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="740" y="170">peso en reposo: constante</text>
+</svg>
+</div>
+<img alt="Ilustración: capas que se vuelven a colocar cuidadosamente sobre un agente limpio, una a la vez" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-1-3.png"/>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-teal-900/20 rounded-xl border border-teal-500/30 p-6"><h4 class="font-bold text-teal-400 mb-4">✓ Hacer el recamado correctamente</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Una capa a la vez.</li><li>• Preferir procedures (tú los invocas).</li><li>• Instalar de forma personalizable.</li><li>• Solo lo que la brecha demostró que faltaba.</li></ul></div>
+<div class="bg-red-900/20 rounded-xl border border-red-500/30 p-6"><h4 class="font-bold text-red-400 mb-4">✗ Hacer el recamado incorrectamente</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Volcar un plugin gigante.</li><li>• Llenarlo de abilities «por si acaso».</li><li>• Reinstalar todo desde el respaldo de una vez.</li><li>• No saber por qué está cada pieza ahí.</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> reconstruye con procedures (que tú invocas) y de forma personalizable — una capa a la vez, nunca un plugin gigante.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🎯 Traer solo lo que falta</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> de vuelta del viaje, deshaces la maleta solo cuando necesitas algo. Al tercer día todavía no has usado el abrigo, así que quizá ni lo necesitabas. Solo recuperas lo que te exigió la vida real.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-1-t5-p1">Esta es la regla de oro del paso 2: <strong>trae de vuelta solo lo que eches de menos</strong>. Pocock da un ejemplo concreto: podrías redescubrir que quieres la skill de <span class="termo" title="Skill del paquete 'superpowers' que ayuda a estructurar ideas antes de programar.">brainstorming de superpowers</span>, así que instala <em>esta</em>, y solo esa. Nada de «voy a volver a ponerlo todo porque algún día podría ser útil». Si surgió una carencia real mientras observabas al agente sin intervenir (tema 3), merece una pieza nueva; si no surgió, no la merece.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t5-p2">En la práctica, instalas cada skill que te haga falta con el comando del repositorio de skills (el de Matt, por ejemplo). El flujo completo de Pocock conecta con el resto de la Trilha: después de reconstruir un harness compacto, <em>"encuentra problemas → encuentra soluciones → delega la implementación a un agente AFK"</em> — y resume el AFK así: <em>"AFK is just incredible — takes a bit of setup, but then it goes crazy."</em> Es decir: el reset no es un fin en sí mismo; es lo que deja tu harness lo bastante limpio para que puedas operar a alto nivel. Copia el paso 2 de abajo:</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">reset-passo-2-recamadar.sh</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># PASSO 2 — Recamadar: trazer de volta SÓ o que você sentiu falta.
+# Regra: uma de cada vez, preferindo procedures, instaladas de
+# um jeito que você possa CUSTOMIZAR/experimentar.
+
+# Você observou o agente puro e sentiu falta de "brainstorming"?
+# Então traga SÓ ela (não o pacote inteiro):
+npx skills latest add brainstorming
+
+# Sentiu falta de mais uma? Adicione conforme a lacuna aparecer:
+npx skills latest add grill-me
+# npx skills latest add &lt;outra-skill-que-fez-falta&gt;
+
+# Confira o que está instalado agora (deve ser uma lista curta):
+ls ~/.claude/skills
+
+# DICA: prefira instalar como PROCEDURE (você invoca, ex.: /grill-me)
+# em vez de ability (o modelo invoca sozinho e a descrição pesa sempre).
+# E NÃO reinstale o backup inteiro — ele continua em ~/.claude-backup-*
+# só como rede de segurança.</pre>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> vuelve a instalar solo lo que la observación demostró que hace falta — una skill a la vez, mediante <code>npx skills latest add</code>.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-5-1#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🧪 Personalizar para experimentar</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> una receta que descargaste no es una ley: es un punto de partida. La pruebas, ajustas la sal, cambias un ingrediente. La receta se convierte en <em>tu</em>. Las skills son iguales: instálalas, pero ajústalas hasta que sean a tu manera.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-1-t6-p1">La última pieza del consejo es la que más gente olvida: instala las skills de una manera <strong class="text-teal-400">personalizable</strong>, para poder experimentar. Pocock lo recalca a propósito: una skill externa es una buena <em>comienzo</em>, no la palabra final. Cuando instalas mediante <code class="text-teal-300">npx skills latest add</code>, el archivo de la skill queda en tu máquina, en <code class="text-teal-300">~/.claude/skills/</code>, y puedes <strong>abrir y editar</strong>: ajustar el tono, quitar lo que no sirve para tu proyecto, adaptarlo a tu flujo. Así el harness se convierte en <em>tu</em> en lugar de una copia genérica. Mantén el ciclo: ¿lo instalaste → lo usaste → no te sirvió? Elimínalo; ¿te sirvió, pero le faltó algo? Edítalo. El <strong>error común</strong> es tratar una skill instalada como intocable y volver a acumular: el reset solo funciona si sigues podando. Copia el checklist de abajo y pégalo al comienzo de tu próximo reset:</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">checklist-reset-2-passos.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">RESET DE 2 PASSOS — checklist (o conselho final do Pocock)
+
+PASSO 1 — DELETAR TUDO (blank slate):
+[ ] backup das skills, plugins, MCP, CLAUDE.md e AGENTS.md
+[ ] volte ao ZERO absoluto (mova tudo pra fora)
+[ ] abra o agente e OBSERVE-o no modo puro com tarefas reais
+[ ] anote as LACUNAS de verdade (não as imaginárias)
+
+PASSO 2 — RECAMADAR COM INTENÇÃO:
+[ ] traga de volta SÓ o que sentiu falta
+[ ] prefira PROCEDURES (você invoca) a abilities (o modelo invoca)
+[ ] instale de jeito CUSTOMIZÁVEL: npx skills latest add &lt;skill&gt;
+[ ] abra a skill e ADAPTE ao seu projeto/estilo
+[ ] uma camada por vez — nunca um plugin gigante
+
+DEPOIS: ache problema -&gt; ache solução -&gt; delegue a um agente AFK.</pre>
+</div>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Ciclo de mejora continua: eliminar, observar, volver a cubrir con procedures, personalizar, repetir" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs><pattern height="32" id="v51f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern><marker id="v51f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker><filter height="180%" id="v51f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v51f-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="150" x="30" y="70"></rect><text fill="#bfe6ff" text-anchor="middle" x="105" y="95">eliminar</text>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="150" x="240" y="70"></rect><text fill="#bfe6ff" text-anchor="middle" x="315" y="95">observar</text>
+<rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="160" x="450" y="70"></rect><text fill="#bfe6ff" text-anchor="middle" x="530" y="95">recamadar</text>
+<g filter="url(#v51f-glow)"><rect fill="#0c1f1c" height="40" rx="9" stroke="#2dd4bf" stroke-width="2.5" width="160" x="670" y="70"></rect></g><text fill="#5eead4" text-anchor="middle" x="750" y="95">personalizar</text>
+</g>
+<g fill="none" opacity="0.7" stroke="#2dd4bf" stroke-width="1.9">
+<path d="M180,90 L235,90" marker-end="url(#v51f-ah)"></path>
+<path d="M390,90 L445,90" marker-end="url(#v51f-ah)"></path>
+<path d="M610,90 L665,90" marker-end="url(#v51f-ah)"></path>
+<path d="M750,70 C750,30 105,30 105,68" marker-end="url(#v51f-ah)"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="430" y="22">…y repite cuando vuelva a crecer (higiene del contexto)</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-1#q2">
+<p class="font-medium mb-4">Recuperación rápida: al recopilar en el paso 2, ¿qué recomienda priorizar Pocock?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Abilities, porque el modelo decide todo por sí solo y da menos trabajo.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Reinstalar todo el backup de una vez para no perder nada.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Procedures, instaladas de forma personalizable, que traen solo lo que hizo falta.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> una skill instalada es un punto de partida: ábrela, adáptala y sigue podándola; el reset es un hábito, no un evento único.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Todo el mundo infla el contexto</strong><span class="text-neutral-400"> — demasiadas skills/plugins/MCP hacen que el agente sea lento, costoso y confuso.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Paso 1: borrar todo</strong><span class="text-neutral-400"> — skills, plugins, MCP, CLAUDE.md, agents.md → cero absoluto, y observa al agente sin nada más.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Paso 2: volver a cargar con procedures</strong><span class="text-neutral-400"> — incorpora solo lo que hizo falta, prioriza procedures, instala de forma personalizable.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Es un hábito, no un evento</strong><span class="text-neutral-400"> — adapta cada skill y repite el reset cada vez que vuelva a hincharse.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-teal-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">5.2 — grill-me + 10 decisiones: la skill que te entrevista y alinea todo antes de programar.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="modulo-5-2.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-5-1#q1', { answer: 1, explain: { 0: 'Não — o objetivo não é depreciar o agente, é entender o que ele já faz.', 1: 'Isso! Observar gera a lista honesta de lacunas que guia o passo 2.', 2: 'Esse é justamente o erro — você perde o aprendizado de ver o agente puro.' } });
+        INEMA.registerCheck('modulo-5-1#q2', { answer: 2, explain: { 0: 'Abilities pesam no contexto sempre — é o que motivou o reset.', 1: 'Reinstalar tudo recria o bloat que você acabou de apagar.', 2: 'Exato! Procedures, customizáveis, só o que fez falta — uma camada por vez.' } });
+      }
+    });
+  </script>
+</body>
+</html>

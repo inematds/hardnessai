@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>2.6 Tú tienes el control del producto | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'blue' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'blue');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #60a5fa; cursor: help; font-weight: 600; color: #93c5fd; }
+    html:not(.dark) .termo { color: #1d4ed8; border-color: #2563eb; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-emerald-400 { color: #047857; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha2/modulo-2-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha2/modulo-2-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha2/modulo-2-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/modulo-2-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-2-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-blue-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-blue-400" href="index.html">Ruta 2</a><span>/</span>
+<span class="text-blue-400">Módulo 2.6 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">MÓDULO 2.6 · "MODO ENSEÑANZA"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧭 Tú tienes el control del producto</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">La IA acelera la <strong class="text-blue-400">ejecución</strong> — pero no tiene la <strong class="text-blue-400">visión</strong>. Tú decides qué construir, qué funcionalidades incluir, qué descartar y qué problema del cliente resolver. Aquí aprendes por qué el producto sigue siendo humano y cómo dirigir la IA en vez de seguir lo que genera.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~40</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Cero</div><div class="text-xs text-neutral-400">Prerequisito</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Producto</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 2.6" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:2-6" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-1">1. La IA es mala para las ideas originales</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-2">2. Tú eliges las funciones</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-3">3. Pregunta qué eliminar</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-4">4. El product design no cambió</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-5">5. Hablar con clientes</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10" href="#topico-6">6. Construir un negocio con IA</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-blue-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-blue-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">Esta ruta trata sobre las <strong>habilidades humanas</strong> que siguen siendo solo tuyas. Aquí están los términos NUEVOS de producto que usaremos: fíjalos antes de continuar:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Producto</strong> — lo que entregas para que alguien lo use (una app, un sitio, una herramienta). No es el código en sí; es la <em>solución</em> que resuelve un problema real.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Feature (funcionalidad)</strong> — cada capacidad de tu producto (p. ej., «iniciar sesión», «exportar PDF»). Toda funcionalidad tiene un costo: más código, más mantenimiento y más cosas que pueden confundir al usuario.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Visión del producto</strong> — saber <em>lo que</em> tú estás construyendo y <em>por qué</em>. Es la brújula; sin ella, solo apilas funcionalidades.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Diseño de producto</strong> — el oficio de decidir qué entra, qué sale y cómo vive el usuario la experiencia. Es diseño de decisiones, no solo de pantallas.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">UX (experiencia del usuario)</strong> — cómo es, en la práctica, usar tu producto: fácil o confuso, rápido o lento. Una buena UX en general es la <em>más simple</em>.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Prototipo</strong> — una versión básica y rápida del producto, hecha para probar una idea con personas reales antes de invertir mucho.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Ejecución</strong> — el trabajo de convertir la idea en algo que funciona (escribir el código, armar las pantallas). Aquí es donde brilla la IA.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-blue-400">Financiado por capital de riesgo</strong> — empresa llena de dinero de inversionistas (venture capital) que suele inflar el producto con mil features. Pocock lo usa como lo que <em>no</em> imitar.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">💡 La IA es mala para las ideas originales</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la IA es un músico de estudio fenomenal — toca cualquier partitura que le pongas delante, en el tono correcto y sin equivocarse. Pero pídele que <em>componer la nueva música</em> y sale algo que ya existe, remezclado. La melodía inédita todavía viene de ti.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-6-t1-p1">Circula un mito peligroso: "la IA tendrá las ideas y yo solo apretaré el botón". Matt Pocock lo descarta de plano: la IA es <strong>notoriamente malo para las ideas originales</strong>. Tiene sentido por lo que es: un <span class="termo" title="Large Language Model — modelo de lenguaje grande, entrenado para predecir el texto más probable.">modelo de lenguaje</span> aprende a predecir qué es <em>más probable</em> que viene después, con base en todo lo que ya se escribió. Es decir, es una máquina de <em>media</em> del pasado. Por diseño, se inclina por lo convencional, por lo que ya existe, no por el salto inédito que define un producto nuevo.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t1-p2">Dónde la IA <em>de hecho</em> da ventaja, según Pocock, es en la <span class="termo" title="El trabajo de transformar la idea en algo que funcione: escribir el código, montar las pantallas.">ejecución</span> — no en tener la idea correcta. La implementa rápido, escribe el código y arma la pantalla. Pero decidir <strong>cuál</strong> el producto vale la pena, <strong>cuál</strong> el problema importa, cuál es el ángulo diferente: eso sigue siendo trabajo humano. Por eso lo resume así: <em>"necesitas tener la VISIÓN y saber por qué estás construyendo"</em>. O <strong class="text-red-400">error común</strong> es pedirle a la IA que "invente una app exitosa" y aceptar el primer cliché que te devuelve: acabas de delegar justamente la parte que era tu ventaja. La IA es el motor de ejecución; la dirección es tuya.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: la IA recombina el pasado y converge hacia el promedio; la visión humana apunta a un salto fuera de la nube de lo ya existente" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v26a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v26a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v26a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v26a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#v26a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" x="64" y="44">La IA es un promedio de lo que ya existe: converge hacia el centro.</text>
+<g fill="#38bdf8" opacity="0.7"><circle cx="220" cy="120" r="5"></circle><circle cx="280" cy="160" r="5"></circle><circle cx="330" cy="100" r="5"></circle><circle cx="180" cy="170" r="5"></circle><circle cx="360" cy="170" r="5"></circle><circle cx="260" cy="90" r="5"></circle><circle cx="310" cy="200" r="5"></circle><circle cx="200" cy="210" r="5"></circle></g>
+<circle cx="280" cy="150" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="280" y="146">IA</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="9.5" text-anchor="middle" x="280" y="162">el promedio</text>
+<path d="M310,150 C480,150 560,110 660,108" fill="none" marker-end="url(#v26a-ah)" opacity="0.7" stroke="#60a5fa" stroke-dasharray="6 5" stroke-width="2"></path>
+<g filter="url(#v26a-glow)"><rect fill="url(#v26a-grad)" height="64" rx="16" stroke="#3b82f6" stroke-width="2.5" width="280" x="668" y="78"></rect></g>
+<text fill="#0a1b38" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="808" y="106">VISIÓN HUMANA</text>
+<text fill="#0a1b38" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="808" y="126">el salto inédito · tú</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="808" y="186">La idea original surge aquí, y la IA la ejecuta.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">La IA tiende a lo probable (el centro); lo nuevo nace fuera de la nube, contigo.</p>
+</div>
+<img alt="Ilustración conceptual: una figura humana que sostiene una chispa de una idea frente a una red de IA que solo recombina patrones existentes" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-6-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Tratar a la IA como «fundador de una startup»: pedirle la idea, el nombre, el público, las funcionalidades… todo de una vez. Recibes un montón genérico y pierdes lo único que te diferenciaba: tu visión. Usa la IA para <em>ejecutar</em> tu idea, no para tener ideas por ti.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la IA ejecuta tu idea rápidamente, pero la idea original todavía tiene que ser tuya.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-blue-400">Profundiza (opcional): ¿por qué un LLM converge hacia lo convencional?</summary>
+<p class="text-sm text-neutral-300 mt-3">Un modelo de lenguaje se entrena para predecir el siguiente fragmento de texto más probable dado todo lo anterior. «Más probable» = más frecuente en los datos de entrenamiento = más convencional. Por eso, sin una orientación firme de tu parte, su respuesta predeterminada tiende a lo común. Puedes empujarlo a salir de ahí con un prompt muy específico y contundente, pero la opinión (la visión) tiene que venir de ti.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🎯 Tú eliges las features</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un chef que acepta TODO ingrediente que aparece en la cocina termina con un plato confuso. Un buen chef elige pocos ingredientes adecuados y descarta el resto. Cada feature es un ingrediente — y tú eres el chef, no el encargado de almacén.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-6-t2-p1">La frase de Pocock es directa: <strong>"TÚ eliges las funciones"</strong>. Parece obvio, pero con la IA cambia la tentación. Antes, agregar una <span class="termo" title="Cada capacidad del producto; tiene un costo de código, mantenimiento y confusión para el usuario.">feature</span> costaba días de trabajo, así que lo pensabas dos veces. Ahora la IA construye cualquier feature en minutos, y entonces el instinto se vuelve "si es barato, ponlo todo". Esa es exactamente la trampa. El costo de una feature nunca fue solo escribirla: es mantenerla, probarla y, sobre todo, la <strong>confusión</strong> que agrega para el usuario.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t2-p2">Pocock da el contraejemplo concreto: no te conviertas en <em>"una app financiada por VC con mil funciones"</em>. Empresas repletas de dinero de inversionistas (<span class="termo" title="Financiada por capital de riesgo; suele inflar el producto con mil features.">Financiado por capital de riesgo</span>) suelen acumular funcionalidad tras funcionalidad hasta que nadie entiende para qué sirve el producto. Como la IA abarata la construcción, cualquiera cae en ese agujero si no tiene <span class="termo" title="Saber qué estás construyendo y por qué: la brújula del producto.">visión de producto</span>. Elegir una feature es, en realidad, elegir qué <em>no</em> hacer. La IA acepta construirlo todo; te corresponde decir "estas tres, y solo estas".</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A la izquierda, un producto inflado con mil funciones confusas; a la derecha, un producto sencillo con tres funciones elegidas" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v26b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="v26b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v26b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v26b-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#2a0e12" height="160" rx="16" stroke="#f87171" stroke-width="2" width="380" x="40" y="40"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="60" y="68">App inflada (financiada por capital de riesgo)</text>
+<g fill="#7f1d1d" stroke="#f87171" stroke-width="1.2"><rect height="22" rx="5" width="60" x="60" y="84"></rect><rect height="22" rx="5" width="60" x="128" y="84"></rect><rect height="22" rx="5" width="60" x="196" y="84"></rect><rect height="22" rx="5" width="60" x="264" y="84"></rect><rect height="22" rx="5" width="60" x="60" y="114"></rect><rect height="22" rx="5" width="60" x="128" y="114"></rect><rect height="22" rx="5" width="60" x="196" y="114"></rect><rect height="22" rx="5" width="60" x="264" y="114"></rect><rect height="22" rx="5" width="60" x="60" y="144"></rect><rect height="22" rx="5" width="60" x="128" y="144"></rect><rect height="22" rx="5" width="60" x="196" y="144"></rect><rect height="22" rx="5" width="60" x="264" y="144"></rect></g>
+<text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="230" y="186">mil funciones → nadie entiende</text>
+<rect fill="#0e1622" height="160" rx="16" stroke="#60a5fa" stroke-width="2" width="380" x="580" y="40"></rect>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="15" font-weight="600" x="600" y="68">App con visión (tú eliges)</text>
+<g filter="url(#v26b-glow)"><rect fill="url(#v26b-grad)" height="32" rx="7" stroke="#3b82f6" stroke-width="2" width="100" x="600" y="86"></rect><rect fill="url(#v26b-grad)" height="32" rx="7" stroke="#3b82f6" stroke-width="2" width="100" x="600" y="124"></rect><rect fill="url(#v26b-grad)" height="22" rx="7" stroke="#3b82f6" stroke-width="2" width="100" x="600" y="162"></rect></g>
+<text fill="#0a1b38" font-family="Inter,sans-serif" font-size="12" font-weight="700" text-anchor="middle" x="650" y="107">core 1</text>
+<text fill="#0a1b38" font-family="Inter,sans-serif" font-size="12" font-weight="700" text-anchor="middle" x="650" y="145">core 2</text>
+<text fill="#0a1b38" font-family="Inter,sans-serif" font-size="11" font-weight="700" text-anchor="middle" x="650" y="178">core 3</text>
+<text fill="#9fc8ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="820" y="130">pocas, acertadas</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="820" y="150">claro para qué sirve</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="218">La IA construye ambos con la misma facilidad. La elección es tu trabajo.</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-6#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿cómo cambia el juego de las features la IA barata?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Como construir se volvió barato, debería agregar la mayor cantidad posible de funciones.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">El costo de construir bajó, pero el costo de la confusión y el mantenimiento sigue ahí: elegir qué NO hacer se volvió más importante.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">La IA empieza a elegir las funciones mejor que tú.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> con la IA, decidir qué NO construir se convirtió en el trabajo más valioso, y es tuyo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">✂️ Pregunta qué eliminar</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un escultor no pregunta «¿qué piedra agrego?». Quita piedra hasta que aparece la estatua. El mejor producto es así: lo que tú <em>eliminar</em> revela la forma. Apunta el cincel de la IA hacia eso.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-6-t3-p1">Aquí está el consejo más práctico y contraintuitivo del módulo. La mayoría usa la IA así: «qué puedo <em>agregar</em> en mi app?". Pocock da vuelta la pregunta: <em>"You should be asking AI what to REMOVE from your app, how to make it simpler, how to improve UX."</em> Es decir: pregúntale a la IA qué <strong>sacar</strong>, como <strong>simplificar</strong>, cómo mejorar la <span class="termo" title="Experiencia de usuario: cómo es usar el producto en la práctica. En general, la mejor UX es la más sencilla.">UX</span>. La IA es excelente en ese papel porque ve todo el código de una vez y señala superposiciones, pantallas inútiles y flujos torcidos que ya ni notas.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t3-p2">Fíjate en la inversión de roles. Agregar features es donde la IA sería peligrosa (inventa cosas genéricas, recuerda el tema 1). Pero <strong>eliminar y simplificar</strong> es donde se vuelve tu aliada, porque tú todavía decides el corte final y ella solo te da las candidatas. Tú mantienes la <span class="termo" title="Saber qué estás construyendo y por qué: la brújula del producto.">visión</span>; ella hace la limpieza. El <strong class="text-red-400">error común</strong> es solo hacer crecer la app sin podarla nunca: se convierte en ese software que hace de todo y nada bien. Convierte "preguntar qué quitar" en un hábito recurrente de tu flujo de trabajo.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Dos preguntas: «¿qué agregar?», que lleva a una app inflada y roja, frente a «¿qué quitar?», que lleva a una app ligera y azul brillante" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs><pattern height="32" id="v26c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><filter height="180%" id="v26c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><marker id="v26c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker><marker id="v26c-ahr" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker></defs>
+<rect fill="url(#v26c-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#1a1018" height="68" rx="12" stroke="#6b7280" stroke-width="2" width="230" x="40" y="70"></rect>
+<text fill="#d1d5db" font-size="15" font-weight="600" text-anchor="middle" x="155" y="100">"¿qué agregar?"</text>
+<text fill="#9ca3af" font-size="12" text-anchor="middle" x="155" y="122">la pregunta estándar</text>
+<path d="M270,86 C360,86 380,70 460,68" fill="none" marker-end="url(#v26c-ahr)" opacity="0.7" stroke="#f87171" stroke-width="2"></path>
+<rect fill="#2a0e12" height="48" rx="10" stroke="#f87171" stroke-width="2" width="170" x="470" y="44"></rect>
+<text fill="#fca5a5" font-size="13" font-weight="600" text-anchor="middle" x="555" y="73">app inflada</text>
+<path d="M270,122 C360,122 380,150 460,152" fill="none" marker-end="url(#v26c-ah)" opacity="0.8" stroke="#60a5fa" stroke-width="2"></path>
+<g filter="url(#v26c-glow)"><rect fill="#0e1622" height="48" rx="10" stroke="#60a5fa" stroke-width="2.5" width="170" x="470" y="128"></rect></g>
+<text fill="#93c5fd" font-size="13" font-weight="700" text-anchor="middle" x="555" y="157">app ligera · buena UX</text>
+<rect fill="#0e1622" height="68" rx="12" stroke="#60a5fa" stroke-width="2.5" width="260" x="700" y="70"></rect>
+<text fill="#60a5fa" font-size="15" font-weight="600" text-anchor="middle" x="830" y="100">"¿qué quitar?"</text>
+<text fill="#9fc8ff" font-size="12" text-anchor="middle" x="830" y="122">la pregunta de Pocock</text>
+</g>
+</svg>
+</div>
+<img alt="Ilustración: una mano que guía el cincel de la IA para esculpir y quitar bloques de un producto, hasta dejar una forma limpia y sencilla" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-6-2.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: la app de notas que crecía demasiado</h3>
+<p class="text-neutral-300 text-sm mb-3">Hiciste una app de notas con IA. En dos semanas ya tenía: notas, etiquetas, carpetas, recordatorios, kanban, gráfico de productividad, chat con IA, tema personalizable y exportación a 5 formatos. Nadie entendía ya la pantalla de inicio. En vez de pedir "agrega búsqueda avanzada", lo invertiste:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-dark-900/50 border border-dark-600 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">El prompt</p><p class="text-xs text-neutral-300"><em>"Mira mi app de notas. Enumera 5 funciones que debería ELIMINAR para simplificarla, ordenadas según cuánto confunden al usuario. Para cada una, di qué gana la UX sin ella."</em></p></div>
+<div class="bg-dark-900/50 border border-dark-600 rounded-lg p-4"><p class="text-blue-400 font-semibold text-sm mb-1">El resultado</p><p class="text-xs text-neutral-300">La IA señaló que el kanban, el gráfico y 3 de los formatos eran ruido. Eliminaste 4 de los 5 (conservaste el gráfico, era tu diferenciador). Una app más sencilla, más rápida y más clara — y la VISIÓN siguió siendo tuya: tú tomaste la decisión final sobre qué eliminar.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> pregúntale a la IA qué ELIMINAR, no qué agregar, y decide tú.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">📐 El diseño de producto no cambió</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> inventaron el taladro eléctrico y el atornillador automático, pero las reglas para construir una casa que no se derrumbe siguen siendo las mismas. Las herramientas se volvieron rápidas; la arquitectura, no.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-6-t4-p1">Existe la idea de que "la IA lo cambió todo, tira los libros". En realidad, Pocock no está de acuerdo: <em>"I don't think much has changed."</em> Lo que cambió fue la velocidad de la <span class="termo" title="El trabajo de transformar la idea en algo que funcione.">ejecución</span>. Los fundamentos de <span class="termo" title="El oficio de decidir qué entra, qué sale y cómo vive el usuario el producto.">diseño de producto</span> — entender al usuario, encontrar el problema real, diseñar la solución más simple — siguen exactamente igual. Tanto es así que él dice que los <strong>los libros clásicos de diseño de productos todavía son válidos</strong>. La IA no revocó nada de eso; solo te permite probar tus decisiones de diseño más rápido.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t4-p2">Esto conecta con todo lo que viste en esta ruta: la IA "se comió" la parte <strong>táctica</strong> (la ejecución), y lo más valioso que queda es la parte <strong>estratégica</strong> (la decisión de producto). Saber elegir, recortar, priorizar y diseñar la experiencia es un músculo que tú entrenas — no algo que la IA descarga por ti. El <strong class="text-red-400">error común</strong> es pensar que, como el código sale listo, puedes saltarte el pensamiento de producto. Es al revés: ahora que ejecutar es barato, <em>pensar bien el producto</em> es donde ganas o pierdes.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Cronología: la capa de ejecución se acelera mucho con la IA, mientras que la capa de diseño de producto permanece estable y humana" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs><lineargradient id="v26d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient><filter height="180%" id="v26d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><pattern height="32" id="v26d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern></defs>
+<rect fill="url(#v26d-grid)" height="200" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" x="60" y="50">antes de la IA</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="end" x="880" y="50">después de la IA</text>
+<g filter="url(#v26d-glow)"><rect fill="#0e1b26" height="40" rx="9" stroke="#38bdf8" stroke-width="2" width="200" x="60" y="62"></rect><rect fill="none" height="40" opacity="0.5" rx="9" stroke="#38bdf8" stroke-dasharray="5 5" stroke-width="2" width="820" x="60" y="62"></rect></g>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="160" y="87">ejecución</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="600" y="87">acelera muchísimo →→→ (la IA)</text>
+<rect fill="#0e1622" height="40" rx="9" stroke="#60a5fa" stroke-width="2.5" width="820" x="60" y="124"></rect>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="470" y="149">diseño de producto — fundamentos estables (tú)</text>
+</svg>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div class="bg-blue-900/20 rounded-xl border border-blue-500/30 p-6"><h4 class="font-bold text-blue-400 mb-4">⏩ Lo que la IA aceleró</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Escribir el código y armar pantallas.</li><li>• Hacer prototipos para probar una idea.</li><li>• Iterar rápido sobre una decisión de diseño.</li></ul></div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 p-6"><h4 class="font-bold text-neutral-200 mb-4">🧱 Lo que sigue igual (lo tuyo)</h4><ul class="space-y-2 text-neutral-300 text-sm"><li>• Entender al usuario y el problema real.</li><li>• Decidir qué entra y qué sale.</li><li>• Diseñar la experiencia más sencilla.</li></ul></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la IA aceleró la ejecución, pero los fundamentos del diseño de producto siguen siendo los mismos — y también los tuyos.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🗣️ Hablar con clientes</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> puedes tener la cocina más rápida del mundo, pero si nunca le preguntas al cliente qué quiere comer, cocinarás platos hermosos que nadie pide. Hablar con el cliente es el menú; la IA es solo la estufa rápida.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m2-6-t5-p1">Cuando le preguntan a Pocock qué cambió para construir un negocio en la era de la IA, su respuesta es tranquila: <em>"I don't think much has changed."</em> Los fundamentos siguen firmes, y el primero es <strong>hablar con clientes</strong>. Descubrir qué <em>de hecho</em> necesitan, cuál problema es real, qué problema vale la pena resolver. Ningún <span class="termo" title="Large Language Model — modelo de lenguaje grande.">LLM</span> tiene acceso a tus clientes reales; esa información solo entra en el producto si la buscas en la conversación.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t5-p2">El flujo clásico sigue siendo totalmente válido: hablar con clientes → entender la necesidad → construir <span class="termo" title="Versión inicial y rápida del producto, hecha para probar una idea con personas reales.">prototipos</span> que resuelven el problema real → mostrárselo de nuevo a los clientes. La diferencia es que la IA hace mucho más rápida la etapa intermedia (construir el prototipo), así que puedes repetir este ciclo más veces. Pero si te saltas la conversación, usarás la velocidad de la IA para construir, rapidísimo, lo equivocado. El <strong class="text-red-400">error común</strong> es encerrarte con la IA "produciendo funcionalidades" y nunca hablar con un cliente. La velocidad sin dirección del cliente solo te lleva más rápido contra la pared.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Ciclo de producto: hablar con el cliente, entender la necesidad, crear un prototipo con IA, mostrárselo; un loop continuo" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs><lineargradient id="v26e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient><filter height="180%" id="v26e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><pattern height="32" id="v26e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><marker id="v26e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker></defs>
+<rect fill="url(#v26e-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<g filter="url(#v26e-glow)"><rect fill="#0e1622" height="52" rx="11" stroke="#60a5fa" stroke-width="2.5" width="170" x="40" y="74"></rect></g>
+<text fill="#93c5fd" text-anchor="middle" x="125" y="98">1 · hablar con</text><text fill="#93c5fd" text-anchor="middle" x="125" y="114">el cliente</text>
+<rect fill="#0e1622" height="52" rx="11" stroke="#60a5fa" stroke-width="2" width="170" x="280" y="74"></rect>
+<text fill="#93c5fd" text-anchor="middle" x="365" y="98">2 · entender</text><text fill="#93c5fd" text-anchor="middle" x="365" y="114">la necesidad</text>
+<rect fill="#0e1b26" height="52" rx="11" stroke="#38bdf8" stroke-width="2" width="170" x="520" y="74"></rect>
+<text fill="#bfe6ff" text-anchor="middle" x="605" y="98">3 · crear un prototipo</text><text fill="#9ad6ff" text-anchor="middle" x="605" y="114">(IA, rápido)</text>
+<rect fill="#0e1622" height="52" rx="11" stroke="#60a5fa" stroke-width="2" width="170" x="760" y="74"></rect>
+<text fill="#93c5fd" text-anchor="middle" x="845" y="98">4 · mostrar</text><text fill="#93c5fd" text-anchor="middle" x="845" y="114">de vuelta</text>
+</g>
+<g fill="none" opacity="0.75" stroke="#60a5fa" stroke-width="2">
+<path d="M210,100 L280,100" marker-end="url(#v26e-ah)"></path>
+<path d="M450,100 L520,100" marker-end="url(#v26e-ah)"></path>
+<path d="M690,100 L760,100" marker-end="url(#v26e-ah)"></path>
+<path d="M845,126 C845,170 125,170 125,126" marker-end="url(#v26e-ah)"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="485" y="190">La IA solo acelera el paso 3. Los pasos 1, 2 y 4 son tuyos, con personas reales.</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> hablar con clientes sigue siendo el motor del producto adecuado; la IA solo acelera el prototipo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-2-6#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🚀 Crear un negocio con IA</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la IA es un motor turbo. Ponla en un auto que va en la dirección correcta y volará. Ponla en un auto apuntando al abismo y solo llegarás al abismo más rápido. El volante (la visión) lo decide todo.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m2-6-t6-p1">Al juntar todo: construir un negocio con IA es, en el fondo, construir un negocio; los fundamentos no han cambiado. La IA da ventaja en la <strong>ejecución</strong>, no en tener la idea correcta. Entonces el juego es: tienes la <span class="termo" title="Saber qué estás construyendo y por qué: la brújula del producto.">visión</span>, habla con clientes, elige pocas funcionalidades adecuadas, le pregunta a la IA qué <em>eliminar</em>, y usa su velocidad para ejecutar el ciclo de producto más veces. Quien delega su visión en la IA construye algo genérico rápidamente. Quien conserva la visión y usa la IA como motor de ejecución construye lo que <em>de hecho</em> resuelve el problema del cliente. Antes de pedirle a la IA que construya cualquier cosa, ejecuta la lista de verificación de abajo — es el resumen práctico de este módulo. Copia y pega al inicio de cada proyecto:</p>
+<div class="copybox bg-dark-900 border border-blue-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-blue-400 font-mono">controle-do-produto.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Antes de mandar a IA construir, garanta que a VISÃO é SUA:
+[ ] VISÃO — sei o que estou construindo e POR QUÊ (não pedi a ideia pra IA)?
+[ ] CLIENTE — falei com gente real e sei qual dor estou resolvendo?
+[ ] FEATURES — escolhi poucas, certas (não virei um app de mil features)?
+[ ] REMOVER — perguntei à IA o que TIRAR / simplificar / melhorar a UX?
+[ ] EXECUÇÃO — usei a IA só pra implementar e prototipar mais rápido?
+Se a IA está decidindo o produto por você, pare: o volante é seu.</pre>
+</div>
+<img alt="Ilustración: un emprendedor al volante de un auto con motor turbo (la IA), que conduce con firmeza hacia una visión clara" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha2/assets/img/m2-6-3.png"/>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="La visión humana sostiene el volante y marca el rumbo; la IA es el motor turbo que impulsa el negocio en esa dirección" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs><lineargradient id="v26f-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient><filter height="180%" id="v26f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter><pattern height="32" id="v26f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern><marker id="v26f-ah" markerheight="11" markerwidth="11" orient="auto" refx="7" refy="5.5"><path d="M0,0 L10,5.5 L0,11 L3,5.5 Z" fill="#60a5fa"></path></marker></defs>
+<rect fill="url(#v26f-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g filter="url(#v26f-glow)"><circle cx="150" cy="90" fill="#0e1622" r="50" stroke="#60a5fa" stroke-width="3"></circle></g>
+<line stroke="#93c5fd" stroke-width="3" x1="150" x2="150" y1="45" y2="135"></line><line stroke="#93c5fd" stroke-width="3" x1="105" x2="195" y1="90" y2="90"></line>
+<text fill="#93c5fd" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="150" y="160">VISIÓN (tú) — el volante</text>
+<rect fill="url(#v26f-grad)" height="56" rx="12" stroke="#3b82f6" stroke-width="2" width="200" x="300" y="62"></rect>
+<text fill="#0a1b38" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="400" y="88">IA = motor turbo</text>
+<text fill="#0a1b38" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="400" y="106">solo la ejecución</text>
+<path d="M500,90 L840,90" fill="none" marker-end="url(#v26f-ah)" stroke="#60a5fa" stroke-width="3"></path>
+<rect fill="#0e1b26" height="60" rx="14" stroke="#38bdf8" stroke-width="2" width="240" x="700" y="60"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="820" y="88">negocio que resuelve</text>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="820" y="107">el problema real del cliente</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-2-6#q2">
+<p class="font-medium mb-4">Recuperación rápida: en la era de la IA, ¿dónde está su ventaja real para un negocio?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">En tener la idea correcta y definir la visión del producto en tu lugar.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">En la ejecución/implementación — mantienes la visión, hablas con clientes y eliges las features.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">En reemplazar la conversación con clientes por investigación automática.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-blue-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-blue-400">En 1 frase:</strong> la IA es el motor turbo; la visión es el volante — y el volante sigue en tus manos.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-400 hover:bg-blue-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-blue-900/40 via-dark-800 to-dark-800 rounded-xl border border-blue-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">La IA es mala para las ideas originales</strong><span class="text-neutral-400"> — calcula el promedio del pasado; la visión inédita es tuya.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Eliges las features</strong><span class="text-neutral-400"> — pocas, pero bien elegidas; no conviertas esto en una app con mil funciones.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">Pregunta qué ELIMINAR</strong><span class="text-neutral-400"> — simplificar y mejorar la UX, no solo agregar cosas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-blue-400 mt-1">✓</span><div><strong class="text-white">El diseño de producto no cambió</strong><span class="text-neutral-400"> — solo se aceleró la ejecución; habla con los clientes.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-blue-400 mb-2">Próxima ruta:</h3><p class="text-neutral-300">Ruta 3 — Habilidades de IA (Skills): cómo empaquetar tu conocimiento en procedimientos que la IA sigue siempre a tu manera.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="../trilha3/index.html">Próxima ruta →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-2-6#q1', { answer: 1, explain: { 0: 'Esse é justamente o buraco: o custo de confusão e manutenção continua — botar tudo incha o produto.', 1: 'Isso! Construir ficou barato, mas decidir o que NÃO fazer ficou mais importante.', 2: 'Não — a IA é ruim em ideia original; a escolha das features continua sua.' } });
+        INEMA.registerCheck('modulo-2-6#q2', { answer: 1, explain: { 0: 'Não — a IA é ruim em ideia original; a visão tem que ser sua.', 1: 'Exato! A IA dá vantagem na execução; visão, clientes e features ficam com você.', 2: 'Não — falar com clientes reais é fundamento que a IA não substitui.' } });
+      }
+    });
+  </script>
+</body>
+</html>

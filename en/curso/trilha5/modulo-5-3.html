@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>5.3 grill-me → PRD → issues Pipeline | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'teal' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'teal');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #2dd4bf; cursor: help; font-weight: 600; color: #5eead4; }
+    html:not(.dark) .termo { color: #0f766e; border-color: #0d9488; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13,148,136,0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13,148,136,0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13,148,136,0.18); }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha5/modulo-5-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha5/modulo-5-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha5/modulo-5-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-5-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha5/modulo-5-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-teal-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-teal-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-teal-400" href="index.html">Track 5</a><span>/</span>
+<span class="text-teal-400">Module 5.3 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MODULE 5.3 · READY-TO-COPY SOLUTION</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔗 Pipeline: grill-me → PRD → issues</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">From <strong class="text-teal-400">brain</strong> (the idea in your head) to <strong class="text-teal-400">backlog</strong> (a queue of ready-to-go tasks for an agent to pick up). You chain three skills: <code class="text-teal-400">grill-me</code> interviews you, <code class="text-teal-400">two-PRD</code> becomes a product document, and <code class="text-teal-400">to-issues</code> breaks down into GitHub issues. You stay in the driver’s seat the whole time. Each step is explained and ready to copy.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">3</div><div class="text-xs text-neutral-400">Chained skills</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Practical</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 5.3 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:5-3" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-teal-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-1">1. Pipeline overview</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-2">2. Step 1 — grill me</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-3">3. Step 2 — two-PRD</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-4">4. Step 3 — to-issues</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-5">5. Full chain</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-6">6. Where the Human Fits</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-teal-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-teal-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">This learning path is "ready to copy." Here we define the NEW terms in this module. The fundamentals (model, agent, skill, prompt) are already covered in Path 1 — if you forget them, go back there.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Pipeline</strong> — a sequence of steps where the output of one becomes the input for the next, like a conveyor belt. Here: idea → interview → document → tasks.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">grill-me</strong> — a <em>skill</em> that makes the model <strong>interview adversarially</strong> ("grill" you, question you) until you reach a shared understanding of the idea.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">PRD</strong> — <em>Product Requirements Document</em>: a document that describes what will be built, why, and what the requirements are. It’s the product’s "blueprint".</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">two-PRD</strong> — the skill that takes what came out of the interview and writes that PRD for you (“two” is the internal name for Matt’s version of this PRD skill).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">to-issues</strong> — the skill that reads the PRD and creates the <em>issues</em> (tasks) in GitHub, breaking the document into executable pieces.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Issue</strong> — a “task ticket” on GitHub: an item with a title, description, and <em>labels</em> (labels). It’s the unit of the backlog.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Backlog</strong> — the queue of tasks to do. Pocock thinks of the work as a <em>queue</em>: PMs add tasks, devs (or agents) pick them from the queue.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">In the driver’s seat</strong> — you driving the decisions. Matt prefers <em>procedures</em> (you invoke) so you don't delegate the thinking to AI.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🗺️ Pipeline overview</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A restaurant kitchen. First the waiter <em>interviews you</em> ("with fries? medium rare?") until the order is unambiguous. Then that becomes a <em>typed command</em> (the document). And the command is <em>broken down into stations</em> (grill, salad, dessert) — each cook gets their own. The idea in your head has become organized work, without you going to the stove.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-3-t1-p1">This module is at the heart of how Matt Pocock <strong>delegate without losing control</strong>. Instead of one giant skill that does everything, it <span class="termo" title="Connect skills: the output of one becomes the input of the next.">chains</span> three small skills in a <span class="termo" title="A sequence of steps where the output of one is the input to the next.">pipeline</span>: <code class="text-teal-400">grill-me → two-PRD → to-issues</code>. As he sums it up in the transcript: “chain together: <strong>grill-me → two-PRD → to-issues</strong>"—this keeps “most of the AI descriptions hidden and the knowledge with the human.” Each step has just one job, and you approve it before moving to the next.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t1-p2">The path is literal: you leave the <strong>"brain"</strong> (the raw idea) and arrives at <strong>"backlog"</strong> (a queue of ready-to-go issues). The <strong>reason</strong> to break it into three: Pocock prefers <span class="termo" title="Skills that YOU intentionally invoke, which make the model behave in a certain way.">procedures</span> letting the model decide everything — "I know my skills, I don't want to delegate my thinking" ("I know my skills, I don't want to delegate my thinking"). Each link is a point where you can stop, correct, and continue. The <strong>common mistake</strong> the trap is trying to create one mega-skill that goes "from idea to code" without any stops: you lose visibility, and the AI fills in the gaps with wrong assumptions.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Pipeline conveyor: brain comes in on the left, goes through grill-me, two-PRD, and to-issues, and comes out as backlog on the right" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v53a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v53a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v53a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v53a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v53a-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g filter="url(#v53a-glow)"><rect fill="#0c1f1c" height="60" rx="14" stroke="#2dd4bf" stroke-width="2.5" width="140" x="20" y="80"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="90" y="108">🧠 brain</text>
+<text fill="#7fe6d8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="90" y="128">the raw idea</text>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="180" x="210" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="300" y="106">1 · grill-me</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="300" y="126">interview</text>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="180" x="430" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="520" y="106">2 · two-PRD</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="520" y="126">document</text>
+<rect fill="#0e1b26" height="60" rx="12" stroke="#38bdf8" stroke-width="2" width="180" x="650" y="80"></rect><text fill="#bfe6ff" text-anchor="middle" x="740" y="106">3 · to-issues</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="740" y="126">tasks</text>
+</g>
+<g filter="url(#v53a-glow)"><rect fill="#0c1f1c" height="60" rx="14" stroke="url(#v53a-grad)" stroke-width="2.5" width="120" x="860" y="80"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="920" y="108">📋 backlog</text>
+<text fill="#7fe6d8" font-family="Inter,sans-serif" font-size="10" text-anchor="middle" x="920" y="128">issues</text>
+<g fill="none" opacity="0.7" stroke="#2dd4bf" stroke-width="2"><path d="M160,110 L208,110" marker-end="url(#v53a-ah)"></path><path d="M390,110 L428,110" marker-end="url(#v53a-ah)"></path><path d="M610,110 L648,110" marker-end="url(#v53a-ah)"></path><path d="M830,110 L858,110" marker-end="url(#v53a-ah)"></path></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="185">Each arrow between blocks is a point where YOU approve before moving on.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Three small skills in a row outperform one mega-skill that does everything: you can see and correct each link.</p>
+</div>
+<img alt="Conceptual illustration: an industrial conveyor belt transforming a glowing idea into an organized stack of task cards" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-3-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Trying to get “one skill that takes you from idea to deploy.” Without stops, the AI makes every decision on its own, and you only discover the errors at the end. The pipeline exists precisely to give you a “pause” button between each step.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> the pipeline takes the idea to the backlog in three steps, with you approving each link—no black-box mega-skill.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🔥 Step 1 — grill-me</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> an experienced lawyer before taking your case. They don't say "ok, understood" — they <em>questions</em>: “what if X happens? did you consider Y? why not Z?” By the end, you both see the case the same way. grill-me does this with your product idea.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-3-t2-p1">A <span class="termo" title="A skill that has the model interview you adversarially until you agree on the plan.">grill-me</span> turns the model into a <strong>adversarial interviewer</strong>: it asks questions, raises ideas you hadn’t considered, and keeps going until it reaches a <strong>shared understanding</strong>. Pocock calls it “unreasonably effective.” You use it as a substitute for the <span class="termo" title="A Claude Code mode that plans before executing.">plan mode</span>: “here’s my idea; interview me, let’s reach an understanding and work out the quirks before implementing it.”</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t2-p2">The exact text of the skill (from the transcript): <em>"Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer. Ask the questions one at a time. If a question can be answered by exploring the codebase, explore the codebase instead."</em> Notice two golden rules: <strong>one question at a time</strong> (doesn’t drown you) and <strong>if the code can answer the question, it looks at the code</strong> instead of asking. The <strong>common mistake</strong>: answer automatically. Grill-me is only worthwhile if you <em>fight</em> back—disagree with its recommendations when it makes sense.</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">grill-me.md (skill text)</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Interview me relentlessly about every aspect of this plan
+until we reach a shared understanding.
+
+Walk down each branch of the design tree, resolving
+dependencies between decisions one-by-one.
+
+For each question, provide your recommended answer.
+Ask the questions one at a time.
+
+If a question can be answered by exploring the codebase,
+explore the codebase instead.</pre>
+</div>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Decision tree: the idea branches into questions, and each leaf converges on a shared understanding" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<filter height="180%" id="v53b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v53b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v53b-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g filter="url(#v53b-glow)"><rect fill="#0c1f1c" height="50" rx="12" stroke="#2dd4bf" stroke-width="2.5" width="200" x="400" y="20"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="500" y="51">your idea (root)</text>
+<g fill="none" opacity="0.6" stroke="#2dd4bf" stroke-width="1.8"><path d="M460,70 L200,110"></path><path d="M500,70 L500,110"></path><path d="M540,70 L800,110"></path></g>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="100" y="110"></rect><text fill="#bfe6ff" text-anchor="middle" x="200" y="137">P1: what’s the scope?</text>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="400" y="110"></rect><text fill="#bfe6ff" text-anchor="middle" x="500" y="137">P2: who uses it?</text>
+<rect fill="#0e1b26" height="44" rx="10" stroke="#38bdf8" stroke-width="2" width="200" x="700" y="110"></rect><text fill="#bfe6ff" text-anchor="middle" x="800" y="137">P3: what does it depend on?</text>
+</g>
+<g fill="none" opacity="0.5" stroke="#2dd4bf" stroke-width="1.6"><path d="M200,154 L500,185"></path><path d="M500,154 L500,185"></path><path d="M800,154 L500,185"></path></g>
+<g filter="url(#v53b-glow)"><rect fill="#0c1f1c" height="40" rx="12" stroke="#2dd4bf" stroke-width="2.5" width="360" x="320" y="185"></rect></g>
+<text fill="#7fe6d8" font-family="Inter,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="500" y="211">✓ shared understanding</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">"Walk down each branch of the design tree" — one question at a time, resolving dependencies.</p>
+</div>
+<img alt="Illustration: a friendly futuristic interrogation, one-by-one question bubbles connecting two figures until they shake hands" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-3-2.png"/>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> grill-me interviews you one question at a time until you and the AI see the plan the same way.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">📄 Step 2 — two-PRD</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> after discussing the home renovation with the architect, he turns the conversation into a <em>signed blueprint</em>. It’s no longer “guesswork”—it’s become a document the builder can read and follow. The two-PRD turns your interview into that blueprint.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-3-t3-p1">The grill-me interview is in the <span class="termo" title="The context window: the text the model has in memory during the conversation.">context</span> from the conversation—but conversation isn't a deliverable. The <span class="termo" title="Product Requirements Document — product requirements document.">PRD</span> is the product of this step: a structured document that says <strong>what</strong> build, <strong>why</strong>, e <strong>which</strong> requirements. The skill <span class="termo" title="The skill that writes the PRD from the interview.">two-PRD</span> reads everything agreed on in the interview and writes this document for you — vision, consequential decisions, requirements, and acceptance criteria.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t3-p2">Why write a PRD instead of going straight to the code? Because the PRD is a <strong>reviewable artifact</strong>: you read it, adjust a sentence, delete a requirement you don’t want—before a single line of code exists. It fits perfectly with David’s favorite prompt mentioned in the transcript: "describe my vision, list out the <strong>10 most consequential decisions</strong> (software design / architectural / product) that will shape this project, and interview me until you understand 98%" — describe my vision, list the 10 most consequential decisions, and interview me until you understand 98%. Those 10 decisions become the backbone of the PRD. The <strong>common mistake</strong>: accept the first PRD without reading it. It’s your draft to edit—not a final verdict.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The interview, in chat bubbles, is distilled into a structured PRD document with sections" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v53c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v53c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v53c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v53c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v53c-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="36" rx="18" stroke="#38bdf8" stroke-width="2" width="230" x="40" y="40"></rect><text fill="#bfe6ff" font-size="12" text-anchor="middle" x="155" y="63">"what's the scope?"</text>
+<rect fill="#0e1b26" height="36" rx="18" stroke="#38bdf8" stroke-width="2" width="230" x="40" y="92"></rect><text fill="#bfe6ff" font-size="12" text-anchor="middle" x="155" y="115">"who uses it? why?"</text>
+<rect fill="#0e1b26" height="36" rx="18" stroke="#38bdf8" stroke-width="2" width="230" x="40" y="144"></rect><text fill="#bfe6ff" font-size="12" text-anchor="middle" x="155" y="167">"10 key decisions"</text>
+</g>
+<path d="M270,110 L430,110" fill="none" marker-end="url(#v53c-ah)" stroke="#2dd4bf" stroke-width="2.2"></path>
+<text fill="#7fe6d8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="350" y="100">two-PRD distills</text>
+<g filter="url(#v53c-glow)"><rect fill="#0c1f1c" height="170" rx="16" stroke="url(#v53c-grad)" stroke-width="2.5" width="500" x="450" y="25"></rect></g>
+<g font-family="Inter,sans-serif">
+<text fill="#2dd4bf" font-size="16" font-weight="700" x="475" y="56">📄 PRD.md</text>
+<text fill="#cdeee8" font-size="13" x="475" y="86">## Vision — the problem and the goal</text>
+<text fill="#cdeee8" font-size="13" x="475" y="112">## Consequential decisions (1–10)</text>
+<text fill="#cdeee8" font-size="13" x="475" y="138">## Requirements &amp; scope</text>
+<text fill="#cdeee8" font-size="13" x="475" y="164">## Acceptance criteria</text>
+</g>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: “notes app with reminders” becomes a PRD</h3>
+<p class="text-neutral-300 text-sm mb-3">You run <code class="text-teal-400">/grill-me</code> with the raw idea. The AI asks one question at a time: <em>"reminders at a set time or based on location? Syncs across devices? Offline-first?"</em>. You answer and disagree in one go (“no, no geolocation in v1”). Then you run <code class="text-teal-400">/two-PRD</code>. Here’s what you get:</p>
+<div class="bg-dark-900/60 rounded-lg p-3 text-xs text-neutral-300 font-mono leading-relaxed">
+<span class="text-teal-400"># PRD: Notes App with Reminders (v1)</span><br/>
+<span class="text-blue-400">## Vision</span> — capture quick notes and be reminded at the right time.<br/>
+<span class="text-blue-400">## Consequential decisions</span><br/>
+              1. Reminders only at fixed times (geolocation can wait for v2).<br/>
+              2. Offline-first, background sync.<br/>
+              3. No login in v1 — local data.<br/>
+<span class="text-blue-400">## Requirements</span> — CRUD for notes; schedule/cancel reminders; local notification.<br/>
+<span class="text-blue-400">## Acceptance criteria</span> — the note persists after closing the app; the reminder fires within ±1 min.
+            </div>
+<p class="text-neutral-400 text-xs mt-3">Notice: each "consequential decision" is a choice you confirmed in grill-me. The PRD just formalized it.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-teal-400">Going deeper (optional): why a PRD and not an informal plan?</summary>
+<p class="text-sm text-neutral-300 mt-3">A plan that lives only in chat disappears when the context fills up or you run <code>/clear</code>. The PRD is a <strong>file</strong>: versionable in git, open to comments, and—crucial for the next step—something the skill <code>to-issues</code> can read consistently. Pocock prefers solid artifacts between pipeline links precisely so each skill has a predictable input, not "whatever was left from the conversation".</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> two-PRD distills the interview into a reviewable document — the product blueprint, before the code.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🎫 Step 3 — to-issues</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> the entire order ticket is split into slips for each station — one goes to the grill, another to the salad station, another to the bar. Each cook takes their slip and gets to work. to-issues splits the PRD into slips (issues) that an agent can pick up from the queue.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-3-t4-p1">O <span class="termo" title="The skill that reads the PRD and creates the issues in GitHub.">to-issues</span> reads the PRD and creates <span class="termo" title="Task cards on GitHub, with a title, description, and labels.">issues</span> on GitHub—one per executable piece. This connects to how Pocock thinks about the work: "I mostly think about these as <strong>QUEUES, not loops</strong>" ("I think of this as queues, not loops"). The <span class="termo" title="The to-do task queue.">backlog</span> is this queue: “all development is just a queue of tasks: PMs add to the queue, you complete them; multiple nodes (devs) pick off the queue”. Here, the “nodes” can be agents.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t4-p2">The detail that turns this into automation is the <span class="termo" title="Labels on an issue that trigger behaviors (e.g., an agent that picks up the task).">labels</span> (labels). In the actual transcript example (frame 74), the issue <code class="text-teal-400">#795</code> walks through the labels <code class="text-teal-400">agent:explore → agent:in-progress</code>, and the GitHub Actions bot posts a “Triage” with TL;DR + Difficulty. In other words, the issue isn’t just a note—it’s a trigger. The <strong>common mistake</strong>: create huge, vague issues (“build the app”). The trick is to break them down enough for an AFK agent to pick one up <strong>a</strong> and finish.</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">exemplo-de-issue-gerada.md</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">Title: Agendar e cancelar lembrete de uma nota
+Labels: agent:explore, area:reminders, size:S
+
+## Contexto (do PRD)
+Decisão #1: lembretes só por horário fixo na v1.
+
+## Tarefa
+- Permitir definir um horário para uma nota existente.
+- Agendar uma notificação local nesse horário.
+- Permitir cancelar o lembrete.
+
+## Critério de aceite
+- Lembrete dispara em ±1 min do horário definido.
+- Cancelar remove a notificação agendada.</pre>
+</div>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The PRD is split into several issues with labels, and an agent picks up an issue from the queue" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v53d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v53d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v53d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v53d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v53d-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g filter="url(#v53d-glow)"><rect fill="#0c1f1c" height="70" rx="14" stroke="url(#v53d-grad)" stroke-width="2.5" width="150" x="40" y="80"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="115" y="112">📄 PRD</text>
+<text fill="#7fe6d8" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="115" y="133">a document</text>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="240" x="280" y="20"></rect><text fill="#bfe6ff" x="300" y="46">#1 Notes CRUD</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="240" x="280" y="74"></rect><text fill="#bfe6ff" x="300" y="100">#2 Schedule reminder</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="240" x="280" y="128"></rect><text fill="#bfe6ff" x="300" y="154">#3 Local notification</text>
+<rect fill="#0e1b26" height="42" rx="10" stroke="#38bdf8" stroke-width="2" width="240" x="280" y="182"></rect><text fill="#bfe6ff" x="300" y="208">#4 Background sync</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#2dd4bf" stroke-width="1.8"><path d="M190,100 L278,41" marker-end="url(#v53d-ah)"></path><path d="M190,108 L278,95" marker-end="url(#v53d-ah)"></path><path d="M190,120 L278,149" marker-end="url(#v53d-ah)"></path><path d="M190,128 L278,203" marker-end="url(#v53d-ah)"></path></g>
+<g font-family="Inter,sans-serif" font-size="11"><rect fill="#0c1f1c" height="42" rx="10" stroke="#2dd4bf" stroke-width="2" width="380" x="560" y="74"></rect><text fill="#7fe6d8" x="580" y="100">🤖 agent picks from the queue → label agent:in-progress</text></g>
+<path d="M520,95 L558,95" fill="none" marker-end="url(#v53d-ah)" stroke="#2dd4bf" stroke-width="2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="750" y="150">"Queues, not loops" — multiple nodes pull from the queue.</text>
+</svg>
+</div>
+<img alt="Illustration: a futuristic Kanban board with task cards flowing from a backlog column to robotic arms that pick up one card each" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-3-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> to-issues splits the PRD into issues with labels — a backlog (queue) ready for agents to pick up.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">⛓️ Complete chaining</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> an assembly line with three stations and an inspector (you) between them. The part doesn’t move to the next station until the inspector gives the “OK.” It’s fast, but no one pushes defects forward.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-3-t5-p1">Now we put it all together. This is the <strong>actual sequence of commands</strong> of the pipeline—that’s what you actually type in Claude Code, with what each step produces noted down. Copy it, adapt the names to your project, and run it. Remember: between one <code class="text-teal-400">/</code> and the next one, <strong>you read and approve</strong>. It’s not one button that does everything—it’s three buttons with you in the middle.</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">pipeline-grill-prd-issues.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># PIPELINE: do brain ao backlog (Claude Code, Opus 4.8 medium)
+
+# --- PASSO 1: grill-me ---------------------------------------
+# voce cola a ideia crua e invoca a skill de entrevista
+/grill-me
+&gt; Ideia: app de notas com lembretes por horario. Me entreviste.
+# PRODUZ: um entendimento compartilhado (Q&amp;A na conversa).
+#         -&gt; VOCE APROVA antes de seguir.
+
+# --- PASSO 2: two-PRD ----------------------------------------
+# transforma a entrevista alinhada num documento de produto
+/two-prd
+# PRODUZ: docs/PRD.md  (visao, 10 decisoes, requisitos, aceite)
+#         -&gt; VOCE LE e edita o PRD.md antes de seguir.
+
+# --- PASSO 3: to-issues --------------------------------------
+# le o PRD e cria as issues no GitHub, uma por tarefa
+/to-issues docs/PRD.md
+# PRODUZ: issues no GitHub com labels (ex.: agent:explore, size:S)
+#         -&gt; VOCE revisa o backlog; ajusta labels/prioridade.
+
+# RESULTADO: brain -&gt; backlog. Agentes AFK pegam da fila.</pre>
+</div>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Complete pipeline with human checkpoints between each skill, from brain to backlog" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v53e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v53e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v53e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v53e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v53e-grid)" height="240" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g filter="url(#v53e-glow)"><rect fill="#0c1f1c" height="56" rx="12" stroke="#2dd4bf" stroke-width="2.5" width="120" x="30" y="90"></rect></g>
+<text fill="#2dd4bf" text-anchor="middle" x="90" y="123">🧠 brain</text>
+<rect fill="#0e1b26" height="56" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="220" y="90"></rect><text fill="#bfe6ff" text-anchor="middle" x="295" y="116">/grill-me</text><text fill="#9ad6ff" font-size="10" text-anchor="middle" x="295" y="134">Aligned Q&amp;A</text>
+<rect fill="#0e1b26" height="56" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="440" y="90"></rect><text fill="#bfe6ff" text-anchor="middle" x="515" y="116">/two-prd</text><text fill="#9ad6ff" font-size="10" text-anchor="middle" x="515" y="134">PRD.md</text>
+<rect fill="#0e1b26" height="56" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="660" y="90"></rect><text fill="#bfe6ff" text-anchor="middle" x="735" y="116">/to-issues</text><text fill="#9ad6ff" font-size="10" text-anchor="middle" x="735" y="134">issues</text>
+<g filter="url(#v53e-glow)"><rect fill="#0c1f1c" height="56" rx="12" stroke="url(#v53e-grad)" stroke-width="2.5" width="100" x="880" y="90"></rect></g>
+<text fill="#2dd4bf" text-anchor="middle" x="930" y="116">📋</text><text fill="#7fe6d8" font-size="11" text-anchor="middle" x="930" y="134">backlog</text>
+</g>
+<g fill="none" opacity="0.7" stroke="#2dd4bf" stroke-width="2"><path d="M150,118 L218,118" marker-end="url(#v53e-ah)"></path><path d="M370,118 L438,118" marker-end="url(#v53e-ah)"></path><path d="M590,118 L658,118" marker-end="url(#v53e-ah)"></path><path d="M810,118 L878,118" marker-end="url(#v53e-ah)"></path></g>
+<g fill="#fbbf24" font-family="Inter,sans-serif" font-size="11"><text text-anchor="middle" x="184" y="70">✋ approve</text><text text-anchor="middle" x="404" y="70">✋ edit</text><text text-anchor="middle" x="624" y="70">✋ review</text></g>
+<g fill="#fbbf24" opacity="0.85"><circle cx="184" cy="118" r="4"></circle><circle cx="404" cy="118" r="4"></circle><circle cx="624" cy="118" r="4"></circle></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="200">Three skills + three human checkpoints = delegate without losing control.</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-3#q1">
+<p class="font-medium mb-4">Quick retrieval: what is the correct pipeline ORDER?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">to-issues → two-PRD → grill-me</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">grill-me → two-PRD → to-issues</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">two-PRD → grill-me → to-issues</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> three skills in a series with a human checkpoint between each one — you delegate the work, not the thinking.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-5-3#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🧑‍✈️ Where the human fits</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> the medieval king (David's analogy in the transcript). He won't personally fight every battle—but problems come to him (invasion, famine, an alliance proposal), and <em>it prioritizes</em>: 50 problems, only 3 critical. It delegates execution, never control.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-3-t6-p1">What distinguishes Pocock's method from "letting the AI take the wheel" is <strong>where</strong> the human stays. They prefer <span class="termo" title="Skills you intentionally invoke—you decide when.">procedures</span> a <span class="termo" title="Skills the model invokes on its own when it thinks they’re relevant.">abilities</span> precisely to stay “in the driver's seat”: “I want to be in the driver's seat, not delegate my thinking” (“I want to be in the driver's seat, not delegate my thinking”). In the pipeline, you are present in <strong>each link</strong>: you launch grill-me, push back on the answers, edit the PRD, and prioritize/adjust the issues.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-3-t6-p2">But—and this is the AFK insight—the human stays in the <strong>checkpoints</strong>, not typing. How Pocock thinks about queues: you <em>prioritizes and reviews</em>, while agents pick up issues and execute them. The goal is to "push human-in-the-loop checkpoints further toward the final output" (move human checkpoints closer and closer to the final output), from the transcript. The <strong>common mistake</strong> is the opposite extreme—becoming a bottleneck by wanting to review every character. The goal isn’t to be involved in everything; it’s to be involved at the <em>few</em> the points that determine the direction. The knowledge lives in you; execution scales through agents.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: a human as the bottleneck for everything versus a human at the few checkpoints that matter" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<filter height="180%" id="v53f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v53f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v53f-grid)" height="200" width="1000" x="0" y="0"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="250" y="34">✗ human in EVERYTHING (bottleneck)</text>
+<g fill="none" opacity="0.6" stroke="#f87171" stroke-width="2"><circle cx="120" cy="90" r="14"></circle><circle cx="200" cy="90" r="14"></circle><circle cx="280" cy="90" r="14"></circle><circle cx="360" cy="90" r="14"></circle></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="250" y="150">reviews every step · doesn’t scale</text>
+<line stroke="#374151" stroke-width="2" x1="500" x2="500" y1="20" y2="180"></line>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="14" font-weight="700" text-anchor="middle" x="760" y="34">✓ human at CHECKPOINTS</text>
+<g fill="none" opacity="0.5" stroke="#9ca3af" stroke-width="1.6"><circle cx="620" cy="90" r="10"></circle><circle cx="690" cy="90" r="10"></circle><circle cx="830" cy="90" r="10"></circle><circle cx="900" cy="90" r="10"></circle></g>
+<g fill="none" filter="url(#v53f-glow)" stroke="#2dd4bf" stroke-width="2.5"><circle cx="760" cy="90" r="15"></circle></g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="760" y="150">decide the few that matter · scale</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-3#q2">
+<p class="font-medium mb-4">Quick recall: why does Pocock prefer "procedures" in the pipeline?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because procedures are faster to type.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">To stay in the driver’s seat and not delegate the thinking—it decides when each skill runs.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because the model can’t invoke skills on its own.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">In one sentence:</strong> the human stays at the few checkpoints that decide the direction—delegate execution, never command.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Pipeline = grill-me → two-PRD → to-issues</strong><span class="text-neutral-400"> — from brain (idea) to backlog (issue queue).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">grill-me interview</strong><span class="text-neutral-400"> — adversarial, one question at a time, until you reach a shared understanding.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">two-PRD documents</strong><span class="text-neutral-400"> — distills the interview into a reviewable PRD (vision, 10 decisions, requirements).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">to-issues becomes a backlog</strong><span class="text-neutral-400"> — breaks the PRD into issues with labels; “queues, not loops.”</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">You in the driver's seat</strong><span class="text-neutral-400"> — a human at the checkpoints between links; delegate execution, not control.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-teal-400 mb-2">Next module:</h3><p class="text-neutral-300">5.4 — Complete AFK Setup: Claude Code + Opus 4.8, sandboxes (Sand Castle), and how to pull the commits back.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="modulo-5-4.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-5-3#q1', { answer: 1, explain: { 0: 'Invertido — você nunca criaria issues antes de entrevistar/documentar.', 1: 'Isso! Primeiro entrevista (grill-me), depois documenta (two-PRD), depois fatia em issues (to-issues).', 2: 'Quase — mas a entrevista (grill-me) vem ANTES de escrever o PRD.' } });
+        INEMA.registerCheck('modulo-5-3#q2', { answer: 1, explain: { 0: 'Velocidade não é o motivo — é controle.', 1: 'Exato. Procedures deixam ele no volante: ele decide quando cada skill roda e não delega o pensamento.', 2: 'O modelo consegue invocar skills (são as abilities) — Pocock só prefere não deixar.' } });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>3.4 Teaching that sticks | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'purple' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'purple');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #c084fc; cursor: help; font-weight: 600; color: #d8b4fe; }
+    html:not(.dark) .termo { color: #6d28d9; border-color: #7c3aed; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha3/modulo-3-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha3/modulo-3-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha3/modulo-3-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-3-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/modulo-3-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-purple-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-purple-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-purple-400" href="index.html">Track 3</a><span>/</span>
+<span class="text-purple-400">Module 3.4 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULE 3.4 · TEACHING MODE</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🌳 Teaching that sticks</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">A <strong class="text-purple-400">Teach skill</strong> by Matt Pocock doesn’t dump information into your head and hope it sticks. It uses real learning principles: <strong class="text-purple-400">zone of proximal development</strong>, knowledge as <strong class="text-purple-400">graph</strong> traveled by a <strong class="text-purple-400">linear path</strong>, e <strong class="text-purple-400">quizzes</strong> + repetition that helps cement what you learned. Each term is explained as it comes up.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Skills</div><div class="text-xs text-neutral-400">Track 3</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Theory</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 3.4 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:3-4" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-purple-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-1">1. Zone of proximal development</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-2">2. Knowledge as a graph</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-3">3. Linear path in the graph</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-4">4. Quizzes and recall</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-5">5. Spaced repetition</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-6">6. Personalization</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-purple-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-purple-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">These are the terms <strong>new</strong> from this module (you’ve already covered the foundation — model, agent, skill, context — in Tracks 1 and 3). Remember these before moving on:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">ZPD (zone of proximal development)</strong> — the range of things you still <em>no</em> knows on its own, but <em>can</em> with a little push. Not too easy (boring), not too hard (a roadblock). That’s where learning happens.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Knowledge graph</strong> — a map of concepts (the “nodes”) connected by “to-understand-X-you-need-Y” (the edges). Knowledge isn't a list; it's a branching network, like a forest.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Linear path</strong> — a single-file route that the skill lays out <em>through</em> through the graph: one concept at a time, in the right order, so you don’t get lost in the forest.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Recall (retrieval)</strong> — the act of <em>pull</em> an answer from memory without looking (answering a quiz) instead of just rereading. The effort is what makes it stick.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Storage strength</strong> — how deeply knowledge has been ingrained. Quizzes <em>increase</em> storage strength: "quizzes are unreasonably effective".</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Spaced repetition</strong> — review the same content at increasing intervals (1 day, 3 days, 1 week…) instead of all at once. It fights forgetting.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Learning record</strong> — the file where the Teach skill stores your mission, starting point, decisions, and estimates. It's its memory of you (seen in 3.3).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Teaching ≠ dumping information</strong> — in Pocock's words: "teaching is not getting info into your head, but orienting you in the world". Teaching means guiding you, not filling you up.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-3-4#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🎯 Zone of proximal development</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A well-made video game. If the level is too easy, you get bored and quit. If it’s impossible, you break the controller. The game keeps you engaged when each level is <em>just one step</em> above what you already know — challenging, but achievable with a little effort. This step is exactly where you grow.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-4-t1-p1">The first thing the <span class="termo" title="Matt Pocock’s teaching skill; creates a course on any topic on the spot.">Teach skill</span> has “encoded” (embedded in the instructions) is a classic concept in pedagogy: the <span class="termo" title="Zone of proximal development — the range between what you can do on your own and what you can do with help.">zone of proximal development</span> (ZDP). The idea, developed by psychologist Vygotsky, divides any subject into three zones: what you <strong>can already do it on its own</strong>, what you <strong>can with help</strong> (the ZDP), and what is <strong>too far</strong> for now. Teaching well means aiming for the middle range—neither repeating the obvious nor dumping something you don't yet have the foundation to handle.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-4-t1-p2">Why does this matter for an AI skill? Because an agent’s default mistake without this instruction is to throw a <em>data dump</em>: it dumps everything it knows about the topic all at once. You read it, think it’s great, and forget it in 10 minutes—nothing stayed in the ZPD; it just passed right over you. Pocock sums up the goal: <em>"teaching is not getting info into your head but orienting you in the world"</em> — teaching isn't stuffing information into your head; it's guiding you through the world. That's why the skill first finds out <strong>where you are</strong> (your starting point) for calibrating the next step within your ZPD. <strong>Common mistake:</strong> thinking that "a good lesson = a complete lesson." A good lesson is a lesson <em>on the right rung</em>; completeness becomes noise when it goes beyond your zone.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Three concentric rings: the center is what you already know, the glowing middle ring is the zone of proximal development, and the outer ring is too far away" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<lineargradient id="v34a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v34a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v34a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v34a-grid)" height="240" width="1000" x="0" y="0"></rect>
+<circle cx="320" cy="120" fill="#0e1b26" opacity="0.5" r="100" stroke="#38bdf8" stroke-width="2"></circle>
+<g filter="url(#v34a-glow)"><circle cx="320" cy="120" fill="#1a1230" r="68" stroke="url(#v34a-grad)" stroke-width="3"></circle></g>
+<circle cx="320" cy="120" fill="#1a1230" r="34" stroke="#c084fc" stroke-width="2"></circle>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="320" y="124">I know</text>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="320" y="64">ZPD (with help)</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="320" y="232">too far</text>
+<g font-family="Inter,sans-serif" font-size="13">
+<text fill="#9ca3af" x="540" y="80">Too easy → boredom, you quit.</text>
+<text fill="#d8b4fe" font-weight="600" x="540" y="120">The skill aims HERE: the next step.</text>
+<text fill="#9ca3af" x="540" y="160">Too difficult → you get stuck and give up.</text>
+</g>
+<path d="M388,120 L532,120" fill="none" opacity="0.6" stroke="#c084fc" stroke-width="2"></path>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The ZPD is the glowing ring: neither the core (I already know this) nor the edge (too far away).</p>
+</div>
+<img alt="Concept illustration: concentric learning rings with the middle zone lit up, someone climbing a step in knowledge" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-4-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Ask "explain everything about X" and get a wall of text. Without targeting the ZPD, the AI delivers volume—not learning. The right approach is for the skill to ask where you are before teaching.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> you learn on the next rung—not one you already know, nor one that’s too far out of reach.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-purple-400">Going deeper (optional): where does "ZDP" come from?</summary>
+<p class="text-sm text-neutral-300 mt-3">The term comes from Soviet psychologist Lev Vygotsky (1930s). He observed that children can solve problems with an adult’s help that they can’t yet solve on their own—and that learning takes hold precisely in this “assisted” range. Decades later, this became the basis for the concept of <em>scaffolding</em> (scaffolding): provide just enough support, then gradually remove it as the person grows. The Teach skill is, at its core, automatic scaffolding.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-3-4#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🌐 Knowledge as a graph</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A forest seen from above. The trees are the concepts; the trails connecting them are the dependencies (“to reach this clearing, pass through that one first”). You can’t “read a forest from left to right” as if it were a list — it has branches, shortcuts, and dead ends.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-4-t2-p1">Pocock explicitly describes the knowledge as a <span class="termo" title="A structure of nodes (concepts) connected by edges (dependencies).">graph</span> — or a <strong>forest</strong>. A graph is just this: <strong>nodes</strong> (each concept) connected by <strong>edges</strong> (each relation: "to understand A, you need B"). Learning Git, for example: "commit" depends on understanding "file" and "change"; "branch" depends on "commit"; "merge" depends on "branch." It's not a straight line — it's a network where everything builds on something that came before.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-4-t2-p2">Why is this view powerful? Because it explains <em>why</em> so many explanations fail: they try to teach you a node without you having its parent nodes. It's like reading chapter 7 without having read 1 through 6 — the words go by, but they don't <em>stick</em>, because they have nothing to anchor to. The graph also shows that there are many possible paths to the same destination, and that some are dead ends for <em>you</em> (depend on things you don't have yet). <strong>Common mistake:</strong> treating a subject as a "list of topics" and studying out of order. Without respecting the graph's edges, you keep jumping between disconnected nodes and nothing connects.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A graph of concepts: nodes connected by edges showing dependencies, forming a branching network like a forest" class="w-full h-auto" role="img" viewbox="0 0 1000 280">
+<defs>
+<pattern height="32" id="v34b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v34b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+</defs>
+<rect fill="url(#v34b-grid)" height="280" width="1000" x="0" y="0"></rect>
+<g fill="none" opacity="0.45" stroke="#a855f7" stroke-width="1.6">
+<path d="M150,140 L330,70"></path><path d="M150,140 L330,210"></path><path d="M330,70 L520,60"></path><path d="M330,70 L520,150"></path><path d="M330,210 L520,150"></path><path d="M330,210 L520,240"></path><path d="M520,60 L720,110"></path><path d="M520,150 L720,110"></path><path d="M520,150 L720,210"></path><path d="M520,240 L720,210"></path><path d="M720,110 L890,150"></path><path d="M720,210 L890,150"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+<circle cx="150" cy="140" fill="#1a1230" r="26" stroke="#c084fc" stroke-width="2"></circle><text fill="#d8b4fe" text-anchor="middle" x="150" y="144">base</text>
+<circle cx="330" cy="70" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="330" y="74">A</text>
+<circle cx="330" cy="210" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="330" y="214">B</text>
+<circle cx="520" cy="60" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="520" y="64">C</text>
+<circle cx="520" cy="150" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="520" y="154">D</text>
+<circle cx="520" cy="240" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="520" y="244">E</text>
+<circle cx="720" cy="110" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="720" y="114">F</text>
+<circle cx="720" cy="210" fill="#0e1b26" r="24" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" text-anchor="middle" x="720" y="214">G</text>
+<g filter="url(#v34b-glow)"><circle cx="890" cy="150" fill="#1a1230" r="26" stroke="#c084fc" stroke-width="3"></circle></g><text fill="#d8b4fe" text-anchor="middle" x="890" y="154">goal</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="272">Each node depends on the previous ones. Skip edges = nothing sticks.</text>
+</svg>
+</div>
+<img alt="Illustration: a bird's-eye view of a forest of knowledge, with concepts like trees connected by glowing paths" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-4-2.png"/>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> knowledge is a forest of connected concepts, not a list — each node builds on the ones before it.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-3-4#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🛤️ Linear path through the graph</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A trail guide in a huge forest. The forest has a thousand paths, but the guide takes you <em>a</em> route: clearing by clearing, in the order that makes sense, without getting lost. You don’t need to see the whole forest — just the next step, and the guide that knows the map.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-4-t3-p1">Here's the Teach skill's trick. Knowledge is a graph (topic 2), but <strong>you can’t learn a graph</strong> — your attention is linear, one concept at a time. So the skill does the translation: it traces a <span class="termo" title="A single-file route that traverses the graph in the right order, one concept at a time.">linear path</span> <em>by the</em> graph. In Pocock’s words, the skill sees knowledge as a forest and “creates a linear path through the graph.” It chooses which edge to follow now, respecting your dependencies and your ZPD—and postpones the rest.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-4-t3-p2">In the video demo, it does this for one <span class="termo" title="Someone who builds apps with AI without mastering the fundamentals of programming.">vibe coder</span> that wants to fill in gaps: the path starts with <strong>git</strong> (the “undo button”), then reading error messages, then debugging, then how software is delivered, then testing—a deliberate order, with each step building on the previous one. The skill also maintains the <span class="termo" title="File with the mission, starting point, decisions, and estimates.">learning record</span> to remember where you are along the way, and tells you to read the <strong>primary source</strong> (in the case of Git, the Pro Git book) instead of just trusting its summary. <strong>Common mistake:</strong> wanting to “see the whole map” before starting. The linear path exists precisely so you don’t get stuck in the vastness of the graph — trust the next step.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The same concept graph, but now with a lit path running through a sequence of nodes in order, from the start to the goal" class="w-full h-auto" role="img" viewbox="0 0 1000 280">
+<defs>
+<pattern height="32" id="v34c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v34c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v34c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#v34c-grid)" height="280" width="1000" x="0" y="0"></rect>
+<!-- arestas apagadas (grafo de fundo) -->
+<g fill="none" opacity="0.28" stroke="#64748b" stroke-width="1.4">
+<path d="M330,70 L520,60"></path><path d="M330,210 L520,240"></path><path d="M520,60 L720,110"></path><path d="M520,240 L720,210"></path><path d="M720,210 L890,150"></path>
+</g>
+<!-- caminho aceso -->
+<g fill="none" filter="url(#v34c-glow)" stroke="#c084fc" stroke-width="3">
+<path d="M176,140 L306,82" marker-end="url(#v34c-ah)"></path>
+<path d="M354,82 L496,150" marker-end="url(#v34c-ah)"></path>
+<path d="M544,150 L702,116" marker-end="url(#v34c-ah)"></path>
+<path d="M744,110 L864,146" marker-end="url(#v34c-ah)"></path>
+</g>
+<g font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<!-- nós fora do caminho -->
+<circle cx="520" cy="60" fill="#0e1b26" opacity="0.55" r="22" stroke="#475569" stroke-width="1.5"></circle>
+<circle cx="330" cy="210" fill="#0e1b26" opacity="0.55" r="22" stroke="#475569" stroke-width="1.5"></circle>
+<circle cx="520" cy="240" fill="#0e1b26" opacity="0.55" r="22" stroke="#475569" stroke-width="1.5"></circle>
+<circle cx="720" cy="210" fill="#0e1b26" opacity="0.55" r="22" stroke="#475569" stroke-width="1.5"></circle>
+<!-- nós do caminho (acesos) -->
+<g filter="url(#v34c-glow)">
+<circle cx="150" cy="140" fill="#1a1230" r="26" stroke="#c084fc" stroke-width="2.5"></circle>
+<circle cx="330" cy="70" fill="#1a1230" r="26" stroke="#c084fc" stroke-width="2.5"></circle>
+<circle cx="520" cy="150" fill="#1a1230" r="26" stroke="#c084fc" stroke-width="2.5"></circle>
+<circle cx="720" cy="110" fill="#1a1230" r="26" stroke="#c084fc" stroke-width="2.5"></circle>
+<circle cx="890" cy="150" fill="#1a1230" r="28" stroke="#a855f7" stroke-width="3"></circle>
+</g>
+<text fill="#d8b4fe" text-anchor="middle" x="150" y="144">git</text>
+<text fill="#d8b4fe" text-anchor="middle" x="330" y="74">errors</text>
+<text fill="#d8b4fe" text-anchor="middle" x="520" y="154">debug</text>
+<text fill="#d8b4fe" text-anchor="middle" x="720" y="114">deploy</text>
+<text fill="#d8b4fe" text-anchor="middle" x="890" y="154">tests</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="272">The skill lights up ONE path through the forest—the rest stays dark until it’s time.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Same graph as topic 2, now with the linear path lit up (the vibe coder’s route in the demo).</p>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: the Teach skill mapping your path</h3>
+<p class="text-neutral-300 text-sm mb-3">You install the skill (<code class="text-blue-300">npx skills latest add</code> → choose “teach”) and say the <strong>mission</strong>, not the subject: <em>"I want to deliver better software; I have a Next.js app that I work on with vibe coding, but I break things and don't know how to undo them."</em> See what the skill does, in order:</p>
+<ol class="space-y-2 text-sm text-neutral-300 list-decimal list-inside">
+<li><strong class="text-blue-300">Align the mission</strong> — asks what you build, what “better software” means to you, and what specific project you have in mind. Creates the <span class="termo" title="File with who you are, what you’re building, why it matters, and what success looks like.">MISSION.md</span>.</li>
+<li><strong class="text-blue-300">Locate in the graph</strong> — see that your meta-goal (“not breaking things / knowing how to undo them”) depends on git, and that git is your starting point.</li>
+<li><strong class="text-blue-300">Map the linear path</strong> — git → read errors → debugging → deploy → tests. Defer everything that's not in your ZPD right now.</li>
+<li><strong class="text-blue-300">Customize</strong> — checks your machine (is git installed?), generates a cheat sheet + the 1st lesson in <strong>HTML</strong> (opens in the browser, richer than the terminal), with real exercises in the terminal.</li>
+<li><strong class="text-blue-300">Points to the primary source</strong> — tells you to read the book Pro Git and invites you to ask questions and request the next lesson.</li>
+</ol>
+<p class="text-neutral-400 text-xs mt-3">Result: you don’t get “a git course.” You get <em>your</em> path through the git graph — calibrated to your mission.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> the skill turns the forest (graph) into a trail (linear path) you can actually walk.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-3-4#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🧠 Quizzes and recall</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> reading a map a hundred times won't make you remember the way. But trying to walk the path <em>with your eyes closed</em> once—and making mistakes and correcting them—imprints the route. Rereading is recognizing; trying to remember is encoding.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-4-t4-p1">This is the part that most distinguishes the Teach skill from a "polished summary." It uses <span class="termo" title="Questions that force you to retrieve the answer from memory.">quizzes</span> on purpose—and Pocock is emphatic: <em>"quizzes are unreasonably effective"</em> (quizzes are incredibly effective). The reason has a name in learning science: <span class="termo" title="Recall an answer from memory without looking—the opposite of rereading.">recall</span> (active recall). Every time you <em>pulls</em> an answer from memory instead of just rereading strengthens the neural pathway for that knowledge.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-4-t4-p2">The technical effect: the quiz increases the <span class="termo" title="How deeply and durably knowledge has been stored in memory.">storage strength</span> (retrieval strength) — exactly what Pocock says the skill aims for: “uses quizzes to increase retrieval strength.” Rereading gives you a <em>illusion</em> of familiarity (you recognize the text and think you know it), but recognizing ≠ recalling. That's why the skill's lessons come with <strong>real exercises in the terminal</strong>, not just multiple-choice questions: the exercise is the strongest form of recall there is—you produce the answer in the real environment. <strong>Common mistake:</strong> "studying" by rereading. Rereading is comfortable and almost useless for retention; the discomfort of trying to remember is exactly the sign that it's working.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: rereading leaves memory weak; taking a quiz strengthens retention, shown by a fuller, brighter bar" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v34d-grad" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#a855f7"></stop><stop offset="1" stop-color="#c084fc"></stop></lineargradient>
+<filter height="180%" id="v34d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v34d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v34d-grid)" height="220" width="1000" x="0" y="0"></rect>
+<line stroke="#475569" stroke-width="2" x1="120" x2="880" y1="180" y2="180"></line>
+<!-- reler -->
+<rect fill="#0e1b26" height="60" rx="6" stroke="#38bdf8" stroke-width="2" width="120" x="220" y="120"></rect>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="280" y="205">reread (recognize)</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="280" y="110">low storage strength</text>
+<!-- quiz -->
+<g filter="url(#v34d-glow)"><rect fill="url(#v34d-grad)" height="132" rx="6" stroke="#c084fc" stroke-width="2.5" width="120" x="640" y="48"></rect></g>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="700" y="205">quiz / recall</text>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="700" y="38">HIGH storage strength</text>
+<path d="M360,150 C470,150 530,114 620,114" fill="none" opacity="0.6" stroke="#c084fc" stroke-dasharray="5 4" stroke-width="2"></path>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="490" y="100">"quizzes are unreasonably effective"</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-4#q1">
+<p class="font-medium mb-4">Quick recall: why does the Teach skill prefer quizzes to just rereading?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because rereading is faster, and the quiz is only for grading.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because recalling from memory (recall) increases storage strength—rereading only creates the illusion of mastery.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because the model can’t generate enough text to reread.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> retrieving the answer from memory (recall) builds retention; rereading only provides recognition — hence the quizzes.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-3-4#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">⏳ Spaced repetition</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> watering a plant. A whole bucket of water at once drowns the roots and runs off. A little water at the right intervals helps the plant grow strong. Memory works the same way: spaced-out drops beat cramming everything into one review.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-4-t5-p1">Quizzes reinforce learning (topic 4), but memory <strong>leaks over time</strong> — is the “forgetting curve.” The antidote is <span class="termo" title="Review at increasing intervals instead of all at once.">spaced repetition</span> (spaced repetition): review the same concept again just before you forget it, at intervals that <em>growing</em> (1 day, 3 days, 1 week, 1 month). Each successful review lengthens the next interval. It's the opposite of "staying up all night studying": the <span class="termo" title="Study everything at once, the night before — it fills your head and empties quickly.">cramming</span> fills your head for hours and empties it in days.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-4-t5-p2">Where does this fit into the Teach skill? This is where the fact that it’s a <span class="termo" title="A skill that preserves state between sessions — remembers what you did.">stateful skill</span> (we saw in 3.3) makes a difference. Since it keeps the <strong>learning record</strong>, it knows what you’ve already seen and <em>when</em> — so it can bring you back to old concepts at the right moment, instead of just pushing new content. The structure itself—“finish the lesson, ask for the next one, revisit the primary source”—builds spaced repetition into the routine. <strong>Common mistake:</strong> learn it once and never revisit it. Without spacing, even strong recall fades—real retention requires revisiting, not just visiting.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="The forgetting curve declining, with spaced reviews (1, 3, 7 days) that rebuild memory higher each time and make it last longer" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<pattern height="32" id="v34e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v34e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+</defs>
+<rect fill="url(#v34e-grid)" height="240" width="1000" x="0" y="0"></rect>
+<line stroke="#475569" stroke-width="2" x1="80" x2="940" y1="200" y2="200"></line>
+<line stroke="#475569" stroke-width="2" x1="80" x2="80" y1="200" y2="30"></line>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="end" x="70" y="40">memory</text>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="11" text-anchor="end" x="935" y="222">time →</text>
+<!-- decaimentos entre revisões -->
+<g fill="none" opacity="0.45" stroke="#64748b" stroke-width="2">
+<path d="M80,60 Q160,150 240,180"></path>
+<path d="M240,90 Q360,150 480,170"></path>
+<path d="M480,70 Q620,120 760,150"></path>
+</g>
+<!-- revisões (subidas) acesas -->
+<g fill="none" filter="url(#v34e-glow)" stroke="#c084fc" stroke-width="3">
+<path d="M240,180 L240,90"></path>
+<path d="M480,170 L480,70"></path>
+<path d="M760,150 L760,55"></path>
+</g>
+<g fill="#d8b4fe" font-family="Inter,sans-serif" font-size="11" font-weight="600">
+<circle cx="80" cy="60" fill="#c084fc" r="5"></circle><text x="92" y="50">learns</text>
+<circle cx="240" cy="90" fill="#c084fc" r="5"></circle><text fill="#9ca3af" font-weight="400" text-anchor="middle" x="240" y="232">+1 day</text>
+<circle cx="480" cy="70" fill="#c084fc" r="5"></circle><text fill="#9ca3af" font-weight="400" text-anchor="middle" x="480" y="232">+3 days</text>
+<circle cx="760" cy="55" fill="#c084fc" r="5"></circle><text fill="#9ca3af" font-weight="400" text-anchor="middle" x="760" y="232">+1 week</text>
+</g>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle" x="500" y="22">Each review rebuilds memory — and slows forgetting.</text>
+</svg>
+</div>
+<img alt="Illustration: drops of light watering a knowledge plant at intervals, symbolizing spaced repetition" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-4-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> reviewing at increasing intervals (drops, not buckets) beats the forgetting curve.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-3-4#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🎚️ Customization</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A private tutor who already knows your desk, your tools, and your goal — and therefore never teaches you what you already know or what isn’t useful to you. It’s the opposite of a generic workbook that’s the same for everyone.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-4-t6-p1">Everything we’ve seen — ZPD, graph, linear path, recall, spaced repetition — works only because the skill <strong>knows you</strong>. It starts from your <span class="termo" title="What you want to achieve—not the abstract topic.">mission</span> ("talking to a teacher; the agent is my teacher", says Pocock), checks your machine setup (git installed? which project?), and saves everything in the learning record. That's why the 1st lesson is already tailored: the cheat sheet is for <em>your</em> case, the exercises run in the <em>your</em> terminal.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-4-t6-p2">It’s this combination — real learning principles + personal state — that makes Pocock call the Teach skill <em>"extremely effective"</em> and tell them that <strong>learned the Rubik’s Cube with her and can solve it from memory</strong>. The bigger lesson for you as a skill builder: teaching that sticks isn't "explaining well"; it's <em>orchestrate</em> (target the ZPD, walk the graph in a line, force recall, space out reviews) based on who the person is. <strong>Common mistake:</strong> asking “teach me X” in general. State the mission and starting point — that’s what enables personalization. Use the prompt below as a starting point:</p>
+<div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-purple-400 font-mono">acionar-a-teach-skill.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># Acione a teach skill pela MISSÃO, não pelo assunto.
+# (instalar antes:  npx skills latest add  → escolher "teach")
+
+Use a teach skill comigo.
+
+Minha missão: quero entregar software melhor — tenho um app
+em Next.js que eu mexo no vibe-coding, mas quebro coisas e
+não sei desfazer com segurança.
+
+Antes de ensinar:
+1. Descubra meu ponto de partida (o que eu já sei / não sei).
+2. Trace um caminho linear pelo grafo, respeitando a ZDP.
+3. Cada lição: HTML no browser + exercício real no terminal.
+4. Use quizzes pra fixar (recall) e me lembre de revisar
+   o que vimos antes (spaced repetition).
+5. Aponte a fonte primária e salve no learning record.</pre>
+</div>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Funnel: mission, starting point, and machine setup converge on a personalized lesson calibrated to the ZPD" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs><pattern height="32" id="v34f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern><marker id="v34f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#c084fc"></path></marker><filter height="180%" id="v34f-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter></defs>
+<rect fill="url(#v34f-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="180" x="40" y="30"></rect><text fill="#bfe6ff" text-anchor="middle" x="130" y="52">your mission</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="180" x="40" y="83"></rect><text fill="#bfe6ff" text-anchor="middle" x="130" y="105">starting point</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="180" x="40" y="136"></rect><text fill="#bfe6ff" text-anchor="middle" x="130" y="158">machine setup</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#c084fc" stroke-width="2"><path d="M220,47 C420,47 520,100 640,100" marker-end="url(#v34f-ah)"></path><path d="M220,100 C420,100 520,100 640,100" marker-end="url(#v34f-ah)"></path><path d="M220,153 C420,153 520,100 640,100" marker-end="url(#v34f-ah)"></path></g>
+<g filter="url(#v34f-glow)"><rect fill="#1a1230" height="66" rx="14" stroke="#c084fc" stroke-width="2.5" width="300" x="640" y="68"></rect></g>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="790" y="98">personalized lesson</text>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="790" y="118">calibrated to your ZPD</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-4#q2">
+<p class="font-medium mb-4">Quick recall: when activating the Teach skill, what should you talk about first?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">From the abstract topic (“teach me everything about git”).</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">From your mission and starting point—that’s what connects personalization and calibrates the ZPD.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">From the model you want to use (Opus, Fable…).</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> teaching that sticks is orchestration (ZPD + graph + recall + spacing) on top of whoever <em>you</em> é.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">ZDP</strong><span class="text-neutral-400"> — teach at the next step: not too easy, not too far away.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Graph → linear path</strong><span class="text-neutral-400"> — knowledge is a forest; a skill lays a trail through it, one step at a time.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Quizzes / recall</strong><span class="text-neutral-400"> — retrieving from memory increases storage strength; rereading only builds recognition.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Spaced repetition + personalization</strong><span class="text-neutral-400"> — review at increasing intervals, calibrated to your mission.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-purple-400 mb-2">Next module:</h3><p class="text-neutral-300">3.5 — Grill-me &amp; adversarial skills: the skill that interviews you and aligns understanding <em>before</em> to code.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="modulo-3-5.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-3-4#q1', { answer: 1, explain: { 0: 'Não — o quiz não é só nota; o ponto é o recall.', 1: 'Isso! Recall aumenta a storage strength; reler só dá ilusão de domínio.', 2: 'Nada a ver com tamanho de geração — é sobre como a memória fixa.' } });
+        INEMA.registerCheck('modulo-3-4#q2', { answer: 1, explain: { 0: 'Não — falar do assunto abstrato impede a calibragem na ZDP.', 1: 'Exato! Missão + ponto de partida é o que personaliza e mira a ZDP.', 2: 'O modelo é detalhe; o que liga o ensino é sua missão.' } });
+      }
+    });
+  </script>
+</body>
+</html>

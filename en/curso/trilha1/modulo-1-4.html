@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>1.4 DX × AX | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #34d399; cursor: help; font-weight: 600; color: #6ee7b7; }
+    html:not(.dark) .termo { color: #047857; border-color: #059669; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5,150,105,0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5,150,105,0.18); }
+    html:not(.dark) .hover\:text-emerald-400:hover { color: #059669; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha1/modulo-1-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha1/modulo-1-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha1/modulo-1-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-1-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha1/modulo-1-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-emerald-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-emerald-400 bg-emerald-500/10" href="index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-emerald-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-emerald-400" href="index.html">Track 1</a><span>/</span>
+<span class="text-emerald-400">Module 1.4 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-emerald-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-4">MODULE 1.4 · TEACHING MODE</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🤝 DX × AX</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">You already take care of <strong class="text-emerald-400">DX</strong> (the experience of someone who codes). Now a powerful new concept comes in: <strong class="text-emerald-400">AX</strong> — the experience the <em>agent</em> has inside your project. The good news: the two things <strong>overlap almost entirely</strong>. Designing the codebase for the agent is, in practice, designing it for humans too. Each new word is explained right away.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">~40</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Zero</div><div class="text-xs text-neutral-400">Prerequisite</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-emerald-400">Practice</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 1.4 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:1-4" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-emerald-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-1">1. What is Agent Experience</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-2">2. The DX/AX overlap</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-3">3. Guard rails and navigability</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-4">4. Documentation that points the way</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-5">5. The codebase as the agent’s environment</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10" href="#topico-6">6. Measuring Good AX</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-emerald-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">These are the NEW terms in this module. The core vocabulary (model, prompt, agent, skill, codebase, harness) was already defined in module 1.1 — here we just use it. Learn these:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">DX (Developer Experience)</strong> — a <em>the experience of someone who programs</em>. How easy and enjoyable it is for a <strong>human</strong>, understand, navigate, and change the project: clear names, ready-to-use scripts, readable errors, organized code. "Good DX" = developers feel at home.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">AX (Agent Experience)</strong> — a <em>experience that the <strong>agent</strong> has in the codebase</em>. How easy it is for the AI to find things, understand what does what, and make changes without breaking anything. “Good AX” = the agent makes fewer mistakes and uses fewer tokens.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Overlap</strong> — the area two things have in common. Here: almost everything that improves DX also improves AX. “Huge overlap,” in Matt Pocock’s words.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Guardrail (safety net)</strong> — a “fence” that prevents mistakes: types, tests, linter, validation. Anyone who hits it is notified right away, before anything breaks.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Navigability</strong> — how easy it is to <em>find</em> in the project: finding where everything lives, moving from one file to another without getting lost. An organized folder = good navigation.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-emerald-400">Tokens</strong> — the “little pieces” of text the model reads and writes; this is the unit you pay for and that fits in the context window. A messy codebase = more tokens “banging their heads” (more expensive).</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🤖 What Agent Experience is</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A new employee joins your company. If the desk is organized, there’s a manual in the drawer, and everything is labeled, they’re productive on day one. If it’s a mess with no map, they spend the week lost. The <em>agent</em> is this new employee—and the codebase is the company that welcomes them.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-4-t1-p1">You already know <span class="termo" title="Developer Experience—the experience of someone who writes code: how easy it is to understand, navigate, and change the project.">DX</span> (Developer Experience): everything that makes a project pleasant for a <strong>human</strong> programming — clear names, ready-to-run scripts, readable error messages. Matt Pocock introduces its sibling: <strong class="text-emerald-400">AX</strong>, of <span class="termo" title="Agent Experience — the experience an agent has inside the codebase: how easy it is for AI to find, understand, and change things.">Agent Experience</span> — literally, <em>"the agent's experience with the codebase"</em>. It’s the same question, just asked from the AI’s point of view: when the <span class="termo" title="The model with tools, acting on its own in steps.">agent</span> enters your project, can it find its way around? Understand what does what? Make changes without breaking three other things?</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-4-t1-p2">Why does this matter, and why now? Because the agent has become a “collaborator” that works in your <span class="termo" title="The set of files in your project—the ground where the agent works.">codebase</span> for real: it reads files, runs commands, edits code. If the codebase is a maze, the agent gets lost just like a human—except it “gets lost” spending <span class="termo" title="The little pieces of text the model reads and writes; that’s what you pay for.">tokens</span>, trying, failing, rereading. Good AX isn’t an aesthetic detail: it’s what helps the agent get it right the first time and keeps it cheap. The <strong>common mistake</strong> the trap is treating AX as "an AI thing, separate from my dev work"—when, as we'll see, it's almost the same work.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Two characters entering the same codebase: a human (DX) and an AI agent (AX), asking the same questions" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v14a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v14a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v14a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v14a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="130" rx="14" stroke="#38bdf8" stroke-width="2" width="200" x="60" y="60"></rect>
+<text fill="#bfe6ff" font-size="17" font-weight="700" text-anchor="middle" x="160" y="100">DX · human</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="160" y="128">"where is this?"</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="160" y="150">"how do I run it?"</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="160" y="172">"will I break something?"</text>
+</g>
+<g filter="url(#v14a-glow)"><rect fill="#0e2018" height="150" rx="16" stroke="url(#v14a-grad)" stroke-width="2.5" width="200" x="400" y="50"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="500" y="115">CODEBASE</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="142">the same landscape</text>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e2018" height="130" rx="14" stroke="#34d399" stroke-width="2" width="200" x="740" y="60"></rect>
+<text fill="#34d399" font-size="17" font-weight="700" text-anchor="middle" x="840" y="100">AX · agent</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="840" y="128">"where is this?"</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="840" y="150">"how do I run it?"</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="840" y="172">"will I break something?"</text>
+</g>
+<path d="M260,125 L400,125" fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="2"></path>
+<path d="M600,125 L740,125" fill="none" opacity="0.6" stroke="#34d399" stroke-width="2"></path>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">The human and agent enter the same codebase and ask the same questions. AX = this experience, seen from the AI’s side.</p>
+</div>
+<img alt="Concept illustration: a glowing AI agent entering an organized codebase like a new employee welcomed with a map" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-4-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Common beginner mistake</h3>
+<p class="text-neutral-300 text-sm">Think that "improving AX" means buying a better model. No — AX is about the <em>environment</em> that you give the agent. A top model in a chaotic codebase still gets tangled up; a modest model in a clean codebase flies.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> AX is the experience the agent has in your codebase — treat AI like a new employee who needs to find their way around.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-emerald-400">Going deeper (optional): why "experience," and not just "clean code"?</summary>
+<p class="text-sm text-neutral-300 mt-3">"Experience" is bigger than "pretty code." It includes the <em>process</em> working there: how long it takes to find the right file, whether an error warns you early or late, whether there’s an obvious path. That’s why AX (like DX) measures the entire work journey—not just the static final result.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🔵 The DX/AX overlap</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> an accessibility ramp at the entrance to a building. It was designed with wheelchair users in mind—but anyone pushing a stroller, carrying a suitcase, or with a bad knee benefits too. You didn’t need two construction projects: one served everyone. DX and AX work like that.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-4-t2-p1">Here's the heart of the module, in Pocock's exact words: <em>"Huge overlap between good DX and good AX"</em> — there's a <span class="termo" title="The area shared by two things; here, almost everything that helps the human also helps the agent.">huge overlap</span> between a good developer experience and a good agent experience. Why? Because both run into the same obstacles. A confusing variable name confuses the human <em>e</em> the agent. A test that fails early protects both. An organized folder helps both find what they need. These aren’t two separate jobs—it’s almost the same work paying off twice.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-4-t2-p2">Pocock lists what improves AI's results: <strong>better skills, a stronger model, a better harness — and improve the codebase</strong>, which he calls “the most frequently forgotten.” And he concludes: <em>"a good senior engineer knows how to build DX that becomes AX"</em>. In other words: the skills that make you a good engineer for humans are exactly what make your codebase good for agents. The <strong>common mistake</strong> is imagining that AI requires an exotic, new set of practices; most of the time, it means doing the basics you should already be doing with care. One honest detail to keep in mind: the overlap is <em>huge</em>, not 100%—there are agent-only adjustments (e.g., an instruction file the agent reads), but the foundation is shared.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Venn diagram: the DX circle and the AX circle overlap almost completely; the bright intersection contains clear names, tests, an organized folder, and docs" class="w-full h-auto" role="img" viewbox="0 0 1000 260">
+<defs>
+<lineargradient id="v14b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v14b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v14b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v14b-grid)" height="260" width="1000" x="0" y="0"></rect>
+<circle cx="420" cy="130" fill="#0e1b26" opacity="0.92" r="115" stroke="#38bdf8" stroke-width="2.5"></circle>
+<circle cx="580" cy="130" fill="#0e2018" opacity="0.78" r="115" stroke="#34d399" stroke-width="2.5"></circle>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="22" font-weight="700" text-anchor="middle" x="320" y="135">DX</text>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="22" font-weight="700" text-anchor="middle" x="680" y="135">AX</text>
+<g filter="url(#v14b-glow)"><ellipse cx="500" cy="130" fill="url(#v14b-grad)" opacity="0.22" rx="58" ry="100" stroke="#10b981" stroke-width="2"></ellipse></g>
+<g fill="#d8fff0" font-family="Inter,sans-serif" font-size="12.5" font-weight="600" text-anchor="middle">
+<text x="500" y="92">clear names</text>
+<text x="500" y="116">tests / linter</text>
+<text x="500" y="140">organized folder</text>
+<text x="500" y="164">useful docs</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="240">The intersection (what shines) is almost everything: improving one almost always improves the other.</text>
+</svg>
+</div>
+<img alt="Illustration: two overlapping worlds, the human developer's and the AI agent's, sharing the same well-maintained code structure" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-4-2.png"/>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-4#q1">
+<p class="font-medium mb-4">Quick recall: why does taking care of DX already improve AX?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because the agent reads Anthropic’s documentation before programming.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because humans and agents run into the same obstacles: what helps one almost always helps the other (huge overlap).</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because DX and AX are exactly the same thing, with no difference at all.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> there’s a huge overlap between DX and AX — getting the basics right for humans already gives agents a good codebase.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🛡️ Guardrails and navigability</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A mountain road. The <em>guardrails</em> (guardrails) keep the car from going over the cliff if it leaves the road; and the <em>signs</em> tell you where to turn. You drive quickly and confidently because you know that if you make a mistake, you’ll be alerted right away—not three turns later.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-4-t3-p1">Two concrete AX levers. The first is <span class="termo" title="Guardrails that prevent errors: types, tests, linter, validation — they alert you right away.">guardrails</span> (guardrails): types, automated tests, <span class="termo" title="A tool that flags style issues/errors in code before it runs.">linter</span>, validations. They turn a silent error (one that only shows up three steps later) into an error <strong>noisy and immediate</strong>. Pocock directly links this to cost: with guard rails, the model makes fewer mistakes and spends <em>"fewer tokens banging its head against the wall"</em> — fewer tokens banging your head against the wall. Without them, AI tries, breaks something far away, finds out late, and redoes everything — expensive and slow.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-4-t3-p2">The second lever is the <span class="termo" title="How easy it is to find where each thing lives and move from one file to another without getting lost.">navigability</span>: the agent needs <em>find</em> the things. Folders with names that tell you what's inside, files in predictable places, modules with clear boundaries. A navigable codebase is a map; a messy one is a maze. And note: both levers serve humans and agents equally—the overlap from topic 2 in action. The <strong>common mistake</strong> is turning off the guardrails “to go faster”: you trade a cheap, immediate warning for an expensive, delayed bug.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A road with guardrails on both sides: the agent moves fast and gets stopped early by types, tests, and the linter before plunging into the bug abyss" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v14c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v14c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v14c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v14c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker>
+</defs>
+<rect fill="url(#v14c-grid)" height="220" width="1000" x="0" y="0"></rect>
+<line opacity="0.7" stroke="#34d399" stroke-width="3" x1="40" x2="960" y1="70" y2="70"></line>
+<line opacity="0.7" stroke="#34d399" stroke-width="3" x1="40" x2="960" y1="150" y2="150"></line>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="26" rx="7" stroke="#38bdf8" stroke-width="2" width="120" x="250" y="48"></rect><text fill="#bfe6ff" text-anchor="middle" x="310" y="66">types</text>
+<rect fill="#0e1b26" height="26" rx="7" stroke="#38bdf8" stroke-width="2" width="120" x="450" y="48"></rect><text fill="#bfe6ff" text-anchor="middle" x="510" y="66">tests</text>
+<rect fill="#0e1b26" height="26" rx="7" stroke="#38bdf8" stroke-width="2" width="120" x="650" y="48"></rect><text fill="#bfe6ff" text-anchor="middle" x="710" y="66">linter</text>
+</g>
+<g filter="url(#v14c-glow)"><circle cx="120" cy="110" fill="url(#v14c-grad)" r="26" stroke="#10b981" stroke-width="2.5"></circle></g>
+<text fill="#06281d" font-family="Inter,sans-serif" font-size="13" font-weight="700" text-anchor="middle" x="120" y="115">agent</text>
+<path d="M150,110 L860,110" fill="none" marker-end="url(#v14c-ah)" opacity="0.75" stroke="#34d399" stroke-width="2.2"></path>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="500" y="200">Move fast AND stay protected: make fewer mistakes, spend fewer tokens, and avoid falling into the bug abyss.</text>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> guardrails flag errors early (fewer tokens), and navigability keeps the agent from getting lost—both serve humans and AI.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">🧭 Documentation that shows the way</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> in a huge mall, what helps you most isn't the 80-page brochure—it's the "YOU ARE HERE" sign with an arrow pointing to the store you want. Good documentation for the agent is the arrow, not the encyclopedia.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-4-t4-p1">Documentation is part of AX—but the right kind. It’s not long, generic text that no one reads: it’s docs that <strong>points the way</strong>. Think of three things: (1) an entry file that says “this project does X, start here, run this command”; (2) <span class="termo" title="When you change one part, the code points to the related part that also needs to change.">notes that connect the pieces</span> ("if you change this, check that too"); and (3) examples of "how we do things here" (the project's conventions). For the agent, this is gold: it saves dozens of trial-and-error reads.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-4-t4-p2">And there it is again, the overlap: the same sign that guides the agent guides the new person on the team. The golden rule is <strong>document the path, not everything</strong> — one arrow in the right place is worth more than a thousand pages. The <strong>common mistake</strong> has two sides: either no docs (the agent guesses and gets the pattern wrong), or docs <em>too much</em> (the agent—and the human—drown and the text grows stale and outdated, becoming a trap that points in the wrong direction). The goal is the middle ground: a few arrows, accurate and up to date.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A “you are here” sign with short arrows pointing to the right files, instead of one giant block of text" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs>
+<lineargradient id="v14d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v14d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v14d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v14d-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#38bdf8"></path></marker>
+</defs>
+<rect fill="url(#v14d-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g filter="url(#v14d-glow)"><rect fill="#0e2018" height="70" rx="14" stroke="url(#v14d-grad)" stroke-width="2.5" width="230" x="60" y="70"></rect></g>
+<text fill="#34d399" font-family="Inter,sans-serif" font-size="16" font-weight="700" text-anchor="middle" x="175" y="100">YOU ARE HERE</text>
+<text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="175" y="122">start here →</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="240" x="700" y="30"></rect><text fill="#bfe6ff" text-anchor="middle" x="820" y="52">command to run</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="240" x="700" y="88"></rect><text fill="#bfe6ff" text-anchor="middle" x="820" y="110">project standard</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="240" x="700" y="146"></rect><text fill="#bfe6ff" text-anchor="middle" x="820" y="168">change this → look at that</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#38bdf8" stroke-width="2"><path d="M290,95 C480,80 560,47 700,47" marker-end="url(#v14d-ah)"></path><path d="M290,105 C480,105 560,105 700,105" marker-end="url(#v14d-ah)"></path><path d="M290,118 C480,135 560,163 700,163" marker-end="url(#v14d-ah)"></path></g>
+</svg>
+</div>
+<img alt='Illustration: a glowing map with short arrows pointing the way through a codebase, in a "you are here" style' class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha1/assets/img/m1-4-3.png"/>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: the same request in two codebases</h3>
+<p class="text-neutral-300 text-sm mb-3">Task: <em>"add an endpoint that lists a customer's orders"</em>. Same AI, two environments (DX/AX):</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Poor AX</p><p class="text-xs text-neutral-300">Folders with vague names (<code>utils2</code>, <code>final</code>), with no types or tests, no docs. → The agent reads 20 files to guess the pattern, invents a format that differs from the rest, breaks another route, and only finds out when you run it manually. Expensive in tokens, slow, and still reviews it incorrectly.</p></div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-semibold text-sm mb-1">Good AX</p><p class="text-xs text-neutral-300">Folder <code>routes/</code> obvious, types for the request/response, an example test alongside it, and a short doc on "how we create routes here." → The agent finds the pattern in one read, copies the format, the type catches the error immediately, and the test confirms it. Gets it right the first time, cheaply.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> document the <em>path</em> (well-aimed arrows), not everything—the AI and the new human follow the same arrow.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🏗️ The codebase as the agent’s environment</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A professional kitchen. The chef (the AI) is great — but if the counters are dirty, the knives are hidden, and the ingredients are unlabeled, they cook slowly and make mistakes. Organize the kitchen and the same chef triples their output. The codebase is the kitchen.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m1-4-t5-p1">Go back to module 1.1: the harness is four things—prompts, skills, environment, and <strong>codebase</strong>. Pocock points out that the codebase is the “most frequently forgotten” piece when people want to improve AI results. People refine the prompt and hunt for skills, but leave the ground messy. Improving the codebase <em>é</em> improve the environment where the agent lives — and as we saw in the glossary, a confusing environment = more tokens banging into walls, which means more cost and more errors.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-4-t5-p2">Here's the bridge to the rest of Track 1, in Pocock's exact words: <em>"Have a codebase that's easier to make changes in → you can employ a stupider/cheaper model to do the same work"</em>. In other words, an easy-to-change codebase lets you use a <strong>cheaper model</strong> for the same work — because the guard rails save attempts. And the reverse: <em>"Hamstring your model from day one → you need a smart model"</em> — if you sabotage the AI with a bad codebase from day one, you’ll need (and pay for) an expensive model just to make up for it. That’s exactly the topic of the next module, 1.5 — Token Economy. The <strong>common mistake</strong>: treat “refactor the codebase” as an optional luxury; it’s actually the cheapest cost lever you have.</p>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison: a poor codebase requires an expensive model; a good codebase lets a cheaper model do the same work" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v14e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#34d399"></stop><stop offset="1" stop-color="#10b981"></stop></lineargradient>
+<filter height="180%" id="v14e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v14e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v14e-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="140" opacity="0.85" rx="14" stroke="#b91c1c" stroke-width="2" width="380" x="60" y="40"></rect>
+<text fill="#fca5a5" font-size="16" font-weight="700" text-anchor="middle" x="250" y="74">bad codebase 🔥</text>
+<text fill="#f3c7c7" font-size="12.5" text-anchor="middle" x="250" y="104">maze · no guardrails</text>
+<text fill="#f3c7c7" font-size="12.5" text-anchor="middle" x="250" y="132">→ needs an EXPENSIVE MODEL</text>
+<text fill="#f3c7c7" font-size="12.5" text-anchor="middle" x="250" y="158">more tokens, more errors</text>
+<g filter="url(#v14e-glow)"><rect fill="#0e2018" height="140" rx="14" stroke="url(#v14e-grad)" stroke-width="2.5" width="380" x="560" y="40"></rect></g>
+<text fill="#34d399" font-size="16" font-weight="700" text-anchor="middle" x="750" y="74">good codebase ✓</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="750" y="104">map · with guard rails</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="750" y="132">→ a CHEAP MODEL is enough</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="750" y="158">few tokens, get it right early</text>
+</g>
+</svg>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-emerald-400">Going deeper (optional): "stupider model" isn't an insult—it's a cost strategy</summary>
+<p class="text-sm text-neutral-300 mt-3">Simpler models cost less per token and respond faster. When the codebase does the heavy lifting (flags the error, shows the pattern, keeps everything in place), the model doesn’t need to be brilliant—just capable. You trade "expensive model intelligence" for "good, inexpensive architecture you built once." That’s the secret to lowering costs on Path 1.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> the codebase is the agent’s environment—making it easier to work in lets a cheaper model do the same job.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-1-4#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">📏 Measuring good AX</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you don't know whether the kitchen really improved by "guesswork" — you time it: does the dish come out faster? Is it right the first time? It's the same with the codebase: AX is measured by the agent's behavior, not by your impression.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m1-4-t6-p1">Wrapping up: how do you know if your AX is good? Not by feel—by <strong>observable signals</strong> in the agent's work. Did it get it right the first time or redo it several times? Did it find the right file quickly or read half the project? Did it break something else or did the guard rails catch it? Did it use few or many tokens? Whenever you "improve the AI," translate that into "improve the AX"—and use the checklist below to diagnose it. Copy and paste this when the agent struggles with your project:</p>
+<div class="copybox bg-dark-900 border border-emerald-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-emerald-400 font-mono">checklist-de-AX.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed">O agente patinou no projeto? Antes de trocar de modelo, cheque a AX:
+[ ] NAVEGABILIDADE — pastas/nomes dizem o que contêm? O caminho é óbvio?
+[ ] GUARD RAILS — tem tipos + testes + linter avisando o erro CEDO?
+[ ] DOCS QUE APONTAM — há "comece aqui", o padrão do projeto, "mude X -&gt; veja Y"?
+[ ] CODEBASE LIMPO — fácil de mudar, ou um labirinto que gasta tokens?
+Sinais de boa AX: acerta de 1a · acha rápido · não quebra o resto · poucos tokens.
+Se 2+ falharam, o problema é a AX (o ambiente) — não o modelo.</pre>
+</div>
+<div class="rounded-2xl border border-emerald-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Four AX levers (navigability, guard rails, docs, clean codebase) converging on signals of good agent outcomes" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs><pattern height="32" id="v14f-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#10b981" opacity="0.12" r="1.3"></circle></pattern><marker id="v14f-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#34d399"></path></marker></defs>
+<rect fill="url(#v14f-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="18"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="38">navigability</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="58"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="78">guardrails</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="98"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="118">docs that point</text>
+<rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="170" x="40" y="138"></rect><text fill="#bfe6ff" text-anchor="middle" x="125" y="158">clean codebase</text>
+</g>
+<g fill="none" opacity="0.55" stroke="#34d399" stroke-width="1.8"><path d="M210,33 C420,33 520,90 660,90" marker-end="url(#v14f-ah)"></path><path d="M210,73 C420,73 540,90 660,90" marker-end="url(#v14f-ah)"></path><path d="M210,113 C420,113 540,90 660,90" marker-end="url(#v14f-ah)"></path><path d="M210,153 C420,153 520,90 660,90" marker-end="url(#v14f-ah)"></path></g>
+<rect fill="#0e2018" height="64" rx="14" stroke="#34d399" stroke-width="2.5" width="300" x="660" y="58"></rect><text fill="#34d399" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="810" y="86">good AX</text><text fill="#9fe7c8" font-family="Inter,sans-serif" font-size="11.5" text-anchor="middle" x="810" y="107">gets it right on the first try · few tokens</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-1-4#q2">
+<p class="font-medium mb-4">Quick retrieval: what is the best sign that your AX is GOOD?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">You "feel" that the codebase looks good.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">The agent gets it right on the first try, finds it quickly, doesn’t break anything else, and uses few tokens.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">You're using the most expensive model available.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-emerald-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-emerald-400">In one sentence:</strong> measure AX by the agent’s behavior — first-try success, speed to find things, nothing broken, few tokens.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-emerald-900/40 via-dark-800 to-dark-800 rounded-xl border border-emerald-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">AX = Agent Experience</strong><span class="text-neutral-400"> — the experience the agent has in your codebase (the counterpart to DX, the human experience).</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Huge DX↔AX overlap</strong><span class="text-neutral-400"> — polishing things for humans almost always works for AI too. A good senior developer builds DX that becomes AX.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Guardrails + navigability + signposting docs</strong><span class="text-neutral-400"> — errors flagged early, terrain you can find, precise arrows.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-emerald-400 mt-1">✓</span><div><strong class="text-white">Easy codebase = cheaper model</strong><span class="text-neutral-400"> — improve the environment and measure AX by the agent's behavior.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-emerald-400 mb-2">Next module:</h3><p class="text-neutral-300">1.5 — Token efficiency: why a codebase that's easy to change lets you use a cheaper model for the same work.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-500 transition-colors" href="modulo-1-5.html">Next Module →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-1-4#q1', { answer: 1, explain: { 0: 'O agente não depende de doc externa pra isso — o ganho vem do overlap.', 1: 'Isso! Humano e agente batem nos mesmos obstáculos — o famoso "huge overlap".', 2: 'Quase: há sobreposição enorme, mas não são 100% idênticas (há ajustes só-pra-agente).' } });
+        INEMA.registerCheck('modulo-1-4#q2', { answer: 1, explain: { 0: 'Bonito não é métrica — AX se mede pelo comportamento do agente.', 1: 'Exato! Acerto de 1ª, rapidez pra achar, nada quebrado e poucos tokens = boa AX.', 2: 'Modelo caro não é sinal de boa AX — boa AX deixa até um modelo barato ir bem.' } });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>5.4 Setup AFK completo | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+    } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "harness",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos do Harness", "modules": [
+        { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+        { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+        { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+        { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+      ]},
+      { "n": "2", "title": "Habilidades Humanas", "modules": [
+        { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+        { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+        { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+        { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+      ]},
+      { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+        { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+        { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+        { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+        { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+      ]},
+      { "n": "4", "title": "Técnicas Avançadas", "modules": [
+        { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+        { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+        { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+        { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+      ]},
+      { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+        { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+        { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+        { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+        { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+      ]}
+    ]
+  }
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #2dd4bf; cursor: help; font-weight: 600; color: #5eead4; }
+    html:not(.dark) .termo { color: #0f766e; border-color: #0d9488; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13,148,136,0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13,148,136,0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13,148,136,0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13,148,136,0.18); }
+    html:not(.dark) .hover\:text-teal-400:hover { color: #0d9488; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha5/modulo-5-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha5/modulo-5-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha5/modulo-5-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha5/modulo-5-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-5-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-teal-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-teal-400 bg-teal-500/10" href="index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Ruta de navegación" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-teal-400" href="../../index.html">Inicio</a><span>/</span>
+<a class="hover:text-teal-400" href="index.html">Ruta 5</a><span>/</span>
+<span class="text-teal-400">Módulo 5.4 · modo de enseñanza</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-teal-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-teal-500/20 text-teal-400 text-xs font-semibold rounded-full mb-4">MÓDULO 5.4 · "MODO ENSEÑANZA"</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🛰️ Setup AFK completo</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">El setup de Matt Pocock, listo para copiar. Vas a montar, desde cero: <strong class="text-teal-400">Claude Code con Opus 4.8 en medium effort</strong> para planificar e implementar localmente; ejecutar la mayor parte del trabajo <strong class="text-teal-400">AFK</strong> en <strong class="text-teal-400">sandboxes</strong> (Sand Castle, Docker/Podman o Vercel); y <strong class="text-teal-400">traer los commits de vuelta</strong>. Cada término se explica en el momento.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">6</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">~30</div><div class="text-xs text-neutral-400">Minutos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Práctico</div><div class="text-xs text-neutral-400">Nivel</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-teal-400">Receta</div><div class="text-xs text-neutral-400">Tipo</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso del módulo 5.4" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:5-4" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso:</span>
+<span class="inema-meter-pct text-teal-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Índice de la página" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Sección <span class="inema-toc-pos">1</span> de <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-1">1. Claude Code + Opus 4.8 medium</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-2">2. AFK mediante sandbox</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-3">3. Configuración de Sand Castle</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-4">4. Paralelizar de forma segura</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-5">5. Recuperar commits</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10" href="#topico-6">6. Tu configuración mínima</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-teal-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-teal-400 mb-2 flex items-center"><span class="mr-2">📖</span> Glosario vivo (lee antes — vuelve siempre que lo necesites)</h2>
+<p class="text-sm text-neutral-400 mb-4">Este módulo es una <strong>receta lista para copiar</strong>. Antes de empezar, fija los términos nuevos que aparecen en la configuración AFK de Matt Pocock:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Claude Code</strong> — el agente de programación en la terminal: conversas con él, lee y edita archivos y ejecuta comandos en tu proyecto. Es la herramienta con la que Matt planifica e implementa localmente.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Opus 4.8 / medium effort</strong> — el modelo que usa Matt, en el nivel de «esfuerzo» <em>medio</em> (effort = cuánto "piensa" el modelo antes de responder; medio equilibra calidad y costo de tokens).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">AFK</strong> — <em>away from keyboard</em> ("lejos del teclado"): pones al agente a trabajar y te vas; hace la tarea solo mientras no estás mirando.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Sandbox</strong> — una "caja cerrada" aislada de tu computadora real. El agente trabaja dentro de ella; si se equivoca, no toca tus archivos ni tus contraseñas.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Sand Castle</strong> — la herramienta de Matt que ejecuta agentes AFK dentro de sandboxes y organiza todo por <em>issues</em> (tareas).</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Docker / Podman</strong> — programas que crean <em>contenedores</em> (sandboxes ligeros) en tu máquina. Es donde el agente se ejecuta de forma aislada.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Vercel sandbox</strong> — la misma idea, pero en la nube: el sandbox se ejecuta en los servidores de Vercel, no en tu PC.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">Commit / branch / PR</strong> — commit = un «guardar» en el historial de Git; branch = una línea de trabajo paralela; PR (pull request) = solicitud para integrar una branch en la principal, donde revisas antes.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-teal-400">GitHub Actions</strong> — robots que se ejecutan en la nube de GitHub cuando ocurre algo (p. ej., se abre un PR). Matt ejecuta agentes Sand Castle sobre GitHub Actions.</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-5-4#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🖥️ Claude Code + Opus 4.8 medium</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> antes de mandar al equipo a construir la casa entera, el ingeniero se sienta contigo en la obra, dibuja el plano y levanta la primera pared con sus propias manos — para garantizar que el resto siga el camino correcto. Eso es lo que hace Matt <em>localmente</em> con Claude Code antes de dejar el resto del trabajo AFK.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-4-t1-p1">El corazón de la configuración de Pocock es simple y nada exótico: usa el <span class="termo" title="Agente de programación en la terminal: lee y edita archivos, y ejecuta comandos en tu proyecto.">Claude Code</span> en ejecución <span class="termo" title="El modelo de IA que Matt usa en esta etapa.">Opus 4.8</span> en <span class="termo" title="Nivel medio de esfuerzo de razonamiento del modelo: equilibrio entre calidad y costo de tokens.">medium effort</span>. Fíjate en el detalle: él <strong>no</strong> usa el modelo más «esforzado» disponible de forma predeterminada (y, en sus palabras, «<em>NO Fable</em>"). El nivel <em>medium</em> es el punto de equilibrio: lo bastante bueno para planificar e implementar, sin gastar demasiados tokens. Recuerda la Trilha 1: el resultado es <strong>50/50</strong> entre el modelo y el harness, así que no vale la pena gastar todo el presupuesto solo aumentando el «effort» del motor.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-4-t1-p2">También hay una disciplina de <strong>paciencia con el modelo nuevo</strong>: Matt espera <strong>alrededor de 1 mes</strong> antes de adoptar un modelo recién lanzado (hizo exactamente eso con el Opus 4.5). ¿Por qué? Porque cambiar de motor cada semana es el error de <em>vibe coder</em> de la Trilha 1: pasas tiempo reoptimizando en vez de construir. El Claude Code local sirve para <strong>dos</strong> cosas en su flujo: (1) <strong>planificar</strong> la tarea contigo presente (human-in-the-loop) y (2) hacer <strong>parte</strong> de la implementación ahí mismo, cuando se trata de algo complejo o que aún no está bien definido. La mayor parte del trabajo repetitivo va para AFK, que veremos a continuación. <strong>Error común:</strong> creer que "AFK" significa dejar todo sin volver a abrir Claude Code; en realidad, el trabajo local de planificación es lo que hace que AFK funcione.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Diagrama: Claude Code local con Opus 4.8 medium se encarga de planificar y de parte de la implementación; el resto pasa al trabajo AFK" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v54a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v54a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v54a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v54a-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v54a-grid)" height="250" width="1000" x="0" y="0"></rect>
+<g filter="url(#v54a-glow)"><rect fill="#0c1f1c" height="110" rx="16" stroke="url(#v54a-grad)" stroke-width="2.5" width="280" x="40" y="70"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="180" y="108">Claude Code (local)</text>
+<text fill="#9fe7df" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="180" y="134">Opus 4.8 · medium effort</text>
+<text fill="#9fe7df" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="180" y="156">tú junto (human-in-the-loop)</text>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0e1b26" height="56" rx="11" stroke="#38bdf8" stroke-width="2" width="240" x="420" y="50"></rect><text fill="#bfe6ff" text-anchor="middle" x="540" y="84">1 · planificar la tarea</text>
+<rect fill="#0e1b26" height="56" rx="11" stroke="#38bdf8" stroke-width="2" width="240" x="420" y="144"></rect><text fill="#bfe6ff" text-anchor="middle" x="540" y="178">2 · parte de la implementación</text>
+</g>
+<rect fill="#0c1f1c" height="60" rx="13" stroke="#2dd4bf" stroke-width="2" width="240" x="720" y="95"></rect><text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="840" y="122">la mayor parte → AFK</text><text fill="#9fe7df" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="840" y="142">(temas 2–5)</text>
+<g fill="none" opacity="0.6" stroke="#2dd4bf" stroke-width="2"><path d="M320,108 L420,78" marker-end="url(#v54a-ah)"></path><path d="M320,140 L420,172" marker-end="url(#v54a-ah)"></path><path d="M660,172 C700,172 700,125 720,125" marker-end="url(#v54a-ah)"></path></g>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Local: Claude Code + Opus 4.8 medium planifica y hace una parte. Lo repetitivo va a AFK.</p>
+</div>
+<img alt="Ilustración: terminal de Claude Code ejecutando Opus 4.8 en medium effort, con un desarrollador que planifica en conjunto" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-4-1.png"/>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5 mb-6">
+<h3 class="font-semibold text-red-400 mb-2">⚠️ Error común de principiante</h3>
+<p class="text-neutral-300 text-sm">Adoptar el modelo más nuevo el día del lanzamiento y maximizar el "effort" pensando que eso lo resuelve todo. Matt espera ~1 mes y se queda en el <em>medium</em> a propósito — la ganancia real viene del harness, no de quemar tokens en el motor.</p>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> Claude Code + Opus 4.8 medium, local, para planificar y hacer una parte; el resto va al AFK.</p>
+</div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-5-4#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">🛰️ AFK vía sandbox</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> tú dejas un robot de limpieza suelto en casa mientras sales. Si solo puede ocuparse de una habitación cerrada (el sandbox), está bien dejarlo trabajando solo. Si puede entrar en cualquier lugar, incluso en tu cajón de documentos, no puedes dormir tranquilo.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-4-t2-p1">A <strong>la mayor parte</strong> del trabajo de Matt es <span class="termo" title="Lejos del teclado — pones en marcha el agente y te vas; él trabaja solo.">AFK</span>: activa el agente y se va. Pero hay una regla de oro que no negocia: <strong>AFK solo dentro de un sandbox</strong>. Un <span class="termo" title="Caja aislada de tu computadora real: el agente trabaja ahí dentro sin tocar tus archivos ni contraseñas.">sandbox</span> es un entorno cerrado, separado de tu computadora real. Sin él, un agente que se ejecuta por su cuenta puede causar daños reales; en palabras del propio Pocock, puede "<em>eliminar tu directorio home</em>" (borrar tu carpeta de usuario) o "<em>exfiltrar env vars</em>" (filtrar tus variables de entorno — donde se guardan contraseñas, tokens de API, claves). No es paranoia: es el agente actuando sin que nadie lo supervise.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-4-t2-p2">La lógica es directa: <strong>quien está en el loop</strong> (mientras tú supervisas) puedes aprobar cada paso peligroso; <strong>quien está AFK</strong> no hay nadie que apruebe nada — así que el entorno debe ser seguro <em>por construcción</em>. El sandbox permite eso: el agente lee el código, lo edita, ejecuta pruebas y hace commits, pero todo dentro de la caja. Si algo sale mal, descartas la caja y nada de tu sistema se ve afectado. Por eso la frase de Matt es «<em>AFK is just incredible — takes a bit of setup, but then it goes</em>": el "bit of setup" es precisamente configurar el sandbox una vez. Después, escala por sí solo.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparación: un agente AFK sin sandbox accede al sistema real y puede causar daños; con sandbox queda contenido en una caja aislada" class="w-full h-auto" role="img" viewbox="0 0 1000 240">
+<defs>
+<filter height="180%" id="v54b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v54b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v54b-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#f87171"></path></marker>
+</defs>
+<rect fill="url(#v54b-grid)" height="240" width="1000" x="0" y="0"></rect>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="250" y="32">✗ AFK SIN sandbox</text>
+<rect fill="#1a0e0e" height="50" rx="11" stroke="#f87171" stroke-width="2" width="150" x="70" y="60"></rect><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="145" y="90">agente AFK</text>
+<rect fill="#1a0e0e" height="120" rx="12" stroke="#f87171" stroke-width="2" width="180" x="290" y="50"></rect><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="380" y="92">tu PC real</text><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="380" y="114">home dir · env vars</text><text fill="#fca5a5" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="380" y="134">contraseñas · claves</text>
+<path d="M220,90 L290,95" fill="none" marker-end="url(#v54b-ah)" stroke="#f87171" stroke-width="2.4"></path>
+<text fill="#f87171" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="380" y="158">puede borrar / filtrar</text>
+<line stroke="#374151" stroke-dasharray="5 5" stroke-width="2" x1="510" x2="510" y1="40" y2="200"></line>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="15" font-weight="700" text-anchor="middle" x="760" y="32">✓ AFK CON sandbox</text>
+<g filter="url(#v54b-glow)"><rect fill="#0c1f1c" height="130" rx="14" stroke="#2dd4bf" stroke-width="2.5" width="320" x="600" y="50"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="760" y="76">SANDBOX (caja aislada)</text>
+<rect fill="#0e1b26" height="46" rx="9" stroke="#38bdf8" stroke-width="2" width="140" x="650" y="92"></rect><text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="720" y="120">agente AFK</text>
+<text fill="#9fe7df" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="760" y="166">el error queda atrapado aquí dentro</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-4#q1">
+<p class="font-medium mb-4">Recuperación rápida: ¿por qué Matt solo ejecuta AFK dentro de una sandbox?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Porque el sandbox hace que el modelo sea más inteligente.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Sin nadie que apruebe los pasos, un agente suelto puede borrar archivos o filtrar contraseñas; el sandbox contiene el daño.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Porque es obligatorio para usar Claude Code.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> AFK solo dentro de un sandbox: sin nadie mirando, el entorno debe ser seguro por diseño.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-5-4#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🏰 Configuración de Sand Castle</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> una central de despacho de taxis. Cada viaje (issue) entra en la fila, un auto disponible (un sandbox) lo toma y lo completa por su cuenta. La central no conduce: distribuye y supervisa. Sand Castle es la central; cada auto es un sandbox.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-4-t3-p1">La herramienta concreta que usa Matt para este flujo es <span class="termo" title="Herramienta de Matt que ejecuta agentes AFK en sandboxes, organizados por issues.">Sand Castle</span>. Hace dos cosas: (1) <strong>ejecuta los agentes dentro de sandboxes</strong> — y aquí eliges el «motor» del sandbox: <span class="termo" title="Programas que crean contenedores (sandboxes ligeros) en tu máquina.">Docker o Podman</span> (en tu máquina) o <span class="termo" title="Sandbox que funciona en la nube de Vercel, no en tu PC.">Vercel sandboxes</span> (en la nube); y (2) organiza el trabajo como <strong>cola de issues</strong> — cada tarea es una <em>issue</em> que un sandbox detecta y resuelve. Como vimos en la Trilha 4, Matt piensa el desarrollo como <strong>una fila de tareas, no un loop</strong>: "<em>all development is just a queue of tasks</em>".</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-4-t3-p2">En la práctica, la configuración mínima de Sand Castle es: instalar la herramienta, tener Docker (o Podman) en ejecución, apuntar a tu repositorio y dar la configuración del agente: qué herramienta de programación (Claude Code), qué modelo (Opus 4.8) y qué nivel de esfuerzo (medium). A partir de ahí, le das una issue («implementa X») y Sand Castle crea un sandbox nuevo, hace que el agente trabaje allí y produce commits. <strong>¿Por qué es tan poderoso?</strong> Porque el "<em>un poco de configuración</em>" se paga una sola vez — después, abrir una nueva tarea cuesta tan poco como crear un issue. <strong>Error común:</strong> intentar ejecutar Sand Castle sin tener Docker/Podman activo: sin el motor de contenedores, no hay sandbox donde colocar al agente.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Sand Castle como central: recibe issues de la cola y asigna cada una a un sandbox (Docker, Podman o Vercel) que devuelve commits" class="w-full h-auto" role="img" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="v54c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2dd4bf"></stop><stop offset="1" stop-color="#14b8a6"></stop></lineargradient>
+<filter height="180%" id="v54c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v54c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v54c-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v54c-grid)" height="250" width="1000" x="0" y="0"></rect>
+<text fill="#9fe7df" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="110" y="40">cola de issues</text>
+<g font-family="Inter,sans-serif" font-size="12">
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="140" x="40" y="56"></rect><text fill="#bfe6ff" text-anchor="middle" x="110" y="78">#1 implementar</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="140" x="40" y="100"></rect><text fill="#bfe6ff" text-anchor="middle" x="110" y="122">#2 corregir error</text>
+<rect fill="#0e1b26" height="34" rx="8" stroke="#38bdf8" stroke-width="2" width="140" x="40" y="144"></rect><text fill="#bfe6ff" text-anchor="middle" x="110" y="166">#3 refactorizar</text>
+</g>
+<g filter="url(#v54c-glow)"><rect fill="#0c1f1c" height="66" rx="14" stroke="url(#v54c-grad)" stroke-width="2.5" width="240" x="380" y="92"></rect></g>
+<text fill="#2dd4bf" font-family="Inter,sans-serif" font-size="17" font-weight="700" text-anchor="middle" x="500" y="122">SAND CASTLE</text>
+<text fill="#9fe7df" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="143">central · distribuye y supervisa</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<rect fill="#0c1f1c" height="44" rx="10" stroke="#2dd4bf" stroke-width="2" width="180" x="780" y="46"></rect><text fill="#2dd4bf" text-anchor="middle" x="870" y="73">sandbox · Docker</text>
+<rect fill="#0c1f1c" height="44" rx="10" stroke="#2dd4bf" stroke-width="2" width="180" x="780" y="103"></rect><text fill="#2dd4bf" text-anchor="middle" x="870" y="130">sandbox · Podman</text>
+<rect fill="#0c1f1c" height="44" rx="10" stroke="#2dd4bf" stroke-width="2" width="180" x="780" y="160"></rect><text fill="#2dd4bf" text-anchor="middle" x="870" y="187">sandbox · Vercel</text>
+</g>
+<g fill="none" opacity="0.6" stroke="#2dd4bf" stroke-width="2"><path d="M180,73 C300,80 320,120 380,122" marker-end="url(#v54c-ah)"></path><path d="M180,117 L380,125" marker-end="url(#v54c-ah)"></path><path d="M180,161 C300,160 320,135 380,130" marker-end="url(#v54c-ah)"></path><path d="M620,118 L780,68" marker-end="url(#v54c-ah)"></path><path d="M620,125 L780,125" marker-end="url(#v54c-ah)"></path><path d="M620,132 L780,182" marker-end="url(#v54c-ah)"></path></g>
+</svg>
+</div>
+<img alt="Ilustración: un castillo de arena futurista que representa el Sand Castle, con varios contenedores sandbox brillantes alrededor" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-4-2.png"/>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-teal-400">Para profundizar (opcional): Docker, Podman o Vercel, ¿cuál elegir?</summary>
+<p class="text-sm text-neutral-300 mt-3"><strong>Docker</strong> es el estándar del mercado para contenedores: probablemente ya lo tienes. <strong>Podman</strong> es una alternativa muy similar, sin necesidad de un servicio ejecutándose en segundo plano con privilegios (algunos la prefieren por seguridad). Ambas crean el sandbox <em>en tu máquina</em> — bueno para empezar, pero consume la CPU/RAM de tu PC. En cambio, los <strong>Vercel sandboxes</strong> se ejecutan <em>en la nube</em>: no consumes recursos locales y paralelizas sin límite de máquina — por eso Matt lo llama "<em>not worried about local resources</em>". Regla práctica: empieza con Docker local para entender el flujo; migra a Vercel/nube cuando quieras muchos agentes al mismo tiempo.</p>
+</details>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> Sand Castle es la central que toma issues de la cola y ejecuta cada una en un sandbox (Docker, Podman o Vercel).</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-5-4#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">⚡ Paralelizar de forma segura</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> un restaurante con 5 cocinas separadas, cada una con su estufa. Puedes preparar 5 platos al mismo tiempo y, si una cocina se incendia, las otras 4 siguen funcionando. Eso es lo que permiten los sandboxes aislados: trabajar en paralelo sin que un agente estorbe a otro.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-4-t4-p1">Aquí está el truco de la configuración AFK: como cada agente se ejecuta en el <strong>tu propio sandbox aislado</strong>, puedes ejecutar <strong>muchos al mismo tiempo</strong> sin que uno se interponga en el otro. Matt lo resume: ejecutar agentes mediante "<em>Sand Castle on GitHub Actions — unreasonably effective, parallelize as much as you want, not worried about local resources</em>" (irracionalmente eficaz, paraleliza todo lo que quieras, sin preocuparte por los recursos locales). Es el "<em>two, three, four, five of me</em>" de la Ruta 4 hecha realidad: varios "tú" trabajando en paralelo.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-4-t4-p2">La pieza que desbloquea el paralelismo en la nube es el <span class="termo" title="Robots que se ejecutan en la nube de GitHub cuando sucede algo (p. ej., se abrió un PR).">GitHub Actions</span>. En vez de que cada agente consuma CPU y RAM de tu notebook, se ejecutan en los servidores de GitHub, así que la cantidad no depende de tu máquina. Pero atención a la <strong>orden de las dos reglas</strong>: paralelizar solo es seguro <em>porque</em> cada agente está aislado. Sin sandbox, ejecutar 5 agentes sueltos al mismo tiempo multiplica por 5 las posibilidades de causar daños. <strong>Error común:</strong> "paralelizar para ir más rápido" desactivando el aislamiento: cambias velocidad por el riesgo de borrar el repositorio. La receta correcta es: <strong>aísla primero, paraleliza después</strong>.</p>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Varios entornos aislados ejecutándose en paralelo mediante GitHub Actions, cada uno con su agente, sin interferir entre sí" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<filter height="180%" id="v54d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v54d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v54d-grid)" height="230" width="1000" x="0" y="0"></rect>
+<rect fill="#0e1b26" height="46" rx="12" stroke="#38bdf8" stroke-width="2" width="880" x="60" y="20"></rect>
+<text fill="#bfe6ff" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="500" y="49">GitHub Actions (nube — sin usar recursos locales)</text>
+<g font-family="Inter,sans-serif" font-size="12.5" font-weight="600">
+<g filter="url(#v54d-glow)"><rect fill="#0c1f1c" height="100" rx="13" stroke="#2dd4bf" stroke-width="2.2" width="160" x="60" y="100"></rect></g>
+<text fill="#2dd4bf" font-size="13" text-anchor="middle" x="140" y="138">sandbox 1</text><text fill="#9fe7df" font-size="11" text-anchor="middle" x="140" y="160">agente AFK</text>
+<g filter="url(#v54d-glow)"><rect fill="#0c1f1c" height="100" rx="13" stroke="#2dd4bf" stroke-width="2.2" width="160" x="245" y="100"></rect></g>
+<text fill="#2dd4bf" font-size="13" text-anchor="middle" x="325" y="138">sandbox 2</text><text fill="#9fe7df" font-size="11" text-anchor="middle" x="325" y="160">agente AFK</text>
+<g filter="url(#v54d-glow)"><rect fill="#0c1f1c" height="100" rx="13" stroke="#2dd4bf" stroke-width="2.2" width="160" x="430" y="100"></rect></g>
+<text fill="#2dd4bf" font-size="13" text-anchor="middle" x="510" y="138">sandbox 3</text><text fill="#9fe7df" font-size="11" text-anchor="middle" x="510" y="160">agente AFK</text>
+<g filter="url(#v54d-glow)"><rect fill="#0c1f1c" height="100" rx="13" stroke="#2dd4bf" stroke-width="2.2" width="160" x="615" y="100"></rect></g>
+<text fill="#2dd4bf" font-size="13" text-anchor="middle" x="695" y="138">sandbox 4</text><text fill="#9fe7df" font-size="11" text-anchor="middle" x="695" y="160">agente AFK</text>
+<g filter="url(#v54d-glow)"><rect fill="#0c1f1c" height="100" rx="13" stroke="#2dd4bf" stroke-width="2.2" width="140" x="800" y="100"></rect></g>
+<text fill="#2dd4bf" font-size="13" text-anchor="middle" x="870" y="138">sandbox 5</text><text fill="#9fe7df" font-size="11" text-anchor="middle" x="870" y="160">agente AFK</text>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="500" y="222">Aislados = uno puede fallar sin arrastrar a los demás. "Paraleliza todo lo que quieras."</text>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Ejemplo resuelto: una mañana AFK de Matt</h3>
+<p class="text-neutral-300 text-sm mb-3">Escenario concreto, del plan a la entrega, en paralelo y con seguridad:</p>
+<ol class="list-decimal list-inside space-y-2 text-sm text-neutral-300">
+<li><strong>Local (Claude Code, Opus 4.8 medium):</strong> por la mañana, planifica contigo 3 tareas y abre 3 issues en Sand Castle.</li>
+<li><strong>Dispara AFK:</strong> Sand Castle crea 3 sandboxes (a través de GitHub Actions, en la nube), uno por issue. Cierra la laptop y se va a tomar un café.</li>
+<li><strong>En paralelo:</strong> sandbox 1 implementa la funcionalidad, 2 corrige el bug, 3 refactoriza. El issue 2 rompe una prueba: solo falla el sandbox 2; los otros 2 terminan con normalidad.</li>
+<li><strong>Volver:</strong> 2 PRs listos para revisar, 1 marcado como «necesita intervención humana». Nada tocó su máquina. Él selecciona los commits buenos (tema 5).</li>
+</ol>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> aísla primero, paraleliza después — los sandboxes aislados permiten que muchos agentes trabajen juntos sin riesgo.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-5-4#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">⬇️ Recuperar commits</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> la cocina (sandbox) preparó el plato, pero no llega a tu mesa por sí solo — el mesero trae la bandeja, lo pruebas y solo entonces apruebas servirlo a los clientes. Traer los commits es tarea del mesero; revisar antes de fusionar es probarlo tú.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m5-4-t5-p1">El agente trabajó de forma aislada y generó el resultado <em>dentro</em> del sandbox. Ahora falta la última pieza: traer ese resultado de vuelta a tu repositorio. En Git, ese resultado llega como <span class="termo" title="Un «guardar» en el historial de Git: un cambio registrado.">commits</span> en una <span class="termo" title="Rama de trabajo paralela en Git, separada de la principal.">branch</span> propia, envueltos en un <span class="termo" title="Pull request — solicitud para integrar una rama en la principal, con revisión previa.">PR</span> (pull request). El flujo de Matt encaja directamente en la Trilha 4: el agente AFK produce un <strong>PR como salida</strong>, y el PR es exactamente el punto donde <strong>tú</strong> entra a revisar antes de fusionar. No recibes el código en bruto del sandbox: recibes un PR limpio, lees el diff, lo apruebas (o pides ajustes).</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-4-t5-p2">Este es el <strong>punto de control de revisión desplazado hacia la derecha</strong> de la Trilha 4: el humano no interviene en cada paso; entra <em>al final</em>, cuando ya hay un PR listo para evaluar. Con los buenos PR, haces el merge; con los dudosos, pides otra ronda o te encargas tú mismo. <strong>Error común:</strong> dejar los commits «atrapados» en el sandbox y nunca traerlos — o, en el extremo opuesto, configurar auto-merge sin que nadie revise. El punto de equilibrio de Matt es: <strong>el agente crea el PR, el humano lo aprueba</strong>. A continuación, el resumen del flujo de salida para que lo copies.</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">puxar-commits-de-volta.sh</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># O agente AFK rodou no sandbox e abriu um PR. Traga pra revisar:
+
+# 1) ver os PRs que os agentes AFK abriram
+gh pr list --label "agent:implement"
+
+# 2) baixar a branch do PR pra inspecionar localmente
+gh pr checkout 795          # nº do PR aberto pelo agente
+
+# 3) ler o que mudou ANTES de aceitar (você é o checkpoint)
+git diff main...HEAD
+
+# 4a) aprovou? faça o merge
+gh pr merge 795 --squash --delete-branch
+
+# 4b) precisa de ajuste? volte pro Claude Code local e itere
+#     (ou peça outra rodada AFK na mesma issue)</pre>
+</div>
+<img alt="Ilustración: commits que salen de una sandbox aislada y fluyen de vuelta al repositorio principal como un pull request" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha5/assets/img/m5-4-3.png"/>
+<div class="rounded-2xl border border-teal-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Flujo de salida: el sandbox genera commits en una branch, se convierte en un PR, una persona lo revisa y luego se hace merge en main" class="w-full h-auto" role="img" viewbox="0 0 1000 180">
+<defs>
+<pattern height="32" id="v54e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#14b8a6" opacity="0.12" r="1.3"></circle></pattern>
+<filter height="180%" id="v54e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<marker id="v54e-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#2dd4bf"></path></marker>
+</defs>
+<rect fill="url(#v54e-grid)" height="180" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<rect fill="#0c1f1c" height="56" rx="12" stroke="#2dd4bf" stroke-width="2" width="170" x="30" y="62"></rect><text fill="#2dd4bf" font-size="13" text-anchor="middle" x="115" y="88">sandbox</text><text fill="#9fe7df" font-size="11" text-anchor="middle" x="115" y="107">hace commits</text>
+<rect fill="#0e1b26" height="56" rx="12" stroke="#38bdf8" stroke-width="2" width="170" x="250" y="62"></rect><text fill="#bfe6ff" font-size="13" text-anchor="middle" x="335" y="88">branch + PR</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="335" y="107">salida del agente</text>
+<g filter="url(#v54e-glow)"><rect fill="#0c1f1c" height="64" rx="13" stroke="#2dd4bf" stroke-width="2.5" width="180" x="470" y="58"></rect></g><text fill="#2dd4bf" font-size="13" text-anchor="middle" x="560" y="84">TÚ revisas</text><text fill="#9fe7df" font-size="11" text-anchor="middle" x="560" y="104">punto de control (diff)</text>
+<rect fill="#0c1f1c" height="56" rx="12" stroke="#2dd4bf" stroke-width="2" width="170" x="700" y="62"></rect><text fill="#2dd4bf" font-size="13" text-anchor="middle" x="785" y="88">merge → main</text><text fill="#9fe7df" font-size="11" text-anchor="middle" x="785" y="107">en el repositorio</text>
+</g>
+<g fill="none" opacity="0.65" stroke="#2dd4bf" stroke-width="2"><path d="M200,90 L250,90" marker-end="url(#v54e-ah)"></path><path d="M420,90 L470,90" marker-end="url(#v54e-ah)"></path><path d="M650,90 L700,90" marker-end="url(#v54e-ah)"></path></g>
+</svg>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> el agente crea un PR; tú lees el diff y haces el merge — el commit vuelve por el checkpoint, no directamente.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-5-4#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">📋 Tu configuración mínima</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Marcar una duda en este tema" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">Tengo una duda</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagínalo así:</strong> no necesitas todo el garaje de F1 para empezar a entrenar: necesitas un auto que funcione y una pista segura. La configuración mínima de abajo es ese «auto que funciona»: lo básico del AFK de Matt, sin adornos.</p></div>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m5-4-t6-p1">Al cerrar el módulo: aquí está el <strong>configuración mínima</strong> reunido en un solo lugar, listo para copiar. Son tres bloques — (1) el <strong>configuración de Claude Code</strong> fijando Opus 4.8 en medium effort; (2) el <strong>comando para ejecutar al agente AFK en sandbox</strong> (Sand Castle apuntado a tu repo); y (3) los <strong>pasos para recuperar los commits</strong>. Es el esqueleto exacto del flujo de Matt, reducido a lo esencial. Empieza por aquí hoy, ejecuta <em>una</em> tarea pequeña AFK, y ve aumentando la cola.</p>
+<div class="copybox bg-dark-900 border border-teal-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-teal-400 font-mono">setup-afk-minimo.sh</span>
+<button class="text-xs px-2 py-1 rounded bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-colors" onclick="copyBox(this)" type="button">copiar</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># ── 1) CONFIG DO CLAUDE CODE: Opus 4.8 em medium effort ──
+# ~/.claude/settings.json (modelo + esforço fixos, como o Matt usa)
+{
+  "model": "claude-opus-4-8",
+  "effort": "medium"
+}
+# (ou na sessão)  →  /model claude-opus-4-8   |   /effort medium
+# uso local: planejar + parte da implementação, você junto.
+
+# ── 2) RODAR O AGENTE AFK EM SANDBOX (Sand Castle) ──
+# pré-requisito: Docker (ou Podman) ativo  →  docker info
+# instalar e apontar pro seu repo:
+npx sandcastle@latest init        # cria a config no projeto
+# disparar uma tarefa AFK isolada (1 sandbox por issue):
+sandcastle run \
+  --issue 795 \                   # a tarefa da fila
+  --sandbox docker \              # docker | podman | vercel
+  --agent claude-code \           # ferramenta de codar
+  --model claude-opus-4-8 \
+  --effort medium
+# paralelizar: dispare várias issues; cada uma vira um sandbox isolado.
+
+# ── 3) PUXAR OS COMMITS DE VOLTA (você é o checkpoint) ──
+gh pr list --label "agent:implement"   # PRs que os agentes abriram
+gh pr checkout 795                      # baixar pra inspecionar
+git diff main...HEAD                    # LER o diff antes de aceitar
+gh pr merge 795 --squash --delete-branch   # aprovou? merge.</pre>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-5-4#q2">
+<p class="font-medium mb-4">Recuperación rápida: ¿cuál es el orden correcto de la configuración AFK mínima de Matt?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Ejecutar todo AFK sin sandbox y revisarlo después.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Planificar localmente (Claude Code + Opus 4.8 medium) → ejecutar AFK en sandbox → traer los commits mediante PR y revisarlos.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Esperar a que se lance la AGI y automatizar solo entonces.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-teal-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-teal-400">En 1 frase:</strong> configuración del modelo + un comando AFK en sandbox + traer de vuelta el PR = lo esencial del AFK de Matt.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 border border-teal-500/30 text-teal-400 hover:bg-teal-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Marcar como leído</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-teal-900/40 via-dark-800 to-dark-800 rounded-xl border border-teal-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Resumen del módulo</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Base local</strong><span class="text-neutral-400"> — Claude Code + Opus 4.8 medium para planificar y hacer parte del trabajo; espera ~1 mes antes de adoptar un modelo nuevo.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">AFK solo en sandbox</strong><span class="text-neutral-400"> — sin que nadie esté mirando, aísla; de lo contrario, el agente puede borrar archivos o filtrar contraseñas.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Sand Castle + Docker/Podman/Vercel</strong><span class="text-neutral-400"> — centro que toma issues de la cola y ejecuta cada una en un sandbox.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">Aísla y luego paraleliza</strong><span class="text-neutral-400"> — mediante GitHub Actions, muchos agentes al mismo tiempo, sin consumir recursos locales.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-teal-400 mt-1">✓</span><div><strong class="text-white">El commit vuelve por el PR</strong><span class="text-neutral-400"> — el agente produce un PR; lees el diff y haces el merge.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-teal-400 mb-2">Próximo módulo:</h3><p class="text-neutral-300">5.5 Action de review + cron de security: la automatización que se cuida sola (esqueleto de la Action, comentar en el PR, cron diario rotativo).</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Volver a la ruta</a><a class="flex-1 text-center px-6 py-3 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-500 transition-colors" href="modulo-5-5.html">Próximo módulo →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-5-4#q1', { answer: 1, explain: { 0: 'Não — sandbox não muda o modelo; ele isola o ambiente.', 1: 'Isso! AFK não tem humano aprovando passos; o sandbox contém qualquer estrago.', 2: 'Não é obrigatório pra usar o Claude Code — é a regra de segurança do AFK.' } });
+        INEMA.registerCheck('modulo-5-4#q2', { answer: 1, explain: { 0: 'Rodar sem sandbox é o erro perigoso — pode apagar/vazar.', 1: 'Exato: planejar local → AFK em sandbox → puxar o PR e revisar.', 2: 'Esperar a AGI é a armadilha do Bitter Lesson; comece hoje.' } });
+      }
+    });
+  </script>
+</body>
+</html>

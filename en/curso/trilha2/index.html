@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>Track 2 · Human Skills | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+      primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+    } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+  {
+    "course": "harness",
+    "tracks": [
+      { "n": "1", "title": "Fundamentos do Harness", "modules": [
+        { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+        { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+        { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+        { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+        { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+        { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+      ]},
+      { "n": "2", "title": "Habilidades Humanas", "modules": [
+        { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+        { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+        { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+        { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+        { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+        { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+      ]},
+      { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+        { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+        { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+        { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+        { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+        { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+        { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+      ]},
+      { "n": "4", "title": "Técnicas Avançadas", "modules": [
+        { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+        { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+        { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+        { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+        { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+        { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+      ]},
+      { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+        { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+        { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+        { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+        { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+        { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+        { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+      ]}
+    ]
+  }
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37,99,235,0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37,99,235,0.18); }
+    html:not(.dark) .hover\:text-blue-400:hover { color: #2563eb; }
+    html:not(.dark) .group:hover .group-hover\:text-blue-400 { color: #2563eb; }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5,150,105,0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5,150,105,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha2/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha2/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha2/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-blue-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html">
+<span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span>
+</a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-blue-400 bg-blue-500/10" href="index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- HEADER -->
+<header class="bg-gradient-to-br from-blue-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full mb-4">TRACK 2</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🧠 Human Skills</h1>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">AI has taken over tactical programming—writing code cheaply and well. Your leverage now is moving from tactical to strategic: architecture, vision, delegation, communication, and product control. Your human skills set the ceiling on what AI can deliver.</p>
+<div class="rounded-2xl border border-blue-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<img alt="Illustration: the strategic human mind at the top orchestrating a fleet of tactical AI programmers, in blue and cyan" class="w-full h-auto rounded-xl mb-4" loading="lazy" src="../../../curso/trilha2/assets/img/hero.png"/>
+<svg aria-label="Diagram: the strategic human at the top orchestrates delegation, communication, and product vision to command the tactical AI fleet" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="t2h-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#60a5fa"></stop><stop offset="1" stop-color="#3b82f6"></stop></lineargradient>
+<filter height="180%" id="t2h-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t2h-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#3b82f6" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="t2h-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#60a5fa"></path></marker>
+</defs>
+<rect fill="url(#t2h-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1622" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="26"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="46">vision</text></g>
+<g class="wf-a"><rect fill="#0e1622" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="66"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="86">delegation</text></g>
+<g class="wf-a"><rect fill="#0e1622" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="106"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="126">communication</text></g>
+<g class="wf-a"><rect fill="#0e1622" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="146"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="166">product</text></g>
+</g>
+<g fill="none" opacity="0.5" stroke="#60a5fa" stroke-width="1.8">
+<path d="M190,41 C320,41 360,100 470,100" marker-end="url(#t2h-ah)"></path>
+<path d="M190,81 C320,81 360,100 470,100" marker-end="url(#t2h-ah)"></path>
+<path d="M190,121 C320,121 360,100 470,100" marker-end="url(#t2h-ah)"></path>
+<path d="M190,161 C320,161 360,100 470,100" marker-end="url(#t2h-ah)"></path>
+</g>
+<g filter="url(#t2h-glow)"><rect fill="#0e1622" height="76" rx="16" stroke="url(#t2h-grad)" stroke-width="2.5" width="210" x="470" y="62"></rect></g>
+<text fill="#60a5fa" font-family="Inter,sans-serif" font-size="18" font-weight="600" text-anchor="middle" x="575" y="95">STRATEGIC</text>
+<text fill="#bcd4ff" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="575" y="116">the general at the top</text>
+<path d="M680,100 L800,100" fill="none" marker-end="url(#t2h-ah)" stroke="#60a5fa" stroke-width="2"></path>
+<rect fill="#1f2937" height="52" rx="12" stroke="#9ca3af" stroke-width="2" width="160" x="800" y="74"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="880" y="105">AI fleet</text>
+</svg>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-2 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">6</div><div class="text-xs text-neutral-400">Modules</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">36</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">~3h</div><div class="text-xs text-neutral-400">Duration</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-blue-400">Inter.</div><div class="text-xs text-neutral-400">Level</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Track 2 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="trilha:2" role="progressbar">
+<span class="text-sm text-neutral-400">Track progress:</span>
+<span class="inema-meter-pct text-blue-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 36</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="conteudo">
+<!-- MAPA DA TRILHA -->
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Learning path map</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-1">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">♟️ Tactical × Strategic</h3>
+<p class="text-xs text-neutral-400">AI has taken over the tactical work</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-2">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">📈 Your skills are the ceiling</h3>
+<p class="text-xs text-neutral-400">You are the multiplier</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-3">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🧩 Knowledge × Skill × Wisdom</h3>
+<p class="text-xs text-neutral-400">The three pillars</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-4">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">📦 Delegation fundamentals</h3>
+<p class="text-xs text-neutral-400">Delegate well</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-5">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🎙️ Communication &amp; dictation</h3>
+<p class="text-xs text-neutral-400">Speaking is overpowered</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-blue-500/30 p-5 transition-all" href="#modulo-2-6">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold text-sm">2.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-blue-400 transition-colors">🧭 You’re in control of the product</h3>
+<p class="text-xs text-neutral-400">The vision is yours</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Detailed content</h2>
+<!-- MÓDULO 2.1 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-1" data-inema-track="2" id="modulo-2-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">♟️ Tactical × Strategic</h3>
+<p class="text-neutral-400 text-sm">AI has mastered tactical programming. Your advantage lies in thinking like the general at the top.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">📖</span><div><span class="font-medium">Ousterhout and the two modes</span><span class="text-neutral-500 text-sm ml-2">- A Philosophy of Software Design</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">John Ousterhout distinguishes two ways of programming: tactical and strategic.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It gives you the vocabulary to see where AI is already better than you.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Two modes; reference book; map of dev work.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">⚙️</span><div><span class="font-medium">Tactical programming</span><span class="text-neutral-500 text-sm ml-2">- The Day-to-Day Battle</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Day to day: writing code, syntax, finding bugs, creating commits.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s exactly the work AI does more cheaply and better.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Win the battle; execution; syntax and bugs.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🗺️</span><div><span class="font-medium">Strategic programming</span><span class="text-neutral-500 text-sm ml-2">- Win the war</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Think long term: what the codebase should look like and how to work faster.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s where your advantage lies — the one AI still can’t replace.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Win the war; architecture; speed.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🍽️</span><div><span class="font-medium">Why AI took over the tactical work</span><span class="text-neutral-500 text-sm ml-2">- Cheaper and better</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">AI has "eaten" tactical programming—it executes tasks more cheaply and better.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Insisting on competing tactically means swimming against the tide.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Commoditization of tactical work; an infinite fleet of AI.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">📈</span><div><span class="font-medium">Level up</span><span class="text-neutral-500 text-sm ml-2">- From Executor to Architect</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">You need to excel at strategy to get the most out of your tactical AI fleet.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Someone who manages the fleet well is worth far more than someone who only executes.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Move from tactical to strategic; command the fleet.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">👑</span><div><span class="font-medium">The general at the top</span><span class="text-neutral-500 text-sm ml-2">- Where to spend your time</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Spend your time on architecture, speed, and roadmap — not syntax.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the practical application: redirecting your hours toward strategic work.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">General at the top; architecture, speed, roadmap.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-1')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-1.html">View Full</a>
+</div>
+</div>
+<!-- MÓDULO 2.2 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-2" data-inema-track="2" id="modulo-2-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">📈 Your skills are the ceiling</h3>
+<p class="text-neutral-400 text-sm">AI multiplies the impact of people who are already good. Improving yourself means improving AI.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">✖️</span><div><span class="font-medium">The multiplier effect</span><span class="text-neutral-500 text-sm ml-2">- You’re the ceiling</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">"Your skills are the ceiling for what AI can do."</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Shows that AI is a multiplier, not a replacement for your expertise.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Multiplier; the skill's own ceiling.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🚀</span><div><span class="font-medium">Why seniors earn 10x</span><span class="text-neutral-500 text-sm ml-2">- High Base, High Leap</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">AI makes senior professionals about 10x better at what they already do.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">The bigger your foundation, the more AI can unlock.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Gain proportional to the baseline; senior 10x.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🌱</span><div><span class="font-medium">Why juniors earn little</span><span class="text-neutral-500 text-sm ml-2">- Just a little nudge</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Juniors get only a small boost; hiring many of them isn't worth it.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Reframe how you think about teams and where to invest.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Little benefit at the beginner level; a team strategy.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">📉</span><div><span class="font-medium">A low-quality skill flattens AI</span><span class="text-neutral-500 text-sm ml-2">- Garbage in, garbage out</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">People with low skill can’t get the best out of AI.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Your lack of expertise becomes the ceiling that limits the tool.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Low ceiling; the human becomes the bottleneck.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">Upskill yourself</span><span class="text-neutral-500 text-sm ml-2">- Build Domain Expertise</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Getting good with AI = getting good in your domain. A better teacher uses AI to teach better.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Investing in yourself is the highest-leverage investment.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Domain = leverage; a better teacher with AI.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">📐</span><div><span class="font-medium">How to raise the ceiling</span><span class="text-neutral-500 text-sm ml-2">- Raise the limit</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Improving yourself means improving AI—because the multiplier acts on your foundation.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It gives you a direct application: study and practice what actually raises the ceiling.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Raise the ceiling; multiplier on the base.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-2')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-2.html">View Full</a>
+</div>
+</div>
+<!-- MÓDULO 2.3 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-3" data-inema-track="2" id="modulo-2-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🧩 Knowledge × Skill × Wisdom</h3>
+<p class="text-neutral-400 text-sm">You can package the first two into skills. Wisdom, you can't.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🧠</span><div><span class="font-medium">Knowledge: understanding</span><span class="text-neutral-500 text-sm ml-2">- What’s in your head</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Knowledge is the fundamental understanding you carry in your head.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s the foundation, but by itself it doesn’t guarantee you’ll know how to act.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Understanding; knowing what and why.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">💪</span><div><span class="font-medium">Skill: muscle</span><span class="text-neutral-500 text-sm ml-2">- Having done it many times</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Skill comes from doing something many times — muscle memory.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Distinguishes “knowing about” from “knowing how to do.”</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Repetition; muscle memory; practice.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🦉</span><div><span class="font-medium">Wisdom: when</span><span class="text-neutral-500 text-sm ml-2">- Knowing the right time</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Wisdom is knowing WHEN to do something and how it fits into the real world.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s what separates the competent from the truly good.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Timing; judgment; fit with reality.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🌍</span><div><span class="font-medium">Why wisdom needs context</span><span class="text-neutral-500 text-sm ml-2">- Go to Anthropic</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Wisdom is almost impossible without living the exact context — to be like someone at Anthropic, you'd need to go to Anthropic.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Explains why you can’t “download” wisdom from outside.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Lived context; situated wisdom.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">📦</span><div><span class="font-medium">Package the first two</span><span class="text-neutral-500 text-sm ml-2">- Knowledge + Skill in Skills</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Knowledge and skill can be packaged into reusable skills.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">It’s what lets you distribute expertise to AI and the team.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Skills package knowledge + ability.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🔒</span><div><span class="font-medium">What you can't delegate</span><span class="text-neutral-500 text-sm ml-2">- The Wisdom Stays with You</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Wisdom can't be packaged — it remains your irreplaceable role.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Defines where you need to stay in control, always.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Delegation limits; wisdom that can't be packaged.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-3')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-3.html">View Full</a>
+</div>
+</div>
+<!-- MÓDULO 2.4 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-4" data-inema-track="2" id="modulo-2-4">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">📦 Delegation fundamentals</h3>
+<p class="text-neutral-400 text-sm">Delegating to AI is like delegating to a junior developer: scope, interfaces, tests, and documentation.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🧱</span><div><span class="font-medium">Design the difficult parts</span><span class="text-neutral-500 text-sm ml-2">- You in the lead</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">You design the difficult parts up front, before delegating.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">The hard decisions are exactly what AI shouldn’t make on its own.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Difficult decision made early; upfront design.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">Well-defined scope</span><span class="text-neutral-500 text-sm ml-2">- Define the Scope Carefully</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Define the scope of what will be done very carefully before assigning the task.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Vague scope is the #1 cause of incorrect results.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Clear scope; task limits.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🔌</span><div><span class="font-medium">Interfaces between modules</span><span class="text-neutral-500 text-sm ml-2">- The contracts</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Think about the interfaces between modules—the contracts that connect the parts.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Good interfaces let AI work in parallel without breaking everything.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Contracts; module boundaries.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🧪</span><div><span class="font-medium">Tests and scenarios</span><span class="text-neutral-500 text-sm ml-2">- Good Tests</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Think through test scenarios and write good tests.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Tests are the safety net that lets AI implement things safely.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Scenarios; safety net; good tests.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">📄</span><div><span class="font-medium">Sufficient documentation</span><span class="text-neutral-500 text-sm ml-2">- Point to the Right Places</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Sufficient documentation that points AI to the right places, and a codebase that’s easy to work with.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">The right doc reduces back-and-forth and speeds up delivery.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Directional docs; navigable codebase.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧑‍🏫</span><div><span class="font-medium">Delegate as you would to a junior developer</span><span class="text-neutral-500 text-sm ml-2">- Same discipline</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The practices are the same as delegating to a junior/mid-level developer.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">You already have the mental model; you just need to apply it to AI.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Classic delegation; management discipline.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-4')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-4.html">View Full</a>
+</div>
+</div>
+<!-- MÓDULO 2.5 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-5" data-inema-track="2" id="modulo-2-5">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🎙️ Communication &amp; dictation</h3>
+<p class="text-neutral-400 text-sm">Speaking is overpowered: the speed of getting tokens out of your brain and back in.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🗣️</span><div><span class="font-medium">Put the vision into words</span><span class="text-neutral-500 text-sm ml-2">- Get it out of your head</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Being able to put your vision into words, out loud, for the AI.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">AI only executes well what you can articulate.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Articulate the vision; think out loud.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">⚡</span><div><span class="font-medium">Dictation for speed</span><span class="text-neutral-500 text-sm ml-2">- Overpowered</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The saying is “overpowered”—you put out much more content, much faster.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Speaking is much faster than typing; broadband changes the game.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Input speed; overpowered dictation.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🔁</span><div><span class="font-medium">Brain → tokens → brain</span><span class="text-neutral-500 text-sm ml-2">- The cycle</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">"The speed at which you move tokens out of your brain and back into it."</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Seeing the cycle helps you optimize the right bottleneck: communication.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Brain↔token cycle; bandwidth.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">💬</span><div><span class="font-medium">The communication skill</span><span class="text-neutral-500 text-sm ml-2">- Ridiculously useful in development</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Communicating and speaking are ridiculously overpowered in today's dev world.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Communication has become one of the most valuable technical skills.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Communication as a technical skill.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🛠️</span><div><span class="font-medium">Dictation tools</span><span class="text-neutral-500 text-sm ml-2">- Whisper Flow</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Matt uses Whisper Flow to dictate; dictation tools put this into practice.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">The right tool turns speech into real input.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Whisper Flow; dictation in the workflow.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🏋️</span><div><span class="font-medium">Practice speaking</span><span class="text-neutral-500 text-sm ml-2">- A trainable skill</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Speaking well is a skill you can train — not a fixed gift.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">If it can be trained, it’s worth practicing deliberately.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Trainable fluency; deliberate practice.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-5')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-5.html">View Full</a>
+</div>
+</div>
+<!-- MÓDULO 2.6 -->
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="2-6" data-inema-track="2" id="modulo-2-6">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-blue-400 font-bold">2.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🧭 You’re in control of the product</h3>
+<p class="text-neutral-400 text-sm">AI is bad at original ideas. The vision, the why, and the choice of features are yours.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🥴</span><div><span class="font-medium">AI is bad at original ideas</span><span class="text-neutral-500 text-sm ml-2">- Notoriously</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">AI is notoriously bad at coming up with original ideas.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Shows that the product's originality is still yours.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">AI's limitations; human creativity.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🧭</span><div><span class="font-medium">You choose the features</span><span class="text-neutral-500 text-sm ml-2">- In control</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">"You should be in charge of the product" — you choose the features, have the vision and know the why.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Defines the irreplaceable role of the product owner.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">The product command; the vision and the why.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">✂️</span><div><span class="font-medium">Ask what to remove</span><span class="text-neutral-500 text-sm ml-2">- Not “what’s the next feature?”</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Ask the AI what to REMOVE, how to simplify and improve the UX—not "what's the next big feature."</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Use AI where it helps (critique, simplification) and not where it falls short (vision).</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Remove &gt; add; simplify the UX.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">📚</span><div><span class="font-medium">Product design hasn't changed</span><span class="text-neutral-500 text-sm ml-2">- The books are worth it</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The fundamentals of product design haven’t changed; the books are still relevant.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">You don't need to relearn product thinking—just apply it with AI.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Durable product fundamentals.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🗨️</span><div><span class="font-medium">Talking to customers</span><span class="text-neutral-500 text-sm ml-2">- Find Out What They Need</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">Talking to customers, finding out what they need, and building prototypes — that stays the same.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Discovering a real need is human and irreplaceable.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">Customer discovery; prototypes.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🏢</span><div><span class="font-medium">Building a business with AI</span><span class="text-neutral-500 text-sm ml-2">- Execution advantage</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-blue-400 font-semibold">What it is:</span><p class="text-neutral-300 text-sm">The fundamentals of business haven’t changed; AI only gives you an execution advantage.</p></div>
+<div><span class="text-blue-400 font-semibold">Why learn:</span><p class="text-neutral-300 text-sm">Set the right expectation: AI speeds things up; it doesn’t replace strategy.</p></div>
+<div><span class="text-blue-400 font-semibold">Key concepts:</span><p class="text-neutral-300 text-sm">AI handles execution; strategy remains human.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-2-6')">View in Modal</button>
+<a class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-colors" href="modulo-2-6.html">View Full</a>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 mt-10">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../../index.html">← Home</a>
+<a class="flex-1 text-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors" href="../trilha3/index.html">Track 3: AI Skills (Skills) →</a>
+</div>
+</main>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-1" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.1</span><span class="font-semibold">Tactical × Strategic</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-2-1.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-2" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.2</span><span class="font-semibold">Your skills are the ceiling</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-2-2.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-3" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.3</span><span class="font-semibold">Knowledge × Skill × Wisdom</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-2-3.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-4" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.4</span><span class="font-semibold">Delegation fundamentals</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-2-4.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-5" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.5</span><span class="font-semibold">Communication &amp; dictation</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-2-5.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-2-6" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-blue-400 font-bold">2.6</span><span class="font-semibold">You in control of the product</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-2-6.html"></iframe></div></div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
+    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&INEMA.init)INEMA.init();});</script>
+</body>
+</html>

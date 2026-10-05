@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>3.6 Chaining skills + human DRY | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'purple' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'purple');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+    /* termo com definição (tooltip + sublinhado pontilhado) */
+    .termo { border-bottom: 1px dashed #c084fc; cursor: help; font-weight: 600; color: #d8b4fe; }
+    html:not(.dark) .termo { color: #6d28d9; border-color: #7c3aed; }
+    .copybox pre { white-space: pre-wrap; word-break: break-word; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124,58,237,0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124,58,237,0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124,58,237,0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124,58,237,0.18); }
+    html:not(.dark) .hover\:text-purple-400:hover { color: #7c3aed; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha3/modulo-3-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha3/modulo-3-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha3/modulo-3-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-3-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/modulo-3-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-purple-400 focus:rounded-lg" href="#conteudo">Skip to content</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Human</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-purple-400 bg-purple-500/10" href="index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 transition-colors" href="../trilha4/index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Advanced</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Solutions</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>My journey</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Switch theme" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<nav aria-label="Navigation path" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<div class="flex items-center space-x-2 text-sm text-neutral-400">
+<a class="hover:text-purple-400" href="../../index.html">Start</a><span>/</span>
+<a class="hover:text-purple-400" href="index.html">Track 3</a><span>/</span>
+<span class="text-purple-400">Module 3.6 · teaching mode</span>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-purple-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-semibold rounded-full mb-4">MODULE 3.6 · TEACHING MODE</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🔗 Chain skills + human DRY</h1>
+<p class="text-lg text-neutral-400 max-w-3xl">A skill on its own is already helpful. But the trick is <strong class="text-purple-400">chain</strong> several in sequence — a "thought pipeline" — and transform everything you do <em>repeatedly</em> in a skill. It’s the rule <strong class="text-purple-400">DRY</strong> applied to your brain, and how to raise the level of the whole team. Each term is explained as it comes up.</p>
+<div class="grid grid-cols-4 gap-4 mt-8 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">6</div><div class="text-xs text-neutral-400">Topics</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">~45</div><div class="text-xs text-neutral-400">Minutes</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">3.1–3.5</div><div class="text-xs text-neutral-400">Base</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-purple-400">Practice</div><div class="text-xs text-neutral-400">Type</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Module 3.6 progress" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="modulo:3-6" role="progressbar">
+<span class="text-sm text-neutral-400">Progress:</span>
+<span class="inema-meter-pct text-purple-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 of 6</span>
+</div>
+</div>
+</div>
+</header>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
+<nav aria-label="Page index" class="hidden lg:block sticky top-24 self-start" data-inema-toc="">
+<p class="text-sm text-neutral-400 mb-3">Section <span class="inema-toc-pos">1</span> of <span class="inema-toc-total">6</span></p>
+<ul class="space-y-1 text-sm">
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-1">1. grill-me → PRD → issues</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-2">2. Procedures in sequence</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-3">3. You’re in the driver’s seat</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-4">4. Repeated 3x? Turn it into a skill</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-5">5. Distribute it to the team</a></li>
+<li><a class="inema-toc-link block px-3 py-1.5 rounded-lg text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10" href="#topico-6">6. Contribute Back</a></li>
+</ul>
+</nav>
+<main class="inema-prose min-w-0" id="conteudo">
+<!-- GLOSSÁRIO VIVO -->
+<div class="bg-dark-800 border border-purple-500/30 rounded-xl p-6 mb-12">
+<h2 class="text-lg font-bold text-purple-400 mb-2 flex items-center"><span class="mr-2">📖</span> Living glossary (read first — come back whenever you need to)</h2>
+<p class="text-sm text-neutral-400 mb-4">You already know what a skill, procedure, and grill-me are (Track 3). Here are just the terms <strong>new</strong> from this module — remember these before moving on:</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Chain (chaining)</strong> — run one skill after another, in order, where the <em>output</em> one becomes the <em>input</em> of the following. A "pipeline".</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Pipeline</strong> — an assembly line of steps: brain → grill-me → PRD → issues. Each station refines things a little further.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">PRD</strong> — <em>Product Requirements Document</em>: a document that describes <em>what</em> build and <em>why</em> (the product requirements), before writing code.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Issue</strong> — a “task card” in GitHub/Jira: a small unit of work with a title and description. The backlog is the pile of issues.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">DRY</strong> — <em>Don't Repeat Yourself</em> ("don't repeat yourself"): a classic coding principle against duplicating the same logic. Here applied to <em>human</em>.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Raise the floor</strong> — "raise the floor": make the team's worst-case performance better. When everyone uses the same skill, nobody plans poorly anymore.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">two-PRD / to-issues</strong> — the two skills Matt chains after grill-me: the one that writes the PRD and the one that breaks the PRD into issues.</div>
+<div class="bg-dark-700/50 rounded-lg p-3"><strong class="text-purple-400">Contribute back</strong> — anyone who uses the shared skill gives improvements back to everyone (open source applied to the team).</div>
+</div>
+</div>
+<!-- TÓPICO 1 -->
+<section class="mb-16" data-inema-topic="modulo-3-6#topico-1" id="topico-1">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">1</span><h2 class="text-2xl font-bold">🔗 grill-me → PRD → issues</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A furniture factory. The raw wood comes in; it goes through the saw, then the sander, then the varnish. Each station does <em>a</em> something well made and pass it along. No one tries to saw, sand, and varnish in the same stroke. Your thinking becomes an assembly line, too: raw idea → interview → document → tasks.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-6-t1-p1">In module 3.5, you learned about the <span class="termo" title="A skill that turns the model into an adversarial interviewer until you align.">grill-me</span> — the skill that interviews you until you arrive at a <em>shared understanding</em> (shared understanding). It is powerful on its own, but Matt Pocock doesn't stop there: he uses it as <strong>first station</strong> a line. In his words, he <span class="termo" title="Run one skill after another, with the output of one becoming the input for the next.">chains</span> three skills in sequence: <strong class="text-purple-400">grill-me → two-PRD → to-issues</strong>. It’s what he calls, in practice, a “thinking pipeline.”</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t1-p2">The logic of each station: the <strong>grill-me</strong> clears the clutter from your head and aligns your vision; the <span class="termo" title="two-PRD: the skill that turns alignment into a Product Requirements Document.">two-PRD</span> take this alignment and write a <span class="termo" title="Product Requirements Document — a document describing what to build and why.">PRD</span> (the product requirements document); and the <span class="termo" title="to-issues: the skill that breaks the PRD into small tasks.">to-issues</span> breaks the PRD down into a backlog of <span class="termo" title="Small task cards in GitHub/Jira.">issues</span> ready to implement. You go from a vague idea in your head to concrete tasks in the backlog — without ever writing a line of code along the way. The <strong>reason</strong>: each step is small and verifiable, so it’s easy to fix things before the error spreads. The <strong>common mistake</strong> is jumping straight from the idea to the code (asking "implement this" in the dark) and discovering, three hours later, that AI built the wrong thing.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Four-stop pipeline: a raw idea goes into grill-me and alignment comes out; it goes to two-PRD and a PRD comes out; it goes to to-issues and issues come out in the backlog" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v36a-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v36a-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v36a-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v36a-ah" markerheight="10" markerwidth="10" orient="auto" refx="7" refy="5"><path d="M0,0 L9,5 L0,10 L2.6,5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#v36a-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<rect fill="#0e1b26" height="64" rx="12" stroke="#38bdf8" stroke-width="2" width="150" x="20" y="80"></rect><text fill="#bfe6ff" font-size="14" font-weight="600" text-anchor="middle" x="95" y="108">🧠 raw idea</text><text fill="#9ad6ff" font-size="11.5" text-anchor="middle" x="95" y="128">what's in your head</text>
+<g filter="url(#v36a-glow)"><rect fill="#1a1230" height="64" rx="12" stroke="url(#v36a-grad)" stroke-width="2.5" width="160" x="220" y="80"></rect></g><text fill="#c084fc" font-size="14" font-weight="700" text-anchor="middle" x="300" y="108">grill-me</text><text fill="#d8b4fe" font-size="11.5" text-anchor="middle" x="300" y="128">interviews + aligns</text>
+<g filter="url(#v36a-glow)"><rect fill="#1a1230" height="64" rx="12" stroke="url(#v36a-grad)" stroke-width="2.5" width="160" x="430" y="80"></rect></g><text fill="#c084fc" font-size="14" font-weight="700" text-anchor="middle" x="510" y="108">two-PRD</text><text fill="#d8b4fe" font-size="11.5" text-anchor="middle" x="510" y="128">writes the PRD</text>
+<g filter="url(#v36a-glow)"><rect fill="#1a1230" height="64" rx="12" stroke="url(#v36a-grad)" stroke-width="2.5" width="160" x="640" y="80"></rect></g><text fill="#c084fc" font-size="14" font-weight="700" text-anchor="middle" x="720" y="108">to-issues</text><text fill="#d8b4fe" font-size="11.5" text-anchor="middle" x="720" y="128">breaks down into tasks</text>
+<rect fill="#0e1b26" height="64" rx="12" stroke="#38bdf8" stroke-width="2" width="130" x="850" y="80"></rect><text fill="#bfe6ff" font-size="14" font-weight="600" text-anchor="middle" x="915" y="108">📋 backlog</text><text fill="#9ad6ff" font-size="11.5" text-anchor="middle" x="915" y="128">ready-to-work issues</text>
+</g>
+<g fill="none" opacity="0.8" stroke="#c084fc" stroke-width="2.2">
+<path d="M170,112 L218,112" marker-end="url(#v36a-ah)"></path>
+<path d="M380,112 L428,112" marker-end="url(#v36a-ah)"></path>
+<path d="M590,112 L638,112" marker-end="url(#v36a-ah)"></path>
+<path d="M800,112 L848,112" marker-end="url(#v36a-ah)"></path>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="190">From your head to the backlog—without writing a single line of code along the way.</text>
+</svg>
+<p class="text-xs text-neutral-500 mt-2 text-center">Matt's pipeline: three chained skills become an assembly line for thinking.</p>
+</div>
+<img alt="Conceptual illustration: a futuristic conveyor belt/assembly line carrying a raw idea through three stations until it becomes task cards" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-6-1.png"/>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6">
+<p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> chaining skills is like building a production line that takes your raw idea all the way to a backlog of ready-to-go tasks.</p>
+</div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-purple-400">Going deeper (optional): why "two-PRD"?</summary>
+<p class="text-sm text-neutral-300 mt-3">The name suggests a skill that produces the PRD in <em>two passes</em> — a broad first draft, then a refined version—instead of trying to get everything right at once. It’s the same principle as the pipeline applied <em>inside</em> a station: small, verifiable steps almost always beat one giant swing. The exact skill name isn’t important; the idea is: each station does focused work and delivers something better than it received.</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 2 -->
+<section class="mb-16" data-inema-topic="modulo-3-6#topico-2" id="topico-2">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">2</span><h2 class="text-2xl font-bold">⛓️ Procedures in sequence</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6">
+<p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a cake recipe with numbered steps. You don’t throw in eggs, flour, and baking powder any old way and hope for the best—you beat the egg whites <em>first</em>, then mix, then bake. The order is the recipe. Chaining procedures is exactly that: numbered steps that <em>you</em> launches, one at a time.</p>
+</div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-6-t2-p1">Remember the distinction from Track 3: there are <span class="termo" title="Skills you intentionally invoke—you’re in control.">procedures</span> (you invoke) and <span class="termo" title="Skills the model pulls in on its own when it thinks they’re relevant.">abilities</span> (the model invokes it on its own). Matt’s pipeline is made up of <strong>procedures</strong>: it decides which skill to run at each step. That’s why “chaining” here isn’t automatic magic—it’s <em>you</em> calling grill-me, reading the result, then calling two-PRD, reading again, and only then calling to-issues. Each link in the chain is a conscious decision you make.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t2-p2">Why procedures instead of a “mega-skill” that does everything? Because each station has a <strong>checkpoint</strong>. After grill-me, you check that the alignment matches your vision; after the PRD, you check that the requirements are right; only then do you let it break things down into issues. If something went wrong, you correct <em>there</em>, cheap, before propagating it to the rest. The <strong>common mistake</strong> is wanting AI to take an idea → code in a single command: then there’s nowhere to stop and correct course, and by the time the error appears, it has contaminated everything. A sequence with checkpoints is slower step by step, but much faster overall — because you almost never have to redo anything.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="A chain of three numbered links; between each link, a person performs a checkpoint before moving on" class="w-full h-auto" role="img" viewbox="0 0 1000 230">
+<defs>
+<lineargradient id="v36b-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v36b-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v36b-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v36b-grid)" height="230" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="14" font-weight="600">
+<g filter="url(#v36b-glow)"><rect fill="#1a1230" height="70" rx="35" stroke="url(#v36b-grad)" stroke-width="2.5" width="200" x="40" y="70"></rect></g><text fill="#c084fc" text-anchor="middle" x="140" y="100">1 · grill-me</text><text fill="#d8b4fe" font-size="11.5" font-weight="400" text-anchor="middle" x="140" y="122">procedure you call</text>
+<g filter="url(#v36b-glow)"><rect fill="#1a1230" height="70" rx="35" stroke="url(#v36b-grad)" stroke-width="2.5" width="200" x="400" y="70"></rect></g><text fill="#c084fc" text-anchor="middle" x="500" y="100">2 · two-PRD</text><text fill="#d8b4fe" font-size="11.5" font-weight="400" text-anchor="middle" x="500" y="122">procedure you call</text>
+<g filter="url(#v36b-glow)"><rect fill="#1a1230" height="70" rx="35" stroke="url(#v36b-grad)" stroke-width="2.5" width="200" x="760" y="70"></rect></g><text fill="#c084fc" text-anchor="middle" x="860" y="100">3 · to-issues</text><text fill="#d8b4fe" font-size="11.5" font-weight="400" text-anchor="middle" x="860" y="122">procedure you call</text>
+</g>
+<g font-family="Inter,sans-serif" font-size="12">
+<circle cx="320" cy="105" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" font-size="18" text-anchor="middle" x="320" y="111">👁️</text><text fill="#9ad6ff" text-anchor="middle" x="320" y="160">you check</text>
+<circle cx="680" cy="105" fill="#0e1b26" r="22" stroke="#38bdf8" stroke-width="2"></circle><text fill="#bfe6ff" font-size="18" text-anchor="middle" x="680" y="111">👁️</text><text fill="#9ad6ff" text-anchor="middle" x="680" y="160">you check</text>
+</g>
+<g fill="none" opacity="0.7" stroke="#c084fc" stroke-dasharray="2 5" stroke-width="2">
+<line x1="240" x2="298" y1="105" y2="105"></line><line x1="342" x2="400" y1="105" y2="105"></line>
+<line x1="600" x2="658" y1="105" y2="105"></line><line x1="702" x2="760" y1="105" y2="105"></line>
+</g>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="12.5" text-anchor="middle" x="500" y="205">There’s a checkpoint between each link: make corrections cheaply before moving on.</text>
+</svg>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-6#q1">
+<p class="font-medium mb-4">Quick recall: why does Matt use chained procedures instead of a single "mega-skill" that does everything?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Because a large skill won’t fit in the context window.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">Because there’s a checkpoint between each link where it checks and fixes things cheaply before the error spreads.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Because procedures run faster than abilities.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> are procedures (you invoke them), one at a time, with a checkpoint between each link in the chain.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 3 -->
+<section class="mb-16" data-inema-topic="modulo-3-6#topico-3" id="topico-3">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">3</span><h2 class="text-2xl font-bold">🎮 You’re in the driver’s seat</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> a car with autopilot. You can let go of the wheel and let it take you there — but Matt prefers to keep his hands on the wheel. The car helps with the tedious part (staying in the lane), but <em>it</em> chooses the destination and every turn. The thinking is its own; AI is just the power steering.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-6-t3-p1">Here we see Matt's central philosophy, introduced in Track 3 and wrapped up here: he <strong>prefers procedures</strong> precisely because he wants to be in the driver's seat. In his words: <em>"I know my skills, I don't want to delegate my thinking"</em> ("I know my skills, I don't want to delegate my thinking"). It hides most of the skill descriptions from the model (<span class="termo" title="disable model invocation: the skill only runs when a human calls it; the description doesn’t leak into the context.">disable model invocation</span>) and keeps the <strong>knowledge in the human</strong>. The grill-me → PRD → issues pipeline is the concrete form of this: the AI handles each stage, but <em>who steers the chain is you</em>.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t3-p2">There’s a contrast between schools of thought here that’s worth knowing. Other people (e.g., the approach <span class="termo" title="Obra's set of skills that prefers to let the model decide what to invoke.">Superpowers</span>, prefer the opposite: let the <strong>model in control</strong>, invoking skills on its own. Matt prefers the <strong>human in control</strong>. It’s not that one is right and the other wrong—it’s a decision about how much you want to delegate the <em>thinking</em>. O <strong>reason</strong> of Matt's choice: product thinking and architecture are the parts that <em>for real</em> scales with you, so it doesn’t outsource this part. The <strong>common mistake</strong> is confusing “letting AI do the grunt work” with “letting AI make the decisions”—chaining procedures gives you the first without giving up the second.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Comparison of two schools: human in control (procedures, Matt) versus model in control (abilities, Superpowers)" class="w-full h-auto" role="img" viewbox="0 0 1000 210">
+<defs>
+<lineargradient id="v36c-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v36c-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v36c-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v36c-grid)" height="210" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif">
+<g filter="url(#v36c-glow)"><rect fill="#1a1230" height="130" rx="16" stroke="url(#v36c-grad)" stroke-width="2.5" width="380" x="60" y="40"></rect></g>
+<text fill="#c084fc" font-size="16" font-weight="700" text-anchor="middle" x="250" y="72">🎮 human in the driver’s seat (Matt)</text>
+<text fill="#d8b4fe" font-size="13" text-anchor="middle" x="250" y="100">procedures · you invoke</text>
+<text fill="#d8b4fe" font-size="13" text-anchor="middle" x="250" y="122">knowledge stays with the human</text>
+<text fill="#9fe7c8" font-size="12.5" text-anchor="middle" x="250" y="148">"I don't want to delegate my thinking"</text>
+<rect fill="#0e1b26" height="130" rx="16" stroke="#38bdf8" stroke-width="2" width="380" x="560" y="40"></rect>
+<text fill="#bfe6ff" font-size="15" font-weight="700" text-anchor="middle" x="750" y="72">🤖 model at the wheel (Superpowers)</text>
+<text fill="#9ad6ff" font-size="13" text-anchor="middle" x="750" y="100">abilities · the model invokes them</text>
+<text fill="#9ad6ff" font-size="13" text-anchor="middle" x="750" y="122">decisions delegated to AI</text>
+<text fill="#9ad6ff" font-size="12.5" text-anchor="middle" x="750" y="148">more autonomy, less control</text>
+</g>
+</svg>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<h3 class="font-semibold text-blue-400 mb-3">🔬 Worked example: the same feature, with and without the steering wheel</h3>
+<p class="text-neutral-300 text-sm mb-3">Task: add "export report as PDF" to the app. Same skills available, two approaches:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-lg p-4"><p class="text-red-400 font-semibold text-sm mb-1">Without the steering wheel</p><p class="text-xs text-neutral-300">"AI, add PDF export — you decide everything." → It chooses a heavyweight library, invents a layout, and breaks the existing report screen. You only find out at the end and have to redo it.</p></div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4"><p class="text-purple-400 font-semibold text-sm mb-1">With the steering wheel (pipeline)</p><p class="text-xs text-neutral-300">grill-me asks you: “one page or several? reuse the current layout?” → you align. two-PRD writes the requirements. to-issues generates 3 small issues. You review each step—and the AI implements what <em>you</em> decided.</p></div>
+</div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> the AI does the grunt work at every station; the thinking — and the steering wheel — are still yours.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 4 -->
+<section class="mb-16" data-inema-topic="modulo-3-6#topico-4" id="topico-4">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">4</span><h2 class="text-2xl font-bold">♻️ Repeated 3 times? Turn it into a skill</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> you write down the same coffee recipe on a little piece of paper every morning. The third time, you stop and think: "why not just stick this on the wall once and for all?" From then on, no one in the house needs to remember — it’s written down. A Skill is the paper on the wall of your workflow.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-6-t4-p1">There’s a famous principle in programming: <span class="termo" title="Don't Repeat Yourself — don't duplicate the same logic in the code.">DRY</span> ("Don't Repeat Yourself", don't repeat yourself). The classic idea: if you copy and paste the same piece of code, turn it into a single function. Matt applies this to <strong>human</strong>: if you did the same <em>plan</em>, the same <em>chain of thought</em>, several times by hand—stop and turn it into a skill. His wording is direct: <em>"I've made this plan 100 times → turn it into a skill"</em> ("I've done this plan 100 times → turn it into a skill").</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t4-p2">The practical rule that works: <strong>after you’ve repeated it about three times, it becomes a skill</strong>. Once could be luck; twice could be coincidence; by the third time, it’s a pattern — and patterns call for automation. Remember Track 2: you can package <em>knowledge + skill</em> (what you know and what you’ve done many times) into a reusable procedure. What <strong>no</strong> you can package it; it’s the <span class="termo" title="Wisdom: knowing WHEN to use it; it requires lived context and can't fit in a skill.">wisdom</span> (knowing WHEN to use it)—that's why the "repeated 3x" trigger is yours, not the AI's. The <strong>common mistake</strong> there are two extremes: never packaging (and redoing the same plan forever), or packaging everything too early (and filling the context with skills you used only once). The third repetition is the sweet spot.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Three repetitions of the same plan done by hand; on the third, an arrow turns it all into a single reusable skill that shines" class="w-full h-auto" role="img" viewbox="0 0 1000 200">
+<defs>
+<lineargradient id="v36d-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v36d-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v36d-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="v36d-ah" markerheight="10" markerwidth="10" orient="auto" refx="7" refy="5"><path d="M0,0 L9,5 L0,10 L2.6,5 Z" fill="#c084fc"></path></marker>
+</defs>
+<rect fill="url(#v36d-grid)" height="200" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13">
+<rect fill="#0e1b26" height="80" rx="10" stroke="#38bdf8" stroke-width="2" width="120" x="40" y="60"></rect><text fill="#bfe6ff" font-weight="600" text-anchor="middle" x="100" y="95">plan 1x</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="100" y="116">by hand</text>
+<rect fill="#0e1b26" height="80" rx="10" stroke="#38bdf8" stroke-width="2" width="120" x="190" y="60"></rect><text fill="#bfe6ff" font-weight="600" text-anchor="middle" x="250" y="95">plan 2x</text><text fill="#9ad6ff" font-size="11" text-anchor="middle" x="250" y="116">by hand again</text>
+<rect fill="#2a0f12" height="80" rx="10" stroke="#f87171" stroke-width="2" width="120" x="340" y="60"></rect><text fill="#fca5a5" font-weight="600" text-anchor="middle" x="400" y="95">plan 3x</text><text fill="#fda4a4" font-size="11" text-anchor="middle" x="400" y="116">again?! 🚩</text>
+</g>
+<path d="M460,100 L560,100" fill="none" marker-end="url(#v36d-ah)" stroke="#c084fc" stroke-width="2.5"></path>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="12" font-weight="600" text-anchor="middle" x="510" y="86">DRY!</text>
+<g filter="url(#v36d-glow)"><rect fill="#1a1230" height="100" rx="16" stroke="url(#v36d-grad)" stroke-width="2.5" width="360" x="580" y="50"></rect></g>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="18" font-weight="700" text-anchor="middle" x="760" y="90">1 reusable skill</text>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="13" text-anchor="middle" x="760" y="116">never plan this by hand again</text>
+</svg>
+</div>
+<img alt="Illustration: three repeated plan drafts merging into a single glowing skill" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-6-2.png"/>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> Human DRY = the third time you repeat a plan by hand, turn it into a skill.</p></div>
+<details class="mb-6 bg-dark-800 border border-dark-600 rounded-lg p-4">
+<summary class="cursor-pointer font-medium text-purple-400">Going deeper (optional): why "3 times" and not "1 time"?</summary>
+<p class="text-sm text-neutral-300 mt-3">Packaging too early comes at a cost you already know from Trail 3: every skill <strong>leaks your description</strong> in the context window. A skill you’ve used only once is pure cost, with no return. Waiting for the third repeat ensures the pattern is real and recurring—then the investment in writing the skill pays off many times over. It’s a balance between avoiding repetition (DRY) and keeping the context from bloating (context hygiene).</p>
+</details>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 5 -->
+<section class="mb-16" data-inema-topic="modulo-3-6#topico-5" id="topico-5">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">5</span><h2 class="text-2xl font-bold">🌊 Distribute to the team</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> A restaurant where only the chef knows how to make the secret sauce. When they’re out, the dish comes out badly. Now write down the recipe and stick it in the kitchen: <em>every</em> a cook always gets the sauce right. The house's worst dish got better. A shared skill is the recipe on the team's kitchen wall.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-6-t5-p1">Here it gets big. After turning it into a skill, Matt <strong>distributes it to the team</strong>: <em>"distribute to the team, everyone plans the same way"</em> ("distribute it to the team, everyone plans the same way"). Suddenly your best planning workflow doesn't live only in your head — it becomes the standard for <em>all</em>. The junior who used to plan poorly now plans with the same skill as the senior. That’s what he calls <span class="termo" title="Raising the floor: making the team’s worst-case performance better.">"raising the floor"</span> (raising the floor): the team's worst case improves.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t5-p2">Notice the difference between <em>raise the ceiling</em> e <strong>raise the floor</strong>. Training an individual star raises the ceiling — the best gets better. Sharing a skill raises the <em>floor</em> — o <em>worse</em> the team’s possible outcome improves because no one starts from zero anymore. And raising the floor usually pays off more: a team where even the worst plan is already "good" produces much more consistent quality. This connects to Track 2 ("your skills are the ceiling"): when you package and distribute, you raise the ceiling of <em>each</em> person at a time. The <strong>common mistake</strong> is treating your skills as a competitive secret within the team — keeping them to yourself doesn’t make you more valuable; it makes the whole team slower.</p>
+<div class="rounded-2xl border border-purple-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<svg aria-label="Before: team members at very different levels, some very low. After distributing the skill: the floor rises and everyone is above a high bar" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="v36e-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c084fc"></stop><stop offset="1" stop-color="#a855f7"></stop></lineargradient>
+<filter height="180%" id="v36e-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="v36e-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#a855f7" opacity="0.12" r="1.3"></circle></pattern>
+</defs>
+<rect fill="url(#v36e-grid)" height="220" width="1000" x="0" y="0"></rect>
+<text fill="#9ca3af" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="230" y="32">BEFORE — no shared skill</text>
+<line opacity="0.4" stroke="#9ca3af" stroke-width="1.5" x1="40" x2="420" y1="180" y2="180"></line>
+<g fill="#38bdf8" opacity="0.85"><rect height="110" rx="6" width="50" x="70" y="70"></rect><rect height="40" rx="6" width="50" x="160" y="140"></rect><rect height="70" rx="6" width="50" x="250" y="110"></rect><rect height="30" rx="6" width="50" x="340" y="150"></rect></g>
+<text fill="#9ad6ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="230" y="200">low floor (some are really bad)</text>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="770" y="32">AFTER — distributed skill</text>
+<line stroke="#c084fc" stroke-dasharray="6 4" stroke-width="2.5" x1="580" x2="960" y1="110" y2="110"></line>
+<text fill="#c084fc" font-family="Inter,sans-serif" font-size="11" text-anchor="end" x="958" y="103">new floor (high)</text>
+<g fill="url(#v36e-grad)" filter="url(#v36e-glow)"><rect height="120" rx="6" width="50" x="610" y="60"></rect><rect height="100" rx="6" width="50" x="700" y="80"></rect><rect height="110" rx="6" width="50" x="790" y="70"></rect><rect height="90" rx="6" width="50" x="880" y="90"></rect></g>
+<line opacity="0.4" stroke="#9ca3af" stroke-width="1.5" x1="580" x2="960" y1="180" y2="180"></line>
+<text fill="#d8b4fe" font-family="Inter,sans-serif" font-size="11" text-anchor="middle" x="770" y="200">all above the floor — the worst case improved</text>
+</svg>
+</div>
+<img alt="Illustration: a wave lifting several team members to the same high level" class="w-full h-auto rounded-xl mb-6" loading="lazy" src="../../../curso/trilha3/assets/img/m3-6-3.png"/>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> distributing the skill raises the floor—the team’s worst planning becomes, at a minimum, your best.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- TÓPICO 6 -->
+<section class="mb-16" data-inema-topic="modulo-3-6#topico-6" id="topico-6">
+<div class="flex items-center justify-between gap-4 mb-6">
+<div class="flex items-center space-x-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 font-bold text-xl flex-shrink-0">6</span><h2 class="text-2xl font-bold">🔁 Contribute back</h2></div>
+<button aria-pressed="false" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-dark-700 border border-dark-600 text-neutral-300 hover:bg-dark-600 transition-colors text-sm flex-shrink-0" data-inema-doubt-toggle="" title="Mark this topic as a question" type="button"><span aria-hidden="true">?</span><span class="hidden sm:inline">I have a question</span></button>
+</div>
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-5 mb-6"><p class="text-neutral-200"><strong class="text-primary">🧠 Imagine it this way:</strong> the recipe on the kitchen wall isn’t sacred. When a cook discovers that a squeeze of lemon improves the sauce, they <em>edits the recipe on the wall</em>. The next day, everyone already makes better sauce. The shared skill is alive: it improves with everyone’s use.</p></div>
+<p class="text-neutral-300 mb-4 leading-relaxed" data-inema-block="m3-6-t6-p1">The final link closes the cycle: <span class="termo" title="People who use the skill contribute improvements for everyone—like open source, but within the team.">contribute back</span>. Matt's full sentence is: <em>"distribute to the team, everyone plans the same way, contributing back to that skill, raising the floor"</em>. In other words: the team doesn’t just <em>uses</em> the skill—when someone spots an improvement, they contribute it back to the shared skill. It’s the model of <span class="termo" title="Software whose code is open and improved by many people.">open-source</span> applied to your internal workflow: many eyes, many improvements, an ever better artifact.</p>
+<p class="text-neutral-300 mb-6 leading-relaxed" data-inema-block="m3-6-t6-p2">That’s why “raising the floor” isn’t a one-time event, but a <strong>cycle</strong>: every contribution raises the floor again, and the new floor becomes everyone’s starting point. Notice how everything in Track 3 connects: skill anatomy (3.1) gave you the building block; context cost (3.2) taught you to hide it when needed; teach skill (3.3) and teaching that sticks (3.4) showed you skills that learn; grill-me (3.5) gave you the first station; and now you chain, package, distribute, and improve as a team. The <strong>common mistake</strong> is treating the skill as "done" once it’s written — good skills are living things. Next, copy the complete pipeline and use it today:</p>
+<div class="copybox bg-dark-900 border border-purple-500/30 rounded-xl overflow-hidden mb-6">
+<div class="flex items-center justify-between px-4 py-2 bg-dark-800 border-b border-dark-600">
+<span class="text-xs text-purple-400 font-mono">pipeline-de-pensamento.txt</span>
+<button class="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 transition-colors" onclick="copyBox(this)" type="button">copy</button>
+</div>
+<pre class="p-4 text-sm text-neutral-200 font-mono leading-relaxed"># PIPELINE: da ideia crua ao backlog (rode UMA estação por vez, conferindo entre elas)
+
+# 1) grill-me — alinhe a visão antes de qualquer código
+/grill-me
+&gt; Interview me relentlessly about every aspect of this plan until we reach a
+&gt; shared understanding. Ask one question at a time and give your recommended
+&gt; answer. If a question can be answered by exploring the codebase, do that instead.
+# -&gt; CONFIRA: o entendimento bate com a minha visão? (se não, ajuste aqui)
+
+# 2) two-PRD — transforme o alinhamento num PRD
+/two-prd
+&gt; Com base no que alinhamos, escreva um PRD: objetivo, requisitos, escopo,
+&gt; o que está FORA do escopo, e critérios de aceite.
+# -&gt; CONFIRA: os requisitos estão certos? falta algo? (corrija o PRD aqui)
+
+# 3) to-issues — quebre o PRD em tarefas pequenas
+/to-issues
+&gt; Quebre este PRD em issues pequenas e independentes. Cada issue: título,
+&gt; descrição e critério de aceite. Sem implementar nada ainda.
+# -&gt; CONFIRA: cada issue é pequena e clara? entregue no backlog.
+
+# DRY humano: fez este pipeline 3x? -&gt; vire skill -&gt; distribua pro time -&gt;
+#             todos contribuem de volta -&gt; o piso do time sobe.</pre>
+</div>
+<div class="inema-check mb-6 bg-dark-800 border border-dark-600 rounded-xl p-6" data-inema-check="modulo-3-6#q2">
+<p class="font-medium mb-4">Quick recall: what does "contribute back" mean for a shared skill?</p>
+<div class="inema-check-options space-y-2">
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="0" type="button">Paying a fee to use the team’s skill.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="1" type="button">People who use the skill contribute improvements to it—like open source—raising everyone’s floor again.</button>
+<button class="block w-full text-left px-4 py-2 rounded-lg bg-dark-700 border border-dark-600 hover:bg-dark-600 transition-colors text-sm" data-inema-check-option="2" type="button">Lock the skill after it's written so no one else can change it.</button>
+</div>
+<div aria-live="polite" class="mt-4 text-sm" data-inema-check-feedback="" role="status"></div>
+</div>
+<div class="bg-dark-800/60 border-l-4 border-purple-500 rounded-r-lg p-4 mb-6"><p class="text-sm text-neutral-300"><strong class="text-purple-400">In one sentence:</strong> the skill is alive—people who use it improve it and give it back, and the team’s baseline rises with every contribution.</p></div>
+<div class="flex justify-start mt-6">
+<button aria-pressed="false" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 transition-colors" data-inema-read-toggle="" type="button"><span aria-hidden="true" class="inema-read-icon">○</span><span class="inema-read-label">Mark as read</span></button>
+</div>
+</section>
+<!-- RESUMO -->
+<section class="mb-12">
+<div class="bg-gradient-to-br from-purple-900/40 via-dark-800 to-dark-800 rounded-xl border border-purple-500/30 p-8">
+<h2 class="text-2xl font-bold mb-6 flex items-center"><span class="mr-3">🧾</span> Module Summary</h2>
+<div class="space-y-4 mb-8">
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Chaining = pipeline</strong><span class="text-neutral-400"> — grill-me → two-PRD → to-issues: from raw idea to backlog, with no code along the way.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">They are procedures with checkpoints</strong><span class="text-neutral-400"> — you invoke each link and check it before moving on; the thinking is yours.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Human DRY</strong><span class="text-neutral-400"> — repeated a plan by hand 3x? Turn it into a skill.</span></div></div>
+<div class="flex items-start space-x-3"><span class="text-purple-400 mt-1">✓</span><div><strong class="text-white">Distribute + contribute back</strong><span class="text-neutral-400"> — raises the team's baseline in a cycle that improves with every use.</span></div></div>
+</div>
+<div class="bg-dark-800/50 rounded-lg p-4 mb-8"><h3 class="font-semibold text-purple-400 mb-2">Next track:</h3><p class="text-neutral-300">Track 4 — Advanced Techniques: AFK, sandboxes, GitHub Actions, queues, and self-improving systems. You step out of the loop and put agents to work while you sleep.</p></div>
+<div class="flex flex-col sm:flex-row gap-4"><a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="index.html">← Back to Track</a><a class="flex-1 text-center px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-500 transition-colors" href="../trilha4/index.html">Next Track →</a></div>
+</div>
+</section>
+</main>
+</div>
+</div>
+<footer class="border-t border-dark-600 py-8 mt-16"><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm"><p>HARNESS — Agentic Engineering · the Matt Pocock method · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p></div></footer>
+<script>
+    function toggleTopic(button){ const ti=button.closest('.topic-item'); if(!ti)return; const e=ti.querySelector('.topic-explanation'); if(e){e.classList.toggle('active'); button.setAttribute('aria-expanded', e.classList.contains('active'));} }
+    (function(){ const tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement; function s(){ if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');} } s(); tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();}); })();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+    function copyBox(btn){ try{ var pre=btn.closest('.copybox').querySelector('pre'); navigator.clipboard.writeText(pre.textContent); var o=btn.textContent; btn.textContent='copiado ✓'; setTimeout(function(){btn.textContent=o;},1500);}catch(e){} }
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.INEMA && typeof INEMA.init === 'function') INEMA.init();
+      if (window.INEMA && INEMA.registerCheck) {
+        INEMA.registerCheck('modulo-3-6#q1', { answer: 1, explain: { 0: 'Não é sobre tamanho de contexto — é sobre poder conferir e corrigir entre os passos.', 1: 'Isso! Cada checkpoint deixa você corrigir barato antes que o erro se propague.', 2: 'Velocidade não é o motivo; o motivo é o controle e os pontos de checagem.' } });
+        INEMA.registerCheck('modulo-3-6#q2', { answer: 1, explain: { 0: 'Não há taxa — é colaboração, não cobrança.', 1: 'Exato! Melhorias voltam pra skill compartilhada e elevam o piso de todos de novo.', 2: 'O oposto: skills boas são vivas e melhoram com o uso de todos.' } });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="harness" name="inema-course"/>
+<title>Ruta 4 · Técnicas Avanzadas | HARNESS</title>
+<script>
+  (function () {
+    try {
+      var html = document.documentElement;
+      var DEF = { theme: 'inema-dark', font: 'inter', fontScale: 100, lineWidth: 68, leading: 1.7, accent: 'emerald' };
+      function clone(o){var r={};for(var x in o)r[x]=o[x];return r;}
+      var p = clone(DEF);
+      try {
+        var raw = localStorage.getItem('inema.prefs');
+        if (raw) { var parsed = JSON.parse(raw); if (parsed && typeof parsed==='object'){ for (var k in DEF) if (parsed[k]!=null) p[k]=parsed[k]; } }
+        else { var legacy = localStorage.getItem('theme'); if (legacy==='light') p.theme='claro'; else if (legacy==='dark') p.theme='inema-dark'; }
+      } catch (e) { p = clone(DEF); }
+      var THEMES = { 'inema-dark':{dark:true,attr:null,cs:'dark'},'claro':{dark:false,attr:null,cs:'light'},'sepia':{dark:false,attr:'sepia',cs:'light'},'foco':{dark:null,attr:'foco',cs:null},'contraste':{dark:true,attr:'contraste',cs:'dark'} };
+      var t = THEMES[p.theme] || THEMES['inema-dark'];
+      if (t.dark===true) html.classList.add('dark'); else if (t.dark===false) html.classList.remove('dark');
+      if (t.attr) html.setAttribute('data-theme', t.attr); else html.removeAttribute('data-theme');
+      html.style.colorScheme = (t.cs ? t.cs : (html.classList.contains('dark')?'dark':'light'));
+      html.setAttribute('data-font', p.font||'inter'); html.setAttribute('data-accent', p.accent||'emerald');
+      var s = html.style, scale=(+p.fontScale||100);
+      s.setProperty('--inema-font-scale',(scale/100).toString()); s.setProperty('font-size',scale+'%');
+      s.setProperty('--measure',(+p.lineWidth||68)+'ch'); s.setProperty('--lh-body',(+p.leading||1.7).toString());
+    } catch (err) { try { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme='dark'; } catch(e){} }
+  })();
+  </script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#FACC15', dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' } } } } }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../../../assets/learn.css" rel="stylesheet"/>
+<script data-inema-manifest="" type="application/json">
+{
+  "course": "harness",
+  "tracks": [
+    { "n": "1", "title": "Fundamentos do Harness", "modules": [
+      { "id": "1-1", "title": "Motor × Chassi", "topics": 6, "href": "curso/trilha1/modulo-1-1.html" },
+      { "id": "1-2", "title": "O Bitter Lesson", "topics": 6, "href": "curso/trilha1/modulo-1-2.html" },
+      { "id": "1-3", "title": "Setup agent-agnostic", "topics": 6, "href": "curso/trilha1/modulo-1-3.html" },
+      { "id": "1-4", "title": "DX × AX", "topics": 6, "href": "curso/trilha1/modulo-1-4.html" },
+      { "id": "1-5", "title": "Economia de tokens", "topics": 6, "href": "curso/trilha1/modulo-1-5.html" },
+      { "id": "1-6", "title": "Context window escasso", "topics": 6, "href": "curso/trilha1/modulo-1-6.html" }
+    ]},
+    { "n": "2", "title": "Habilidades Humanas", "modules": [
+      { "id": "2-1", "title": "Tático × Estratégico", "topics": 6, "href": "curso/trilha2/modulo-2-1.html" },
+      { "id": "2-2", "title": "Suas skills são o teto", "topics": 6, "href": "curso/trilha2/modulo-2-2.html" },
+      { "id": "2-3", "title": "Conhecimento × Habilidade × Sabedoria", "topics": 6, "href": "curso/trilha2/modulo-2-3.html" },
+      { "id": "2-4", "title": "Fundamentos de delegação", "topics": 6, "href": "curso/trilha2/modulo-2-4.html" },
+      { "id": "2-5", "title": "Comunicação & ditado", "topics": 6, "href": "curso/trilha2/modulo-2-5.html" },
+      { "id": "2-6", "title": "Você no controle do produto", "topics": 6, "href": "curso/trilha2/modulo-2-6.html" }
+    ]},
+    { "n": "3", "title": "Habilidades de IA (Skills)", "modules": [
+      { "id": "3-1", "title": "Anatomia de uma skill", "topics": 6, "href": "curso/trilha3/modulo-3-1.html" },
+      { "id": "3-2", "title": "Custo de contexto da skill", "topics": 6, "href": "curso/trilha3/modulo-3-2.html" },
+      { "id": "3-3", "title": "A Teach skill por dentro", "topics": 6, "href": "curso/trilha3/modulo-3-3.html" },
+      { "id": "3-4", "title": "Ensino que retém", "topics": 6, "href": "curso/trilha3/modulo-3-4.html" },
+      { "id": "3-5", "title": "Grill-me & skills adversariais", "topics": 6, "href": "curso/trilha3/modulo-3-5.html" },
+      { "id": "3-6", "title": "Encadear skills + DRY humano", "topics": 6, "href": "curso/trilha3/modulo-3-6.html" }
+    ]},
+    { "n": "4", "title": "Técnicas Avançadas", "modules": [
+      { "id": "4-1", "title": "Human-in-the-loop × AFK", "topics": 6, "href": "curso/trilha4/modulo-4-1.html" },
+      { "id": "4-2", "title": "Paralelizar & sandboxes", "topics": 6, "href": "curso/trilha4/modulo-4-2.html" },
+      { "id": "4-3", "title": "GitHub Actions + agentes", "topics": 6, "href": "curso/trilha4/modulo-4-3.html" },
+      { "id": "4-4", "title": "Loops × Filas", "topics": 6, "href": "curso/trilha4/modulo-4-4.html" },
+      { "id": "4-5", "title": "Sistemas auto-melhoráveis", "topics": 6, "href": "curso/trilha4/modulo-4-5.html" },
+      { "id": "4-6", "title": "Checkpoints & review fluido", "topics": 6, "href": "curso/trilha4/modulo-4-6.html" }
+    ]},
+    { "n": "5", "title": "Soluções Prontas pra Copiar", "modules": [
+      { "id": "5-1", "title": "O reset de 2 passos", "topics": 6, "href": "curso/trilha5/modulo-5-1.html" },
+      { "id": "5-2", "title": "grill-me + 10 decisões", "topics": 6, "href": "curso/trilha5/modulo-5-2.html" },
+      { "id": "5-3", "title": "Pipeline grill-me → PRD → issues", "topics": 6, "href": "curso/trilha5/modulo-5-3.html" },
+      { "id": "5-4", "title": "Setup AFK completo", "topics": 6, "href": "curso/trilha5/modulo-5-4.html" },
+      { "id": "5-5", "title": "Action de review + cron de security", "topics": 6, "href": "curso/trilha5/modulo-5-5.html" },
+      { "id": "5-6", "title": "Review fluido + onde achar", "topics": 6, "href": "curso/trilha5/modulo-5-6.html" }
+    ]}
+  ]
+}
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+    [id^="topico-"], [id^="modulo-"] { scroll-margin-top: 5rem; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217,119,6,0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217,119,6,0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217,119,6,0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217,119,6,0.18); }
+    html:not(.dark) .hover\:text-amber-400:hover { color: #92400e; }
+    html:not(.dark) .group:hover .group-hover\:text-amber-400 { color: #92400e; }
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161,98,7,0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161,98,7,0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .text-red-400 { color: #b91c1c; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(185,28,28,0.07); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(185,28,28,0.25); }
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37,99,235,0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37,99,235,0.25); }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255,255,255,0.95); }
+
+    .dark .border-dark-600 { border-color: #374151; }
+    .dark .divide-dark-600 > :not([hidden]) ~ :not([hidden]) { border-color: #374151; }
+    html:not(.dark) svg[role="img"] { filter: saturate(0.82) brightness(0.96); }
+
+    @keyframes wf-pulse { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+    @media (prefers-reduced-motion: no-preference) {
+      .wf-a { animation: wf-pulse 2.6s ease-in-out infinite; }
+      .wf-a:nth-child(2){animation-delay:.25s} .wf-a:nth-child(3){animation-delay:.5s}
+      .wf-a:nth-child(4){animation-delay:.75s} .wf-a:nth-child(5){animation-delay:1s}
+    }
+  </style>
+<link href="https://inematds.github.io/hardnessai/curso/trilha4/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/hardnessai/en/curso/trilha4/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/hardnessai/es/curso/trilha4/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha4/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<a class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-dark-800 focus:text-amber-400 focus:rounded-lg" href="#conteudo">Saltar al contenido</a>
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-14">
+<div class="flex items-center space-x-4">
+<a class="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300" href="../../index.html"><span class="text-2xl">🏎️</span><span class="font-bold text-lg hidden sm:inline">HARNESS</span></a>
+<span class="text-neutral-600">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-1 sm:space-x-2">
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-colors" href="../../curso/trilha1/index.html"><span class="sm:hidden">T1</span><span class="hidden sm:inline">Harness</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 transition-colors" href="../../curso/trilha2/index.html"><span class="sm:hidden">T2</span><span class="hidden sm:inline">Humano</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 transition-colors" href="../../curso/trilha3/index.html"><span class="sm:hidden">T3</span><span class="hidden sm:inline">Skills</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-400 bg-amber-500/10" href="index.html"><span class="sm:hidden">T4</span><span class="hidden sm:inline">Avanzado</span></a>
+<a class="px-3 py-1.5 rounded-lg text-sm font-semibold text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 transition-colors" href="../../curso/trilha5/index.html"><span class="sm:hidden">T5</span><span class="hidden sm:inline">Soluciones</span></a>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-neutral-300 hover:text-neutral-100 hover:bg-dark-700 transition-colors ml-1" data-inema-journey-open="" type="button"><span aria-hidden="true">◷</span><span>Mi recorrido</span><span aria-hidden="true" class="inema-journey-badge hidden"></span></button>
+<button aria-label="Cambiar tema" class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors ml-1" id="theme-toggle">
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+<svg class="hidden w-5 h-5 text-neutral-300" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<header class="bg-gradient-to-br from-amber-900/30 via-dark-800 to-dark-800 py-12 border-b border-dark-600">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<span class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full mb-4">RUTA 4</span>
+<h1 class="text-3xl sm:text-4xl font-bold mb-4">🛰️ Técnicas avanzadas</h1>
+<p class="text-lg text-neutral-400 max-w-3xl mb-6">Salir del human-in-the-loop y construir sistemas que funcionan solos y se mejoran a sí mismos. AFK, sandboxes, GitHub Actions, colas de tareas y ciclos de autom mejora — el harness que trabaja por ti mientras no estás.</p>
+<div class="rounded-2xl border border-amber-500/30 bg-dark-900/40 p-3 sm:p-4 mb-6 overflow-hidden">
+<img alt="Ilustración de la ruta 4: Técnicas avanzadas" class="w-full h-auto rounded-xl mb-4" loading="lazy" src="../../../curso/trilha4/assets/img/hero.png"/>
+<svg aria-label="Diagrama: una cola de tareas alimenta agentes en sandbox que trabajan AFK y se mejoran por sí solos" class="w-full h-auto" role="img" viewbox="0 0 1000 220">
+<defs>
+<lineargradient id="t4h-grad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fbbf24"></stop><stop offset="1" stop-color="#f59e0b"></stop></lineargradient>
+<filter height="180%" id="t4h-glow" width="180%" x="-40%" y="-40%"><fegaussianblur result="b" stddeviation="1.8"></fegaussianblur><femerge><femergenode in="b"></femergenode><femergenode in="SourceGraphic"></femergenode></femerge></filter>
+<pattern height="32" id="t4h-grid" patternunits="userSpaceOnUse" width="32"><circle cx="1.3" cy="1.3" fill="#f59e0b" opacity="0.12" r="1.3"></circle></pattern>
+<marker id="t4h-ah" markerheight="9" markerwidth="9" orient="auto" refx="6.5" refy="4.5"><path d="M0,0 L8,4.5 L0,9 L2.4,4.5 Z" fill="#fbbf24"></path></marker>
+</defs>
+<rect fill="url(#t4h-grid)" height="220" width="1000" x="0" y="0"></rect>
+<g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="34"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="54">cola de tareas</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="74"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="94">sandboxes</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="114"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="134">GitHub Actions</text></g>
+<g class="wf-a"><rect fill="#0e1b26" height="30" rx="8" stroke="#38bdf8" stroke-width="2" width="150" x="40" y="154"></rect><text fill="#bfe6ff" text-anchor="middle" x="115" y="174">telemetría</text></g>
+</g>
+<g fill="none" opacity="0.5" stroke="#fbbf24" stroke-width="1.8">
+<path d="M190,49 C320,49 360,108 470,108" marker-end="url(#t4h-ah)"></path>
+<path d="M190,89 C320,89 360,108 470,108" marker-end="url(#t4h-ah)"></path>
+<path d="M190,129 C320,129 360,108 470,108" marker-end="url(#t4h-ah)"></path>
+<path d="M190,169 C320,169 360,108 470,108" marker-end="url(#t4h-ah)"></path>
+</g>
+<g filter="url(#t4h-glow)"><rect fill="#1f1604" height="76" rx="16" stroke="url(#t4h-grad)" stroke-width="2.5" width="210" x="470" y="70"></rect></g>
+<text fill="#fbbf24" font-family="Inter,sans-serif" font-size="18" font-weight="600" text-anchor="middle" x="575" y="103">AFK</text>
+<text fill="#cbd5e1" font-family="Inter,sans-serif" font-size="12" text-anchor="middle" x="575" y="124">el sistema funciona solo</text>
+<path d="M680,108 L800,108" fill="none" marker-end="url(#t4h-ah)" stroke="#fbbf24" stroke-width="2"></path>
+<rect fill="#1f2937" height="52" rx="12" stroke="#9ca3af" stroke-width="2" width="160" x="800" y="82"></rect>
+<text fill="#e5e7eb" font-family="Inter,sans-serif" font-size="15" font-weight="600" text-anchor="middle" x="880" y="113">Se mejora solo</text>
+</svg>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-2 max-w-2xl">
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">6</div><div class="text-xs text-neutral-400">Módulos</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">36</div><div class="text-xs text-neutral-400">Temas</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">~3h</div><div class="text-xs text-neutral-400">Duración</div></div>
+<div class="bg-dark-800/50 rounded-lg p-3 border border-dark-600"><div class="text-xl font-bold text-amber-400">Avanzado</div><div class="text-xs text-neutral-400">Nivel</div></div>
+</div>
+<div class="mt-6 max-w-2xl">
+<div aria-label="Progreso de la ruta 4" aria-valuemax="100" aria-valuemin="0" class="inema-meter flex items-center gap-3" data-inema-meter="trilha:4" role="progressbar">
+<span class="text-sm text-neutral-400">Progreso de la ruta:</span>
+<span class="inema-meter-pct text-amber-400 font-bold text-sm">0%</span>
+<span class="inema-meter-count text-xs text-neutral-500">0 de 36</span>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="conteudo">
+<section class="mb-12">
+<h2 class="text-2xl font-bold mb-6">Mapa de la ruta</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 p-5 transition-all" href="#modulo-4-1">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold text-sm">4.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-amber-400 transition-colors">🕹️ Human-in-the-loop × AFK</h3>
+<p class="text-xs text-neutral-400">Sal del bucle</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 p-5 transition-all" href="#modulo-4-2">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold text-sm">4.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-amber-400 transition-colors">📦 Paralelizar y sandboxes</h3>
+<p class="text-xs text-neutral-400">Agentes aislados</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 p-5 transition-all" href="#modulo-4-3">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold text-sm">4.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-amber-400 transition-colors">⚙️ GitHub Actions + agentes</h3>
+<p class="text-xs text-neutral-400">AFK en la nube</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 p-5 transition-all" href="#modulo-4-4">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold text-sm">4.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-amber-400 transition-colors">🧮 Bucles × Colas</h3>
+<p class="text-xs text-neutral-400">Cola, no loop</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 p-5 transition-all" href="#modulo-4-5">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold text-sm">4.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-amber-400 transition-colors">♻️ Sistemas que se mejoran solos</h3>
+<p class="text-xs text-neutral-400">Compra el candado</p>
+</a>
+<a class="group bg-dark-800 rounded-xl border border-dark-600 hover:border-amber-500/30 p-5 transition-all" href="#modulo-4-6">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold text-sm">4.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="font-semibold mb-1 group-hover:text-amber-400 transition-colors">🎬 Checkpoints y revisión fluida</h3>
+<p class="text-xs text-neutral-400">Review sin dolor</p>
+</a>
+</div>
+</section>
+<h2 class="text-2xl font-bold mb-6">Contenido detallado</h2>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="4-1" data-inema-track="4" id="modulo-4-1">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold">4.1</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🕹️ Human-in-the-loop × AFK</h3>
+<p class="text-neutral-400 text-sm">Sal del bucle: deja de aprobar cada paso y deja que el agente trabaje solo (AFK).</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🕹️</span><div><span class="font-medium">Human-in-the-loop</span><span class="text-neutral-500 text-sm ml-2">- Tú en el loop</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El modo predeterminado: apruebas cada paso y cada acción del agente.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es seguro, pero se convierte en un cuello de botella — tú eres el límite de velocidad.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Aprobación manual; seguridad × rendimiento.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🏃</span><div><span class="font-medium">Qué es AFK</span><span class="text-neutral-500 text-sm ml-2">- Away From Keyboard</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Dejar que el agente trabaje solo mientras estás lejos del teclado.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el salto de productividad: el trabajo se realiza sin ti.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">AFK = agente autónomo; sin supervisión.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🔓</span><div><span class="font-medium">El desbloqueo de AFK</span><span class="text-neutral-500 text-sm ml-2">- El cambio decisivo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El momento en que confías lo suficiente en el harness como para salir del bucle.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Desbloquea el paralelismo: varios agentes trabajando al mismo tiempo.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Confianza en el harness → autonomía.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🛑</span><div><span class="font-medium">Cuándo quedarse en el bucle</span><span class="text-neutral-500 text-sm ml-2">- No todo es AFK</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Las tareas riesgosas o ambiguas todavía requieren que estés en el loop.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Dejar AFK a ciegas en la tarea equivocada es como darle las llaves del auto a un junior.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El riesgo × la reversibilidad determinan el modo.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🚦</span><div><span class="font-medium">Permisos y fricción</span><span class="text-neutral-500 text-sm ml-2">- Quitar la fricción</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Configurar permisos para que el agente actúe sin pedir aprobación en cada paso.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cada confirmación manual es una fricción que acaba con el AFK.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Allowlist; aprobación automática con límites.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">👥</span><div><span class="font-medium">Dos, tres, cuatro de ti</span><span class="text-neutral-500 text-sm ml-2">- Multiplícate</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">AFK + paralelismo = varios «tú» trabajando en frentes diferentes.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es la palanca de escala real del método.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Flota de agentes; tú como gerente.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-4-1')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors" href="modulo-4-1.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="4-2" data-inema-track="4" id="modulo-4-2">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold">4.2</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">📦 Paralelizar y sandboxes</h3>
+<p class="text-neutral-400 text-sm">Agentes aislados: ejecuta varios en paralelo sin que uno rompa el entorno de otro.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">⚡</span><div><span class="font-medium">Por qué paralelizar</span><span class="text-neutral-500 text-sm ml-2">- Más frentes al mismo tiempo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Ejecutar varias tareas con agentes diferentes al mismo tiempo.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Multiplica el throughput sin multiplicar tu tiempo.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Paralelismo = rendimiento; tú te conviertes en orquestador.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">⚠️</span><div><span class="font-medium">El riesgo de ejecutar sin sandbox</span><span class="text-neutral-500 text-sm ml-2">- Sin red de seguridad</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un agente AFK con acceso total a tu máquina puede causar daños.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">AFK sin aislamiento es la receta del desastre.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Radio de impacto; aísla antes de liberar.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🏰</span><div><span class="font-medium">Sand Castle</span><span class="text-neutral-500 text-sm ml-2">- La configuración de Matt</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La herramienta de sandbox que usa Matt para ejecutar agentes aislados.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el atajo práctico para usar AFK de forma segura.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Sandbox listo; aislamiento por tarea.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🐳</span><div><span class="font-medium">Docker / Podman</span><span class="text-neutral-500 text-sm ml-2">- Aislar con contenedores</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Contenedores como sandbox para cada agente.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Aislamiento estándar de la industria, fácil de descartar y recrear.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Contenedor efímero; entorno reproducible.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">☁️</span><div><span class="font-medium">Vercel sandboxes</span><span class="text-neutral-500 text-sm ml-2">- Aislar en la nube</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Sandboxes administrados en la nube para ejecutar agentes sin usar tu máquina.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Saca al agente de tu laptop y te libera por completo.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Sandbox como servicio; sin bloquear el entorno local.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🚁</span><div><span class="font-medium">Flota en paralelo</span><span class="text-neutral-500 text-sm ml-2">- Orquestar varios</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Coordinar una flota de agentes en sandboxes separadas.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es donde el paralelismo + el aislamiento se convierten en escala real.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Flota aislada; cada uno en su caja.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-4-2')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors" href="modulo-4-2.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="4-3" data-inema-track="4" id="modulo-4-3">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold">4.3</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">⚙️ GitHub Actions + agentes</h3>
+<p class="text-neutral-400 text-sm">AFK en la nube: agentes que se ejecutan en CI, abren PRs y nunca bloquean tu máquina.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🤖</span><div><span class="font-medium">Agentes en CI</span><span class="text-neutral-500 text-sm ml-2">- El agente en el pipeline</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Ejecutar agentes dentro de GitHub Actions, como un paso del CI.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">CI es un sandbox AFK gratuito que ya tienes.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Agente como job; entorno efímero.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🔍</span><div><span class="font-medium">Acción de revisión</span><span class="text-neutral-500 text-sm ml-2">- Revisor automático</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Una Action que revisa automáticamente cada PR con un agente.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Revisión coherente en todos los PRs, sin que tengas que acordarte de pedirla.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Review al hacer push; comentarios en el PR.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🏷️</span><div><span class="font-medium">Labels que se activan</span><span class="text-neutral-500 text-sm ml-2">- Activación por etiqueta</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Aplicar una label a una issue/PR activa al agente para que actúe.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Se convierte en un botón de "envía al agente" dentro de GitHub.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Activación por etiqueta; bajo demanda.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🔀</span><div><span class="font-medium">Pull request como resultado</span><span class="text-neutral-500 text-sm ml-2">- El PR es el producto</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El agente entrega el trabajo como un PR listo para que lo revises.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">PR es el punto de control natural entre el modo AFK y la revisión humana.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Salida revisable; nada va directamente a main.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">💻</span><div><span class="font-medium">Sin bloquear la máquina local</span><span class="text-neutral-500 text-sm ml-2">- Trabajo en la nube</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Todo el trabajo se ejecuta en los runners de GitHub, no en tu laptop.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Tienes tiempo libre mientras el agente trabaja en la nube.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Cómputo remoto; laptop liberada.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🧱</span><div><span class="font-medium">Crear la tuya</span><span class="text-neutral-500 text-sm ml-2">- Tu propia Action</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Crear tu propia Action de agente desde cero (detallada en la Trilha 5).</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Una Action tuya se adapta exactamente a tu flujo.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">YAML mínimo; checkout → agente → PR.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-4-3')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors" href="modulo-4-3.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="4-4" data-inema-track="4" id="modulo-4-4">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold">4.4</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🧮 Bucles × Colas</h3>
+<p class="text-neutral-400 text-sm">Cola, no loop: por qué una cola de tareas supera el loop infinito del agente.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🔁</span><div><span class="font-medium">El bucle Ralph (Huntley)</span><span class="text-neutral-500 text-sm ml-2">- El loop famoso</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El «Ralph loop» de Geoff Huntley: ejecutar el agente en loop hasta que lo resuelva.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es el punto de partida — y donde mucha gente se atasca.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Loop bruto; repite hasta que esté "listo".</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🚫</span><div><span class="font-medium">Por qué loop ≠ respuesta</span><span class="text-neutral-500 text-sm ml-2">- El límite del loop</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El loop ciego repite sin priorizar ni delimitar el alcance: desperdicia tokens.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Repetir no es lo mismo que organizar el trabajo.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Loop sin clasificación = costoso e irregular.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">📋</span><div><span class="font-medium">La cola de tareas</span><span class="text-neutral-500 text-sm ml-2">- La alternativa</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">En vez de un bucle, una fila de tareas delimitadas que el agente consume.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La cola da orden, prioridad y una parada limpia.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Cola de tareas; consumirlas en orden.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🎯</span><div><span class="font-medium">Clasificación y alcance</span><span class="text-neutral-500 text-sm ml-2">- Tareas bien delimitadas</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Dividir y priorizar tareas con un alcance claro antes de ponerlas en cola.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Una tarea bien delimitada es una que el agente termina por su cuenta.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Clasificación; alcance claro por elemento.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">👑</span><div><span class="font-medium">El rey medieval</span><span class="text-neutral-500 text-sm ml-2">- La analogía</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Eres el rey que da las órdenes; los agentes son los súbditos que las ejecutan.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Fija la mentalidad: tú diriges, no ejecutas.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">El rey distribuye; los súbditos ejecutan la cola.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🕸️</span><div><span class="font-medium">Varios nodos en la cola</span><span class="text-neutral-500 text-sm ml-2">- Escalar la cola</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Varios agentes (nodos) extrayendo elementos de la misma cola en paralelo.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Combina cola + paralelismo para obtener el máximo rendimiento.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Workers extrayendo elementos de la cola; escalado horizontal.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-4-4')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors" href="modulo-4-4.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="4-5" data-inema-track="4" id="modulo-4-5">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold">4.5</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">♻️ Sistemas que se mejoran solos</h3>
+<p class="text-neutral-400 text-sm">Compra el candado: sistemas que detectan problemas y se reparan solos.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🪙</span><div><span class="font-medium">No necesitas el modelo caro</span><span class="text-neutral-500 text-sm ml-2">- Compra el candado</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un sistema bien hecho no necesita el modelo más caro para sostenerse.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">"Compra el candado": invierte en el sistema, no en la pieza cara.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Sistema económico y robusto &gt; modelo premium.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">🛡️</span><div><span class="font-medium">Cron de revisión de seguridad</span><span class="text-neutral-500 text-sm ml-2">- Vigilancia automática</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Un cron que ejecuta periódicamente un agente de revisión de seguridad.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La seguridad se convierte en una rutina automática, no en un esfuerzo puntual.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Cron diario; análisis recurrente.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">📡</span><div><span class="font-medium">Telemetría → issue → corrección</span><span class="text-neutral-500 text-sm ml-2">- El ciclo cerrado</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">La telemetría detecta el problema, abre un issue y activa la corrección.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cierra el ciclo de la observación a la reparación sin que tengas que intervenir.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Detectar → abrir issue → corregir.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🔬</span><div><span class="font-medium">La causa raíz del bug</span><span class="text-neutral-500 text-sm ml-2">- Tratar, no remendar</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El agente busca la causa raíz, no solo el síntoma del bug.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La causa raíz evita que vuelva el mismo problema.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Root cause &gt; band-aid.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">♻️</span><div><span class="font-medium">Loops de autom mejora</span><span class="text-neutral-500 text-sm ml-2">- El sistema se ajusta</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El sistema aprende de cada fallo y se ajusta a sí mismo.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La autom mejora sola con el tiempo: el sistema va mejorando por su cuenta.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Ciclo de retroalimentación; mejora compuesta.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">🔭</span><div><span class="font-medium">Revisar el sistema</span><span class="text-neutral-500 text-sm ml-2">- Quién cuida al cuidador</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Revisar periódicamente el propio sistema de mejora automática.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">La autom mejora sin supervisión puede desviarse hacia el lugar equivocado.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Auditar el autoajuste; humano en el nivel superior.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-4-5')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors" href="modulo-4-5.html">Ver completo</a>
+</div>
+</div>
+<div class="bg-dark-800 rounded-xl border border-dark-600 mb-6" data-inema-module="4-6" data-inema-track="4" id="modulo-4-6">
+<div class="p-6 border-b border-dark-600">
+<div class="flex items-center justify-between mb-2"><span class="text-amber-400 font-bold">4.6</span><span class="text-xs text-neutral-500">~30 min</span></div>
+<h3 class="text-2xl font-bold mb-2">🎬 Checkpoints y revisión fluida</h3>
+<p class="text-neutral-400 text-sm">Review sin dolor: mueve el checkpoint a la derecha y revisa al agente sin fricción.</p>
+</div>
+<div class="divide-y divide-dark-600">
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<span class="text-lg">🎁</span><div><span class="font-medium">Qué te aporta la revisión</span><span class="text-neutral-500 text-sm ml-2">- El valor del checkpoint</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El review es el punto donde verificas y corriges el rumbo del agente.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Es tu red de seguridad en el mundo AFK.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Checkpoint = control de calidad.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<span class="text-lg">➡️</span><div><span class="font-medium">Mover el punto de control hacia la derecha</span><span class="text-neutral-500 text-sm ml-2">- Revisar más tarde</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Posponer el punto de revisión hasta el final, dando más autonomía al agente.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Cuanto más a la derecha está el checkpoint, más AFK puedes estar.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Mover el checkpoint a medida que aumenta la confianza.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<span class="text-lg">🚪</span><div><span class="font-medium">Cuándo quitar al humano</span><span class="text-neutral-500 text-sm ml-2">- Eliminar el cuello de botella</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Identificar los puntos de control en los que el humano ya no aporta valor.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Quitar al humano adecuado acelera; quitar al equivocado lo rompe.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Eliminar el checkpoint redundante y mantener el crítico.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<span class="text-lg">🧑‍⚖️</span><div><span class="font-medium">Quién revisa al agente</span><span class="text-neutral-500 text-sm ml-2">- Otro agente revisor</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Usar un agente para revisar el trabajo de otro antes de que tú lo hagas.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Filtra la mayoría de los errores antes del checkpoint humano.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Agente revisor; doble verificación.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<span class="text-lg">🎥</span><div><span class="font-medium">Video walkthrough + TTS</span><span class="text-neutral-500 text-sm ml-2">- El agente te lo presenta</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">El agente graba un walkthrough en video con narración TTS de lo que hizo.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Revisas mirando el video, en vez de leer diff por diff.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">Walkthrough narrado; revisión por video.</p></div>
+</div></div>
+</div>
+<div class="topic-item">
+<button aria-expanded="false" class="w-full px-6 py-4 flex items-center space-x-3 hover:bg-dark-700/50 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<span class="text-lg">⚡</span><div><span class="font-medium">Review más rápido con IA</span><span class="text-neutral-500 text-sm ml-2">- Cerrar el ciclo</span></div>
+</button>
+<div class="topic-explanation px-6 pb-4"><div class="bg-dark-700/50 rounded-lg p-4 space-y-3 ml-9">
+<div><span class="text-amber-400 font-semibold">Qué es:</span><p class="text-neutral-300 text-sm">Usar la IA para resumir, destacar y acelerar tu revisión humana.</p></div>
+<div><span class="text-amber-400 font-semibold">Por qué aprender:</span><p class="text-neutral-300 text-sm">Un review rápido mantiene el AFK en marcha sin convertirse en un cuello de botella.</p></div>
+<div><span class="text-amber-400 font-semibold">Conceptos clave:</span><p class="text-neutral-300 text-sm">La IA resume el diff; revisar sin dolor.</p></div>
+</div></div>
+</div>
+</div>
+<div class="p-4 bg-dark-700/30 flex justify-start space-x-3">
+<button class="px-4 py-2 text-sm bg-dark-600 hover:bg-dark-500 rounded-lg transition-colors" onclick="openModal('modal-4-6')">Ver en modal</button>
+<a class="px-4 py-2 text-sm bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors" href="modulo-4-6.html">Ver completo</a>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 mt-10">
+<a class="flex-1 text-center px-6 py-3 bg-dark-700 text-neutral-300 rounded-lg font-semibold hover:bg-dark-600 transition-colors" href="../trilha3/index.html">← Ruta 3</a>
+<a class="flex-1 text-center px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-500 transition-colors" href="../trilha5/index.html">Ruta 5 →</a>
+</div>
+</main>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-4-1" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-amber-400 font-bold">4.1</span><span class="font-semibold">Human-in-the-loop × AFK</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-4-1.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-4-2" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-amber-400 font-bold">4.2</span><span class="font-semibold">Paralelizar y sandboxes</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-4-2.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-4-3" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-amber-400 font-bold">4.3</span><span class="font-semibold">GitHub Actions + agentes</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-4-3.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-4-4" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-amber-400 font-bold">4.4</span><span class="font-semibold">Loops × colas</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-4-4.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-4-5" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-amber-400 font-bold">4.5</span><span class="font-semibold">Sistemas que se mejoran a sí mismos</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-4-5.html"></iframe></div></div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80" id="modal-4-6" onclick="if(event.target === this) closeModal()"><div class="bg-dark-800 rounded-xl w-full max-w-6xl h-[95vh] flex flex-col border border-dark-600"><div class="p-4 border-b border-dark-600 flex justify-between items-center flex-shrink-0"><div class="flex items-center space-x-3"><span class="text-amber-400 font-bold">4.6</span><span class="font-semibold">Checkpoints y revisión fluida</span></div><button class="text-neutral-400 hover:text-white text-2xl leading-none" onclick="closeModal()">×</button></div><iframe class="flex-1 w-full rounded-b-xl" src="modulo-4-6.html"></iframe></div></div>
+<footer class="border-t border-dark-600 py-8 mt-16">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-neutral-500 text-sm">
+<p>HARNESS — Ingeniería agéntica · el método Matt Pocock · <a class="text-sky-400 hover:text-sky-300" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<script>
+    function toggleTopic(button){var ti=button.closest('.topic-item');if(!ti)return;var ex=ti.querySelector('.topic-explanation');var mc=button.closest('.bg-dark-800');if(mc)mc.querySelectorAll('.topic-explanation.active').forEach(function(e){if(e!==ex){e.classList.remove('active');var b=e.closest('.topic-item').querySelector('button');if(b)b.setAttribute('aria-expanded','false');}});if(ex){ex.classList.toggle('active');button.setAttribute('aria-expanded',ex.classList.contains('active').toString());}}
+    (function(){var tt=document.getElementById('theme-toggle'),di=document.getElementById('theme-toggle-dark-icon'),li=document.getElementById('theme-toggle-light-icon'),h=document.documentElement;function s(){if(h.classList.contains('dark')){li.classList.remove('hidden');di.classList.add('hidden');}else{di.classList.remove('hidden');li.classList.add('hidden');}}s();tt&&tt.addEventListener('click',function(){h.classList.toggle('dark');var d=h.classList.contains('dark');h.style.colorScheme=d?'dark':'light';try{var p=JSON.parse(localStorage.getItem('inema.prefs')||'{}');p.theme=d?'inema-dark':'claro';localStorage.setItem('inema.prefs',JSON.stringify(p));localStorage.setItem('theme',d?'dark':'light');}catch(e){}s();});})();
+    function openModal(id){var m=document.getElementById(id);if(m){m.classList.remove('hidden');document.body.style.overflow='hidden';}}
+    function closeModal(){document.querySelectorAll('.modal').forEach(function(m){m.classList.add('hidden');});document.body.style.overflow='auto';}
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
+  </script>
+<script src="../../../assets/learn.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){if(window.INEMA&&INEMA.init)INEMA.init();});</script>
+</body>
+</html>
